@@ -3,38 +3,24 @@ relay
 
 Today's roads, for the future, today.
 
+relay-agent
+=
 
-Topology
-==
-The module that controls generating the local graphs:
-Graph Types:
-* Arterial: Edges are roads, vertices are Relays/Traffic Lights
-* Cell: Edges are cross-artery flows, Vertices are Cells, or centroids of Arterial Loops.
-
-Timer
-==
-The module that controls an agent's light switching/timing. Consists of a set of behaviours:
-* Pattern: Complete light sequence, can be cycled.
-* Behaviour: Ordered collection of Patterns. Can exist as an ACTIVE xor DORMANT state. ACTIVE Behaviours control realtime behaviour of traffic signal.
-* Bias: Generic signal sent to timer, indicates degree to which traffic flow should be promoted spatially. Could also forseably promote dormant behaviours.
-
-Chatter
-==
-The module that governs gossip between agents, and propagation of shared information. Communication protocol.
-
-Overmind
-==
-The module that generates predictive models and operates on/alters the topological model.
-
-Dispatch
-==
-Control Module/local event loop. The "app"
+The individual signal controller.
+* Local intersection graph (how traffic can flow between lanes)
+* Inter-agent graphs
+* local edge modelling
+* optimization engine
+* event loop
 
 relay-observer
 =
 
 The web-app and viewer. Window into the wild-wild world of adaptive traffic control and distributed simulation. Heatmaps of stuff. Moving histograms.
 
+Probably powered by CartoDB or some combination of PostGIS/Postgres, Flask/some-other-framework, and Python.
 
-
-
+* polls relay-agents
+* does other stuff
+* makes people reevaluate the choices they have made throughout their lives.
+* paradigm shifts
