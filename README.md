@@ -1,7 +1,8 @@
 relay
-=====
+=
 
-Distributed Traffic Control System.
+Today's roads, for the future, today.
+
 
 Topology
 ==
@@ -28,4 +29,12 @@ The module that generates predictive models and operates on/alters the topologic
 Dispatch
 ==
 Control Module/local event loop. The "app"
+
+relay-observer
+=
+
+The web-app and viewer. Window into the wild-wild world of adaptive traffic control and distributed simulation. Heatmaps of stuff. Moving histograms.
+
+
+
 
