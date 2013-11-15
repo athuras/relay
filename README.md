@@ -24,3 +24,8 @@ Probably powered by CartoDB or some combination of PostGIS/Postgres, Flask/some-
 * does other stuff
 * makes people reevaluate the choices they have made throughout their lives.
 * paradigm shifts
+
+&#955;-relay
+=
+
+Concurrent functional implementation of **relay-agent** in erlang. This may not ever be written, but would be awesome for simulating many concurrent agents operating in soft-realtime.
