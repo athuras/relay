@@ -16,12 +16,9 @@ class Intersection(object):
         *complete_graph: a Graph object (NetworkX, or igraph).
             The node_ids of the inlets/outlets should correspond to the
             provided ingress/egress ports.
-            The edges should have an 'orientation' property, corresponding from
-            the vector subtraction of their terminal and initial nodes' positions
-        *inputs: list of input nodes, should correspond to the inlets of the
-            complete graph.
-        *outputs: list of output nodes, should correspond to the outlets of the
-            complete graph.
+            The edges should have an 'orientation' property, corresponding to
+            the direction of flow OUT OF the intersection. Alternatively, each
+            output could have a similar property.
         *behaviours: list of behaviours
 
         kwargs:
@@ -34,10 +31,7 @@ class Intersection(object):
         self.p_key = kwargs.get('p_key', Intersection._default_p_key)
 
         Intersection.validate_graph(complete_graph, self.o_key)
-
         self.complete_graph = complete_graph
-        self.inputs = inputs
-        self.outputs = outputs
         self.behaviours = behaviours
 
     @staticmethod
@@ -47,8 +41,10 @@ class Intersection(object):
             assert min(i[1], o[1]) == 0
 
         for edge in G.edges_iter(data=True):
-            assert self.p_key(edge[2]) is not None
-            assert self.o_key(edge[2]) is not None
+            data = edge[2]
+            assert self.p_key(data) is not None
+            assert self.o_key(data) is not None
+            assert np.allclose(np.linalg.norm(self.o_key(data)), 1.)
 
 
 class Behaviour(object):
@@ -79,15 +75,15 @@ class Behaviour(object):
         '''Returns the vector sum of all oriented edges, scaled by their
         internal probabilities. A behaviour with a strong bias is one
         which encourages traffic to flow a certain direction.
-        A roundabout would have zero-bias in a symmetric intersection.'''
-        normalize = lambda x: x / np.linalg.norm(x)
-        return sum(self.p_key(e[2]) * normalize(self.o_key(e[2]))
+        A roundabout would have zero-bias in a symmetric intersection.
+        '''
+        data = e[2]
+        return sum(self.p_key(data) * self.o_key(data)
                 for e in self.graph.out_edges_iter(data=True))
 
     def static_flow(self, iterator=False):
         '''The current probabalistic ingress rate associated with each ingress
         node, based the edge probabilities of the bahaviour graph.
-
         Graph must be of type NetworkX.DiGraph.
         '''
         ingress_ids = (self.nid_key(x) for x in self.ingress)
@@ -102,9 +98,3 @@ class Behaviour(object):
         current_edges = set(self.graph.edges_iter())
         R.remove_edges_from(e for e in master.edges_iter() if e not in current_edges)
         self.graph = R
-
-
-class TestNode(object):
-    def __init__(self, node_id, position):
-        self.nid = node_id
-        self.position = position
