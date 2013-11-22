@@ -13,7 +13,7 @@ The individual signal controller.
 * optimization engine
 * event loop
 
-relay-observer
+relay-flask
 =
 
 The web-app and viewer. Window into the wild-wild world of adaptive traffic control and distributed simulation. Heatmaps of stuff. Moving histograms.
@@ -24,6 +24,8 @@ Probably powered by CartoDB or some combination of PostGIS/Postgres, Flask/some-
 * does other stuff
 * makes people reevaluate the choices they have made throughout their lives.
 * paradigm shifts
+
+Currently serves a default example map of London. Run python relay.py (within the relay-flask) directory, and navigate to localhost:5000/maps
 
 &#955;-relay
 =
