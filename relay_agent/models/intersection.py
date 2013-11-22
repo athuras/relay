@@ -20,7 +20,6 @@ class Intersection(object):
             the direction of flow OUT OF the intersection. Alternatively, each
             output could have a similar property.
         *behaviours: list of behaviours
-
         kwargs:
         *o_key: function that is used to get the orientation vector from an edge,
             defaults to lambda x: x['orientation']
@@ -39,7 +38,6 @@ class Intersection(object):
         '''Confirms that the graph won't break shit'''
         for (i, o) in izip(G.in_degree_iter(), G.out_degreee_iter()):
             assert min(i[1], o[1]) == 0
-
         for edge in G.edges_iter(data=True):
             data = edge[2]
             assert self.p_key(data) is not None
@@ -48,6 +46,10 @@ class Intersection(object):
 
 
 class Behaviour(object):
+    '''A 0-indexed intersection state object. A behaviour
+    holds the intersection flow graph, and references to the appropriate
+    ingress queues.
+    '''
     _default_p_key = lambda x: x['probability']
     _default_o_key = lambda x: x['orientation']
     _default_nid_key = lambda x: x.nid
@@ -65,7 +67,6 @@ class Behaviour(object):
         self.p_key = kwargs.get('p_key', Behaviour._default_p_key)
         self.o_key = kwargs.get('o_key', Behaviour._default_o_key)
         self.nid_key = kwargs.get('nid_key', Behaviour._default_nid_key)
-
         self.graph = graph
         self.ingress = ingress
         self.egress = egress
