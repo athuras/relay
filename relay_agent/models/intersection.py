@@ -11,7 +11,7 @@ class Intersection(object):
     _default_o_key = lambda x: x['orientation']
     _default_p_key = lambda x: x['probability']
 
-    def __init__(self, complete_graph, inputs, outputs, behaviours=[], **kwargs):
+    def __init__(self, complete_graph, behaviours=[], **kwargs):
         '''Create a new intersection from:
         *complete_graph: a Graph object (NetworkX, or igraph).
             The node_ids of the inlets/outlets should correspond to the
