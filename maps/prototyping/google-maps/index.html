@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style type="text/css">
+html, body, #map{
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+</style>
+</head>
+<body onload="init()">
+
+	<div id="map"></div>
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization&sensor=false"></script>
+	<script type="text/javascript">
+	function init() {
+		var mapOptions = {
+			center: new google.maps.LatLng(43.485248,-80.526931),
+			zoom: 15
+		};
+
+		var map = new google.maps.Map(document.getElementById('map'),mapOptions);
+		service = new google.maps.DirectionsService();
+
+		var llArray = new Array();
+		llArray.push(new google.maps.LatLng(43.485248,-80.526931));
+		llArray.push(new google.maps.LatLng(43.47621756198734,-80.52497863769531));
+		llArray.push(new google.maps.LatLng(43.478023768096534,-80.51989316940308));
+		llArray.push(new google.maps.LatLng(43.485248,-80.526931));
+
+		var line = new google.maps.Polyline({
+			zIndex:100000,
+			strokeColor: '#262',
+			strokeOpacity: 0.5,
+			strokeWeight: 5,
+			map: map
+		});
+
+		var path = new Array();
+		for(var i = 1; i < llArray.length; i++){
+			service.route({
+				origin:llArray[i-1],
+				destination:llArray[i],
+				travelMode: google.maps.DirectionsTravelMode.DRIVING
+			}, function(result, status){
+				if(status == google.maps.DirectionsStatus.OK){
+					for(var j = 0; j < result.routes[0].overview_path.length; j++){
+						path.push(result.routes[0].overview_path[j]);
+						line.setPath(path);
+					}
+				}
+			});
+		}
+
+
+
+		google.maps.event.addListener(map, 'click', function(event){
+			console.log(event.latLng);
+		});
+
+
+	// if (path.getLength() === 0) {
+ //      path.push(evt.latLng);
+ //      poly.setPath(path);
+ //    } else {
+ //      service.route({
+ //        origin: path.getAt(path.getLength() - 1),
+ //        destination: evt.latLng,
+ //        travelMode: google.maps.DirectionsTravelMode.DRIVING
+ //      }, function(result, status) {
+ //        if (status == google.maps.DirectionsStatus.OK) {
+ //          for (var i = 0, len = result.routes[0].overview_path.length;
+ //              i < len; i++) {
+ //            path.push(result.routes[0].overview_path[i]);
+ //          }
+ //        }
+ //      });
+ //    }
+	}
+	</script>
+</body >
+</html>
