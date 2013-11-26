@@ -55,30 +55,9 @@ html, body, #map{
 			});
 		}
 
-
-
 		google.maps.event.addListener(map, 'click', function(event){
 			console.log(event.latLng);
 		});
-
-
-	// if (path.getLength() === 0) {
- //      path.push(evt.latLng);
- //      poly.setPath(path);
- //    } else {
- //      service.route({
- //        origin: path.getAt(path.getLength() - 1),
- //        destination: evt.latLng,
- //        travelMode: google.maps.DirectionsTravelMode.DRIVING
- //      }, function(result, status) {
- //        if (status == google.maps.DirectionsStatus.OK) {
- //          for (var i = 0, len = result.routes[0].overview_path.length;
- //              i < len; i++) {
- //            path.push(result.routes[0].overview_path[i]);
- //          }
- //        }
- //      });
- //    }
 	}
 	</script>
 </body >
