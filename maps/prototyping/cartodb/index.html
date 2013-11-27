@@ -1,0 +1,76 @@
+<html>
+<head>
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+  <link rel="stylesheet" href="css/light-theme.css">
+  <link rel="stylesheet" href="css/makeitresponsive.css">
+
+  <!--[if lte IE 8]>
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v2/themes/css/cartodb.ie.css" />
+  <![endif]-->
+  <style>
+    html, body {width:100%; height:100%; padding: 0; margin: 0;}
+    #cartodb-map { width: 100%; height:100%; background: black;}
+  </style>
+</head>
+
+<body onload="init()">
+  <div id='cartodb-map'></div>
+
+  <div class="sidepanel">
+    <div class="wrapper">
+      <div class="context subheader">
+        <p>Map created by <a href="#">{Link to your website}</a></p>
+      </div>
+      <h1>Title of your visualization</h1>
+      <p>WILL IT UPDATE?!?!</p>
+      <button onclick="randomize()">Randomize</button>
+
+      <div class="context footer">
+        <p>Create your maps with ease using <a href="http://cartodb.com">CartoDB</a></p></p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+  <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script>
+    var map;
+    function init(){
+      // initiate leaflet map
+      map = new L.Map('cartodb-map', {
+        center: [43.5,-80.5],
+        zoom: 13
+      })
+
+      // Adds a background layer
+      L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+        attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>'
+      }).addTo(map);
+
+      // Waterloo Intersection Table
+      var layerUrl = 'http://mylestan.cartodb.com/api/v2/viz/d1120660-5634-11e3-904c-1dd037e5fb33/viz.json';
+
+      //
+      cartodb.createLayer(map, layerUrl)
+        .addTo(map)
+        .on('done', function(layer) {
+          // Select a sub-layer here if you want.
+        }).on('error', function() {
+          //log the error
+        });
+    }
+
+    function randomize(){ // updates the cartodb table with a random number. Still need to do real-time updating.
+      var num = Math.floor(Math.random()*100);
+      $.getJSON("http://mylestan.cartodb.com/api/v2/sql?q=UPDATE waterloo_intersections SET performance = " + num.toString() + " WHERE cartodb_id = 1 &api_key=9a20471665e38022899e2789f4a8a2563fd78024", function(data){
+          console.log(data);
+        }
+      );
+      //http://{account}.cartodb.com/api/v2/sql?q=UPDATE test_table SET column_name = 'my new string value' WHERE cartodb_id = 1 &api_key={Your API key}
+    }
+  </script>
+</body>
+</html>

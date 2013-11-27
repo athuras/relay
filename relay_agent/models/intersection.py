@@ -1,7 +1,8 @@
-from itertools import imap
-from itertools import izip
+from itertools import imap, izip, ifilter
 from utils import cache
 import numpy as np
+import networkx as nx
+
 
 class Intersection(object):
     '''
@@ -11,7 +12,7 @@ class Intersection(object):
     _default_o_key = lambda x: x['orientation']
     _default_p_key = lambda x: x['probability']
 
-    def __init__(self, complete_graph, inputs, outputs, behaviours=[], **kwargs):
+    def __init__(self, complete_graph, behaviours=[], **kwargs):
         '''Create a new intersection from:
         *complete_graph: a Graph object (NetworkX, or igraph).
             The node_ids of the inlets/outlets should correspond to the
@@ -44,6 +45,50 @@ class Intersection(object):
             assert self.o_key(data) is not None
             assert np.allclose(np.linalg.norm(self.o_key(data)), 1.)
 
+    @cache
+    def ifilter_indegree(self, indegree=0):
+        '''Return the ids of the nodes that have s-in degree'''
+        z = ifilter(lambda x: x[1] == indegree,
+                    self.complete_graph.in_degree_iter())
+        for node in z:
+            yield node[0]
+
+    @cache
+    def ifilter_outdegree(self, outdegree=0):
+        z = ifilter(lambda x: x[1] == outdegree,
+                    self.complete_graph.out_degree_iter())
+        for node in z:
+            yield node[0]
+
+    @property
+    def ingress_nodes_iter(self):
+        '''The nids of the nodes with in-degree 0.'''
+        return self.ifilter_indegree(0)
+
+    @property
+    def egress_nodes_iter(self):
+        '''The nids of the nodes with out-degree 0.'''
+        return self.ifilter_outdegree(0)
+
+    @classmethod
+    def prototype_symmetric(cls, n=8):
+        '''Return a new Intersection, pre-initialized with a graph only.
+        n must be even, allows u-turns,
+        currently dummy values for orientation.
+        '''
+        assert n % 2 == 0
+        make_data = lambda p, o: {'orientation': o, 'probability': p}
+        links = lambda s: (
+                (s % n,
+                 (2 * (s + i) + 1) % n,
+                 make_data(j, np.array([1, 0])))
+                 for i, j in izip(xrange(n / 2),
+                                  (0.05, 0.15, 0.7, 0.1)))
+        master = []
+        for i in xrange(n / 2):
+            master.extend(links(2 * i))
+        return nx.DiGraph(master)
+
 
 class Behaviour(object):
     '''A 0-indexed intersection state object. A behaviour
@@ -71,7 +116,6 @@ class Behaviour(object):
         self.ingress = ingress
         self.egress = egress
 
-    @property
     def static_bias(self):
         '''Returns the vector sum of all oriented edges, scaled by their
         internal probabilities. A behaviour with a strong bias is one
@@ -86,10 +130,11 @@ class Behaviour(object):
         '''The current probabalistic ingress rate associated with each ingress
         node, based the edge probabilities of the bahaviour graph.
         Graph must be of type NetworkX.DiGraph.
+        Returns [(id, static_flow(id))]
         '''
         ingress_ids = (self.nid_key(x) for x in self.ingress)
         get_p = lambda x: self.p_key(x[2])
-        r = (sum(imap(get_p, self.graph.out_edges(i, data=True)))
+        r = ((i, sum(imap(get_p, self.graph.out_edges(i, data=True))))
              for i in ingress_ids)
         return r if iterator else list(r)
 
