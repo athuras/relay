@@ -1,4 +1,5 @@
 import os
+from db.DatabaseManager import DatabaseManager
 
 from flask import Flask
 from flask import json
