@@ -8,8 +8,8 @@ html, body{
 
 #map-container{
 	height: 100%;
-	width: 70%;
-	float: left;
+	width: 100%;
+	float:left;
 }
 
 #map{
@@ -18,9 +18,12 @@ html, body{
 }
 
 #panel-container{
+	position: absolute;
+	right: 0px;
 	height: 100%;
-	width: 30%;
-	float: right;
+	width: 300px;
+	background-color: #fff;
+	opacity: 0.8;
 }
 
 #panel-content{
