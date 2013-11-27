@@ -24,6 +24,17 @@ def default_map():
 def show_map(api_key=cm_api_key):
     return render_template('default_map.html', api_key=api_key)
 
+# we used passed dictionary's into this before.
+def createJSON(vals):
+	''' Use this for constructing JSON to send to app. '''
+    try:
+        js = json.dumps(vals)
+        return Response(js, status=200, mimetype='applicaiton/json')
+    except Exception as e:
+        return "Error: " + str(e)
+
+# To read json from post request: request.json
+
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
