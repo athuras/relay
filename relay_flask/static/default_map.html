@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet Quick Start Guide Example</title>
+	<title>Relay | Today's roads for the future, today.</title>
 	<meta charset="utf-8" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="default_map.css"/>
+	<link rel="stylesheet" href="css/default_map.css"/>
+	<link rel="stylesheet" href="css/reset.css"/>
+	<link rel="stylesheet" href="css/fonts.css"/>
 	<link rel="icon" type="image/ico" href="assets/favicon.ico"/>
 </head>
 <body onload='init()'>
@@ -14,13 +16,15 @@
 	</div>
 	<div id="panel-container">
 		<div id="panel-content">
-			<div it="title">
+			<div id="title-block">
 				<h1>Relay</h1>
 			</div>
+			<hr/>
 			<div id="network-details">
 				<p>Nodes online:</p>
 				<h2 id='network-nodes-online'></h2>
 			</div>
+			<hr/>
 			<div id="intersection-details">
 				<h2 id="intersection-title">[int title]</h2>
 				<p>Performance</p>
@@ -31,9 +35,10 @@
 		</div>
 	</div>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
-	<script type="text/javascript" src="default_map.js"></script>
+	<script type="text/javascript" src="js/default_map.js"></script>
+
 </script>
 </body>
 </html>
