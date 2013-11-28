@@ -37,5 +37,6 @@ class DatabaseManager(object):
         return cur.fetchall()
 
     def close_all(self):
+        '''Close all open Database Connections'''
         for k in self.connections:
             self.connections[k].close()
