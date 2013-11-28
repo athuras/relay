@@ -22,27 +22,33 @@ class DatabaseManager(object):
                 print 'Bad news: ', e.args[0]
         else:
             raise ValueError('""%s"" is not a valid SQL Statement' % query)
-
         return cur
 
-    def iter_query(self, db_name, query, options, gen_dict):
-        '''Returns an iterator or dict over the query results'''
+    def iter_query(self, db_name, query, options, as_dict=False, commit=False):
+        '''Returns an iterator or dict over the query results.
+        *as_dict: flag to format rows as dictionaries,
+        *commit: call connection.commit() after query execution'''
         cur = self.prepare_cursor(db_name, query, options)
-        if gen_dict:
+        if commit:
+           self.commit(db_name)
+        if as_dict:
             for line in cur:
-                yield dict((cur.description[i][0], value) for i, value in 
+                yield dict((cur.description[i][0], value) for i, value in
                     enumerate(line))
         else:
             for line in cur:
                 yield line
 
-    def query(self, db_name, query, options, gen_dict):
-        '''Returns entire result set, don't select *!!!'''
+    def query(self, db_name, query, options, as_dict=False, commit=False):
+        '''Returns entire result set.
+        *as_dict: flag to format rows as dictionaries,
+        *commit: call connection.commit() after query execution'''
         cur = self.prepare_cursor(db_name, query, options)
         results = cur.fetchall()
-
-        if gen_dict:
-            return [dict((cur.description[i][0], value) for i, value in 
+        if commit:
+           self.commit(db_name)
+        if as_dict:
+            return [dict((cur.description[i][0], value) for i, value in
             enumerate(row)) for row in results]
         else:
             return results
@@ -51,3 +57,6 @@ class DatabaseManager(object):
         '''Close all open Database Connections'''
         for k in self.connections:
             self.connections[k].close()
+
+    def commit(self, db_name):
+        return self.connections[db_name].commit()
