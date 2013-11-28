@@ -94,44 +94,42 @@ function prepData(data){
 }
 
 function populateMap(intersections) {
+	var oColor, oRadius, oOpacity;
+	var iColor, iRadius, iOpacity;
 	for(inter in intersections){
 		if(intersections.hasOwnProperty(inter)){
 			var i = intersections[inter];
 
-			var oColor, oRadius, oOpacity;
-			var iColor, iRadius, iOpacity;
+			// oColor = '#fff';
+			// oRadius = 20;
+			// oOpacity = 0.05;
 
-			oColor = '#fff';
-			oRadius = 20;
-			oOpacity = 0.05;
+			// iColor = '#fff';
+			// iRadius = 5;
+			// iOpacity = 0.7;
 
-			iColor = '#fff';
-			iRadius = 5;
-			iOpacity = 0.7;
+			// decide what happens to the point!
+			if(i.online){
+				oColor = '#fff';
+				oRadius = iRadius + Math.floor(30*i.volume);
+				oOpacity = 0.05;
 
-			//decide what happens to the point!
-			// if(i.online){
-			// 	oColor = '#fff';
-			// 	oRadius = iRadius + Math.floor(30*i.volume);
-			// 	oOpacity = 0.05;
+				if(i.performance >= 0.5){
+					iColor = '#0f0';
+				} else {
+					iColor = '#f00';
+				}
+				iRadius = 10;
+				iOpacity = 0.7;
+			} else {
+				oColor = '#000';
+				oRadius = 20;
+				oOpacity = 0.2;
 
-			// 	if(i.performance > 0.5){
-			// 		iColor = '#OfO';
-			// 	}
-			//  else {
-			// 		iColor = '#f00';
-			// 	}
-			// 	iRadius = 10;
-			// 	iOpacity = 0.7;
-			// } else {
-			// 	oColor = '#000';
-			// 	oRadius = 20;
-			// 	oOpacity = 0.2;
-
-			// 	iColor = '#000';
-			// 	iRadius = 10;
-			// 	iOpacity = 0.9;
-			// }
+				iColor = '#000';
+				iRadius = 10;
+				iOpacity = 0.9;
+			}
 
 			// background marker
 			L.circleMarker([i['lat'], i['long']], {
@@ -141,7 +139,7 @@ function populateMap(intersections) {
 
 				fillOpacity: oOpacity,
 				radius: oRadius,
-				color: oColor
+				color: iColor
 			})
 				.addTo(map);
 
@@ -162,11 +160,18 @@ function populateMap(intersections) {
 	}
 }
 
+function returnColor(hex){
+	return function(){
+		return hex;
+	}
+}
+
 function populatePopupForIntersection(event){
 	intersection = getIntersectionById(event.target.options.id);
 
 	var content = "";
-	content += "<h1>" + intersection.name + "</h1>";
+	var title = (intersection.name == "")? '(Untitled)' : intersection.name;
+	content += "<h1>" + title + "</h1>";
 	content += "<a onclick='populatePanelForIntersection(" + intersection.id + ")'>more</a>";
 
 	var latlng = L.latLng(intersection.lat, intersection.long);
