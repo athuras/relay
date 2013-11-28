@@ -27,7 +27,7 @@ def show_map(api_key=cm_api_key):
 
 # we used passed dictionary's into this before.
 def createJSON(vals):
-	''' Use this for constructing JSON to send to app. '''
+    ''' Use this for constructing JSON to send to app. '''
     try:
         js = json.dumps(vals)
         return Response(js, status=200, mimetype='applicaiton/json')
