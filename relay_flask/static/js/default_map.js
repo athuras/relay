@@ -22,7 +22,7 @@ var intersections = [
 var popup = L.popup();
 
 // create map
-var map = L.map('map').setView([43.673513374000002, -79.573719920000002], 14);
+var map = L.map('map').setView([43.617252641,-79.378593649], 14);
 map.on('click', hidePanelForIntersection);
 
 // add tile layer
@@ -190,7 +190,7 @@ function populatePanelForIntersection(id){
 	var intersection = $.grep(intersections, function(i){ return i.id == id});
 	intersection = intersection[0]; //only one?
 
-	$('#intersection-title').html(intersection.name);
+	$('#intersection-name').html(intersection.name);
 	$('#intersection-performance').html(String(Math.floor(intersection.performance*100))+ "%");
 	$('#intersection-volume').html(String(Math.floor(intersection.volume*100)) + "%");
 
