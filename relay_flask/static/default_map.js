@@ -30,14 +30,6 @@ L.tileLayer('http://{s}.tile.cloudmade.com/e440fa3faa334156831adb28596d54a0/1150
 // Make a single popup
 var popup = L.popup();
 
-// var showPopupAt = function(){
-// 	popup
-	// .setLatLng(L.latLng(i['x'], i['y']))
-	// .setContent("<h3>"+i.title+"</h3><br/><a onclick='populatePanelForIntersection(" + String(i['id']) + ")'>See more</a>")
-	// .openOn(map);
-// }
-
-// add all the markers to the map
 for(inter in intersections){
 	if(intersections.hasOwnProperty(inter)){
 		var i = intersections[inter];
@@ -55,6 +47,7 @@ for(inter in intersections){
 
 		// action marker
 		L.circleMarker([i['x'], i['y']], {
+			id: i['id'],
 			stroke: false,
 			fill: true,
 			fillOpacity: 0.9,
@@ -63,16 +56,23 @@ for(inter in intersections){
 			clickable: true
 		})
 		.addTo(map)
-		.on('click', function(e){
-			return function(){
-				// showPopupAt();
-				popup
-				.setLatLng(L.latLng(i['x'], i['y']))
-				.setContent("<h3>"+i.title+"</h3><br/><a onclick='populatePanelForIntersection(" + String(i['id']) + ")'>See more</a>")
-				.openOn(map);
-			}
-		}(i));
+		.on('click',populatePopupForIntersection);
 	}
+}
+
+function populatePopupForIntersection(event){
+	intersection = getIntersectionById(event.target.options.id);
+
+	var content = "";
+	content += "<h1>" + intersection.title + "</h1>";
+	content += "<a onclick='populatePanelForIntersection(" + intersection.id + ")'>more</a>";
+
+	var latlng = L.latLng(intersection.x, intersection.y);
+
+	var popup = L.popup()
+	    .setLatLng(latlng)
+	    .setContent(content)
+	    .openOn(map);
 }
 
 function populatePanelForIntersection(id){
@@ -86,6 +86,12 @@ function populatePanelForIntersection(id){
 	$('#intersection-performance').html(String(intersection['performance']));
 }
 
+function getIntersectionById(id){
+	// find the item in the array with this ID
+	var intersection = $.grep(intersections, function(i){ return i.id == id});
+	intersection = intersection[0]; //only one?
+	return intersection;
+}
 
 
 
