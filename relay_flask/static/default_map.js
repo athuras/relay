@@ -18,6 +18,45 @@ var intersections = [
 	}
 ];
 
+// init function
+function init(){
+	//sample bounds
+	var bounds = L.latLngBounds(L.latLng(43.61, -79.39), L.latLng(43.62, -79.37));
+	getIntersections(bounds);
+}
+
+//accepts bounds in form of L.latLngBounds
+function getIntersections(b){
+	//{"minlat": 43.61,"maxlat": 43.62, "minlong": -79.39, "maxlong": -79.37}
+	var bounds = new Object();
+	if(b == null){
+		//get all
+		bounds.minlat = -90;
+		bounds.minlong = -180;
+		bounds.maxlat = 90;
+		bounds.maxlong = 180;
+	} else {
+		bounds.minlat = b.getSouth();
+		bounds.minlong = b.getWest();
+		bounds.maxlat = b.getNorth();
+		bounds.maxlong = b.getEast();
+	}
+	$.ajax({
+		type: "POST",
+		datatype: "JSON",
+		url: "http://localhost:5000/request_intersections",
+		data: JSON.stringify(bounds),
+		async: false,
+		success: function(){
+			console.log(data);
+			// prepData(data);
+		},
+		error: function(){
+			console.log('request for data failed');
+		}
+	});
+}
+
 // create map
 var map = L.map('map').setView([43.673513374000002, -79.573719920000002], 14);
 
