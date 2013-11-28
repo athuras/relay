@@ -34,8 +34,9 @@ def show_map(api_key=cm_api_key):
 def get_intersections():
     if request.method == 'POST':
         bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
-        qstr = '''SELECT long, lat, name FROM intersections WHERE lat>=:minlat
-            AND lat<=:maxlat AND long>=:minlong AND long<=:maxlong;'''
+        qstr = '''SELECT long, lat, name, type, type_short, int_id FROM 
+            intersections WHERE lat>=:minlat AND lat<=:maxlat AND 
+            long>=:minlong AND long<=:maxlong;'''
         intersects = g.db.query('relay_main', qstr, bounds, True)
         return createJSON(intersects)
 
@@ -54,6 +55,11 @@ def after_request(response):
     return response
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'This page does not exist.', 404
+
+
 def createJSON(vals):
     ''' Use this for constructing JSON to send to app. '''
     try:
@@ -65,4 +71,4 @@ def createJSON(vals):
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='localhost', port=port, debug=True)
