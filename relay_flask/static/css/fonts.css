@@ -1,42 +1,42 @@
 /* font declaration */
 @font-face {
 	font-family: 'ProximaNova';
-	src: url('fonts/ProximaNova-Light.otf');
+	src: url('../fonts/ProximaNova-Light.otf');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'ProximaNova';
-	src: url('fonts/ProximaNova-Regular.otf');
+	src: url('../fonts/ProximaNova-Regular.otf');
 	font-weight: 500;
 }
 
 @font-face {
 	font-family: 'ProximaNova';
-	src: url('fonts/ProximaNova-Semibold.otf');
+	src: url('../fonts/ProximaNova-Semibold.otf');
 	font-weight: 600;
 }
 
 @font-face {
 	font-family: 'ProximaNova';
-	src: url('fonts/ProximaNova-Bold.otf');
+	src: url('../fonts/ProximaNova-Bold.otf');
 	font-weight: 700;
 }
 
 @font-face {
 	font-family: 'ProximaNovaCond';
-	src: url('fonts/ProximaNovaCond-Light.otf');
+	src: url('../fonts/ProximaNovaCond-Light.otf');
 	font-weight: 400;
 }
 
 @font-face {
 	font-family: 'ProximaNovaCond';
-	src: url('fonts/ProximaNovaCond-Regular.otf');
+	src: url('../fonts/ProximaNovaCond-Regular.otf');
 	font-weight: 500;
 }
 
 @font-face {
 	font-family: 'ProximaNovaCond';
-	src: url('fonts/ProximaNovaCond-Semibold.otf');
+	src: url('../fonts/ProximaNovaCond-Semibold.otf');
 	font-weight: 600;
 }
