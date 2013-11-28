@@ -25,16 +25,27 @@ class DatabaseManager(object):
 
         return cur
 
-    def iter_query(self, db_name, query, options):
-        '''Returns an iterator over the query results'''
+    def iter_query(self, db_name, query, options, gen_dict):
+        '''Returns an iterator or dict over the query results'''
         cur = self.prepare_cursor(db_name, query, options)
-        for line in cur:
-            yield line
+        if gen_dict:
+            for line in cur:
+                yield dict((cur.description[i][0], value) for i, value in 
+                    enumerate(line))
+        else:
+            for line in cur:
+                yield line
 
-    def query(self, db_name, query, options):
+    def query(self, db_name, query, options, gen_dict):
         '''Returns entire result set, don't select *!!!'''
         cur = self.prepare_cursor(db_name, query, options)
-        return cur.fetchall()
+        results = cur.fetchall()
+
+        if gen_dict:
+            return [dict((cur.description[i][0], value) for i, value in 
+            enumerate(row)) for row in results]
+        else:
+            return results
 
     def close_all(self):
         '''Close all open Database Connections'''
