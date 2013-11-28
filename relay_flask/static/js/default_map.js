@@ -49,17 +49,19 @@ function getIntersections(b){
 		bounds.maxlat = 90;
 		bounds.maxlong = 180;
 	} else {
-		bounds.minlat = b.getSouth();
+		bounds.minlat = 	b.getSouth();
 		bounds.minlong = b.getWest();
 		bounds.maxlat = b.getNorth();
 		bounds.maxlong = b.getEast();
 	}
+	var boundsArray = [bounds];
+	var string = JSON.stringify(boundsArray);
 	$.when(
 		$.ajax({
-			type: "POST",
-			datatype: "JSON",
-			url: "http://localhost:5000/request_intersections",
-			data: JSON.stringify(bounds),
+			type: 'POST',
+			datatype: 'JSON',
+			url: 'http://localhost:5000/request_intersections',
+			data: string,
 			async: false
 		})
 	).then( function(data){

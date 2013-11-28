@@ -60,9 +60,9 @@ hr {
 	box-shadow: 0 1px 1px rgba(255, 255, 255, 0.05);
 }
 
-#intersection-details {
+.intersection-details {
 	margin: 32px 0 0 0;
-	display: none;
+	/*display: none;*/
 }
 
 #panel-content p {
