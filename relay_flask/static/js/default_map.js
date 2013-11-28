@@ -97,6 +97,7 @@ function prepData(data){
 function populateMap(intersections) {
 	var oColor, oRadius, oOpacity;
 	var iColor, iRadius, iOpacity;
+	var mColor, mRadius, mOpacity;
 	for(inter in intersections){
 		if(intersections.hasOwnProperty(inter)){
 			var i = intersections[inter];
@@ -114,6 +115,10 @@ function populateMap(intersections) {
 				oColor = '#fff';
 				oRadius = iRadius + Math.floor(30*i.volume);
 				oOpacity = 0.05;
+				
+				mColor = '#fff';
+				mRadius = iRadius + Math.floor(20*i.volume);
+				mOpacity = 0.1;
 
 				if(i.performance >= 0.5){
 					iColor = '#fff';
@@ -126,6 +131,10 @@ function populateMap(intersections) {
 				oColor = '#000';
 				oRadius = 20;
 				oOpacity = 0.1;
+
+				mColor = '#000';
+				mRadius = 15;
+				mOpacity = 0.15;
 
 				iColor = '#000';
 				iRadius = 10;
@@ -143,6 +152,18 @@ function populateMap(intersections) {
 				color: iColor
 			})
 				.addTo(map);
+
+			// middle marker
+			L.circleMarker([i['lat'], i['long']], {
+				stroke: false,
+				fill: true,
+				clickable: true,
+
+				fillOpacity: mOpacity,
+				radius: mRadius,
+				color: iColor
+			})
+			.addTo(map)
 
 			// action marker
 			L.circleMarker([i['lat'], i['long']], {
