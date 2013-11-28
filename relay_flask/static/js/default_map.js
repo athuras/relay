@@ -58,10 +58,11 @@ function getIntersections(b){
 		$.ajax({
 			type: "POST",
 			datatype: "JSON",
+			contentType: "application/json",
 			url: "http://localhost:5000/request_intersections",
 			data: JSON.stringify(bounds),
 			async: false
-		})
+        })
 	).then( function(data){
 		//passed
 		console.log('passed!');
