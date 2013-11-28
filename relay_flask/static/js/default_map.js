@@ -22,7 +22,8 @@ var intersections = [
 var popup = L.popup();
 
 // create map
-var map = L.map('map').setView([43.673513374000002, -79.573719920000002], 14);
+var map = L.map('map').setView([43.617252641,-79.378593649], 14);
+map.on('click', hidePanelForIntersection);
 
 // add tile layer
 L.tileLayer('http://{s}.tile.cloudmade.com/e440fa3faa334156831adb28596d54a0/115014/256/{z}/{x}/{y}.png', {
@@ -189,8 +190,11 @@ function populatePanelForIntersection(id){
 	var intersection = $.grep(intersections, function(i){ return i.id == id});
 	intersection = intersection[0]; //only one?
 
-	$('#intersection-title').html(intersection.name);
-	$('#intersection-performance').html(String(intersection.performance));
+	$('#intersection-name').html(intersection.name);
+	$('#intersection-performance').html(String(Math.floor(intersection.performance*100))+ "%");
+	$('#intersection-volume').html(String(Math.floor(intersection.volume*100)) + "%");
+
+	$('#intersection-details').css("display", "block");
 }
 
 function getIntersectionById(id){
@@ -198,6 +202,10 @@ function getIntersectionById(id){
 	var intersection = $.grep(intersections, function(i){ return i.id == id});
 	intersection = intersection[0]; //only one?
 	return intersection;
+}
+
+function hidePanelForIntersection(e){
+	$('#intersection-details').css("display", "none");
 }
 
 
