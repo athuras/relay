@@ -22,7 +22,7 @@ var intersections = [
 var popup = L.popup();
 
 // create map
-var map = L.map('map').setView([43.617252641,-79.378593649], 14);
+var map = L.map('map').setView([43.617252641,-79.378593649], 13);
 map.on('click', hidePanelForIntersection);
 
 // add tile layer
@@ -34,7 +34,7 @@ L.tileLayer('http://{s}.tile.cloudmade.com/e440fa3faa334156831adb28596d54a0/1150
 // init function
 function init(){
 	//sample bounds
-	var bounds = L.latLngBounds(L.latLng(43.61, -79.39), L.latLng(43.62, -79.37));
+	var bounds = L.latLngBounds();
 	getIntersections(bounds);
 }
 
