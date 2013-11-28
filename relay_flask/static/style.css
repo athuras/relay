@@ -29,6 +29,10 @@ html, body{
 #panel-content{
 	margin: 10px;
 }
+
+#panel-content p, #panel-content h1, #panel-content h2 {
+	color: #fff;
+}
 /* required styles */
 
 .leaflet-map-pane,

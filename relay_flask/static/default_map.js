@@ -19,7 +19,7 @@ var intersections = [
 ];
 
 // create map
-var map = L.map('map').setView([43.673513374000002, -79.573719920000002], 10);
+var map = L.map('map').setView([43.673513374000002, -79.573719920000002], 14);
 
 // add tile layer
 L.tileLayer('http://{s}.tile.cloudmade.com/e440fa3faa334156831adb28596d54a0/115014/256/{z}/{x}/{y}.png', {
@@ -30,6 +30,12 @@ L.tileLayer('http://{s}.tile.cloudmade.com/e440fa3faa334156831adb28596d54a0/1150
 // Make a single popup
 var popup = L.popup();
 
+// var showPopupAt = function(){
+// 	popup
+	// .setLatLng(L.latLng(i['x'], i['y']))
+	// .setContent("<h3>"+i.title+"</h3><br/><a onclick='populatePanelForIntersection(" + String(i['id']) + ")'>See more</a>")
+	// .openOn(map);
+// }
 
 // add all the markers to the map
 for(inter in intersections){
@@ -56,28 +62,30 @@ for(inter in intersections){
 
 			clickable: true
 		})
-			.addTo(map)
-			// .bindPopup("<p>" + i['title'] + "</p>");
-			// .on('click',onIntersectionClick(i));
-			.on('click', function(e, i){
-				return function(i){
-					popup
-						.setLatLng(L.latLng(i['x'], i['y']))
-						.setContent(i.title)
-						.openOn(map);
-				}
-			})
+		.addTo(map)
+		.on('click', function(e){
+			return function(){
+				// showPopupAt();
+				popup
+				.setLatLng(L.latLng(i['x'], i['y']))
+				.setContent("<h3>"+i.title+"</h3><br/><a onclick='populatePanelForIntersection(" + String(i['id']) + ")'>See more</a>")
+				.openOn(map);
+			}
+		}(i));
 	}
 }
 
-// When an intersection is clicked on, serve the popup.
-// function onIntersectionClick(intersection) {
-// 	return function(intersection){
-// 		popup
-// 			.setLatLng(intersection.latlng)
-// 			.setContent(intersection.title)
-// 			.openOn(map);
-// 	}
-// }
+function populatePanelForIntersection(id){
+	console.log('populate panel for id ' + String(id));
+
+	// find the item in the array with this ID
+	var intersection = $.grep(intersections, function(i){ return i.id == id});
+	intersection = intersection[0]; //only one?
+
+	$('#intersection-title').html(intersection['title']);
+	$('#intersection-performance').html(String(intersection['performance']));
+}
+
+
 
 
