@@ -36,7 +36,7 @@ def get_intersections():
         bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
         qstr = '''SELECT long, lat, name, type, type_short, int_id FROM 
             intersections WHERE lat>=:minlat AND lat<=:maxlat AND 
-            long>=:minlong AND long<=:maxlong;'''
+            long>=:minlong AND long<=:maxlong and type_short='MJRSL';'''
         intersects = g.db.query('relay_main', qstr, bounds, True)
         return createJSON(intersects)
 
