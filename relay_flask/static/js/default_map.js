@@ -116,20 +116,20 @@ function populateMap(intersections) {
 				oOpacity = 0.05;
 
 				if(i.performance >= 0.5){
-					iColor = '#0f0';
+					iColor = '#fff';
 				} else {
-					iColor = '#f00';
+					iColor = '#ff3a3a';
 				}
 				iRadius = 10;
-				iOpacity = 0.7;
+				iOpacity = 0.12;
 			} else {
 				oColor = '#000';
 				oRadius = 20;
-				oOpacity = 0.2;
+				oOpacity = 0.1;
 
 				iColor = '#000';
 				iRadius = 10;
-				iOpacity = 0.9;
+				iOpacity = 0.2;
 			}
 
 			// background marker
