@@ -8,7 +8,7 @@ class DatabaseManager(object):
         db_info = kwargs.get('db_info', DatabaseManager._relay_db_info)
         self.connections = {}
         for name, f in db_info.iteritems():
-            self.connections[name] = sqlite3.connect(f)
+            self.connections[name] = sqlite3.connect(f, check_same_thread=False)
 
     def prepare_cursor(self, db_name, query, options):
         '''Returns executed cursor'''

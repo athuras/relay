@@ -12,7 +12,7 @@ from flask import url_for
 app = Flask(__name__)
 app.secret_key = os.environ.get('APP_SECRET', None)
 cm_api_key = os.environ.get('CM_API', 'e440fa3faa334156831adb28596d54a0')
-db = DatabaseManager({'relay_main': 'db/relay.db'})
+db = DatabaseManager(relay_main='db/relay.db')
 
 @app.route('/')
 def home():
