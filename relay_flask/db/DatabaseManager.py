@@ -19,7 +19,7 @@ class DatabaseManager(object):
                 query = query.strip()
                 cur.execute(query, options)
             except sqlite3.Error as e:
-                print 'Bad news: ', e.args[0]
+                print 'Bad news: ', str(e)
         else:
             raise ValueError('""%s"" is not a valid SQL Statement' % query)
         return cur
