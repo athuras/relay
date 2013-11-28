@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet Quick Start Guide Example</title>
+	<title>Relay | Today's roads for the future, today.</title>
 	<meta charset="utf-8" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="default_map.css"/>
+	<link rel="stylesheet" href="css/default_map.css"/>
+	<link rel="stylesheet" href="css/reset.css"/>
+	<link rel="stylesheet" href="css/fonts.css"/>
 	<link rel="icon" type="image/ico" href="assets/favicon.ico"/>
 </head>
 <body>
@@ -14,21 +16,25 @@
 	</div>
 	<div id="panel-container">
 		<div id="panel-content">
-			<div it="title">
-				<h1>Hello World</h1>
+			<div id="title-block">
+				<div id='intersection-name'>Bloor St. &amp; <br/> Spadina Ave.</div>
 			</div>
-			<div id="intersection-details">
-				<h2>Intersection:</h2>
-				<p id="intersection-title">[int title]</p>
-				<h2>Performance</h2>
-				<p id="intersection-performance">[int perf]</p>
+			<hr/>
+			<div class="intersection-details">
+				<div class='mini-title'>PERFORMANCE</div>
+				<p id="intersection-title">Jolly good!</p>
+			</div>
+			<div class='intersection-details'>
+				<div class='mini-title'>VOLUME</div>
+				<p id="intersection-performance">Quite full I must say</p>
 			</div>
 		</div>
 	</div>
 
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
-	<script type="text/javascript" src="default_map.js"></script>
+	<script type="text/javascript" src="js/default_map.js"></script>
+
 </script>
 </body>
 </html>
