@@ -54,6 +54,11 @@ def after_request(response):
     return response
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return 'This page does not exist.', 404
+
+
 def createJSON(vals):
     ''' Use this for constructing JSON to send to app. '''
     try:
