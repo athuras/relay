@@ -22,7 +22,7 @@ var intersections = [
 var popup = L.popup();
 
 // create map
-var map = L.map('map').setView([43.617252641,-79.378593649], 14);
+var map = L.map('map').setView([43.617252641,-79.378593649], 13);
 map.on('click', hidePanelForIntersection);
 
 // add tile layer
@@ -34,7 +34,7 @@ L.tileLayer('http://{s}.tile.cloudmade.com/e440fa3faa334156831adb28596d54a0/1150
 // init function
 function init(){
 	//sample bounds
-	var bounds = L.latLngBounds(L.latLng(43.61, -79.39), L.latLng(43.62, -79.37));
+	var bounds = L.latLngBounds();
 	getIntersections(bounds);
 }
 
@@ -49,33 +49,30 @@ function getIntersections(b){
 		bounds.maxlat = 90;
 		bounds.maxlong = 180;
 	} else {
-		bounds.minlat = 	b.getSouth();
+		bounds.minlat = b.getSouth();
 		bounds.minlong = b.getWest();
 		bounds.maxlat = b.getNorth();
 		bounds.maxlong = b.getEast();
 	}
-	var boundsArray = [bounds];
-	var string = JSON.stringify(boundsArray);
 	$.when(
 		$.ajax({
-			type: 'POST',
-			datatype: 'JSON',
-			url: 'http://localhost:5000/request_intersections',
-			data: string,
+			type: "POST",
+			datatype: "JSON",
+			contentType: "application/json",
+			url: "http://localhost:5000/request_intersections",
+			data: JSON.stringify(bounds),
 			async: false
-		})
+        })
 	).then( function(data){
 		//passed
 		console.log('passed!');
 		intersections = prepData(data);
-		populateMap();
+		populateMap(intersections);
 	}, function(error){
 		//failed
 		console.log('shit :(');
 		console.log(error);
-		var data = [{"lat": 43.617252641, "long": -79.378593649, "name": ""}, {"lat": 43.615640333, "long": -79.379787026, "name": "Lagoon Rd / Centre Island Pk"}, {"lat": 43.616748867, "long": -79.381405861, "name": "Centre Island Pk"}, {"lat": 43.615644162, "long": -79.383859851, "name": "Centre Island Pk"}, {"lat": 43.615531685, "long": -79.385420298, "name": ""}, {"lat": 43.616634859, "long": -79.3843377, "name": "Centre Island Pk"}, {"lat": 43.616556566, "long": -79.384080588, "name": "Centre Island Pk"}, {"lat": 43.617642375, "long": -79.385550662, "name": "Centre Island Pk"}, {"lat": 43.619474279, "long": -79.385665726, "name": ""}, {"lat": 43.614982991, "long": -79.38971764, "name": "Beach Rd / Lakeshore Ave"}, {"lat": 43.615058259, "long": -79.387234747, "name": ""}, {"lat": 43.613189796, "long": -79.386956572, "name": "Beach Rd / Lakeshore Ave"}, {"lat": 43.612246478, "long": -79.388877878, "name": "Beach Rd"}, {"lat": 43.613139077, "long": -79.382615663, "name": "Lakeshore Ave"}, {"lat": 43.613987775, "long": -79.379351345, "name": "Lakeshore Ave / Centre Island Pk"}, {"lat": 43.617412954, "long": -79.375421729, "name": "The Mall Ter"}, {"lat": 43.615598892, "long": -79.375206659, "name": "Lakeshore Ave / The Mall Ter"}, {"lat": 43.6169786, "long": -79.372422412, "name": "Lakeshore Ave / Avenue Of The Islands"}, {"lat": 43.61640393, "long": -79.3719358, "name": "Avenue Of The Islands"}, {"lat": 43.619214799, "long": -79.374476208, "name": "Avenue Of The Islands"}, {"lat": 43.619214799, "long": -79.374476208, "name": "Avenue Of The Islands"}, {"lat": 43.618969922, "long": -79.37421219, "name": "Avenue Of The Islands"}, {"lat": 43.618969922, "long": -79.37421219, "name": "Avenue Of The Islands"}, {"lat": 43.618529739, "long": -79.373837027, "name": "Cibola Ave / Avenue Of The Islands"}, {"lat": 43.61818324, "long": -79.374574654, "name": "Lagoon Rd / Cibola Ave"}, {"lat": 43.617682354, "long": -79.375640868, "name": "Cibola Ave / The Mall Ter"}, {"lat": 43.617815333, "long": -79.376242282, "name": "The Mall Ter"}, {"lat": 43.617750181, "long": -79.377052122, "name": "Lagoon Rd / The Mall Ter"}, {"lat": 43.61992857, "long": -79.375129707, "name": "Island Park Trl / Avenue Of The Islands"}, {"lat": 43.613224114, "long": -79.38333629, "name": "Lakeshore Ave"}, {"lat": 43.617139201, "long": -79.38028221, "name": "Centre Island Pk"}, {"lat": 43.618014649, "long": -79.385084061, "name": "Centre Island Pk"}, {"lat": 43.616752557, "long": -79.37319924, "name": "Lagoon Rd / Lakeshore Ave / The Mall Ter"}, {"lat": 43.617519421, "long": -79.375987695, "name": "Cibola Ave / The Mall Ter"}, {"lat": 43.617249165, "long": -79.375742401, "name": "The Mall Ter"}, {"lat": 43.619472434, "long": -79.3737402, "name": "Island Park Trl"}];
-		intersections = prepData(data);
-		populateMap(intersections);
+		//var data = [{"lat": 43.617252641, "long": -79.378593649, "name": ""}, {"lat": 43.615640333, "long": -79.379787026, "name": "Lagoon Rd / Centre Island Pk"}, {"lat": 43.616748867, "long": -79.381405861, "name": "Centre Island Pk"}, {"lat": 43.615644162, "long": -79.383859851, "name": "Centre Island Pk"}, {"lat": 43.615531685, "long": -79.385420298, "name": ""}, {"lat": 43.616634859, "long": -79.3843377, "name": "Centre Island Pk"}, {"lat": 43.616556566, "long": -79.384080588, "name": "Centre Island Pk"}, {"lat": 43.617642375, "long": -79.385550662, "name": "Centre Island Pk"}, {"lat": 43.619474279, "long": -79.385665726, "name": ""}, {"lat": 43.614982991, "long": -79.38971764, "name": "Beach Rd / Lakeshore Ave"}, {"lat": 43.615058259, "long": -79.387234747, "name": ""}, {"lat": 43.613189796, "long": -79.386956572, "name": "Beach Rd / Lakeshore Ave"}, {"lat": 43.612246478, "long": -79.388877878, "name": "Beach Rd"}, {"lat": 43.613139077, "long": -79.382615663, "name": "Lakeshore Ave"}, {"lat": 43.613987775, "long": -79.379351345, "name": "Lakeshore Ave / Centre Island Pk"}, {"lat": 43.617412954, "long": -79.375421729, "name": "The Mall Ter"}, {"lat": 43.615598892, "long": -79.375206659, "name": "Lakeshore Ave / The Mall Ter"}, {"lat": 43.6169786, "long": -79.372422412, "name": "Lakeshore Ave / Avenue Of The Islands"}, {"lat": 43.61640393, "long": -79.3719358, "name": "Avenue Of The Islands"}, {"lat": 43.619214799, "long": -79.374476208, "name": "Avenue Of The Islands"}, {"lat": 43.619214799, "long": -79.374476208, "name": "Avenue Of The Islands"}, {"lat": 43.618969922, "long": -79.37421219, "name": "Avenue Of The Islands"}, {"lat": 43.618969922, "long": -79.37421219, "name": "Avenue Of The Islands"}, {"lat": 43.618529739, "long": -79.373837027, "name": "Cibola Ave / Avenue Of The Islands"}, {"lat": 43.61818324, "long": -79.374574654, "name": "Lagoon Rd / Cibola Ave"}, {"lat": 43.617682354, "long": -79.375640868, "name": "Cibola Ave / The Mall Ter"}, {"lat": 43.617815333, "long": -79.376242282, "name": "The Mall Ter"}, {"lat": 43.617750181, "long": -79.377052122, "name": "Lagoon Rd / The Mall Ter"}, {"lat": 43.61992857, "long": -79.375129707, "name": "Island Park Trl / Avenue Of The Islands"}, {"lat": 43.613224114, "long": -79.38333629, "name": "Lakeshore Ave"}, {"lat": 43.617139201, "long": -79.38028221, "name": "Centre Island Pk"}, {"lat": 43.618014649, "long": -79.385084061, "name": "Centre Island Pk"}, {"lat": 43.616752557, "long": -79.37319924, "name": "Lagoon Rd / Lakeshore Ave / The Mall Ter"}, {"lat": 43.617519421, "long": -79.375987695, "name": "Cibola Ave / The Mall Ter"}, {"lat": 43.617249165, "long": -79.375742401, "name": "The Mall Ter"}, {"lat": 43.619472434, "long": -79.3737402, "name": "Island Park Trl"}];
 	});
 }
 
@@ -99,6 +96,7 @@ function prepData(data){
 function populateMap(intersections) {
 	var oColor, oRadius, oOpacity;
 	var iColor, iRadius, iOpacity;
+	var mColor, mRadius, mOpacity;
 	for(inter in intersections){
 		if(intersections.hasOwnProperty(inter)){
 			var i = intersections[inter];
@@ -116,22 +114,30 @@ function populateMap(intersections) {
 				oColor = '#fff';
 				oRadius = iRadius + Math.floor(30*i.volume);
 				oOpacity = 0.05;
+				
+				mColor = '#fff';
+				mRadius = iRadius + Math.floor(20*i.volume);
+				mOpacity = 0.1;
 
 				if(i.performance >= 0.5){
-					iColor = '#0f0';
+					iColor = '#fff';
 				} else {
-					iColor = '#f00';
+					iColor = '#ff3a3a';
 				}
 				iRadius = 10;
-				iOpacity = 0.7;
+				iOpacity = 0.12;
 			} else {
 				oColor = '#000';
 				oRadius = 20;
-				oOpacity = 0.2;
+				oOpacity = 0.1;
+
+				mColor = '#000';
+				mRadius = 15;
+				mOpacity = 0.15;
 
 				iColor = '#000';
 				iRadius = 10;
-				iOpacity = 0.9;
+				iOpacity = 0.2;
 			}
 
 			// background marker
@@ -145,6 +151,18 @@ function populateMap(intersections) {
 				color: iColor
 			})
 				.addTo(map);
+
+			// middle marker
+			L.circleMarker([i['lat'], i['long']], {
+				stroke: false,
+				fill: true,
+				clickable: true,
+
+				fillOpacity: mOpacity,
+				radius: mRadius,
+				color: iColor
+			})
+			.addTo(map)
 
 			// action marker
 			L.circleMarker([i['lat'], i['long']], {
