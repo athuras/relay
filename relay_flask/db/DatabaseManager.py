@@ -59,4 +59,5 @@ class DatabaseManager(object):
             self.connections[k].close()
 
     def commit(self, db_name):
+        '''Call .commit() on the connection to db_name'''
         return self.connections[db_name].commit()
