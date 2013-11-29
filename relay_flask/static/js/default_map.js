@@ -72,7 +72,6 @@ function getIntersections(b){
 		//failed
 		console.log('shit :(');
 		console.log(error);
-		//var data = [{"lat": 43.617252641, "long": -79.378593649, "name": ""}, {"lat": 43.615640333, "long": -79.379787026, "name": "Lagoon Rd / Centre Island Pk"}, {"lat": 43.616748867, "long": -79.381405861, "name": "Centre Island Pk"}, {"lat": 43.615644162, "long": -79.383859851, "name": "Centre Island Pk"}, {"lat": 43.615531685, "long": -79.385420298, "name": ""}, {"lat": 43.616634859, "long": -79.3843377, "name": "Centre Island Pk"}, {"lat": 43.616556566, "long": -79.384080588, "name": "Centre Island Pk"}, {"lat": 43.617642375, "long": -79.385550662, "name": "Centre Island Pk"}, {"lat": 43.619474279, "long": -79.385665726, "name": ""}, {"lat": 43.614982991, "long": -79.38971764, "name": "Beach Rd / Lakeshore Ave"}, {"lat": 43.615058259, "long": -79.387234747, "name": ""}, {"lat": 43.613189796, "long": -79.386956572, "name": "Beach Rd / Lakeshore Ave"}, {"lat": 43.612246478, "long": -79.388877878, "name": "Beach Rd"}, {"lat": 43.613139077, "long": -79.382615663, "name": "Lakeshore Ave"}, {"lat": 43.613987775, "long": -79.379351345, "name": "Lakeshore Ave / Centre Island Pk"}, {"lat": 43.617412954, "long": -79.375421729, "name": "The Mall Ter"}, {"lat": 43.615598892, "long": -79.375206659, "name": "Lakeshore Ave / The Mall Ter"}, {"lat": 43.6169786, "long": -79.372422412, "name": "Lakeshore Ave / Avenue Of The Islands"}, {"lat": 43.61640393, "long": -79.3719358, "name": "Avenue Of The Islands"}, {"lat": 43.619214799, "long": -79.374476208, "name": "Avenue Of The Islands"}, {"lat": 43.619214799, "long": -79.374476208, "name": "Avenue Of The Islands"}, {"lat": 43.618969922, "long": -79.37421219, "name": "Avenue Of The Islands"}, {"lat": 43.618969922, "long": -79.37421219, "name": "Avenue Of The Islands"}, {"lat": 43.618529739, "long": -79.373837027, "name": "Cibola Ave / Avenue Of The Islands"}, {"lat": 43.61818324, "long": -79.374574654, "name": "Lagoon Rd / Cibola Ave"}, {"lat": 43.617682354, "long": -79.375640868, "name": "Cibola Ave / The Mall Ter"}, {"lat": 43.617815333, "long": -79.376242282, "name": "The Mall Ter"}, {"lat": 43.617750181, "long": -79.377052122, "name": "Lagoon Rd / The Mall Ter"}, {"lat": 43.61992857, "long": -79.375129707, "name": "Island Park Trl / Avenue Of The Islands"}, {"lat": 43.613224114, "long": -79.38333629, "name": "Lakeshore Ave"}, {"lat": 43.617139201, "long": -79.38028221, "name": "Centre Island Pk"}, {"lat": 43.618014649, "long": -79.385084061, "name": "Centre Island Pk"}, {"lat": 43.616752557, "long": -79.37319924, "name": "Lagoon Rd / Lakeshore Ave / The Mall Ter"}, {"lat": 43.617519421, "long": -79.375987695, "name": "Cibola Ave / The Mall Ter"}, {"lat": 43.617249165, "long": -79.375742401, "name": "The Mall Ter"}, {"lat": 43.619472434, "long": -79.3737402, "name": "Island Park Trl"}];
 	});
 }
 
@@ -114,7 +113,7 @@ function populateMap(intersections) {
 				oColor = '#fff';
 				oRadius = iRadius + Math.floor(30*i.volume);
 				oOpacity = 0.05;
-				
+
 				mColor = '#fff';
 				mRadius = iRadius + Math.floor(20*i.volume);
 				mOpacity = 0.1;
@@ -208,12 +207,42 @@ function populatePanelForIntersection(id){
 
 	// find the item in the array with this ID
 	var intersection = $.grep(intersections, function(i){ return i.id == id});
-	intersection = intersection[0]; //only one?
+	intersection = intersection[0];
 
+	// populate the text fields with the intersection's data
 	$('#intersection-name').html(intersection.name);
 	$('#intersection-performance').html(String(Math.floor(intersection.performance*100))+ "%");
 	$('#intersection-volume').html(String(Math.floor(intersection.volume*100)) + "%");
 
+	// Charts.
+	// do the AJAX call for the chart datatype
+
+	//for now, bull data
+	var data = {
+		labels : ["January","February","March","April","May","June","July"],
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.5)",
+				strokeColor : "rgba(220,220,220,1)",
+				pointColor : "rgba(220,220,220,1)",
+				pointStrokeColor : "#fff",
+				data : [65,59,90,81,56,55,40]
+			},
+			{
+				fillColor : "rgba(151,187,205,0.5)",
+				strokeColor : "rgba(151,187,205,1)",
+				pointColor : "rgba(151,187,205,1)",
+				pointStrokeColor : "#fff",
+				data : [28,48,40,19,96,27,100]
+			}
+		]
+	}
+
+	// populate the charts
+	var ctx = document.getElementById("performance-chart").getContext("2d");
+	var performanceChart = new Chart(ctx).Line(data);
+
+	// finally, show the panel
 	$('#intersection-details').css("display", "block");
 }
 
