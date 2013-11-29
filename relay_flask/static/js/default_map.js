@@ -222,25 +222,32 @@ function populatePanelForIntersection(id){
 		labels : ["January","February","March","April","May","June","July"],
 		datasets : [
 			{
-				fillColor : "rgba(220,220,220,0.5)",
-				strokeColor : "rgba(220,220,220,1)",
-				pointColor : "rgba(220,220,220,1)",
+				fillColor : "rgba(90,90,90,0.25)",
+				strokeColor : "rgba(180,180,180,1)",
+				pointColor : "rgba(180,180,180,1)",
 				pointStrokeColor : "#fff",
 				data : [65,59,90,81,56,55,40]
 			},
 			{
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,1)",
-				pointColor : "rgba(151,187,205,1)",
+				fillColor : "rgba(88,138,190,0.1)",
+				strokeColor : "rgba(88,138,190,1)",
+				pointColor : "rgba(88,138,190,1)",
 				pointStrokeColor : "#fff",
 				data : [28,48,40,19,96,27,100]
 			}
 		]
 	}
 
+	var options = {
+		scaleFontFamily : "'ProximaNova', 'Helvetica Neue', 'Arial', 'sans-serif'",
+		scaleFontSize : 10,
+		pointDotRadius : 2,
+		scaleGridLineColor : "rgba(255,255,255,0.05)"
+	}
+
 	// populate the charts
 	var ctx = document.getElementById("performance-chart").getContext("2d");
-	var performanceChart = new Chart(ctx).Line(data);
+	var performanceChart = new Chart(ctx).Line(data, options);
 
 	// finally, show the panel
 	$('#intersection-details').css("display", "block");
