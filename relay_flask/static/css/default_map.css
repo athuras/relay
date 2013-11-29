@@ -32,7 +32,7 @@ html, body{
 	right: 0px;
 	height: 100%;
 	width: 400px;
-	background-color: rgba(0, 0, 0, 0.8);
+	background-color: rgba(0, 0, 0, 0.9);
 	-moz-box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
 	-webkit-box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
 	box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
@@ -61,7 +61,7 @@ hr {
 }
 
 .intersection-details {
-	margin: 32px 0 0 0;
+	margin: 32px 50px 0 0;
 	position: relative;
 	/*display: none;*/
 }
@@ -81,7 +81,7 @@ hr {
 }
 
 #performance-chart {
-	margin: 20px 0 0 -5px;
+	margin: 0 0 0 -5px;
 }
 
 

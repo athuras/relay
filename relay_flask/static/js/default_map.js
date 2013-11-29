@@ -22,7 +22,7 @@ var intersections = [
 var popup = L.popup();
 
 // create map
-var map = L.map('map').setView([43.617252641,-79.378593649], 13);
+var map = L.map('map').setView([43.6932,-79.2527], 11);
 map.on('click', hidePanelForIntersection);
 
 // add tile layer
@@ -219,12 +219,12 @@ function populatePanelForIntersection(id){
 
 	//for now, bull data
 	var data = {
-		labels : ["January","February","March","April","May","June","July"],
+		labels : ['1:45', '1:46', '1:47', '1:48', '1:49', '1:50', '1:51'],
 		datasets : [
 			{
 				fillColor : "rgba(90,90,90,0.25)",
-				strokeColor : "rgba(180,180,180,1)",
-				pointColor : "rgba(180,180,180,1)",
+				strokeColor : "rgba(150,150,150,1)",
+				pointColor : "rgba(150,150,150,1)",
 				pointStrokeColor : "#fff",
 				data : [65,59,90,81,56,55,40]
 			},
