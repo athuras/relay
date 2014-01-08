@@ -1,0 +1,34 @@
+Lambda Relay Agent.
+	a.k.a. come at me traffic!
+
+NETWORK MEDIATION PROCESS (NMP/netmed):
+	Responsible for handling inter-agent communication, particularly sending out local traffic data/conditions, and communicating with local processes.
+
+	1.	Maintain dependency graph/FSM for handling network events.
+	2.	FSM for deciding where to route messages. Currently implemented for local concurrency (i.e. all on same machine), this should be easy to change later.
+	3.  Gossip and shit... (currently naively implemented, sending a gossip message will result in O(N^2) replicated messages throughout the network).
+
+LOCAL SENSOR PROCESS:
+	The idea is that loop/camera detectors yield *incoming* vehicle/pedestrian information. This process transforms raw measurements into discrete messages (i.e. <time, weight, meta> tuples).
+	1.	Accumulate sensor information, transform into discrete messages for NMP
+	>> probably can be left till later.
+
+
+CONTROLLER PROCESS:
+	Responsible for dictating when, how, and where the lights change.
+	1.	Maintain Behaviour Transition Graph (BTG), and associated behaviours.
+	2.	Maintain Complete Intersection Layout
+	3.	Cost Evaluation Function: Take prediction service, local conditions, BTG, return the next behaviour (could be same).
+		Run this as frequently as possible/meaningful?
+		This is a biggie!
+
+LOCAL PREDICTION SERVICE (LPS):
+	A set of models/methods used to update internal graph probabilities (potentially on a per-behaviour basis), and infer macro-edge information.
+
+	1.	Macro Edge: Receive messages from NMP, and LSP and infer edge statistics (time delay, variance, decay) or transfer function.
+	2.	Internal Probabilities: Receive inbound LSP messages and a combination of outbound LSP or subscriber Messages to infer what proportion of flow is allocated between each internal graph edge (if multiple).
+	3.	Trust profile inference (how performant are current predictions). possibly as a signal for hyperparameter tuning.
+
+POSTERITY SERVICE:
+	Log all the things ... but especially performance w.r.t. time-of-day.
+	1.	Perhaps identify certain macro-traffic conditions (i.e. rush-hours, low-flow, late-night etc.)
