@@ -3,7 +3,7 @@ relay
 
 Today's roads, for the future, today.
 
-relay-agent
+relay-agent (deprecated)
 =
 
 The individual signal controller.
@@ -30,4 +30,8 @@ Currently serves a default example map of London. Run python relay.py (within th
 &#955;-relay
 =
 
-Concurrent functional implementation of **relay-agent** in erlang. This may not ever be written, but would be awesome for simulating many concurrent agents operating in soft-realtime.
+Concurrent functional implementation of **relay-agent** in erlang.
+
+* netmed: (NETworkMEDiator), handles all network communication between agents, and between some intra-agent processes.
+* controller: Resposible for dictating when, how, and where the lights change, through the use of a behaviour-transition-graph, cost functions and bias vectors.
+* prediction service: ML for any occasion. Contains a few different on-line models: macro-edges, internal intersection probabilities and other.
