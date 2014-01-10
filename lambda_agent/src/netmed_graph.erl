@@ -46,25 +46,11 @@ nonlocal_peers(G) ->
 		label_filter(vertex_data(G), Pred)).
 
 %%	Graph Utility Functions  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%	mostly wrappers (from refactor)
 
-%%	@doc Adds an edge to the graph, inserting a vertex if it doesn't exist.
-add_edge(G, A, B) -> add_edge(G, A, B, []).
-add_edge(G, A, B, Label) ->
-	case digraph:add_edge(G, A, B, Label) of
-		{error, {bad_vertex, V}} ->
-			digraph:add_vertex(G, V),
-			add_edge(G, A, B, Label);
-		{error, {bad_edge, _}} -> throw(bad_edge);
-		_ -> ok
-	end.
+add_edge(G, A, B) -> graph_utils:add_edge(G, A, B).
+add_edge(G, A, B, Label) -> graph_utils:add_edge(G, A, B, Label).
 
-%%	@doc Returns a list of {digraph:vertex(), Label} pairs for the graph G.
-vertex_data(G) -> vtx_iter(G, digraph:vertices(G), []).
+vertex_data(G) -> graph_utils:vertex_data(G).
 
-vtx_iter(_, [], Acc) -> Acc;
-vtx_iter(G, [V|Vertices], Acc) ->
-	vtx_iter(G, Vertices, [digraph:vertex(G, V)|Acc]).
-
-%%	@doc Applies Predicate to the label() in a vertex tuple.
-label_filter(V, Predicate) ->
-	lists:filter(fun({_, L}) -> Predicate(L) end, V).
+label_filter(V, Predicate) -> graph_utils:label_filter(V, Predicate).
