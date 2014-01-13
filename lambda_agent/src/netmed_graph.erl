@@ -25,6 +25,7 @@ default_graph(Pid) ->
 	G.
 
 %%	@doc Adds an edge emanating from Center to Pid.
+%%	@doc
 subscribe(G, Pid) -> subscribe(G, Pid, self(), []).
 subscribe(G, Pid, Center) -> subscribe(G, Pid, Center, []).
 subscribe(G, Pid, Center, Label) ->
@@ -33,6 +34,7 @@ subscribe(G, Pid, Center, Label) ->
 
 %% @doc Deletes the edge incident on Center from Pid. More Generally, deletes each edge in the simple
 %%		path from Center to Pid. This only works because there SHOULD ONLY EVER BE ONE PATH TO DELETE!
+%% @end
 unsubscribe(G, Pid) -> unsubscribe(G, Pid, self()).
 unsubscribe(G, Pid, Center) ->
 	E = digraph:get_path(G, Pid, Center),
@@ -40,6 +42,7 @@ unsubscribe(G, Pid, Center) ->
 	digraph:del_edges(G, Edges).
 
 %%	@doc remote peer vertices.
+%%	@end
 nonlocal_peers(G) ->
 	Pred = fun(X) -> X =/= local end,
 	lists:map(fun({V, _}) -> V end,

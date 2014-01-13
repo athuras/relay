@@ -1,5 +1,12 @@
 -module(netmed_handler).
+
 -behaviour(gen_event).
+
+%% API
+-export([start_link/0,
+         add_handler/2]).
+
+%% gen_event callbacks
 -export([
 	init/1,
 	handle_event/2,
@@ -9,12 +16,32 @@
 	terminate/2
 	]).
 
--record(state, {graph=netmed_graph:default_graph()}).
+-record(state, {name, graph=netmed_graph:default_graph()}).
 
+%% @doc Create an event manager
+%% @spec start_link() -> {ok, Pid} | {error, Error}
+%% @end
+start_link() ->
+    gen_event:start_link({local, ?MODULE}).
+
+%% @doc Adds an Event Handler
+%% @spec add_handler(Handler, Args) -> ok | {'EXIT', Reason} | term()
+%% @end
+add_handler(Handler, Args) ->
+    gen_event:add_handler(?MODULE, Handler, Args).
+
+%% @doc
+%% Whenever a new event handler is added to an event manager,
+%% this function is called to initialize the handler.
+%% @spec init(Args) -> {ok, State}
+%% @end
 init([]) ->
-	{ok, #state{}}.
+	{ok, #state{}};
+init([Name]) ->
+	{ok, #state{name=Name}}.
 
-
+%% @doc The interface
+%% @end
 handle_event({subscribe, Pid}, State) ->
 	netmed_graph:subscribe(State#state.graph, Pid),
 	{ok, State};
@@ -67,6 +94,7 @@ terminate(_Reason, _State) -> ok.
 
 
 %%	@doc Return list of peers not yet marked, doesn't restrict to downstream.
+%%	@end
 unmarked_peers(Marked, State) ->
 	G = State#state.graph,
 	P = netmed_graph:nonlocal_peers(G),
@@ -74,5 +102,6 @@ unmarked_peers(Marked, State) ->
 	lists:filter(IsUnmarked, P).
 
 %%	@doc Sends Message to Each Pid in Procs, traps errors...presumably.
+%%	@end
 batch_notify(Procs, Message) when is_list(Procs) ->
 	lists:foreach(fun(X) -> gen_event:notify(X, Message) end, Procs).
