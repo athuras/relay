@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Relay | Today's roads for the future, today.</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/index.css"/>
+	<link rel="stylesheet" href="css/reset.css"/>
+	<link rel="stylesheet" href="css/fonts.css"/>
+	<link rel="icon" type="image/ico" href="assets/favicon.ico"/>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization&sensor=false"></script>
+</head>
+<body>
+	<div id="app">
+		<div id="map-container">
+			<div id="map"></div>
+		</div>
+		<div id="panel-container">
+			<div id="panel-content">
+				<div id="title-block">
+					<div id="intersection-name">[name]</div>
+				</div>
+				<hr/>
+				<div class="intersection-details">
+					<div class='mini-title'>CAPACITY</div>
+					<p id="intersection-volume">[int perf]</p>
+				</div>
+				<div class="intersection-details">
+					<div class='mini-title'>PERFORMANCE</div>
+					<!-- <p id="intersection-performance">[int title]</p> -->
+				</div>
+				<canvas id="performance-chart" width="380px" height="240px"></canvas>
+				</hr>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="js/underscore.js"></script>
+	<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+	<script type="text/javascript" src="js/backbone.js"></script>
+
+	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+
+	<script type="text/javascript" src="js/Chart.min.js"></script>
+
+	<!-- models, collections, views -->
+	<script type="text/javascript" src="js/intersection_model.js"></script>
+	<script type="text/javascript" src="js/intersections_collection.js"></script>
+
+	<!-- <script type="text/javascript" src="js/intersection_view.js"></script> -->
+	<script type="text/javascript" src="js/map_view.js"></script>
+	<script type="text/javascript" src="js/intersection_view.js"></script>
+	<script type="text/javascript" src="js/intersections_collection_view.js"></script>
+
+	<script type="text/javascript" src="js/app_view.js"></script>
+
+	<script>
+	var app; // global reference
+		$(function(){
+		app = new AppView;
+	});
+	</script>
+
+
+</script>
+</body>
+</html>
