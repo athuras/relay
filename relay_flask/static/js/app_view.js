@@ -7,7 +7,8 @@ var AppView = Backbone.View.extend({
 	// starts the app
 	initialize: function() {
 		// create the key app variables
-		this.map = new MapView;
+		this.mapModel = new MapModel;
+		this.map = new MapView({model: this.mapModel});
 		this.intersectionsCollection = new IntersectionsCollection({map: this.map});
 		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map});
 
