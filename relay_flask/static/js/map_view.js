@@ -3,9 +3,8 @@ var MapView = Backbone.View.extend({
 	// HTML object attacted to this view.
 	el: $("#map"),
 
-	// No defaults at this moment.
-	defaults: {
-	},
+	// Default values
+	defaults: {},
 
 	// Initialize()
 	// Creates the google map.
@@ -22,9 +21,16 @@ var MapView = Backbone.View.extend({
 
 		// Create the map
 		this.map = new google.maps.Map(document.getElementById('map'), this.mapOptions);
+		// Create the map styles model and handler
+		this.mapStyleCollection = new MapStyleCollection;
+		this.mapStyleCollectionView = new MapStyleCollectionView({model: this.mapStyleCollection, map: this.map});
 
 		// Add listeners
-		this.model.on('change:activeMapStyle', this.onMapStyleChange, this);
+		this.mapStyleCollection.on('activeChange', this.onMapStyleChange, this);
+
+		// Set the default map style
+		this.mapStyleCollection.setActive(this.mapStyleCollection.findWhere({title:'light'})); // set one to be active by default
+
 	},
 
 	// getMap()
@@ -35,7 +41,8 @@ var MapView = Backbone.View.extend({
 
 	// onMapStyleChange()
 	// if the map style changes in the model, the map updates to reflect the new style
-	onMapStyleChange: function(){
-		this.map.setOptions({styles:this.model.get('activeMapStyle')});
+	onMapStyleChange: function(newStyle){
+		this.map.setOptions({styles: newStyle.get('styleArray')});
 	}
+
 })

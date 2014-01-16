@@ -1,7 +1,7 @@
 var AppView = Backbone.View.extend({
 
 	// HTML object associated with AppView
-	el: $("#app"),
+	el: $('#app'),
 
 	// initialize()
 	// starts the app
