@@ -11,26 +11,19 @@ var MapView = Backbone.View.extend({
 	initialize: function(options) {
 		// model is referenced automatically if declared in the options
 
-		// Set the OTHER map options
-		this.mapOptions = {
-			zoom: 9,
-			mapTypeId: google.maps.MapTypeId.ROADMAP,
-			center: new google.maps.LatLng(50,50),
-			styles: this.model.get('activeMapStyle')
-		};
-
 		// Create the map
-		this.map = new google.maps.Map(document.getElementById('map'), this.mapOptions);
+		this.map = new google.maps.Map(document.getElementById('map'), this.model.get('mapOptions'));
+
 		// Create the map styles model and handler
-		this.mapStyleCollection = new MapStyleCollection;
+		this.mapStyleCollection = new MapStyleCollection(this.model.get('mapStyles'));
 		this.mapStyleCollectionView = new MapStyleCollectionView({model: this.mapStyleCollection, map: this.map});
 
 		// Add listeners
+		// When a new style is selected, we apply it to the map
 		this.mapStyleCollection.on('activeChange', this.onMapStyleChange, this);
 
 		// Set the default map style
 		this.mapStyleCollection.setActive(this.mapStyleCollection.findWhere({title:'light'})); // set one to be active by default
-
 	},
 
 	// getMap()
