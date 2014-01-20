@@ -6,30 +6,28 @@ var AppView = Backbone.View.extend({
 	// initialize()
 	// starts the app
 	initialize: function() {
-		// Make the map
-		this.mapModel = new MapModel;
-		this.map = new MapView({model: this.mapModel});
 
 		// Make the intersection store
+		this.mapModel = new MapModel;
 		this.intersectionsCollection = new IntersectionsCollection({
-			map: this.map
+		});
+		this.mapStyleCollection = new MapStyleCollection({
+		});
+
+		// bootstrap the models and collections
+		this.mapStyleCollection.reset(bootstrap.mapLayers);
+
+		this.mapView = new MapView({
+			model: this.mapModel,
+			mapStyleCollection: this.mapStyleCollection
 		});
 		this.intersectionsCollectionView = new IntersectionsCollectionView({
 			model: this.intersectionsCollection,
-			map: this.map
+			map: this.mapView
 		});
-
-		// Make the MV for the layer contoller
-		// this.mapStyleCollection = new MapStyleCollection({
-		// 	map: this.MapView.getMap
-		// });
-		// this.mapStyleCollectionView = new MapStyleCollectionView({
-		// 	model:this.MapStyleCollection
-		// });
-
-		// Make the MV for the panel controller
-		// this.intersectionDetailsModel = new IntersectionDetailsModel();
-		// this.IntersectionDetailsModelView = new IntersectionDetailsModelView();
+		this.mapStyleCollectionView = new MapStyleCollectionView({
+			model: this.mapStyleCollection
+		});
 
 		// Initial fetch of the intersections
 		this.intersectionsCollection.fetch();

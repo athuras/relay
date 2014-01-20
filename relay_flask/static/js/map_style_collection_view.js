@@ -9,13 +9,19 @@ var MapStyleCollectionView = Backbone.View.extend({
 
 	initialize: function(options){
 		// Model is automatically passed
-		this.map = options.map;
-
+		this.model.on('change:isActive', this.activeChanged, this);
 		this.render();
 	},
 
 	render: function(){
 		this.model.each(this.onMapStyleAdded, this);
+	},
+
+	onActiveChanged: function(activeStyle){
+		if( activeStyle.get('isActive') ){
+			this.model.getMeta('activeStyle').set('isActive', false);
+			this.model.setMeta('activeStyle', activeStyle);
+		}
 	},
 
 	// onStyleAdded()

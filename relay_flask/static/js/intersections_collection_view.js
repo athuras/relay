@@ -2,7 +2,6 @@ var IntersectionsCollectionView = Backbone.View.extend({
 
 	// initialize()
 	initialize: function(options){
-		this.model = options.model;
 		this.map = options.map;
 
 		// whenever an intersection is added to the model, we make the appropriate views for it.

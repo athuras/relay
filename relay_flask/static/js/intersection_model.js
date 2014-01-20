@@ -9,6 +9,5 @@ var IntersectionModel = Backbone.Model.extend({
 	},
 
 	initialize: function() { // called automatically when created
-
 	}
 });
