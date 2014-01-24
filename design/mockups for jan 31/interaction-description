@@ -1,0 +1,22 @@
+- "hotness" of a road/intersection indicates # of cars there
+		use our prediction data to place our estimate of number of cars on the road
+		hotness refers to "cool" colours (blue, purple) vs. "warm" colours (yellow, orange, red)
+		each car is modelled with a colored dot
+
+- 3 to 5 markers show the busiest intersections at a given time
+- hover a marker to view a popup dialog
+		dialog shows intersection name, phase of lights, and a 'more' button to open the side menu
+		click any intersection to view the popup dialog
+
+- click the buttons in the top right (in the header) to show/hide various data layers
+
+- show/hide graphs in the side menu by clicking the "eye" icon
+- click the right facing arrow in the top left of the side menu to close the menu
+
+- currently showing "capacity" and "performance" as placeholder data
+		other metrics:
+				overall delay (amount of time spent in network)
+				queue lengths - max, average
+				side street delay vs. major street delay
+				travel time along artery weighted vs side street delays
+				number of stops (may be hard to measure)
