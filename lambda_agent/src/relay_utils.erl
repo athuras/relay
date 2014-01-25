@@ -2,7 +2,8 @@
 -export([
 	echos/1,
 	test_gossip/1,
-	test_network/1
+	test_network/1,
+    etime/0
 	]).
 
 echos(N) ->
@@ -35,3 +36,7 @@ test_fun(Data, State, Pid) ->
 	NewData = [self()|Data],
 	ok = gen_event:notify(Pid, {gossip_fun, NewData}),
 	{ok, State}.
+
+etime() ->
+    {Ms, S, MicroS} = os:timestamp(),
+    Ms * 1000000 + S + MicroS * 0.000001.

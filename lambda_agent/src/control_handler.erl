@@ -25,7 +25,7 @@
     terminate/2
     ]).
 
--record(state, {current_behaviour, graph=control_graph:default_graph()}).
+-record(state, {current_behaviour, btg, base}).
 
 %% API Functions --------------------------------------------------------------
 start_link() ->
@@ -38,7 +38,14 @@ add_handler(Handler, Args) ->
 %% Interface Functions --------------------------------------------------------
 
 init([]) ->
-    {ok, #state{}}.
+    BTG = control_graph:new(),
+    Base = graph_builder:base_4(),
+    {_, Current} = lists:max(
+            lists:map(fun(X) -> {erlang:length(digraph:edges(X)), X} end,
+                  digraph:vertices(BTG)
+                )
+            ),
+    {ok, #state{current_behaviour=Current, btg=BTG, base=Base}}.
 
 
 handle_event(_Event, State) ->

@@ -1,38 +1,62 @@
-%% A bunch of functions that are usefull for building graphs (specifically fromt ext files).
+%% Template graph functions for setting up BTG, Control, and symmetric graphs.
 
 -module(graph_builder).
 -export([
-    from_file/1,
-    graph_from_edge_list/1,
-    rotate_behaviour/1
+    rotate_behaviour/1,
+    base_4/0,
+    b4_1/0,
+    b4_2/0,
+    b4_3/0,
+    b4_4/0,
+    new_btg/0
     ]).
 
-%% @doc Generates a digraph from the edge-list contained in Path.
-%% Each line in Path should read as "int() int()[ float()]".
-%% refer to template_graphs/4_intersection.txt for an example
-%% @spec from_file(Path) -> digraph() | {error, Reason}
+%% @doc Generates the default symmetric 4-way behaviour transition graph
+%%      yes, this is hardcoded.
+%%      Edges are labelled with the 'delay' associated with the transistion
+%%      such as Red, and Yellow time.
+%%      Nodes are behaviour graphs.
 %% @end
-from_file(Path) ->
-    {ok, Bin} = file:read_file(Path),
-    Edges = parse_edges_from_data(Bin),
-    graph_from_edge_list(Edges).
+new_btg() ->
+    Red_time = 3, % Half the time taken by a red light
+    Yellow_time = 2,
+    Adv_green_delay = 1.5,
+    B1_1 = b4_1(),
+    B1_2 = rotate_behaviour(B1_1),
+    B2_1 = b4_2(),
+    B2_2 = rotate_behaviour(B2_1),
+    B3_1 = b4_3(),
+    [B3_2, B3_3, B3_4] = lists:map(
+            fun(X) -> rotate_behaviour(B3_1, X) end,
+            [1, 2, 3]),
+    Red = b4_4(),
+    %% And now to build the graph ...
+    EdgeList = [
+            {B1_1, Red},
+            {B1_2, Red},
+            {B2_1, B1_1},{B2_1, Red},
+            {B2_2, Red}, {B2_2, B1_2},
+            {B3_1, Red}, {B3_1, B1_1},
+            {B3_2, Red}, {B3_2, B1_2},
+            {B3_3, Red}, {B3_3, B1_1},{B3_3, B2_2},
+            {B3_4, Red}, {B3_4, B2_1},{B3_4, B1_2},
+            {Red, B1_1}, {Red, B1_2}, {Red, B2_1}, {Red, B2_2},
+            {Red, B3_1}, {Red, B3_2}, {Red, B3_3}, {Red, B3_4}
+        ],
+    Edge_list_delays = lists:map(
+            fun({A, B}) ->
+                Delay = if B == Red -> Yellow_time
+                        ;  A == Red -> Red_time
+                        ;  true -> Adv_green_delay
+                        end,
+                {A, B, Delay}
+            end,
+            EdgeList
+        ),
+    graph_from_edge_list(Edge_list_delays).
 
-parse_edges_from_data(Bin) when is_binary(Bin) ->
-    parse_edges_from_data(binary_to_list(Bin));
-parse_edges_from_data(Str) ->
-    Edge_data = string:tokens(Str, "\n"),
-    lists:map(fun(X) -> make_edge(string:tokens(X, " ")) end, Edge_data).
 
-make_edge(L) when is_list(L) ->
-    case length(L) of
-        2 -> {A, B} = list_to_tuple(L),
-            {list_to_integer(A), list_to_integer(B), []};
-        3 -> {A, B, P} = list_to_tuple(L),
-            {list_to_integer(A), list_to_integer(B), list_to_float(P)}
-    end.
-
-%% @doc
-%% Generates a graph given a set of {V1, V2, Label} tuples, inserting appropriate
+%% @doc Generates a graph given a set of {V1, V2, Label} tuples, inserting appropriate
 %% vertices as it goes.
 %% @spec graph_from_edge_list(Edge_List) -> digraph() | {error, Reason}
 %% @end
@@ -44,21 +68,71 @@ graph_from_edge_list(Edges) ->
 %% @doc
 %% Generates a 'symmetrically rotated' graph using an existing graph as a template.
 %% Requires a 'normalized' graph (where nodes are zero-indexed integers).
-%% @spec rotate_behaviour(G) -> digraph:digraph() | {error, Reason}
+%% @spec rotate_behaviour(G, int()) -> digraph:digraph() | {error, Reason}
 %% @end
-rotate_behaviour(G) ->
+rotate_behaviour(G) -> rotate_behaviour(G, 1).
+rotate_behaviour(G, K) ->
     Max = lists:max(digraph:vertices(G)) + 1,
-    rotate_behaviour(G, Max).
+    rotate_behaviour(G, K, Max).
 
-rotate_behaviour(G, N) ->
+rotate_behaviour(G, K, N) ->
     Original_Edges = digraph:edges(G),
     Rotated_Edges = lists:map(
             fun(Edge_id) ->
                     {_, A, B, Label} = digraph:edge(G, Edge_id),
-                    sym_increment_edge({A, B, Label}, 1, N)
+                    sym_increment_edge({A, B, Label}, K, N)
             end,
             Original_Edges),
     graph_from_edge_list(Rotated_Edges).
 
 sym_increment_edge({A, B, Label}, K, N) ->
     {(A + K) rem N, (B + K) rem N, Label}.
+
+
+%% Behold! Hardcoded graphs!
+%% Tuples are {Entering_node, Exit_node, Coefficient}.
+
+% Describes an entirely transitive 4-node graph.
+% 0 -> North Entrance, 1 -> East, 2 -> South, 3 -> West
+base_4() ->
+    graph_from_edge_list(
+    [{0, 1, 0.1}, {0, 2, 0.7}, {0, 3, 0.2},
+     {1, 0, 0.2}, {1, 2, 0.1}, {1, 3, 0.7},
+     {2, 0, 0.7}, {2, 1, 0.2}, {2, 3, 0.1},
+     {3, 0, 0.1}, {3, 1, 0.7}, {3, 2, 0.2}]
+    ).
+
+% Behavior I. "North-South Green"
+% Two rotations for coverage.
+b4_1() ->
+    graph_from_edge_list(
+    [{0, 2, 1.0}, {0, 3, 1.0},
+     {1, 0, 1.0}, {2, 0, 1.0},
+     {2, 1, 1.0}, {3, 2, 1.0}]
+    ).
+
+% Behaviour II. "North-South Adv. Green"
+% Two rotations for coverage
+b4_2() ->
+    graph_from_edge_list(
+    [{0, 1, 1.0}, {0, 3, 1.0},
+     {1, 0, 1.0}, {2, 1, 1.0},
+     {2, 3, 1.0}, {3, 2, 1.0}]
+    ).
+
+%% Behaviour III. "North Adv. Green, Through"
+%% 4 rotations for coverage
+b4_3() ->
+    graph_from_edge_list(
+    [{0, 1, 1.0}, {0, 2, 1.0},
+     {0, 3, 1.0}, {1, 0, 1.0},
+     {2, 1, 1.0}, {3, 2, 1.0}]
+    ).
+
+%% Behaviour IV. "Red", decrease RHT by 1/2
+%% 1 Rotation only
+b4_4() ->
+    graph_from_edge_list(
+    [{0, 3, 0.5}, {1, 0, 0.5},
+     {2, 1, 0.5}, {3, 2, 0.5}]
+    ).
