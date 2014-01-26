@@ -22,7 +22,7 @@ var intersections = [
 var popup = L.popup();
 
 // create map
-var map = L.map('map').setView([43.6932,-79.2527], 11);
+var map = L.map('map').setView([43.652073, -79.382293], 13);
 map.on('click', hidePanelForIntersection);
 
 // add tile layer
