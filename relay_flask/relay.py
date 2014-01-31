@@ -2,7 +2,7 @@ import os
 from collections import defaultdict
 from db.DatabaseManager import DatabaseManager
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask import g
 from flask import json
 from flask import redirect
@@ -11,15 +11,17 @@ from flask import request, Response
 from flask import session, escape
 from flask import url_for
 
+from sqlalchemy import *
+
 app = Flask(__name__)
-app.secret_key = os.environ.get('APP_SECRET', None)
-cm_api_key = os.environ.get('CM_API', 'e440fa3faa334156831adb28596d54a0')
+# app.secret_key = os.environ.get('APP_SECRET', None)
+# cm_api_key = os.environ.get('CM_API', 'e440fa3faa334156831adb28596d54a0')
 
+db = create_engine('sqlite:///db/relay.db')
 
-@app.route('/default_map')
-def default_map():
-    return redirect(url_for('static', filename='default_map.html'))
-
+@app.route('/')
+def index():
+    return redirect(url_for('static', filename='index.html'))
 
 @app.route('/request_intersections', methods=['POST'])
 def get_intersections():
@@ -31,6 +33,14 @@ def get_intersections():
         intersects = g.db.query('relay_main', qstr, bounds, as_dict=True)
         return createJSON(intersects)
 
+# @app.route('/get_intersections', methods=['get'])
+# def get_intersections():
+#     connection = db.connect()
+#     qstr = '''SELECT * FROM
+#             intersections WHERE type_short IN  ('MJRML', 'MJRSL');'''
+#     result = connection.execute(qstr)
+#     data = []
+#     return jsonify(data)
 
 @app.route('/api/charts', methods=['POST'])
 def get_chart():
@@ -41,21 +51,26 @@ def get_chart():
             a.time,
             a.value as costUD,
             b.value as costLR,
-            c.value as vol
+            c.value as vol,
+            d.value as perf
         from
             intstats as a
             inner join intstats as b
             inner join intstats as c
+            inner join intstats as d
         on
             a.time = b.time
             and b.time = c.time
+            and c.time = d.time
         where
             a.series_type = 'costUD'
             and b.series_type = 'costLR'
             and c.series_type = 'vol'
+            and d.series_type = 'perf'
             and a.int_id = :int_id
             and b.int_id = :int_id
-            and c.int_id = :int_id;
+            and c.int_id = :int_id
+            and d.int_id = :int_id;
         '''
         int_id['int_id'] = 13463459  # Change this eventually
         chart_data = g.db.query('relay_main', qstr, int_id, as_dict=True)
@@ -70,6 +85,7 @@ def get_chart():
 @app.before_request
 def before_request():
     '''Open the database connections in preparation for response'''
+    # connection = db.connect()
     x = os.path.join(os.getcwd(), 'db/relay.db')
     g.db = DatabaseManager(db_info={'relay_main': x})
 
@@ -77,6 +93,7 @@ def before_request():
 @app.after_request
 def after_request(response):
     '''Close the database connections'''
+    # connection.close()
     g.db.close_all()
     return response
 

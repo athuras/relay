@@ -26,6 +26,16 @@ var IntersectionsCollection = Backbone.Collection.extend({
         	data = d;
         });
 
+   //      $.ajax({
+			// type: "GET",
+			// datatype: "JSON",
+			// contentType: "application/json",
+			// url: "http://localhost:5000/intersections",
+			// async: false
+   //      }).then( function(d){
+   //      	data = d;
+   //      });
+
         this.add(data); // adds all the intersection objects to the collection
 	}
 
