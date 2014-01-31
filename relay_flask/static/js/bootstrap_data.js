@@ -4,7 +4,7 @@ bootstrap.mapLayers =[
 		'title': 'Dark',
 		'id': 'layer-one',
 		'mapStyle': 'light',
-		'markerStyle': 'red',
+		'markerStyle': 'white',
 		'styleArray': [
 	        {
 	          "featureType": "administrative.locality",
@@ -175,10 +175,10 @@ bootstrap.mapOptions = {
 };
 
 bootstrap.markerStyles = {
-	'red':{
-		id: 'red',
+	'white':{
+		id: 'white',
 		options: {
-			icon: '../assets/marker.png'
+			icon: '/static/assets/marker.png'
 		}
 	},
 	'blue': {
