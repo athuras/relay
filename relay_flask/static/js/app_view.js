@@ -66,9 +66,11 @@ var AppView = Backbone.View.extend({
 		switch(this.legendBox.css('display')){
 			case('none'):
 				this.legendBox.css('display', 'block');
+				this.legendBtn.addClass('active');
 				break;
 			case('block'):
 				this.legendBox.css('display', 'none');
+				this.legendBtn.removeClass('active');
 				break;
 			default:
 				break;
