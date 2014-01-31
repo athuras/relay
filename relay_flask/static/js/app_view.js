@@ -3,8 +3,15 @@ var AppView = Backbone.View.extend({
 	// HTML object associated with AppView
 	el: $('#app'),
 
+	// Other references:
+	header: $('#header'),
+	legendBtn: $('#legend-btn'),
+	legendBox: $('#legend-box'),
+
 	events: {
 		'click .layer-view': 'layerSelected',
+
+		'click #legend-btn': 'legendButtonClicked'
 	},
 
 	// initialize()
@@ -52,6 +59,24 @@ var AppView = Backbone.View.extend({
 		this.$('#'+newActiveLayer).addClass('active');
 		this.activeLayer = newActiveLayer;
 	},
+
+	// functions for handling legend selections
+	legendButtonClicked: function(){
+		// Show the legend options
+		switch(this.legendBox.css('display')){
+			case('none'):
+				this.legendBox.css('display', 'block');
+				break;
+			case('block'):
+				this.legendBox.css('display', 'none');
+				break;
+			default:
+				break;
+		}
+	},
+
+
+
 
 	render: function(){
 
