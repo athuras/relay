@@ -10,6 +10,7 @@ var AppView = Backbone.View.extend({
 
 	events: {
 		'click .layer-view': 'layerSelected',
+		'click .layer-btn': 'layerSelected',
 
 		'click #legend-btn': 'legendButtonClicked'
 	},
@@ -52,9 +53,25 @@ var AppView = Backbone.View.extend({
 	// when someone selects a layer, we change the map and marker styles, and update the active layer reference
 	layerSelected: function(layer){
 		var newActiveLayer = layer.target.id;
-		var newLayer = _.findWhere( this.mapLayers, {id: layer.target.id } );
-		this.map.setOptions({ styles: newLayer.styleArray });
-		this.intersectionsCollectionView.setIntersectionStyle( newLayer.markerStyle );
+		var mapStyle, markerStyle;
+		switch(newActiveLayer){
+			case('status-layer'):
+				mapStyle = 'vintage';
+				markerStyle = 'bw_pin';
+				break;
+			case('performance-layer'):
+				mapStyle = 'dark';
+				markerStyle = 'performance_glyph';
+				break;
+			default:
+				break;
+		}
+
+		var newMapLayer = _.findWhere( this.mapLayers, {id: mapStyle } );
+		this.map.setOptions({ styles: newMapLayer.styleArray });
+
+		this.intersectionsCollectionView.setIntersectionStyle( markerStyle );
+
 		this.$('#'+this.activeLayer).removeClass('active');
 		this.$('#'+newActiveLayer).addClass('active');
 		this.activeLayer = newActiveLayer;

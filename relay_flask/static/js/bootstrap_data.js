@@ -2,9 +2,7 @@ var bootstrap = new Object();
 bootstrap.mapLayers =[
 	{
 		'title': 'Dark',
-		'id': 'layer-one',
-		'mapStyle': 'light',
-		'markerStyle': 'white',
+		'id': 'dark',
 		'styleArray': [
 	        {
 	          "featureType": "administrative.locality",
@@ -157,11 +155,29 @@ bootstrap.mapLayers =[
 	        }
 	      ]
 	},{
-		'title': 'Default',
-		'id': 'layer-two',
-		'mapStyle': 'dark',
-		'markerStyle': 'blue',
-		'styleArray': []
+		'title': 'Vintage',
+		'id': 'vintage',
+		'styleArray': [
+		  {
+		    featureType: "all",
+		    stylers: [
+		      { saturation: -80 }
+		    ]
+		  },{
+		    featureType: "road.arterial",
+		    elementType: "geometry",
+		    stylers: [
+		      { hue: "#00ffee" },
+		      { saturation: 50 }
+		    ]
+		  },{
+		    featureType: "poi.business",
+		    elementType: "labels",
+		    stylers: [
+		      { visibility: "off" }
+		    ]
+		  }
+		]
 	}
 ];
 
@@ -175,14 +191,20 @@ bootstrap.mapOptions = {
 };
 
 bootstrap.markerStyles = {
-	'white':{
-		id: 'white',
+	'bw_pin':{
 		options: {
 			icon: '/static/assets/marker.png'
 		}
 	},
-	'blue': {
-		id: 'blue',
+	'performance_glyph': {
+		templateString: 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0',
+		icon: {
+	    fillColor: 'yellow',
+	    fillOpacity: 0.8,
+	    scale: 0.5,
+	    strokeColor: 'gold',
+	    strokeWeight: 14
+	  },
 		options: {
 			icon: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png'
 		}

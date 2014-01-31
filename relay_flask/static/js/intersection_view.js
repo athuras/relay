@@ -22,6 +22,14 @@ var IntersectionView = Backbone.View.extend({
 			intersectionView: this
 		});
 
+		this.performanceGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
+		this.performanceGlyph = {
+			path: '',
+		    fillColor: '',
+		    fillOpacity: 0.8,
+		    scale: 1
+		};
+
 		this.infoWindow = new google.maps.InfoWindow({
 			content: this.title
 		});
@@ -61,10 +69,39 @@ var IntersectionView = Backbone.View.extend({
 		this.infoWindow.close();
 	},
 
-	setMarkerStyle: function(styleId){
-		this.marker.setOptions( this.markerStyles[styleId].options );
+	setMarkerStyle: function(markerStyle){
+		switch(markerStyle){
+			case('bw_pin'):
+				this.marker.setOptions(this.markerStyles['bw_pin'].options);
+				break;
+			case('performance_glyph'):
+				// size the glyph appropriately
+				var r = Math.ceil(Math.random() * 20);
+				var d = 2*r;
+				var cx = r;
+				var cy = r;
+				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/r/g, r.toString());
+				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/d/g, d.toString());
+				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/cx/g, cx.toString());
+				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/cy/g, cy.toString());
+
+				this.performanceGlyph['fillOpacity'] = Math.random();
+				var capacity = Math.random();
+				if(capacity < 0.3){
+					this.performanceGlyph['fillColor'] = 'green';
+				} else if (capacity < 0.6){
+					this.performanceGlyph['fillColor'] = 'yellow';
+				} else {
+					this.performanceGlyph['fillColor'] = 'red';
+				}
+
+				this.performanceGlyph['path'] = this.performanceGlyphTemplate;
+
+				this.marker.setOptions({ icon: this.performanceGlyph });
+				break;
+			default:
+				break;
+		}
 	}
-
-
 
 });

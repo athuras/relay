@@ -24,9 +24,9 @@ var IntersectionsCollectionView = Backbone.View.extend({
 	},
 
 	// called to iterate through the intersections and change the styles
-	setIntersectionStyle: function(styleId){
+	setIntersectionStyle: function(markerStyle){
 		_.each(this.intersectionViews, function(intersection){
-			intersection.setMarkerStyle(styleId);
+			intersection.setMarkerStyle(markerStyle);
 		}, this);
 	}
 });
