@@ -5,21 +5,61 @@
 	<meta charset="utf-8" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="css/index.css"/>
+	
 	<link rel="stylesheet" href="css/reset.css"/>
 	<link rel="stylesheet" href="css/fonts.css"/>
+	<link rel="stylesheet" href="css/index.css"/>
 	<link rel="icon" type="image/ico" href="assets/favicon.ico"/>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization&sensor=false"></script>
 </head>
 <body>
 	<div id="app">
+
+
+
 		<div id="map-container">
 			<div id="map"></div>
 		</div>
 		<div id="map-layer-container">
 			<!-- map style links placed in here -->
 		</div>
-		<div id="panel-container">
+
+	    <div id='header'>
+	      <img id='logo' src='assets/relay-logo.png'/>
+	      <ul>
+	        <a href='#'><li class='legend-btn'>LEGEND</li></a>
+	      </ul>
+	      <ul>
+	        <a href='#'><li class='layer-btn' id='far-right'>PERFORMANCE</li></a>
+	        <a href='#'><li class='layer-btn'>CAPACITY</li></a>
+	      </ul>
+	    </div>
+
+		<div id='side-panel'>
+	      <div id='title-container'>
+	        <a href='#'><img id='arrow-right' src='assets/arrow-right.png'/></a>
+	        <span id='intersection-title'>Geary Blvd &amp;<br/>Divisadero St</span>
+	      </div>
+	      <div class='chart-container'>
+	        <a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+	        <span class='chart-title'>CAPACITY</span>
+	        <!-- chart goes in here --> 
+	      </div>
+	      <div class='chart-container'>
+	        <a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+	        <span class='chart-title'>PERFORMANCE</span>
+	        <!-- chart goes in here --> 
+	      </div>
+	    </div>
+
+	    <div class='legend-box'>
+	      <span class='legend-entry'>0%</span>
+	      <span class='legend-entry'>25%</span>
+	      <span class='legend-entry'>50%</span>
+	      <span class='legend-entry'>75%+</span>
+	    </div>
+
+<!-- 		<div id="panel-container">
 			<div id="panel-content">
 				<div id="title-block">
 					<div id="intersection-name">[name]</div>
@@ -36,7 +76,7 @@
 				<canvas id="performance-chart" width="380px" height="240px"></canvas>
 				</hr>
 			</div>
-		</div>
+		</div> -->
 	</div>
 
 	<script type="text/javascript" src="js/underscore.js"></script>
