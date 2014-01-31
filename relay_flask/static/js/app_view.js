@@ -85,10 +85,10 @@ var AppView = Backbone.View.extend({
 		}
 	},
 
-
-
-
 	render: function(){
-
+		//select an initial map style: for now it's status
+		setTimeout(function(){
+			$('#status-layer').click();
+		}, 200);
 	}
 })

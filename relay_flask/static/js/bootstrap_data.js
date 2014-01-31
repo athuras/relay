@@ -232,8 +232,12 @@ bootstrap.chartDataFormats = {
 	}
 
 bootstrap.chartOptions = {
-		scaleFontFamily : "'ProximaNova', 'Helvetica Neue', 'Arial', 'sans-serif'",
-		scaleFontSize : 10,
-		pointDotRadius : 2,
-		scaleGridLineColor : "rgba(255,255,255,0.05)"
-	}
+	scaleFontFamily : "'ProximaNova', 'Helvetica Neue', 'Arial', 'sans-serif'",
+	scaleFontSize : 10,
+	pointDotRadius : 2,
+	scaleGridLineColor : "rgba(255,255,255,0.05)"
+}
+
+bootstrap.defaultMapStyle = 'vintage';
+
+bootstrap.defaultMarker = 'bw_pin';
