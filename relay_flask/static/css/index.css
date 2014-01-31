@@ -49,7 +49,7 @@ html, body {
 }
 
 ul {
-	margin: 0 48px 0 0;
+	margin: 0 48px 0 48px;
 }
 
 li {
@@ -140,7 +140,7 @@ hr {
 .intersection-details {
 	margin: 32px 50px 0 0;
 	position: relative;
-	/*display: none;*/
+	display: none;
 }
 
 #panel-content p {
@@ -162,6 +162,90 @@ hr {
 }*/
 
 
+/* ********** Side Panel ************ */
+
+#title-container {
+	height: 52pt;
+	margin: 0 0 48px 0;
+}
+
+#side-panel {
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
+	height: 100%;
+	max-width: 350px;
+	min-width: 238px;
+	padding: 16px;
+	position: fixed;
+	right: 0;
+	top: 58px;
+	width: 33%;
+	z-index: 100;
+}
+
+#intersection-title {
+	color: #fff;
+	font-size: 25pt;
+	font-weight: bold;
+	float: right;
+	letter-spacing: 0.01em;
+	line-height: 27pt;
+}
+
+.chart-container {
+	height: 240px;
+}
+
+.chart-title {
+	color: #fff;
+	font-size: 0.7em;
+	font-weight: bold;
+	letter-spacing: 0.04em;
+	margin: 0 0 0 6px;
+	position: relative;
+	top: -1px;
+}
+
+
+/* ************ Legend ************** */
+
+
+
+#float-controls {
+	bottom: 48px;
+	left: 16px;
+	position: absolute;
+	z-index: 100;
+}
+
+.legend-box {
+	background: rgba(0, 0, 0, 0.8);
+	border-radius: 3px;
+	box-shadow: 0 6px 11px rgba(0, 0, 0, 0.44);
+	color: #fff;
+	height: 288px;
+	left: 47px;
+	position: absolute;
+	top: 58px;
+	width: 88px;
+	z-index: 150;
+}
+
+.legend-entry {
+	color: #fff;
+	display: inline-block;
+	font-size: 0.4em;
+	letter-spacing: 0.05em;
+	padding: 56px 0 0 0;
+	position: relative;
+	text-align: center;
+	width: 100%;
+}
+
+
+
+
+
 
 
 
@@ -171,6 +255,7 @@ hr {
 #map-layer-container{
 	position: absolute;
 	left: 0px;
+	top: 200px;
 	height: 100px;
 	width: 100px;
 	background-color: rgba(0, 0, 0, 0.9);

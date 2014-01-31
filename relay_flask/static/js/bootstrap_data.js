@@ -178,7 +178,7 @@ bootstrap.markerStyles = {
 	'red':{
 		id: 'red',
 		options: {
-			icon: 'https://maps.google.com/mapfiles/kml/shapes/schools_maps.png'
+			icon: '../assets/marker.png'
 		}
 	},
 	'blue': {
