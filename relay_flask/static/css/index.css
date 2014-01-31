@@ -56,7 +56,7 @@ li {
 	list-style-type: none;
 }
 
-.layer-btn {
+.header-btn {
 	border-left: 1px solid rgba(54, 54, 54, 1);
 	color: #fff;
 	font-size: 0.7em;
@@ -66,32 +66,24 @@ li {
 	padding: 22px 18px 21px 18px;
 }
 
+.header-btn:hover {
+	background: -webkit-linear-gradient(top, #222, #000);
+}
+
+#header .active {
+	background: #222;
+	border-bottom: 2px solid #fff;
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.69);
+}
+
 #far-right {
 	border-right: 1px solid rgba(54, 54, 54, 1);
 }
 
-#layer-btn:hover {
-	background: -webkit-linear-gradient(top, #222, #000);
-}
-
-#layer-btn:active {
-	background: #222;
-	border-bottom: 2px solid #fff;
-	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.69);
-}
-
 #legend-btn {
-	background: #222;
-	border-bottom: 2px solid #fff;
+	float: left;
 	border-left: 1px solid rgba(255, 255, 255, 0.2);
 	border-right: 1px solid rgba(255, 255, 255, 0.2);
-	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.69);
-	color: #fff;
-	float: left;
-	font-size: 0.7em;
-	font-weight: bold;
-	letter-spacing: 0.04em;
-	padding: 22px 18px 21px 18px;
 }
 
 
