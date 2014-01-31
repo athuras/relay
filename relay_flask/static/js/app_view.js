@@ -24,15 +24,6 @@ var AppView = Backbone.View.extend({
 		this.mapLayers = bootstrap.mapLayers;
 		this.activeLayer = bootstrap.activeLayer;
 
-		// Create the layer views, and attach listeners
-		this.layerList = new Array();
-		var layerDom = '<p class="layer-view" id="<%= id %>"> <%= title %> </p>';
-		_.each(this.mapLayers, function(layer){
-			var layerView = _.template(layerDom, layer);
-			this.layerList.push(layerView);
-			this.$('#map-layer-container').append(layerView);
-		}, this);
-
 		// Create our map object
 		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions );
 
