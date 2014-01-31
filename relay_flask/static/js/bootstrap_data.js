@@ -168,9 +168,10 @@ bootstrap.mapLayers =[
 bootstrap.activeLayer = 'layer-one';
 
 bootstrap.mapOptions = {
-	zoom: 8,
+	zoom: 13,
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
-	center: new google.maps.LatLng(42.7,-79.4)
+	center: new google.maps.LatLng(43.652073, -79.382293),
+	disableDefaultUI: true
 };
 
 bootstrap.markerStyles = {
