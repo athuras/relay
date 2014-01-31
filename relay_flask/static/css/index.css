@@ -263,6 +263,10 @@ hr {
 }
 
 
+.chart-box{
+	width:100%;
+}
+
 /* required styles */
 
 .leaflet-map-pane,

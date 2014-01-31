@@ -188,3 +188,30 @@ bootstrap.markerStyles = {
 		}
 	}
 };
+
+bootstrap.chartDataFormats = {
+		labels : [],
+		datasets : [
+			{
+				fillColor : "rgba(90,90,90,0.25)",
+				strokeColor : "rgba(150,150,150,1)",
+				pointColor : "rgba(150,150,150,1)",
+				pointStrokeColor : "#fff",
+				data : []
+			},
+			{
+				fillColor : "rgba(88,138,190,0.1)",
+				strokeColor : "rgba(88,138,190,1)",
+				pointColor : "rgba(88,138,190,1)",
+				pointStrokeColor : "#fff",
+				data : []
+			}
+		]
+	}
+
+bootstrap.chartOptions = {
+		scaleFontFamily : "'ProximaNova', 'Helvetica Neue', 'Arial', 'sans-serif'",
+		scaleFontSize : 10,
+		pointDotRadius : 2,
+		scaleGridLineColor : "rgba(255,255,255,0.05)"
+	}

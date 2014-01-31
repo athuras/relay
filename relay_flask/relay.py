@@ -51,21 +51,26 @@ def get_chart():
             a.time,
             a.value as costUD,
             b.value as costLR,
-            c.value as vol
+            c.value as vol,
+            d.value as perf
         from
             intstats as a
             inner join intstats as b
             inner join intstats as c
+            inner join intstats as d
         on
             a.time = b.time
             and b.time = c.time
+            and c.time = d.time
         where
             a.series_type = 'costUD'
             and b.series_type = 'costLR'
             and c.series_type = 'vol'
+            and d.series_type = 'perf'
             and a.int_id = :int_id
             and b.int_id = :int_id
-            and c.int_id = :int_id;
+            and c.int_id = :int_id
+            and d.int_id = :int_id;
         '''
         int_id['int_id'] = 13463459  # Change this eventually
         chart_data = g.db.query('relay_main', qstr, int_id, as_dict=True)
