@@ -168,7 +168,7 @@ bootstrap.mapLayers =[
 bootstrap.activeLayer = 'layer-one';
 
 bootstrap.mapOptions = {
-	zoom: 13,
+	zoom: 11,
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	center: new google.maps.LatLng(43.652073, -79.382293),
 	disableDefaultUI: true
