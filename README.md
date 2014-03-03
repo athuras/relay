@@ -3,15 +3,7 @@ relay
 
 Today's roads, for the future, today.
 
-relay-agent (deprecated)
-=
-
-The individual signal controller.
-* Local intersection graph (how traffic can flow between lanes)
-* Inter-agent graphs
-* local edge modelling
-* optimization engine
-* event loop
+A Transparently Distributed, Adaptive, Acyclic, Predictive Intelligent Traffic Control Framework.
 
 relay-flask
 =
