@@ -94,7 +94,7 @@ def quadratic_integrator(F, a, b, alpha=0.2, dt=1.):
     Assumes axis=1 from a to b'''
     t = np.arange(int(b * dt), int(a * dt), -dt)
     t *= alpha * t
-    cum = F[:, a:b+1] * t
+    cum = F[:, a:b] * t
     return cum.sum(axis=1)
 
 def fixed_cost_integrator(F, a, b, cost, dt=1.):
@@ -102,7 +102,7 @@ def fixed_cost_integrator(F, a, b, cost, dt=1.):
     '''
     return integrator(F, a, b) + cost * dt
 #  Relief Models ##############################################################
-def linear_relief(_, rate=0.5, dt=1.):
+def linear_relief(a, rate=0.5, dt=1.):
     '''Rectified linear relief, the predicted output is a constant source of
     traffic at rate r.
     :acc    -> accumulated values (vector of size d)
@@ -110,7 +110,10 @@ def linear_relief(_, rate=0.5, dt=1.):
     :dt     -> step-size
 
     Returns the delta'''
-    return -r * dt
+    is_zero = a == 0.
+    mask = np.ones_like(a)
+    mask[is_zero] = 0.
+    return -r * dt * mask
 
 def capillary_relief(a, r_max, r_sat, growth_rate, dt=1.):
     '''Relief model for congested traffic (large queues),
