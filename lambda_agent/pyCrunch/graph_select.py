@@ -13,7 +13,6 @@ class Bounds(object):
         tmin = bool(np.all(x >= self.xmin))
         return tmax and tmin
 
-
 def optimize_path(paths, B_table, btg, prediction, dt=1.):
     '''Erlang Entry Point to Optimization Module'''
     B_table = parse_behaviours(behaviours)
@@ -53,18 +52,24 @@ def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
 
     return min(((i, s) for i, s in enumerate(Solutions)), key=lambda x: x[1].fun)
 
-
 def opt_params(path, B_Table, BTG, t_max, cum_F, dt):
+    '''Generates the components necessary to completely specify (in the absence
+    of a queuing/accumulating model) the best-path optimization routine.
+    Returns:
+    :Lagrangian Objective Function L(x) -> Contains a Barrier Component
+    :x0     -> an initial realizeable solution
+    :bounds -> a Bounds() object, that defines surrounding hyper-volume for x
+    '''
     B = np.vstack(B_Table[bid] for bid in path)  # Behaviour Matrix (d,4)
-    taus = gen_costs(path, BTG)
-    x = initial_soln(path, t_max)
+    taus = transition_costs(path, BTG)
+    x0 = initial_soln(path, t_max)
 
     cost = lambda x:  -1 * obj(x, B, cum_F, taus, dt=dt)  # Set to std form
     constraints = lambda x: 1000 * barrier(x, path, BTG)  # Constraint Programming
     L = lambda x: cost(x) + constraints(x)  # Combined Function
 
     bounds = Bounds(0., (cum_F.shape[-1] - 1) * dt)
-    return L, x, bounds
+    return L, x0, bounds
 
 
 #  Parsers      ###############################################################
@@ -87,7 +92,8 @@ def initial_soln(path, t_max):
     j = t_max / len(path)
     return np.array([(i + 1) * j for i in xrange(len(path) - 1)])
 
-def gen_costs(path, btg):
+def transition_costs(path, btg):
+    '''Sequence of transition costs associated with the prescribed path'''
     return [btg[(path[i], path[i+1])] for i in xrange(len(path) - 1)]
 
 def range_sum(cum_F, a, b, penalty=-1000):
@@ -97,9 +103,10 @@ def range_sum(cum_F, a, b, penalty=-1000):
         return np.ones(cum_F.shape[0]) * penalty
     return cum_F[..., b] - cum_F[..., a]
 
-def time_costs(cum_F, times, costs, dt=1.):
+def flow_served(cum_F, times, costs, queue_model=None, dt=1.):
     '''Times: [t1, ..., td],
-    costs: [t_{b0, b1}, t_{b1, b2}, ...]'''
+    costs: [t_{b0, b1}, t_{b1, b2}, ...]
+    Returns the Fulfillment matrix associated with each behaviour segment.'''
     discr_index = lambda x: int(x / dt) - 1
     t_steps = map(discr_index, times)
     t_steps = [0] + t_steps
@@ -114,7 +121,7 @@ def time_costs(cum_F, times, costs, dt=1.):
 
 def obj(times, B, cum_F, costs, dt=1.):
     '''Objective Function for Hillclimbing'''
-    Z = B * time_costs(cum_F, times, costs, dt=dt)
+    Z = B * flow_served(cum_F, times, costs, dt=dt)
     return Z.sum()
 
 def barrier(times, path, BTG):
