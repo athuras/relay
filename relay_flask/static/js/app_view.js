@@ -31,7 +31,7 @@ var AppView = Backbone.View.extend({
 	},
 
 	render: function(){
-
+		this.setPage(this.mapHeaderBtn);
 	},
 
 	pageSelected: function(e){
