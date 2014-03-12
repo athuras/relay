@@ -1,3 +1,8 @@
+import numpy as np
+import scipy as sp
+
+from scipy import stats
+
 class Prediction(object)
 
     Stamps_Thresh = 1000;
@@ -7,41 +12,67 @@ class Prediction(object)
         est_time = avg_speed(node.id) * edge_length
         Stamps_Thresh = stamps_thresh
 
-    def build_departures(car_stamp):
-        d_stamps = [for item in d_stamps if item >= Stamps_Thresh]
-        d_stamps.append(car_stamp[1])
+    # Given time delay and bhvrs calculate a prediction
+    def calc_prediction(time_future, steps_back, ):
+        # talk to neighboring nodes and get their
 
-    def build_arrivals(car_stamp):
-        a_stamps = [for item in a_stamps if item >= (Stamps_Thresh + est_time)]
-        a_stamps.append(car_stamp[1])
+        # time delay on my adjoining roads = td
+        #   - gamma fitted distribution along each road
+        # signals at each neighboring node = nbr_signals
+        #   - set of signals at each inlet
+        # neighbors bhvr_probs for current behaviour = nbr_probs
+        #   - This will be a tensor of bhvr_prob mtxs for current bhvr
 
-    def make_pairs():
-        # given two streams of data: Bi's and Aj (all entering nodes from downstream
-        # plus entering point of interest) match data points to form time_delay. This
-        # tells how long it has taken to move from one intersection to the next
+        bhvr_sample = ((0, 1, 0.1), (0, 2, 0.6), (0, 3, 0.3), (3, 2, 1), (1, 0, 1), \
+            (2, 1, 0.2), (2, 0, 0.7), (2, 3, 0.1))
 
-        # we first need training data to form an estimate of SPD on edge, so we can 
-        # infer this data
+        td = stats.gamma(7.827, loc=45.338, scale=2.167)
+        nbr_bhvr_probs = self.create_bhvr_prob_mtx(bhvr_sample)
+        nbr_signals
 
-        # use time stamps of each data point and delta for TD
+        for inlet in range(len(bhvr_probs[:,0])):
+            # inlet = (0, 1, 2, 3)
+            td = time_delays[inlet]
+            nbr_bhvr_probs = nbr_probs[inlet]
 
-        #traffic_tstamp:
-            # node_id (incoming node_id)
-            # timestamp (exit_time)
-            # meta (some other data)
 
-        est_time = avg_speed(some_id) * edge_length
 
-        t_delays.append(d_evt - a_evt)
 
-    def get_time_delay(node):
-        # TODO: make this a learned parameter
-        return node.length * node.speed_limit
+    # def build_departures(car_stamp):
+    #     d_stamps = [for item in d_stamps if item >= Stamps_Thresh]
+    #     d_stamps.append(car_stamp[1])
 
-    def avg_speed(node_id):
-        return 0
-        # given a node id, what is the predicted speed for this road at the given time
-            # --> USE THE MEAN OF THE LEARNED SPD
+    # def build_arrivals(car_stamp):
+    #     a_stamps = [for item in a_stamps if item >= (Stamps_Thresh + est_time)]
+    #     a_stamps.append(car_stamp[1])
+
+    # def make_pairs():
+    #     # given two streams of data: Bi's and Aj (all entering nodes from downstream
+    #     # plus entering point of interest) match data points to form time_delay. This
+    #     # tells how long it has taken to move from one intersection to the next
+
+    #     # we first need training data to form an estimate of SPD on edge, so we can 
+    #     # infer this data
+
+    #     # use time stamps of each data point and delta for TD
+
+    #     #traffic_tstamp:
+    #         # node_id (incoming node_id)
+    #         # timestamp (exit_time)
+    #         # meta (some other data)
+
+    #     est_time = avg_speed(some_id) * edge_length
+
+    #     t_delays.append(d_evt - a_evt)
+
+    # def get_time_delay(node):
+    #     # TODO: make this a learned parameter
+    #     return node.length * node.speed_limit
+
+    # def avg_speed(node_id):
+    #     return 0
+    #     # given a node id, what is the predicted speed for this road at the given time
+    #         # --> USE THE MEAN OF THE LEARNED SPD
 
     # -----------
     # temp_methods
@@ -77,51 +108,51 @@ class Prediction(object)
 
 
     # updating behaviour probabilities
-    def update_behaviour_stats(node, bhvr):
-        # NEED:
-        #   - get all neighbouring nodes
-        #   - some way to tally counts if doing timing method
-        #   - return tuple -> ((inner_id, n_id, count), ...)
-        neighbour_data = get_neighbour_data(node[0])
+    # def update_behaviour_stats(node, bhvr):
+    #     # NEED:
+    #     #   - get all neighbouring nodes
+    #     #   - some way to tally counts if doing timing method
+    #     #   - return tuple -> ((inner_id, n_id, count), ...)
+    #     neighbour_data = get_neighbour_data(node[0])
 
-        # how many obs there are at neighbouring inlets
-        # NEED:
-        #   - some way to tally these; by time, # occurences....
-        #   - return a tuple neighbour refs and counts -> ((id, count),...)
-        #neighbour_counts = get_neighbour_counts(neighbours)
+    #     # how many obs there are at neighbouring inlets
+    #     # NEED:
+    #     #   - some way to tally these; by time, # occurences....
+    #     #   - return a tuple neighbour refs and counts -> ((id, count),...)
+    #     #neighbour_counts = get_neighbour_counts(neighbours)
 
-        # get the count at each inlet of current node
-        # NEED:
-        #   - some way to tally these
-        #   - use this plus dstream refs to get probs
-        #   - tuple: ((in_id, count), ...)
-        counts = get_counts(node[0])
+    #     # get the count at each inlet of current node
+    #     # NEED:
+    #     #   - some way to tally these
+    #     #   - use this plus dstream refs to get probs
+    #     #   - tuple: ((in_id, count), ...)
+    #     counts = get_counts(node[0])
 
-        # pull up the old behaviour likelihoods
-        # will be a tuple: ((in_id, out_id, prob), ...)
-        bhvr_past = get_bhvr_probs(bhvr)
+    #     # pull up the old behaviour likelihoods
+    #     # will be a tuple: ((in_id, out_id, prob), ...)
+    #     bhvr_past = get_bhvr_probs(bhvr)
 
-    def calculate_likelihoods(bhvr, bhvr_past, counts, neighbour_data):
-        # bhvr = ((0,1), (0,2), ...) -> all edges "on"
-        # bhvr_past = ((0, 1, 0.4), (0, 2, 0.5), ...) -> old probs
-        # count = ((0, 10), (1, 0), ...) -> count of events
-        # neighbour_data = (inner_id, n_id, count),...
+    # def calculate_likelihoods(bhvr, bhvr_past, counts, neighbour_data):
+    #     # bhvr = ((0,1), (0,2), ...) -> all edges "on"
+    #     # bhvr_past = ((0, 1, 0.4), (0, 2, 0.5), ...) -> old probs
+    #     # count = ((0, 10), (1, 0), ...) -> count of events
+    #     # neighbour_data = (inner_id, n_id, count),...
 
-        # may not need bhvr here, implicit in bhvr_past
+    #     # may not need bhvr here, implicit in bhvr_past
 
-        # remove secondary node cars seen at nbrs
-        est_cars -= (q_len_beg - q_len_end)
+    #     # remove secondary node cars seen at nbrs
+    #     est_cars -= (q_len_beg - q_len_end)
 
-        new_probs = tuple((edge[0], ) for edge in bhvr_past)
+    #     new_probs = tuple((edge[0], ) for edge in bhvr_past)
 
-        (count[1] * bhvr_past[2], neighbour_data[2])
+    #     (count[1] * bhvr_past[2], neighbour_data[2])
 
-        for edge in bhvr:
-            # matchs nbr node data for inlet edge
-            nbr = tuple(nbr for nbr in neighbour_data if nbr[0] == edge[1])
-            nbr_count = nbr[2]
+    #     for edge in bhvr:
+    #         # matchs nbr node data for inlet edge
+    #         nbr = tuple(nbr for nbr in neighbour_data if nbr[0] == edge[1])
+    #         nbr_count = nbr[2]
 
-             = filter(lambda x: x[0] == edge[0], count)[0][1]
+    #          = filter(lambda x: x[0] == edge[0], count)[0][1]
 
     def calculate_bhvr_new(bhvr_arr, counts, nbr_counts):
         # calculates proportions of cars served during the bevhiours cycle
