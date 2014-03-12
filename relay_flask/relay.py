@@ -33,6 +33,16 @@ def get_intersections():
         intersects = g.db.query('relay_main', qstr, bounds, as_dict=True)
         return createJSON(intersects)
 
+@app.route('/request_roads', methods=['POST'])
+def get_roads():
+    if request.method == 'POST':
+        bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''SELECT * FROM roads;''' 
+        #WHERE lat>=:minlat AND lat<=:maxlat AND
+         #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
+        roads = g.db.query('relay_main', qstr, as_dict=True)
+        return createJSON(roads)
+
 # @app.route('/get_intersections', methods=['get'])
 # def get_intersections():
 #     connection = db.connect()
