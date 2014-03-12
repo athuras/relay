@@ -15,60 +15,65 @@
 <body>
 	<div id="app">
 
-		<!-- Where the map goes -->
-		<div id="map-container">
-			<div id="map"></div>
-		</div>
-
 		<!-- header bar -->
 	    <div id='header'>
 			<img id='logo' src='assets/relay-logo.png'/>
 
-			<!-- <ul>
-				<div id='legend'>
-					<a href='#'><li class='header-btn' id='legend-btn'>LEGEND</li></a>
-					<div id='legend-box'>
-						<span class='legend-entry'>0%</span>
-						<span class='legend-entry'>25%</span>
-						<span class='legend-entry'>50%</span>
-						<span class='legend-entry'>75%+</span>
-					</div>
-				</div>
-		    </ul> -->
-
 		    <ul>
-				<a href='#'><li class='header-btn layer-btn far-right' id='status-layer'>MAP</li></a>
-				<a href='#'><li class='header-btn layer-btn' id='performance-layer'>INTERSECTIONS</li></a>
-				<a href='#'><li class='header-btn layer-btn' id='performance-layer'>ROADS</li></a>
-				<a href='#'><li class='header-btn layer-btn' id='performance-layer'>NETWORK</li></a>
+				<a href='#'><li class='header-btn page-btn far-right' id='map-header-btn' data-page-id='map-page'>MAP</li></a>
+				<a href='#'><li class='header-btn page-btn' id='intersections-header-btn' data-page-id='intersections-page'>INTERSECTIONS</li></a>
+				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page'>ROADS</li></a>
+				<a href='#'><li class='header-btn page-btn' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
 			</ul>
 		</div>
 
-		<!-- Side Panel -->
-		<div class='expanded' id='side-panel'>
-			<a href='#'><img id='panel-toggle' src='assets/arrow-right.png'/></a>
-			<div id='panel-container'>
-				<div id='title-container'>
-					<!-- <a id='panel-toggle' href='#'><img id='arrow-right' src='assets/arrow-right.png'/></a> -->
-					<span id='intersection-title'>Geary Blvd &amp;<br/>Divisadero St</span>
-				</div>
-				<div class='chart-container'>
-					<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-					<span class='chart-title'>CAPACITY</span>
-					<span class='clear'></span>
-					<div class='chart-box'>
-						<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+		<!-- Map page -->
+		<div id="map-page" class='page'>
+			<!-- Where the map goes -->
+			<div id="map"></div>
+
+			<!-- Side Panel -->
+			<div class='expanded' id='side-panel'>
+				<a href='#'><img id='panel-toggle' src='assets/arrow-right.png'/></a>
+				<div id='panel-container'>
+					<div id='title-container'>
+						<!-- <a id='panel-toggle' href='#'><img id='arrow-right' src='assets/arrow-right.png'/></a> -->
+						<span id='intersection-title'>Geary Blvd &amp;<br/>Divisadero St</span>
 					</div>
-				</div>
-				<div class='chart-container'>
-					<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-					<span class='chart-title'>PERFORMANCE</span>
-					<div class='chart-box'>
-						<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+					<div class='chart-container'>
+						<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+						<span class='chart-title'>CAPACITY</span>
+						<span class='clear'></span>
+						<div class='chart-box'>
+							<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+						</div>
+					</div>
+					<div class='chart-container'>
+						<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+						<span class='chart-title'>PERFORMANCE</span>
+						<div class='chart-box'>
+							<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
+		<!-- Intersections Page -->
+		<div id="intersections-page" class='page'>
+			<p>intersections</p>
+		</div>
+
+		<!-- Roads Page -->
+		<div id="roads-page" class='page'>
+			<p>roads</p>
+		</div>
+
+		<!-- Network Page -->
+		<div id="network-page" class='page'>
+			<p>network</p>
+		</div>
+
 	</div> <!-- End of app div -->
 
 
@@ -89,6 +94,10 @@
 
 	<script type="text/javascript" src="js/intersections_collection.js"></script>
 
+	<script type="text/javascript" src='js/map_page_view.js'></script>
+	<script type="text/javascript" src='js/intersections_page_view.js'></script>
+	<script type="text/javascript" src='js/roads_page_view.js'></script>
+	<script type="text/javascript" src='js/network_page_view.js'></script>
 	<script type="text/javascript" src="js/panel_view.js"></script>
 	<script type="text/javascript" src="js/intersection_view.js"></script>
 	<script type="text/javascript" src="js/intersections_collection_view.js"></script>

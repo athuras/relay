@@ -12,18 +12,7 @@ html, body {
 	width: 100%;
 }
 
-/* ********** Map ********** */
 
-#map-container{
-	height: 100%;
-	width: 100%;
-	float:left;
-}
-
-#map{
-	width: 100%;
-	height: 100%;
-}
 
 
 /* ********** Header *********** */
@@ -86,7 +75,7 @@ li {
 	border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.layer-btn{
+.page-btn{
 
 }
 
@@ -94,8 +83,70 @@ li {
 
 
 
+/* ********** Pages ********** */
+
+.page{
+	display: none;
+
+	width: 100%;
+	height: 100%;
+}
+
+.page-active{
+	display: block !important;
+}
 
 
+
+/* ********** Map ********** */
+
+#map-page{
+	height: 100%;
+	width: 100%;
+	float:left;
+}
+
+#map{
+	width: 100%;
+	height: 100%;
+}
+
+
+
+
+/* ********** Map ********** */
+
+#intersections-page{
+	display: none;
+	height: 100%;
+	width: 100%;
+	float:left;
+}
+
+
+
+
+/* ********** Map ********** */
+
+#roads-page{
+	display: none;
+	height: 100%;
+	width: 100%;
+	float:left;
+}
+
+
+
+
+
+/* ********** Map ********** */
+
+#network-page{
+	display: none;
+	height: 100%;
+	width: 100%;
+	float:left;
+}
 
 /* ********** Panel Container ********** */
 
