@@ -7,8 +7,11 @@ var IntersectionsCollectionView = Backbone.View.extend({
 
 		this.intersectionViews = new Array();
 
+		// If there are intersections in the collection already, make views for them
+		this.model.forEach(this.onAddedIntersection, this);
 		// whenever an intersection is added to the model, we make the appropriate views for it.
 		this.model.on('add', this.onAddedIntersection, this);
+
 	},
 
 	// onAddedIntersection()

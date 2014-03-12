@@ -5,14 +5,13 @@ var AppView = Backbone.View.extend({
 
 	// Other references:
 	header: $('#header'),
-
 	activeTab: $('#map-header-btn'),
-
 	mapHeaderBtn: $('#map-header-btn'),
 	intersectionsHeaderBtn: $('#intersections-header-btn'),
 	roadsHeaderBtn: $('#roads-header-btn'),
 	networkHeaderbtn: $('#network-header-btn'),
 
+	// Events
 	events: {
 		'click .page-btn' : 'pageSelected',
 	},
@@ -21,11 +20,20 @@ var AppView = Backbone.View.extend({
 	// starts the app
 	initialize: function() {
 
+		// Get data
+		// the app view is responsible for collecting the data and keeping it up to date.
+		// the pages read from here and build their own views and collectionviews from here.
+		this.intersectionsCollection = new IntersectionsCollection();
+		this.roadsCollection = new RoadsCollection();
+
+		this.intersectionsCollection.fetch();
+		this.roadsCollection.fetch();
+
 		// Get pages
-		this.mapPageView = new MapPageView();
-		this.intersectionsPageView = new IntersectionsPageView();
-		this.roadsPageView = new RoadsPageView();
-		this.networkPageView = new NetworkPageView();
+		this.mapPageView = new MapPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
+		this.intersectionsPageView = new IntersectionsPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
+		this.roadsPageView = new RoadsPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
+		this.networkPageView = new NetworkPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
 
 		this.render();
 	},

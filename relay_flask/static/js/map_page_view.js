@@ -6,28 +6,25 @@ var MapPageView = Backbone.View.extend({
 		'click .layer-btn': 'layerSelected',
 	},
 
-	initialize: function(){
+	initialize: function(options){
+		// Add data from options
+		this.intersectionsCollection = options.ic;
+
 		// Get bootstrapped data
 		this.mapOptions = bootstrap.mapOptions;
 		this.mapLayers = bootstrap.mapLayers;
 		this.activeLayer = bootstrap.activeLayer;
 
 		// Create our map object
-		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions );
+		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions);
 
 		// Make our panel View
 		this.panelView = new PanelView();
 
-		// Create our intersection Collection and View
-		this.intersectionsCollection = new IntersectionsCollection();
+		// Create our intersection Collection View
 		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map, panelView: this.panelView });
 
-
-		// Initial fetch of the intersections
-		this.intersectionsCollection.fetch();
-
 		this.render();
-
 	},
 
 	render: function(){

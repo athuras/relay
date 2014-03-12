@@ -5,7 +5,7 @@ var IntersectionsPageView = Backbone.View.extend({
 
 	},
 
-	initialize: function(){
+	initialize: function(options){
 
 	},
 

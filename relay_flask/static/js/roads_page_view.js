@@ -5,7 +5,7 @@ var RoadsPageView = Backbone.View.extend({
 
 	},
 
-	initialize: function(){
+	initialize: function(options){
 
 	},
 
