@@ -63,7 +63,7 @@ var MapPageView = Backbone.View.extend({
 	// when a user clicks show more in an intersection popup
 	// close the popup, open the panel and populate w/ that intersections info
 	showMore: function(model){
-		this.infoBoxView.hide();
+		this.infoBoxView.close();
 		this.panelView.show();
 		this.panelView.showIntersectionDetails(model);
 	}
