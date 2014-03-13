@@ -15,16 +15,24 @@ var PanelView = Backbone.View.extend({
 
 	},
 
+	show: function(){
+		this.$el.addClass('expanded');
+		this.$('#panel-container').addClass('expanded');
+	},
+
+	hide: function(){
+		this.$('#panel-container').removeClass('expanded');
+		this.$el.removeClass('expanded');
+	},
+
 	panelToggled: function(){
 		switch(this.$el.hasClass('expanded')){
 			case(true):
-				this.$('#panel-container').removeClass('expanded');
-				this.$el.removeClass('expanded');
+				this.hide();
 				break;
 
 			case(false):
-				this.$el.addClass('expanded');
-				this.$('#panel-container').addClass('expanded');
+				this.show();
 				break;
 
 			default:

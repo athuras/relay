@@ -7,7 +7,7 @@ var IntersectionView = Backbone.View.extend({
 		this.model = options.model; // reference the intersection model
 		this.map = options.map; // reference the map
 		this.panelView = options.panelView;
-		this.infoBox = options.infoBox;
+		this.infoBoxView = options.infoBoxView;
 
 		this.markerStyles = bootstrap.markerStyles;
 
@@ -53,7 +53,7 @@ var IntersectionView = Backbone.View.extend({
 	},
 
 	onMarkerClick: function(){ //pass this marker and model to the popup
-		this.infoBox.setIntersection(this.marker, this.model);
+		this.infoBoxView.setIntersection(this.marker, this.model);
 	},
 
 	setMarkerStyle: function(markerStyle){
