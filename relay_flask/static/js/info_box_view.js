@@ -54,6 +54,7 @@ var InfoBoxView = Backbone.View.extend({
 
 		// open it on the map
 		this.infoBox.open(this.map, marker);
+		this.isOpen = true;
 
 		// add an event listener to check for 'show more' click
 		google.maps.event.addDomListener(this.boxText, 'click', $.proxy(function(e){
@@ -64,6 +65,7 @@ var InfoBoxView = Backbone.View.extend({
 
 	close: function(){
 		this.infoBox.close();
+		this.isOpen = false;
 	},
 
 	infoBoxClicked: function(e){

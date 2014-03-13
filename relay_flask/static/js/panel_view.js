@@ -15,24 +15,26 @@ var PanelView = Backbone.View.extend({
 
 	},
 
-	show: function(){
+	expand: function(){
 		this.$el.addClass('expanded');
 		this.$('#panel-container').addClass('expanded');
+		this.isExpanded = true;
 	},
 
-	hide: function(){
+	collapse: function(){
 		this.$('#panel-container').removeClass('expanded');
 		this.$el.removeClass('expanded');
+		this.isExpanded = false;
 	},
 
 	panelToggled: function(){
 		switch(this.$el.hasClass('expanded')){
 			case(true):
-				this.hide();
+				this.collapse();
 				break;
 
 			case(false):
-				this.show();
+				this.expand();
 				break;
 
 			default:
@@ -42,10 +44,6 @@ var PanelView = Backbone.View.extend({
 
 	// populate the intersection name and info
 	showIntersectionDetails: function(intersectionModel){
-		if(!this.$el.hasClass('expanded')){
-			this.panelToggled;
-		}
-
 		this.$('#intersection-title').text( intersectionModel.get('name') );
 
 		$.ajax({

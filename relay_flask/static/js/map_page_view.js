@@ -27,10 +27,27 @@ var MapPageView = Backbone.View.extend({
 		// Create our intersection Collection View
 		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map, panelView: this.panelView, infoBoxView: this.infoBoxView});
 
+		// Add listener
+		google.maps.event.addListener(this.map, 'click', $.proxy(function(e){
+			this.mapClicked(e);
+		}, this));
+
 		this.render();
 	},
 
 	render: function(){
+	},
+
+	mapClicked: function(e){
+		console.log('map click registered');
+		console.log(e);
+		// I don't know why the details process causes another map click.
+		// if(this.infoBoxView.isOpen){
+		// 	this.infoBoxView.close();
+		// }
+		// if(this.panelView.isExpanded){
+		// 	this.panelView.collapse();
+		// }
 	},
 
 	// when someone selects a layer, we change the map and marker styles, and update the active layer reference
@@ -64,7 +81,7 @@ var MapPageView = Backbone.View.extend({
 	// close the popup, open the panel and populate w/ that intersections info
 	showMore: function(model){
 		this.infoBoxView.close();
-		this.panelView.show();
+		this.panelView.expand();
 		this.panelView.showIntersectionDetails(model);
 	}
 
