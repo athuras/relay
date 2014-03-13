@@ -1,29 +1,91 @@
 from erlport.erlterms import Atom
 from scipy.optimize import basinhopping
 import numpy as np
+import qsim
 
 class Bounds(object):
     '''Required for acceptance testing in scipy.optimize.basinhopping'''
-    def __init__(self, xmin=1., xmax=0.):
+    def __init__(self, xmin, xmax, costs):
         self.xmax = xmax
         self.xmin = xmin
-    def __call__(self, **kwargs):
-        x = kwargs["x_new"]
+        self.costs = costs
+
+    def is_valid(self, x):
         tmax = bool(np.all(x <= self.xmax))
         tmin = bool(np.all(x >= self.xmin))
-        return tmax and tmin
+        in_order = [x[i] + c <= x[i+1] for i, c in enumerate(self.costs[1:])]
+        in_order.append(x[0] <= self.costs[0])
+        return tmax and tmin and all(in_order)
 
-def optimize_path(paths, B_table, btg, prediction, dt=1.):
+    def __call__(self, **kwargs):
+        x = kwargs["x_new"]
+        return self.is_valid(x)
+
+    def SLSQP_constraints(self):
+        '''Return inequality constraints for SLSQP,
+        in particular, assert that 0 >= x_i - x_i-1 forall i'''
+        funs = [lambda x: x[i + 1] - x[i] + c
+                for i, c in enumerate(self.costs[1:])]
+        funs.append(lambda x: x[0] + self.costs[0])
+        funs += [lambda x: x[i] for i in xrange(len(self.costs))]
+        funs += [lambda x: -x[i]]
+
+        # im matrix form
+        n = len(self.costs)
+        # -x_i <= 0
+        neg = np.identity(n) * -1
+        rhs1 = np.ones(n) * self.xmin
+        rhs1[0] += self.costs[0]
+        # tmax constraints
+        tmax = np.identity(n)
+        rhs2 = np.ones(n) * self.xmax
+        # cost constraints
+        A = np.vstack((neg, tmax))
+        b = np.hstack((rhs1, rhs2))
+        if n >= 2:
+            root = [1, -1] + [0] * (n - 2)
+            z = np.vstack([np.roll(root, i) for i in xrange(n-1)])
+            rhs3 = np.array(self.costs[1:])
+            A = np.vstack((A, z))
+            b = np.hstack((b, rhs3))
+        return {"slsqp": {'type': 'ineq', 'fun': lambda x: b - np.dot(A, x)},
+                "cobyla": [{'type': 'ineq', 'fun': f} for f in funs]}
+
+    def SLSQP_bounds(self):
+        '''Return bounds as sequence'''
+        return [(self.xmin, self.xmax) for i in xrange(len(self.costs))]
+
+
+
+class Stepper(object):
+    def __init__(self, bounds, stepsize=10, max_iter=20, deflate=0.5):
+        self.bounds = bounds
+        self.stepsize = stepsize
+        self.max_iter = max_iter
+        self.deflate = deflate
+
+    def __call__(self, x):
+        y = None
+        for i in xrange(self.max_iter):
+            B = self.deflate ** (i + 1)
+            r = self.stepsize * B
+            u =  np.random.uniform(-r, r, x.shape)
+            if self.bounds.is_valid(x + u):
+                x += u
+                return x
+        return x
+
+
+def optimize_path(paths, behaviours, btg, prediction, dt=1.):
     '''Erlang Entry Point to Optimization Module'''
     B_table = parse_behaviours(behaviours)
     BTG = parse_edgelist(btg)
     F = parse_prediction(prediction)
 
-    BestPath = best_path(paths, B_table, BTG, F, dt=dt)
-    return BestPath.x
+    return best_path(paths, B_table, BTG, F, dt=dt)
 
 def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
-              maxiter=400):
+              maxiter=400, Acc0=None, method="COBYLA"):
     '''
     Perform the mixed ILP optimization (without queues, or memory), that yields
     the optimal behaviour transition through the BTG.
@@ -37,39 +99,65 @@ def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
     :F          -> Prediction matrix, of shape (|b_vec|, n),
                     where n is int(T_max/dt)
     :dt         -> Prediction time-resolution
+    :Acc0       -> Initial queue Accumulator (queue length) value, defaults 0.
     '''
     # Given a particular path, find the optimal times to transition
-    cum_F = np.cumsum(F, axis=1)
+    Acc0 = np.zeros(F.shape[0]) if Acc0 is None else Acc0
 
     Solutions = []
     t_max = int((F.shape[-1] - 1) * dt)
+    initial_T = F.sum() / len(paths[0])
     for path in paths:
-        (L, x0, bounds) = opt_params(path, Behaviour_Table,
-                                    BTG, t_max, cum_F, dt=dt)
-        result = basinhopping(L, x0, accept_test=bounds, stepsize=3*dt,
-                                niter=maxiter, T=10.)
+        L, x0, bounds, step_taker = opt_params(path, Behaviour_Table,
+                                    BTG, t_max, F, dt=dt, Acc0=Acc0)
+
+        minimizer_kwargs = {'method': method, 'bounds': bounds.SLSQP_bounds(),
+                            'constraints': bounds.SLSQP_constraints()[method.lower()]}
+        result = basinhopping(L, x0.copy(),
+                            accept_test=bounds,
+                            take_step=step_taker, stepsize=10*dt,
+                            niter=maxiter, T=initial_T,
+                            interval=20,
+                            minimizer_kwargs=minimizer_kwargs)
         Solutions.append(result)
 
-    return min(((i, s) for i, s in enumerate(Solutions)), key=lambda x: x[1].fun)
+    i, BestPath =  min(((i, s) for i, s in enumerate(Solutions)),
+                        key=lambda x: x[1].fun)
+    return paths[i], BestPath
 
-def opt_params(path, B_Table, BTG, t_max, cum_F, dt):
-    '''Generates the components necessary to completely specify (in the absence
-    of a queuing/accumulating model) the best-path optimization routine.
+
+def opt_params(path, BTable, BTG, t_max, F, dt, Acc0,
+        q_acc_model=qsim.integrator, q_acc_model_args=[], q_model_kwargs={},
+        q_relief_model=qsim.linear_relief,
+        deadtime_penalty=4):
+    '''Generates the components necessary to completely specify
+    best-path optimization routine. (With a queue model)
+
     Returns:
     :Lagrangian Objective Function L(x) -> Contains a Barrier Component
     :x0     -> an initial realizeable solution
     :bounds -> a Bounds() object, that defines surrounding hyper-volume for x
     '''
-    B = np.vstack(B_Table[bid] for bid in path)  # Behaviour Matrix (d,4)
+    B = np.vstack(BTable[bid] for bid in path)  # Behaviour Matrix (d,4)
     taus = transition_costs(path, BTG)
     x0 = initial_soln(path, t_max)
+    bounds = Bounds(0., (F.shape[-1] - 1) * dt, taus)
 
-    cost = lambda x:  -1 * obj(x, B, cum_F, taus, dt=dt)  # Set to std form
-    constraints = lambda x: 1000 * barrier(x, path, BTG)  # Constraint Programming
-    L = lambda x: cost(x) + constraints(x)  # Combined Function
+    def cost(x, p=deadtime_penalty):
+        '''Simulate the queue effects, and then evaluate the objective function
+        on the simulation result'''
+        avg_rates = F.sum(1) / F.shape[1]
+        Z, Acc = qsim.cascading_relief(F, path, x, costs=taus, BTable=BTable,
+                Acc0=Acc0, relief_mode_kwargs={"rate": 0.5})
+        cum_Z = np.cumsum(Z, axis=1)
 
-    bounds = Bounds(0., (cum_F.shape[-1] - 1) * dt)
-    return L, x0, bounds
+        Deadtimes = np.where(Z == 0, 0, 1).sum(1)
+
+        return -1 * obj(x, B, cum_Z, taus, dt=dt) + avg_rates.dot(Deadtimes) ** 2
+
+
+    step_taker = Stepper(bounds, 10, 20)
+    return cost, x0, bounds, step_taker
 
 
 #  Parsers      ###############################################################
@@ -108,12 +196,10 @@ def flow_served(cum_F, times, costs, queue_model=None, dt=1.):
     costs: [t_{b0, b1}, t_{b1, b2}, ...]
     Returns the Fulfillment matrix associated with each behaviour segment.'''
     discr_index = lambda x: int(x / dt) - 1
-    t_steps = map(discr_index, times)
-    t_steps = [0] + t_steps
+    t_steps = [0] + map(discr_index, times)
     t_steps.append(cum_F.shape[-1] - 1)  # t_max
 
-    c_steps = map(discr_index, costs)
-    c_steps = [0] + c_steps
+    c_steps = [0] + map(discr_index, costs)
 
     result = np.vstack([range_sum(cum_F, t_steps[i] + c_steps[i], t_steps[i + 1])
                         for i in xrange(len(costs) + 1)])
