@@ -18,20 +18,24 @@ var MapPageView = Backbone.View.extend({
 		// Create our map object
 		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions);
 
+		// Create our info box
+		this.infoBox = new InfoBoxView({map: this.map});
+
 		// Make our panel View
 		this.panelView = new PanelView();
 
 		// Create our intersection Collection View
-		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map, panelView: this.panelView });
+		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map, panelView: this.panelView, infoBox: this.infoBox});
 
 		this.render();
 	},
 
 	render: function(){
 		//select an initial map style: for now it's status
-		setTimeout(function(){
-			$('#status-layer').click();
-		}, 200);
+		// setTimeout(function(){
+		// 	$('#status-layer').click();
+		// }, 200);
+		// this.infoBox.open(this.map);
 	},
 
 	// when someone selects a layer, we change the map and marker styles, and update the active layer reference

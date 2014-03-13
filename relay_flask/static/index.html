@@ -76,6 +76,18 @@
 
 	</div> <!-- End of app div -->
 
+	<!-- info box template -->
+	<!-- The data-content tags should match up with the property name in the IntersectionModel attribute -->
+	<script type='text/html' id='info-box-template'>
+		<div id='info-box'>
+		<h1 data-content='name'></h1>
+		<p data-content='status'></p>
+		<p data-content='type'></p>
+		<p data-content='state'></p>
+		<p data-content='nextState'></p>
+		<p data-content='nextStateTime'></p>
+		</div>
+	</script>
 
 	<!-- Client Scripts -->
 	<script type="text/javascript" src="js/clients/underscore.js"></script>
@@ -85,6 +97,10 @@
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
 
 	<script type="text/javascript" src="js/clients/Chart.min.js"></script>
+
+	<script type="text/javascript" src='js/clients/infobox.js'></script>
+
+	<script type="text/javascript" src='js/clients/jquery.loadTemplate-1.4.1.js'></script>
 
 
 	<!-- bootstrap data -->
@@ -105,6 +121,7 @@
 	<script type="text/javascript" src="js/panel_view.js"></script>
 	<script type="text/javascript" src="js/intersection_view.js"></script>
 	<script type="text/javascript" src="js/intersections_collection_view.js"></script>
+	<script type="text/javascript" src='js/info_box_view.js'></script>
 
 	<script type="text/javascript" src="js/app_view.js"></script>
 

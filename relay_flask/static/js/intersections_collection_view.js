@@ -4,6 +4,7 @@ var IntersectionsCollectionView = Backbone.View.extend({
 	initialize: function(options){
 		this.map = options.map;
 		this.panelView = options.panelView;
+		this.infoBox = options.infoBox;
 
 		this.intersectionViews = new Array();
 
@@ -18,7 +19,7 @@ var IntersectionsCollectionView = Backbone.View.extend({
 	// creates an intersection view object and associates it with the added intersection model.
 	onAddedIntersection: function(intersection){
 		// make the intersection's view and connect them.
-		var intersection_view = new IntersectionView({ model: intersection, map: this.map, panelView: this.panelView });
+		var intersection_view = new IntersectionView({ model: intersection, map: this.map, panelView: this.panelView, infoBox: this.infoBox });
 		this.intersectionViews.push(intersection_view);
 
 		// introduce some fake data for testing

@@ -114,7 +114,24 @@ li {
 
 
 
-/* ********** Map ********** */
+
+/* ********** Info Box ********** */
+#info-box{
+	margin-top: 8px;
+	color: #f5f5f5;
+
+	/* just copied this from the side panel css */
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
+	padding: 16px;
+	z-index: 100000;
+
+}
+
+
+
+
+/* ********** Intersections ********** */
 
 #intersections-page{
 	display: none;
@@ -139,7 +156,7 @@ li {
 
 
 
-/* ********** Map ********** */
+/* ********** Network ********** */
 
 #network-page{
 	display: none;
