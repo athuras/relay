@@ -59,9 +59,16 @@ handle_call(get_current_plan, State) ->
     {ok, State#state.current_plan, State};
 
 handle_call(get_tables, State) ->
-    Tables = [{btg_table, State#state.btg_table},
-              {b_table, State#state.b_table}],
+    Tables = {{btg_table, State#state.btg_table},
+              {b_table, State#state.b_table}},
     {ok, Tables, State};
+
+handle_call(get_prediction_info, State) ->
+    {ok, State, State};
+
+handle_call(get_current_graph, State) ->
+    B = ets:lookup(State#state.b_table, State#state.current_behaviour),
+    {ok, lol_matrices:mult(B, State#state.base_graph), State};
 
 handle_call(_Call, State) ->
     {ok, ok, State}.
