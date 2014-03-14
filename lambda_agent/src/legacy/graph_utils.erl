@@ -8,7 +8,8 @@
          vertex_combine/3,
          edge_combine/3,
          vertex_data/1,
-         label_filter/2]).
+         label_filter/2,
+         complete_edge_list/1]).
 
 %% @doc Imagine a world where you could perform combinatory operations on graphs!
 %%      Welcome to this world. Also, B must be a proper subset of A... Sorry.
@@ -140,3 +141,7 @@ vtx_iter(G, [V|Vertices], Acc) ->
 %% @end
 label_filter(V, Predicate) ->
     lists:filter(fun({_, L}) -> Predicate(L) end, V).
+
+complete_edge_list(G) ->
+    Edges = digraph:edges(G),
+    lists:map(fun(X) -> digraph:edge(G, X) end, Edges).
