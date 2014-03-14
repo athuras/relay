@@ -18,13 +18,14 @@
 		<!-- header bar -->
 	    <div id='header'>
 			<img id='logo' src='assets/relay-logo.png'/>
-
-		    <ul>
-				<a href='#'><li class='header-btn page-btn far-right' id='map-header-btn' data-page-id='map-page'>MAP</li></a>
+		    <ul id='header-btns'>
+				<a href='#'><li class='header-btn page-btn' id='map-header-btn' data-page-id='map-page'>MAP</li></a>
 				<a href='#'><li class='header-btn page-btn' id='intersections-header-btn' data-page-id='intersections-page'>INTERSECTIONS</li></a>
 				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page'>ROADS</li></a>
-				<a href='#'><li class='header-btn page-btn' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
+				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
 			</ul>
+			<div id='search-box'><img id='search-icon' src='assets/search.png'/></div>
+			<img id='settings' src='assets/settings.png'/>
 		</div>
 
 		<!-- Map page -->
@@ -32,15 +33,18 @@
 			<!-- Where the map goes -->
 			<div id="map"></div>
 
+			<!-- dat LEGEND -->
 			<div id='layer-legend'>
-				<p>layers</p>
+				<div class='legend-label'>LAYERS</div>
 				<ul>
-					<li class='map-layer-option' id='status-layer-label' data-layer='status-layer'>Status</li>
+					<li class='map-layer-option' id='status-layer-label' data-layer='status-layer'>
+						<!-- <img class='status-icon' src='assets/status.png'/> -->
+						Status</li>
 					<li class='map-layer-option' id='flow-layer-label' data-layer='flow-layer'>Flow</li>
 				</ul>
-				<p>Visualizations</p>
+				<div class='legend-label' id='visualizations'>VISUALIZATIONS</div>
 				<ul>
-					<li class='map-layer-option' data-layer='flow-visualization'>flow</li>
+					<li class='map-layer-option' data-layer='flow-visualization'>Flow</li>
 				</ul>
 			</div>
 
@@ -104,13 +108,38 @@
 	<!-- The data-content tags should match up with the property name in the IntersectionModel attribute -->
 	<script type='text/html' id='info-box-template'>
 		<div id='info-box'>
-		<h1 data-content='name'></h1>
-		<p>status:</p><p data-content='status'></p>
-		<p>intersection type:</p><p data-content='type'></p>
-		<p>state:</p><p data-content='currentState'></p>
-		<p>next state</p><p data-content='nextState'></p>
-		<p>next state time</p><p data-content='nextStateTime'></p>
-		<p id='more-info-link'>more</p>
+			<div id='intersection-name' data-content='name'></div>
+
+			<!-- <canvas id='cap-chart' width='400' height='200'></canvas> -->
+			<div style='display: inline-block; width: 300px; height: 150px; border: 1px solid rgba(54, 54, 54, 1); margin-top: 14px;'></div>
+
+			<img id='state' src='assets/ewt.png'/>
+
+			<!-- <ul class='list-wrapper' id='left'>
+				<li class='list-row'>
+					<span class='info-label'>STATUS</span><br/>
+					<span class='info-text' data-content='status'></span>
+				</li>
+				<li class='list-row'>
+					<span class='info-label'>INTERSECTION TYPE</span><br/>
+					<span class= 'info-text' data-content='type'></span>
+				</li>
+				<li class='list-row'>
+					<span class='info-label'>STATE</span><br/>
+					<span class='info-text' data-content='currentState'></span>
+				</li>
+			</ul>
+			<ul class='list-wrapper' id='right'>
+				<li class='list-row'>
+					<span class='info-label'>NEXT STATE</span><br/>
+					<span class='info-text' data-content='nextState'></span>
+				</li>
+				<li class='list-row'>
+					<span class='info-label'>NEXT STATE TIME</span><br/>
+					<span class='info-text' data-content='nextStateTime'></span>
+				</li>
+				<p id='more-info-link'>more</p>
+			</ul> -->
 		</div>
 	</script>
 

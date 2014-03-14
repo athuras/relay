@@ -2,6 +2,7 @@
 html, body {
 	height: 100%;
 	margin: 0;
+	min-width: 768px;
 	padding: 0;
 	font-family: 'Helvetica Neue', helvetica, arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
@@ -19,7 +20,7 @@ html, body {
 
 #header {
 	background: -webkit-linear-gradient(top, #0a0a0a, #000);
-	border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	border-bottom: inset 1px solid rgba(255, 255, 255, 0.08);
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.63);
 	height: 56px;
 	position: absolute;
@@ -31,53 +32,81 @@ html, body {
 }
 
 #logo {
-	left: 50%;
-	margin: -17px 0 0 -52px;
+	left: 32px;
+	margin: -17px 0 0 0;
 	position: absolute;
 	top: 30px;
+	width: 120px;
 }
 
-ul {
-	margin: 0 48px 0 48px;
+#header-btns {
+	float: left;
+	margin: 0 0 0 184px;
 }
 
 li {
 	list-style-type: none;
+	cursor: pointer;
 }
 
 .header-btn {
 	border-left: 1px solid rgba(54, 54, 54, 1);
 	color: #fff;
 	font-size: 0.7em;
-	float: right;
+	float: left;
 	font-weight: bold;
 	letter-spacing: 0.04em;
-	padding: 22px 18px 21px 18px;
+	padding: 23px 18px 22px 18px;
 }
 
 .header-btn:hover {
-	background: -webkit-linear-gradient(top, #222, #000);
+	background: -webkit-linear-gradient(top, #2e2e2e, #000);
 }
 
 #header .active {
-	background: #222;
+	background: #2e2e2e;
 	border-bottom: 2px solid #fff;
 	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.69);
+	padding: 23px 18px 20px 18px;
 }
 
 .far-right {
 	border-right: 1px solid rgba(54, 54, 54, 1);
 }
 
-#legend-btn {
+#search-box {
+	background-color: #000;
+	border: 1px solid rgba(54, 54, 54, 1);
+	height: 30px;
+	position: absolute;
+	right: 38px;
+	top: 11px;
+	width: 156px;
+}
+
+#search-icon {
+	float: left;
+	margin: 7px 0 0 6px;
+	width: 16px;
+}
+
+#settings {
+	width: 14px;
+	float: right;
+	position: relative;
+	top: 20px;
+	right: 10px;
+}
+
+/*#legend-btn {
 	float: left;
 	border-left: 1px solid rgba(255, 255, 255, 0.2);
 	border-right: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.page-btn{
+.page-btn {
 
-}
+}*/
 
 
 
@@ -85,14 +114,14 @@ li {
 
 /* ********** Pages ********** */
 
-.page{
+.page {
 	display: none;
 
 	width: 100%;
 	height: 100%;
 }
 
-.page-active{
+.page-active {
 	display: block !important;
 }
 
@@ -100,15 +129,14 @@ li {
 
 /* ********** Map ********** */
 
-#map-page{
-	height: 100%;
+#map-page {
 	width: 100%;
 	float:left;
 }
 
-#map{
-	width: 100%;
+#map {
 	height: 100%;
+	width: 100%;
 }
 
 
@@ -116,20 +144,53 @@ li {
 
 
 /* ********** Info Box ********** */
-#info-box{
-	margin-top: 8px;
-	color: #f5f5f5;
-
-	/* just copied this from the side panel css */
-	background: rgba(0, 0, 0, 0.8);
+#info-box {
+	background: rgba(0, 0, 0, 0.85);
+	border: 1px solid rgba(54, 54, 54, 1);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
+	color: #f5f5f6;
 	padding: 16px;
+	min-width: 400px;
+	min-height: 140px;
 	z-index: 100000;
-
 }
 
+#intersection-name {
+	border-bottom: 1px solid #fff;
+	font-size: 1.5em;
+	font-weight: 600;
+	padding: 0 0 10px 0;
+}
+
+/*.info-label {
+	font-size: 0.8em;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+}
+
+.info-text {
+	padding: 3px 0 0 0;
+}
+
+.list-wrapper {
+	margin-top: 10px;
+}
+
+.list-row {
+	padding: 5px 0;
+}
+
+#left {
+	float: left;
+	width: 140px;
+}*/
 
 
+#state {
+	display: inline-block;
+	float: left;
+	width: 44px;
+}
 
 /* ********** Intersections ********** */
 
@@ -258,15 +319,15 @@ hr {
 	height: 100%;
 	max-width: 600px;
 	min-width: 16px;
-	padding: 16px;
+	padding: 11px;
 	position: fixed;
 	right: 0;
-	top: 58px;
+	top: 56px;
 	width: 16px;
 	z-index: 100;
 }
 
-#side-panel.expanded{
+#side-panel.expanded {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
@@ -280,14 +341,14 @@ hr {
 	z-index: 100;
 }
 
-#panel-toggle{
+#panel-toggle {
     -webkit-transform: 1s ease-in-out;
     -moz-transform: 1s ease-in-out;
     -o-transform: 1s ease-in-out;
     transform: 1s ease-in-out;
 }
 
-#side-panel #panel-toggle{
+#side-panel #panel-toggle {
 
     -moz-transform: scaleX(1);
     -o-transform: scaleX(1);
@@ -295,7 +356,7 @@ hr {
     transform: scaleX(1);
 }
 
-#side-panel.expanded #panel-toggle{
+#side-panel.expanded #panel-toggle {
 
     -moz-transform: scaleX(-1);
     -o-transform: scaleX(-1);
@@ -303,11 +364,11 @@ hr {
     transform: scaleX(-1);
 }
 
-#panel-container{
+#panel-container {
 	display: none;
 }
 
-#panel-container.expanded{
+#panel-container.expanded {
 	display: block;
 }
 
@@ -342,76 +403,70 @@ hr {
 }
 
 
+
 /* ************ Legend ************** */
 
 
-
-#float-controls {
-	bottom: 48px;
-	left: 16px;
-	position: absolute;
-	z-index: 100;
-}
-
-#legend-box {
-	background: rgba(0, 0, 0, 0.8);
-	border-radius: 3px;
+#layer-legend{
+	background-color: rgba(0, 0, 0, 0.8);
 	box-shadow: 0 6px 11px rgba(0, 0, 0, 0.44);
-	color: #fff;
-	height: 288px;
-	left: 47px;
+	height: 136px;
+	left: 21px;
+	padding: 18px 0;
 	position: absolute;
-	top: 58px;
-	width: 88px;
-	z-index: 150;
-
-	display: none;
+	top: 79px;
+	width: 136px;
+	-webkit-user-select: none;
 }
 
-.legend-entry {
+.legend-label {
+	color: #dcdcdc;
+	font-size: 0.5em;
+	font-weight: 500;
+	letter-spacing: 0.05em;
+	padding: 0 18px 7px 18px;
+	text-align: left;
+}
+
+.map-layer-option {
 	color: #fff;
 	display: inline-block;
-	font-size: 0.4em;
+	font-size: 0.9em;
+	font-weight: 600;
 	letter-spacing: 0.05em;
-	padding: 56px 0 0 0;
+	padding: 8px 18px 8px 18px;
 	position: relative;
-	text-align: center;
-	width: 100%;
+	text-align: left;
+	width: 100px;
 }
 
+.map-layer-option:hover {
+	background-color: #2e2e2e;
+	-webkit-transition: background-color 0.3s ease-in;
+}
 
+.map-layer-option:active {
+	background-color: #2e2e2e;
+	border-left: 2px solid #fff;
+	padding: 8px 18px 8px 16px;
+}
 
+#visualizations {
+	padding-top: 18px;
+}
 
+.status-icon {
+	padding: 0 8px 0 0;
+	position: relative;
+	top: 1px;
+	width: 14px;
+}
 
 
 
 
 
 /* ********** Map Layer Container ********** */
-
-#layer-legend{
-	position: absolute;
-	left: 20px;
-	top: 100px;
-	height: 100px;
-	width: 100px;
-	background-color: rgba(0, 0, 0, 0.9);
-	-moz-box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
-	-webkit-box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
-	box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
-}
-
-#layer-legend p{
-	color: #f5f5f5;
-}
-
-#layer-legend li{
-	color: #f5f5f5;
-}
-
-#layer-legend li.active{
-	background-color: #fff;
-}
 
 #map-layer-container .active{
 	color: #fff;

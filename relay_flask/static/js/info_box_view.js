@@ -23,10 +23,10 @@ var InfoBoxView = Backbone.View.extend({
 			content: this.boxText
 			,disableAutoPan: false
 			,maxWidth: 0
-			,pixelOffset: new google.maps.Size(-140, 0)
+			,pixelOffset: new google.maps.Size(-10, 25)
 			,zIndex: null
-			,closeBoxMargin: "10px 2px 2px 2px"
-			,closeBoxURL: "http://www.google.com/intl/en_us/mapfiles/close.gif"
+			,closeBoxMargin: ""
+			,closeBoxURL: ""
 			,infoBoxClearance: new google.maps.Size(1, 1)
 			,isHidden: false
 			,pane: "floatPane"
