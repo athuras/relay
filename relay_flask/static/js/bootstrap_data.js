@@ -1,9 +1,6 @@
 var bootstrap = new Object();
-bootstrap.mapLayers =[
-	{
-		'title': 'Dark',
-		'id': 'dark',
-		'styleArray': [
+bootstrap.mapStyles = {
+	'dark': [
 	        {
 	          "featureType": "administrative.locality",
 	          "elementType": "labels.text.fill",
@@ -153,11 +150,8 @@ bootstrap.mapLayers =[
 	            { "color": "#606060" }
 	          ]
 	        }
-	      ]
-	},{
-		'title': 'Vintage',
-		'id': 'vintage',
-		'styleArray': [
+	],
+	'vintage': [
 		  {
 		    featureType: "all",
 		    stylers: [
@@ -177,9 +171,8 @@ bootstrap.mapLayers =[
 		      { visibility: "off" }
 		    ]
 		  }
-		]
-	}
-];
+	]
+};
 
 bootstrap.activeLayer = 'layer-one';
 
