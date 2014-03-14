@@ -57,6 +57,22 @@ def remove_infeasible_events(signal_est, inlet_signal, edge_params, dt):
     return signal_est
 
 # Optimization
+def optimize(NBPM, nbr_signals, inlet_signals, edges, dt):
+    '''
+    perform the optimzation.
+
+    :NBPM    -> tensor of neighbor behvaiour probability matrices
+    :nbr_signals    -> tensor of signals from neighbor inlets
+    :inlet_signals    -> real signals measured at inlets
+    :edges   -> each connecting edges time delay props
+    :dt    -> sample rate
+    '''
+
+    leastsq_solns = [calc_lsq(NBPM[i], nbr_signals[i], inlet_signals[i],
+        edge, dt) for i, edge in enumerate(edges)]
+
+    return leastsq_solns
+
 def residuals(p, y, x):
     '''
     calculates the error between real inlet signal and estimated
@@ -76,35 +92,23 @@ def residuals(p, y, x):
 
     return err
 
-def optimize(NBPM, nbr_signals, inlet_signals, edges, dt):
-    '''
-    perform the optimzation.
+def calc_lsq(BPM, nbr_signal, inlet_signal, edge, dt):
+    '''    Perform the least squares optimization    '''
 
-    :NBPM    -> tensor of neighbor behvaiour probability matrices
-    :nbr_signals    -> tensor of signals from neighbor inlets
-    :inlet_signals    -> real signals measured at inlets
-    :edges   -> each connecting edges time delay props
-    :dt    -> sample rate
-    '''
+    # edge[0] = my inlet, edge[1] = nbr out, edge[2] = (shape, loc, scale, gain)
+    a, b, params = edge
 
-    leastsq_solns = []
-    for i, edge in enumerate(edges):
-        # edge[0] = my inlet, edge[1] = nbr out, edge[2] = (shape, loc, scale, gain)
-        a, b, params = edge
+    out_probs = prh.extract_probs(b, BPM)
+    scaled_sigs = prh.transform_sigs(nbr_signal, out_probs)
+    comb_sig_est = prh.combine_sig_ests(scaled_sigs)
+    #td = prh.create_gamma(params, dt)
 
-        out_probs = prh.extract_probs(b, NBPM[i])
-        scaled_sigs = prh.transform_sigs(nbr_signals[i], out_probs)
-        comb_sig_est = prh.combine_sig_ests(scaled_sigs)
-        #td = prh.create_gamma(params, dt)
+    x = remove_infeasible_events(comb_sig_est[0], inlet_signal, params, dt)
+    y_real = inlet_signal
 
-        x = remove_infeasible_events(comb_sig_est[0], inlet_signals[i], params, dt)
-        y_real = inlet_signals[i]
+    # - Use old params as starting location for optimization
+    # - y_real = the measured signal at inlet node
+    # - x = estimated outgoing signal from neighbor
+    lsq = leastsq(residuals, params, args=(y_real, x))
 
-        # - Use old params as starting location for optimization
-        # - y_real = the measured signal at inlet node
-        # - x = estimated outgoing signal from neighbor
-        lsq = leastsq(residuals, params, args=(y_real, x))
-
-        leastsq_solns.append((a, b, lsq[0]))
-
-    return leastsq_solns
+    return (a, b, lsq[0])
