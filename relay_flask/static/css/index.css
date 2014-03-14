@@ -134,12 +134,37 @@ li {
 /* ********** Intersections ********** */
 
 #intersections-page{
+	/*background-color: #000;*/
 	display: none;
 	height: 100%;
 	width: 100%;
 	float:left;
 }
 
+#title-box{
+	margin-top: 50px;
+	width: 100%;
+	height: 50px;
+}
+
+#title-box h1{
+	/*color: #fff*/
+}
+
+#intersections-table-container{
+	width: 100%;
+	height: 100%;
+	overflow: scroll;
+}
+
+/*#intersections-table-container th{
+	color: #fff;
+}
+
+#intersections-table-container td{
+	color: #fff;
+}
+*/
 
 
 
@@ -231,7 +256,7 @@ hr {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
-	max-width: 350px;
+	max-width: 600px;
 	min-width: 16px;
 	padding: 16px;
 	position: fixed;
@@ -245,13 +270,13 @@ hr {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
-	max-width: 350px;
+	max-width: 600px;
 	min-width: 238px;
 	padding: 16px;
 	position: fixed;
 	right: 0;
 	top: 58px;
-	width: 33%;
+	width: 600px;
 	z-index: 100;
 }
 
@@ -396,3 +421,4 @@ hr {
 .chart-box{
 	width:100%;
 }
+
