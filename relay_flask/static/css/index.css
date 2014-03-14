@@ -157,6 +157,10 @@ li {
 	overflow: scroll;
 }
 
+#intersections-filter-container{
+	float: right;
+}
+
 /*#intersections-table-container th{
 	color: #fff;
 }

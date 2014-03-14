@@ -76,15 +76,11 @@
 			<div id='title-box'>
 				<h1>Intersections</h1>
 			</div>
+			<div id='intersections-filter-container'>
+				<!-- Backgrid filter goes in here -->
+			</div>
 			<div id='intersections-table-container'>
-				<table id='intersections-table'>
-					<tr>
-						<th>id</th>
-						<th>name</th>
-						<th>status</th>
-						<th>flow</th>
-					</tr>
-				</table>
+				<!-- Backgrid grid populates here -->
 			</div>
 		</div>
 
@@ -102,7 +98,7 @@
 
 	<!-- info box template -->
 	<!-- The data-content tags should match up with the property name in the IntersectionModel attribute -->
-	<script type='text/html' id='info-box-template'>
+	<script type='text/template' id='info-box-template'>
 		<div id='info-box'>
 		<h1 data-content='name'></h1>
 		<p>status:</p><p data-content='status'></p>
@@ -114,10 +110,21 @@
 		</div>
 	</script>
 
+	<!-- Cell for intersections template -->
+	<script type='text/template' id='intersection-row-template'>
+		<tr>
+			<td><%= name %></td>
+			<td><%= status %></td>
+			<td><%= type_short %></td>
+		</tr>
+	</script>
+
 	<!-- Client Scripts -->
 	<script type="text/javascript" src="js/clients/underscore.js"></script>
 	<script type="text/javascript" src="js/clients/jquery-1.10.1.min.js"></script>
 	<script type="text/javascript" src="js/clients/backbone.js"></script>
+	<script type="text/javascript" src='js/clients/backgrid.js'></script>
+	<script type="text/javascript" src='js/clients/backgrid-filter.js'></script>
 
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
 
@@ -147,12 +154,14 @@
 	<script type="text/javascript" src="js/intersection_view.js"></script>
 	<script type="text/javascript" src="js/intersections_collection_view.js"></script>
 	<script type="text/javascript" src='js/info_box_view.js'></script>
+	<script type="text/javascript" src='js/intersections_collection_table_view.js'></script>
+	<script type="text/javascript" src='js/intersection_table_view.js'></script>
 
 	<script type="text/javascript" src="js/app_view.js"></script>
 
 	<script>
 	var app; // global reference
-		$(function(){
+	$(document).ready(function(){
 		app = new AppView;
 	});
 	</script>
