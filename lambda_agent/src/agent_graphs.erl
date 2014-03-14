@@ -1,7 +1,8 @@
 -module(agent_graphs).
 -export([new_behaviour_table/0,
          new_base_graph/0,
-         new_btg/0]).
+         new_btg/0,
+         default_behaviour/0]).
 
 %%  Hardcoded, cause thats how we roll...
 %%  Also simplified ... matrix-as-list-of-lists (LOL Matrices).
@@ -28,6 +29,10 @@ new_btg() ->
     {{4, 0}, Red_Time}, {{4, 1}, Red_Time},
     {{4, 2}, Red_Time}, {{4, 3}, Red_Time},
     {{2, 0}, Adv_green_delay}, {{3, 1}, Adv_green_delay}].
+
+
+default_behaviour() ->
+    lol_matrices:mult(circular(), new_base_graph()).
 
 circular() ->
     [[0, 0, 0, 1],

@@ -3,13 +3,16 @@
 -module(lol_matrices).
 -export([add/1,
          add/2,
+         combine/3,
+         mat_dot_mat/2,
          mult/1,
          mult/2,
-         vec_dot_vec/2,
+         ones/1,
+         repeat/2,
+         transpose/1,
          vec_dot_mat/2,
-         mat_dot_mat/2,
-         combine/3,
-         transpose/1]).
+         vec_dot_vec/2,
+         zeros/1]).
 
 %%  Currently relies on shapes being identical.
 %%  Minor broadcasting!!
@@ -63,3 +66,10 @@ transpose(A, Trans) ->
         true ->
             lists:reverse(Trans)
     end.
+
+ones(N) -> repeat(1, N).
+zeros(N) -> repeat(0, N).
+
+repeat(X, N) when N >= 0 -> repeat(X, N, []).
+repeat(X, 0, Acc) -> Acc;
+repeat(X, N, Acc) -> repeat(X, N-1, [X|Acc]).

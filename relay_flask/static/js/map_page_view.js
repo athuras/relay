@@ -14,7 +14,7 @@ var MapPageView = Backbone.View.extend({
 
 		// Get bootstrapped data
 		this.mapOptions = bootstrap.mapOptions;
-		this.mapLayers = bootstrap.mapLayers;
+		this.mapStyles = bootstrap.mapStyles;
 		this.activeLayer = bootstrap.activeLayer;
 
 		// Create our map object
@@ -38,6 +38,7 @@ var MapPageView = Backbone.View.extend({
 	},
 
 	render: function(){
+		this.setActiveLayer('status-layer');
 	},
 
 	mapClicked: function(e){
@@ -70,7 +71,7 @@ var MapPageView = Backbone.View.extend({
 		var mapStyle, markerStyle;
 		switch(layer){
 			case('status-layer'):
-				mapStyle = 'vintage';
+				mapStyle = 'dark';
 				markerStyle = 'bw_pin';
 				break;
 			case('flow-layer'):
@@ -81,8 +82,7 @@ var MapPageView = Backbone.View.extend({
 				break;
 		}
 
-		var newMapLayer = _.findWhere( this.mapLayers, {id: mapStyle } );
-		this.map.setOptions({ styles: newMapLayer.styleArray });
+		this.map.setOptions({ styles: this.mapStyles[mapStyle] });
 
 		this.intersectionsCollectionView.setIntersectionStyle( markerStyle );
 	},
