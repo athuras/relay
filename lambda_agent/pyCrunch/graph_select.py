@@ -112,7 +112,8 @@ def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
                                     BTG, t_max, F, dt=dt, Acc0=Acc0)
 
         minimizer_kwargs = {'method': method, 'bounds': bounds.SLSQP_bounds(),
-                            'constraints': bounds.SLSQP_constraints()[method.lower()]}
+                            'constraints': bounds.SLSQP_constraints()[method.lower()],
+                            'maxiter': 25}
         result = basinhopping(L, x0.copy(),
                             accept_test=bounds,
                             take_step=step_taker, stepsize=10*dt,
