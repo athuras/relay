@@ -4,6 +4,8 @@ var MapPageView = Backbone.View.extend({
 	events: {
 		'click .layer-view': 'layerSelected',
 		'click .layer-btn': 'layerSelected',
+
+		'click .map-layer-option': 'layerSelected'
 	},
 
 	initialize: function(options){
@@ -50,16 +52,28 @@ var MapPageView = Backbone.View.extend({
 		// }
 	},
 
+	// handle clicks on the layers legend to change the layer
+	layerSelected: function(e){
+		// this.currentLayerLabel.removeClass('active');
+		// var newActiveLayer = $(e.target).data('layer');
+		this.setActiveLayer($(e.target).data('layer'));
+	},
+
 	// when someone selects a layer, we change the map and marker styles, and update the active layer reference
-	layerSelected: function(layer){
-		var newActiveLayer = layer.target.id;
+	setActiveLayer: function(layer){
+		//remove active status
+		_.forEach($('.map-layer-option'), function(layer){
+			$(layer).removeClass('active')
+		})
+		$('#'+layer+'-label').addClass('active');
+
 		var mapStyle, markerStyle;
-		switch(newActiveLayer){
+		switch(layer){
 			case('status-layer'):
 				mapStyle = 'vintage';
 				markerStyle = 'bw_pin';
 				break;
-			case('performance-layer'):
+			case('flow-layer'):
 				mapStyle = 'dark';
 				markerStyle = 'performance_glyph';
 				break;
@@ -71,10 +85,6 @@ var MapPageView = Backbone.View.extend({
 		this.map.setOptions({ styles: newMapLayer.styleArray });
 
 		this.intersectionsCollectionView.setIntersectionStyle( markerStyle );
-
-		this.$('#'+this.activeLayer).removeClass('active');
-		this.$('#'+newActiveLayer).addClass('active');
-		this.activeLayer = newActiveLayer;
 	},
 
 	// when a user clicks show more in an intersection popup
