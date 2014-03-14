@@ -25,7 +25,7 @@ var IntersectionsCollectionView = Backbone.View.extend({
 		// introduce some fake data for testing
 		intersection.set('volume', Math.random());
 		intersection.set('performance', Math.random());
-		intersections.set({
+		intersection.set({
 			'status': 'OK',
 
 			'currentState': 'EWT',
