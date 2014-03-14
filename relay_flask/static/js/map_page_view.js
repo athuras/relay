@@ -4,6 +4,8 @@ var MapPageView = Backbone.View.extend({
 	events: {
 		'click .layer-view': 'layerSelected',
 		'click .layer-btn': 'layerSelected',
+
+		'click .map-layer-option': 'layerSelected'
 	},
 
 	initialize: function(options){
@@ -18,32 +20,60 @@ var MapPageView = Backbone.View.extend({
 		// Create our map object
 		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions);
 
+		// Create our info box
+		this.infoBoxView = new InfoBoxView({mapPageView: this, map: this.map});
+
 		// Make our panel View
 		this.panelView = new PanelView();
 
 		// Create our intersection Collection View
-		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map, panelView: this.panelView });
+		this.intersectionsCollectionView = new IntersectionsCollectionView({model: this.intersectionsCollection, map: this.map, panelView: this.panelView, infoBoxView: this.infoBoxView});
+
+		// Add listener
+		google.maps.event.addListener(this.map, 'click', $.proxy(function(e){
+			this.mapClicked(e);
+		}, this));
 
 		this.render();
 	},
 
 	render: function(){
-		//select an initial map style: for now it's status
-		setTimeout(function(){
-			$('#status-layer').click();
-		}, 200);
+	},
+
+	mapClicked: function(e){
+		console.log('map click registered');
+		console.log(e);
+		// I don't know why the details process causes another map click.
+		// if(this.infoBoxView.isOpen){
+		// 	this.infoBoxView.close();
+		// }
+		// if(this.panelView.isExpanded){
+		// 	this.panelView.collapse();
+		// }
+	},
+
+	// handle clicks on the layers legend to change the layer
+	layerSelected: function(e){
+		// this.currentLayerLabel.removeClass('active');
+		// var newActiveLayer = $(e.target).data('layer');
+		this.setActiveLayer($(e.target).data('layer'));
 	},
 
 	// when someone selects a layer, we change the map and marker styles, and update the active layer reference
-	layerSelected: function(layer){
-		var newActiveLayer = layer.target.id;
+	setActiveLayer: function(layer){
+		//remove active status
+		_.forEach($('.map-layer-option'), function(layer){
+			$(layer).removeClass('active')
+		})
+		$('#'+layer+'-label').addClass('active');
+
 		var mapStyle, markerStyle;
-		switch(newActiveLayer){
+		switch(layer){
 			case('status-layer'):
 				mapStyle = 'vintage';
 				markerStyle = 'bw_pin';
 				break;
-			case('performance-layer'):
+			case('flow-layer'):
 				mapStyle = 'dark';
 				markerStyle = 'performance_glyph';
 				break;
@@ -55,10 +85,14 @@ var MapPageView = Backbone.View.extend({
 		this.map.setOptions({ styles: newMapLayer.styleArray });
 
 		this.intersectionsCollectionView.setIntersectionStyle( markerStyle );
-
-		this.$('#'+this.activeLayer).removeClass('active');
-		this.$('#'+newActiveLayer).addClass('active');
-		this.activeLayer = newActiveLayer;
 	},
+
+	// when a user clicks show more in an intersection popup
+	// close the popup, open the panel and populate w/ that intersections info
+	showMore: function(model){
+		this.infoBoxView.close();
+		this.panelView.expand();
+		this.panelView.showIntersectionDetails(model);
+	}
 
 });

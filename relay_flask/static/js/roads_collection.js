@@ -14,7 +14,7 @@ var RoadsCollection = Backbone.Collection.extend({
 			type: "POST",
 			datatype: "JSON",
 			contentType: "application/json",
-			url: "http://localhost:5000/request_intersections",
+			url: "http://localhost:5000/request_roads",
 			data: JSON.stringify(bounds),
 			async: false
         }).then( function(d){

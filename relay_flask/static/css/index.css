@@ -114,7 +114,24 @@ li {
 
 
 
-/* ********** Map ********** */
+
+/* ********** Info Box ********** */
+#info-box{
+	margin-top: 8px;
+	color: #f5f5f5;
+
+	/* just copied this from the side panel css */
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
+	padding: 16px;
+	z-index: 100000;
+
+}
+
+
+
+
+/* ********** Intersections ********** */
 
 #intersections-page{
 	display: none;
@@ -139,7 +156,7 @@ li {
 
 
 
-/* ********** Map ********** */
+/* ********** Network ********** */
 
 #network-page{
 	display: none;
@@ -210,12 +227,21 @@ hr {
 
 /* ********** Side Panel ************ */
 
-#title-container {
-	height: 52pt;
-	margin: 0 0 48px 0;
+#side-panel {
+	background: rgba(0, 0, 0, 0.8);
+	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
+	height: 100%;
+	max-width: 350px;
+	min-width: 16px;
+	padding: 16px;
+	position: fixed;
+	right: 0;
+	top: 58px;
+	width: 16px;
+	z-index: 100;
 }
 
-#side-panel {
+#side-panel.expanded{
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
@@ -227,6 +253,44 @@ hr {
 	top: 58px;
 	width: 33%;
 	z-index: 100;
+}
+
+#panel-toggle{
+    -webkit-transform: 1s ease-in-out;
+    -moz-transform: 1s ease-in-out;
+    -o-transform: 1s ease-in-out;
+    transform: 1s ease-in-out;
+}
+
+#side-panel #panel-toggle{
+
+    -moz-transform: scaleX(1);
+    -o-transform: scaleX(1);
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+#side-panel.expanded #panel-toggle{
+
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+#panel-container{
+	display: none;
+}
+
+#panel-container.expanded{
+	display: block;
+}
+
+
+
+#title-container {
+	height: 52pt;
+	margin: 0 0 48px 0;
 }
 
 #intersection-title {
@@ -300,16 +364,29 @@ hr {
 
 /* ********** Map Layer Container ********** */
 
-#map-layer-container{
+#layer-legend{
 	position: absolute;
-	left: 0px;
-	top: 200px;
+	left: 20px;
+	top: 100px;
 	height: 100px;
 	width: 100px;
 	background-color: rgba(0, 0, 0, 0.9);
 	-moz-box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
 	-webkit-box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
 	box-shadow: -4px 0 11px rgba(0, 0, 0, 0.57);
+}
+
+#layer-legend p{
+	color: #f5f5f5;
+}
+
+#layer-legend li{
+	color: #f5f5f5;
+}
+
+#layer-legend li.active{
+	color: #f5f5f5;
+	background-color: #fff;
 }
 
 #map-layer-container .active{

@@ -15,36 +15,26 @@ var PanelView = Backbone.View.extend({
 
 	},
 
+	expand: function(){
+		this.$el.addClass('expanded');
+		this.$('#panel-container').addClass('expanded');
+		this.isExpanded = true;
+	},
+
+	collapse: function(){
+		this.$('#panel-container').removeClass('expanded');
+		this.$el.removeClass('expanded');
+		this.isExpanded = false;
+	},
+
 	panelToggled: function(){
 		switch(this.$el.hasClass('expanded')){
 			case(true):
-				this.$('#panel-container').css('display', 'none');
-				this.$el.animate({
-					'min-width': '16px',
-					width: '16px'
-				}, 400);
-				this.$('#panel-toggle').css({
-					'transform' : 'rotate(180deg)',
-					'-ms-transform' : 'rotate(180deg)', /* IE 9 */
-					'-webkit-transform' : 'rotate(180deg)' /* Safari and Chrome */
-				})
-				this.$el.removeClass('expanded');
+				this.collapse();
 				break;
 
 			case(false):
-				this.$el.animate({
-					'min-width': '238px',
-					width: '33%'
-				}, 400);
-				this.$('#panel-toggle').css({
-					'transform' : 'rotate(0deg)',
-					'-ms-transform' : 'rotate(0deg)', /* IE 9 */
-					'-webkit-transform' : 'rotate(0deg)' /* Safari and Chrome */
-				})
-				setTimeout(function(){
-					this.$('#panel-container').css('display', 'block');
-				}, 400);
-				this.$el.addClass('expanded');
+				this.expand();
 				break;
 
 			default:
@@ -54,10 +44,6 @@ var PanelView = Backbone.View.extend({
 
 	// populate the intersection name and info
 	showIntersectionDetails: function(intersectionModel){
-		if(!this.$el.hasClass('expanded')){
-			this.panelToggled;
-		}
-
 		this.$('#intersection-title').text( intersectionModel.get('name') );
 
 		$.ajax({

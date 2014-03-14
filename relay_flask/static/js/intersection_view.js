@@ -7,16 +7,18 @@ var IntersectionView = Backbone.View.extend({
 		this.model = options.model; // reference the intersection model
 		this.map = options.map; // reference the map
 		this.panelView = options.panelView;
+		this.infoBoxView = options.infoBoxView;
 
 		this.markerStyles = bootstrap.markerStyles;
 
 		this.lat = this.model.get('lat');
 		this.lng = this.model.get('long');
+		this.LatLng = new google.maps.LatLng(this.lat, this.lng)
 		this.title = this.model.get('name');
 
 		this.marker = new google.maps.Marker({
 			//map: this.map, // so it calls from render...
-			position: new google.maps.LatLng(this.lat, this.lng),
+			position: this.LatLng,
 			title: this.title,
 			map: this.map,
 			intersectionView: this
@@ -30,21 +32,15 @@ var IntersectionView = Backbone.View.extend({
 		    scale: 1
 		};
 
+		// google maps info window
 		this.infoWindow = new google.maps.InfoWindow({
 			content: this.title
 		});
 
+
 		// listeners, etc.
 		google.maps.event.addListener(this.marker, 'click', function(event){
 			this.intersectionView.onMarkerClick();
-		});
-
-		google.maps.event.addListener(this.marker, 'mouseover', function(event){
-			this.intersectionView.onHover();
-		});
-
-		google.maps.event.addListener(this.marker, 'mouseout', function(event){
-			this.intersectionView.onHoverOut();
 		});
 
 		this.render();
@@ -56,17 +52,8 @@ var IntersectionView = Backbone.View.extend({
 	remove: function(){
 	},
 
-	onMarkerClick: function(){ // the marker is implicitly passed as the context
-		// this.infoWindow.open(this.map, this);
-		this.panelView.showIntersectionDetails(this.model);
-	},
-
-	onHover: function(){
-		this.infoWindow.open(this.map, this.marker);
-	},
-
-	onHoverOut: function(){
-		this.infoWindow.close();
+	onMarkerClick: function(){ //pass this marker and model to the popup
+		this.infoBoxView.setIntersection(this.marker, this.model);
 	},
 
 	setMarkerStyle: function(markerStyle){
