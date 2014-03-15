@@ -43,6 +43,48 @@ def get_roads():
         roads = g.db.query('relay_main', qstr, as_dict=True)
         return createJSON(roads)
 
+@app.route('/request_plan', methods=['POST'])
+def get_plan():
+    if request.method == 'POST':
+        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''
+            SELECT 
+                timestamp,
+                value 
+            FROM 
+                int_metrics
+            WHERE
+                name = 'plan' AND
+                int_id = :int_id;
+            ''' 
+        plan = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        return createJSON(plan)
+
+@app.route('/request_flows', methods=['POST'])
+def get_flows():
+    if request.method == 'POST':
+        int_id = request.json
+        qstr = '''
+            SELECT 
+                timestamp,
+                value,
+                in_node_id,
+                out_node_id 
+            FROM 
+                int_metrics
+            WHERE
+                name = 'flow' AND
+                int_id = :int_id AND
+                timestamp >= 0
+            ORDER BY
+                timestamp ASC;
+            '''
+        # strftime('%s', :intial_time)
+        flows = g.db.query('relay_main', qstr, int_id, as_dict=True)
+
+        # flow_arrays = create_flow_arrs(flows)
+        return createJSON(flows)
+
 # @app.route('/get_intersections', methods=['get'])
 # def get_intersections():
 #     connection = db.connect()
