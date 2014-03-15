@@ -25,7 +25,16 @@ var IntersectionView = Backbone.View.extend({
 		});
 
 		this.performanceGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
+		this.flowGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
+				
 		this.performanceGlyph = {
+			path: '',
+		    fillColor: '',
+		    fillOpacity: 0.8,
+		    scale: 1
+		};
+
+		this.flowGlyph = {
 			path: '',
 		    fillColor: '',
 		    fillOpacity: 0.8,
@@ -59,11 +68,9 @@ var IntersectionView = Backbone.View.extend({
 	setMarkerStyle: function(markerStyle){
 		switch(markerStyle){
 			case('bw_pin'):
-				this.marker.setOptions(this.markerStyles['bw_pin'].options);
-				break;
-			case('performance_glyph'):
 				// size the glyph appropriately
-				var r = Math.ceil(Math.random() * 20);
+				// var r = Math.ceil(Math.random() * 8);
+				var r = 5.5;
 				var d = 2*r;
 				var cx = r;
 				var cy = r;
@@ -72,19 +79,41 @@ var IntersectionView = Backbone.View.extend({
 				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/cx/g, cx.toString());
 				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/cy/g, cy.toString());
 
-				this.performanceGlyph['fillOpacity'] = Math.random();
+				// this.performanceGlyph['fillOpacity'] = Math.random();
 				var capacity = Math.random();
-				if(capacity < 0.3){
-					this.performanceGlyph['fillColor'] = 'green';
-				} else if (capacity < 0.6){
-					this.performanceGlyph['fillColor'] = 'yellow';
+				if(capacity < 0.95){
+					this.performanceGlyph['fillColor'] = 'rgba(255, 255, 255, 0.8)';
 				} else {
-					this.performanceGlyph['fillColor'] = 'red';
+					this.performanceGlyph['fillColor'] = 'rgba(234, 20, 20, 1)';
 				}
+
+				this.performanceGlyph['strokeColor'] = 'rgba(0, 0, 0, 0)';
 
 				this.performanceGlyph['path'] = this.performanceGlyphTemplate;
 
 				this.marker.setOptions({ icon: this.performanceGlyph });
+				break;
+
+			case('performance_glyph'):
+				// size the glyph appropriately
+				var r = 14;
+				var d = 2*r;
+				var cx = r;
+				var cy = r;
+
+				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/r/g, r.toString());
+				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/d/g, d.toString());
+				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/cx/g, cx.toString());
+				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/cy/g, cy.toString());
+
+				this.flowGlyph['fillColor'] = 'rgba(22, 214, 62, 0.4)';
+				this.flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.2)';
+				this.flowGlyph['strokeWeight'] = '12';
+				
+				this.flowGlyph['path'] = this.flowGlyphTemplate;
+
+				this.marker.setOptions({ icon: this.flowGlyph });
+
 				break;
 			default:
 				break;

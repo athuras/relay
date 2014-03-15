@@ -534,6 +534,7 @@ hr {
 	position: relative;
 	text-align: left;
 	width: 100px;
+	-webkit-transition: background-color 0.3s ease-out;
 }
 
 #layer-legend li:hover {
