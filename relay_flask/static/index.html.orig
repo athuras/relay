@@ -9,8 +9,11 @@
 	<link rel="stylesheet" href="css/reset.css"/>
 	<link rel="stylesheet" href="css/fonts.css"/>
 	<link rel="stylesheet" href="css/index.css"/>
+<<<<<<< HEAD
 	<link rel="stylesheet" href="css/clients/backgrid-relay.css"/>
+=======
 	<link rel="stylesheet" href="css/clients/rickshaw.css"/>
+>>>>>>> a33ba038ee72e252719a48b24c56fecfbfaec4dc
 	<link rel="icon" type="image/ico" href="assets/favicon.ico"/>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization&sensor=false"></script>
 </head>
@@ -112,16 +115,14 @@
 				<img id='chunk-arrow' src='assets/chunk-arrow.png'/>
 			</div>
 
-			<div id='graph-wrap'>
-				<div id='yaxis'></div>
-				<div id='graph'></div>
-			</div>
+			<!-- <canvas id='cap-chart' width='400' height='200'></canvas> -->
+			<div id='yaxis'></div>
+			<div id='graph'></div>
 
 			<div id='state-wrap'>
 				<img id='state' src='assets/ewt.png'/><br/>
 				<div id='countdown'>11</div>
 			</div>
-
 			<!-- <ul class='list-wrapper' id='left'>
 				<li class='list-row'>
 					<span class='info-label'>STATUS</span><br/>
@@ -147,7 +148,6 @@
 				</li>
 				<p id='more-info-link'>more</p>
 			</ul> -->
-
 		</div>
 	</script>
 
