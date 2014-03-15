@@ -5,7 +5,7 @@ var bootstrap = new Object();
 bootstrap.activeLayer = 'status-layer'; // default layer
 
 bootstrap.mapOptions = {
-	zoom: 11,
+	zoom: 13,
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	center: new google.maps.LatLng(43.652073, -79.382293),
 	disableDefaultUI: true
@@ -168,17 +168,17 @@ bootstrap.mapStyles = {
 bootstrap.markerStyles = {
 	'bw_pin':{
 		options: {
-			icon: '/static/assets/marker.png'
+			// icon: '/static/assets/marker.png'
 		}
 	},
 	'performance_glyph': {
-		templateString: 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0',
+		//templateString: 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0',
 		icon: {
-	    fillColor: 'yellow',
-	    fillOpacity: 0.8,
-	    scale: 0.5,
-	    strokeColor: 'gold',
-	    strokeWeight: 14
+	    // fillColor: 'yellow',
+	    // fillOpacity: 0.8,
+	    // scale: 0.5,
+	    // // strokeColor: 'gold',
+	    // // strokeWeight: 14
 	  },
 		options: {
 			icon: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png'
