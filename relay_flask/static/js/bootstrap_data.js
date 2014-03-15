@@ -1,4 +1,16 @@
+// Setting and utility data for Relay
 var bootstrap = new Object();
+
+// Maps
+bootstrap.activeLayer = 'status-layer'; // default layer
+
+bootstrap.mapOptions = {
+	zoom: 13,
+	mapTypeId: google.maps.MapTypeId.ROADMAP,
+	center: new google.maps.LatLng(43.652073, -79.382293),
+	disableDefaultUI: true
+};
+
 bootstrap.mapStyles = {
 	'dark': [
 	        {
@@ -150,53 +162,23 @@ bootstrap.mapStyles = {
 	            { "color": "#606060" }
 	          ]
 	        }
-	],
-	'vintage': [
-		  {
-		    featureType: "all",
-		    stylers: [
-		      { saturation: -80 }
-		    ]
-		  },{
-		    featureType: "road.arterial",
-		    elementType: "geometry",
-		    stylers: [
-		      { hue: "#00ffee" },
-		      { saturation: 50 }
-		    ]
-		  },{
-		    featureType: "poi.business",
-		    elementType: "labels",
-		    stylers: [
-		      { visibility: "off" }
-		    ]
-		  }
 	]
-};
-
-bootstrap.activeLayer = 'layer-one';
-
-bootstrap.mapOptions = {
-	zoom: 11,
-	mapTypeId: google.maps.MapTypeId.ROADMAP,
-	center: new google.maps.LatLng(43.652073, -79.382293),
-	disableDefaultUI: true
 };
 
 bootstrap.markerStyles = {
 	'bw_pin':{
 		options: {
-			icon: '/static/assets/marker.png'
+			// icon: '/static/assets/marker.png'
 		}
 	},
 	'performance_glyph': {
-		templateString: 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0',
+		//templateString: 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0',
 		icon: {
-	    fillColor: 'yellow',
-	    fillOpacity: 0.8,
-	    scale: 0.5,
-	    strokeColor: 'gold',
-	    strokeWeight: 14
+	    // fillColor: 'yellow',
+	    // fillOpacity: 0.8,
+	    // scale: 0.5,
+	    // // strokeColor: 'gold',
+	    // // strokeWeight: 14
 	  },
 		options: {
 			icon: 'https://maps.google.com/mapfiles/kml/shapes/library_maps.png'
@@ -204,33 +186,52 @@ bootstrap.markerStyles = {
 	}
 };
 
+bootstrap.heatMapStyles = {
+	gradient: [
+	    'rgba(0, 255, 255, 0)',
+	    'rgba(0, 255, 255, 1)',
+	    'rgba(0, 191, 255, 1)',
+	    'rgba(0, 127, 255, 1)',
+	    'rgba(0, 63, 255, 1)',
+	    'rgba(0, 0, 255, 1)',
+	    'rgba(0, 0, 223, 1)',
+	    'rgba(0, 0, 191, 1)',
+	    'rgba(0, 0, 159, 1)',
+	    'rgba(0, 0, 127, 1)',
+	    'rgba(63, 0, 91, 1)',
+	    'rgba(127, 0, 63, 1)',
+	    'rgba(191, 0, 31, 1)',
+	    'rgba(255, 0, 0, 1)'
+	],
+	radius: 20,
+	opacity: 0.2,
+	// add more as you wish
+};
+
+// Charting
 bootstrap.chartDataFormats = {
-		labels : [],
-		datasets : [
-			{
-				fillColor : "rgba(90,90,90,0.25)",
-				strokeColor : "rgba(150,150,150,1)",
-				pointColor : "rgba(150,150,150,1)",
-				pointStrokeColor : "#fff",
-				data : []
-			},
-			{
-				fillColor : "rgba(88,138,190,0.1)",
-				strokeColor : "rgba(88,138,190,1)",
-				pointColor : "rgba(88,138,190,1)",
-				pointStrokeColor : "#fff",
-				data : []
-			}
-		]
-	}
+	labels : [],
+	datasets : [
+		{
+			fillColor : "rgba(90,90,90,0.25)",
+			strokeColor : "rgba(150,150,150,1)",
+			pointColor : "rgba(150,150,150,1)",
+			pointStrokeColor : "#fff",
+			data : []
+		},
+		{
+			fillColor : "rgba(88,138,190,0.1)",
+			strokeColor : "rgba(88,138,190,1)",
+			pointColor : "rgba(88,138,190,1)",
+			pointStrokeColor : "#fff",
+			data : []
+		}
+	]
+};
 
 bootstrap.chartOptions = {
 	scaleFontFamily : "'ProximaNova', 'Helvetica Neue', 'Arial', 'sans-serif'",
 	scaleFontSize : 10,
 	pointDotRadius : 2,
 	scaleGridLineColor : "rgba(255,255,255,0.05)"
-}
-
-bootstrap.defaultMapStyle = 'vintage';
-
-bootstrap.defaultMarker = 'bw_pin';
+};

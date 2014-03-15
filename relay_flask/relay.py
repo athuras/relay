@@ -1,4 +1,6 @@
 import os
+import signal_helpers as sighelp
+
 from collections import defaultdict
 from db.DatabaseManager import DatabaseManager
 
@@ -27,10 +29,46 @@ def index():
 def get_intersections():
     if request.method == 'POST':
         bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
-        qstr = '''SELECT long, lat, name, type, type_short, int_id FROM
-            intersections WHERE lat>=:minlat AND lat<=:maxlat AND
-            long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        intersects = g.db.query('relay_main', qstr, bounds, as_dict=True)
+        qstr = '''
+            SELECT 
+                i.long, 
+                i.lat, 
+                i.name, 
+                i.type, 
+                i.type_short, 
+                i.int_id,
+                s.value as status,
+                p.value as plan,
+                b.value as behaviour
+            FROM
+                intersections as i
+                LEFT JOIN (
+                    SELECT *
+                    FROM int_metrics
+                    WHERE name='status'
+                    ) as s
+                    ON i.int_id == s.int_id
+                LEFT JOIN (
+                    SELECT *
+                    FROM int_metrics
+                    WHERE name='plan'
+                    ) as p
+                    ON i.int_id == p.int_id
+                LEFT JOIN (
+                    SELECT *
+                    FROM int_metrics
+                    WHERE name='bhvr'
+                    ) as b
+                    ON i.int_id == b.int_id
+            WHERE
+                i.lat>=:minlat AND
+                i.lat<=:maxlat AND
+                i.long>=:minlong AND
+                i.long<=:maxlong AND
+                i.type_short IN  ('MJRML', 'MJRSL', 'MAJINT');
+            '''
+        intersects = g.db.query('relay_main', qstr, bounds, as_dict=True) 
+
         return createJSON(intersects)
 
 @app.route('/request_roads', methods=['POST'])
@@ -40,8 +78,54 @@ def get_roads():
         qstr = '''SELECT * FROM roads;''' 
         #WHERE lat>=:minlat AND lat<=:maxlat AND
          #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        roads = g.db.query('relay_main', qstr, as_dict=True)
+        roads = g.db.query('relay_main', qstr, bounds, as_dict=True)
         return createJSON(roads)
+
+@app.route('/request_plan', methods=['POST'])
+def get_plan():
+    if request.method == 'POST':
+        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''
+            SELECT 
+                timestamp,
+                value 
+            FROM 
+                int_metrics
+            WHERE
+                name = 'plan' AND
+                int_id = :int_id;
+            ''' 
+        plan = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        return createJSON(plan)
+
+@app.route('/request_flows', methods=['POST'])
+def get_flows():
+    if request.method == 'POST':
+        int_id = request.json
+        # qstr = '''
+        #     SELECT 
+        #         timestamp,
+        #         value,
+        #         in_node_id,
+        #         out_node_id 
+        #     FROM 
+        #         int_metrics
+        #     WHERE
+        #         name = 'flow' AND
+        #         int_id = :int_id AND
+        #         timestamp >= 0
+        #     ORDER BY
+        #         timestamp ASC;
+        #     '''
+        # # strftime('%s', :intial_time)
+        # flows = g.db.query('relay_main', qstr, int_id, as_dict=True)
+
+        A, B, C, D, E = sighelp.generate_signals(250)
+        signals = [A, B, C, D]
+        flows = sighelp.create_hist_dict(signals, 1)
+
+        # flow_arrays = create_flow_arrs(flows)
+        return createJSON(flows)
 
 # @app.route('/get_intersections', methods=['get'])
 # def get_intersections():

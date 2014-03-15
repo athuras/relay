@@ -29,13 +29,21 @@
 				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
 			</ul>
 			<!-- <div id='search-box'><img id='search-icon' src='assets/search.png'/></div> -->
-			<img id='settings' src='assets/settings.png'/>
+			<img class='spinner' id='settings' src='assets/settings.png'/>
 		</div>
 
 		<!-- Map page -->
 		<div id="map-page" class='page'>
 			<!-- Where the map goes -->
 			<div id="map"></div>
+
+<!-- 			<div id='settings-pane'>
+				<div id='title'>Connection Settings</div>
+				<span id='label'>DATA FEED</span><br/>
+				<span id='answer'>Live</span><br/>
+				<span id='label'>LAST UPDATED</span><br/>
+				<span id='answer'>30s ago</span>
+			</div> -->
 
 			<!-- dat LEGEND -->
 			<div id='layer-legend'>
@@ -48,7 +56,7 @@
 				</ul>
 				<div class='legend-label' id='visualizations'>VISUALIZATIONS</div>
 				<ul>
-					<li class='map-layer-option' data-layer='flow-visualization'>Flow</li>
+					<li class='map-layer-option' id='flow-visualization-label' data-layer='flow-visualization'>Flow</li>
 				</ul>
 			</div>
 
@@ -100,6 +108,23 @@
 		<!-- Network Page -->
 		<div id="network-page" class='page'>
 			<p>network</p>
+				<div id='info-box'>
+				<div id='heading'>
+					<div id='intersection-name' data-content='name'></div>
+					<img id='chunk-arrow' src='assets/chunk-arrow.png'/>
+				</div>
+
+				<div id='graph-wrap'>
+					<div id='yaxis'></div>
+					<div id='graph'></div>
+					<div id='xaxis'></div>
+				</div>
+
+				<div id='state-wrap'>
+					<img id='state' src='assets/ewt.png'/><br/>
+					<div id='countdown'>11</div>
+				</div>
+			</div>
 		</div>
 
 	</div> <!-- End of app div -->
@@ -116,6 +141,7 @@
 			<div id='graph-wrap'>
 				<div id='yaxis'></div>
 				<div id='graph'></div>
+				<div id='xaxis'></div>
 			</div>
 
 			<div id='state-wrap'>
@@ -178,6 +204,8 @@
 	<script type="text/javascript" src='js/clients/infobox.js'></script>
 
 	<script type="text/javascript" src='js/clients/jquery.loadTemplate-1.4.1.js'></script>
+
+	<script type="text/javascript" src='js/clients/snap.svg-min.js'></script>
 
 
 	<!-- bootstrap data -->

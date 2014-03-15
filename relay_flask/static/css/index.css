@@ -62,6 +62,7 @@ li {
 }
 
 .header-btn:hover {
+	-webkit-transition: background 0.2s ease-in;
 	background: -webkit-linear-gradient(top, #2e2e2e, #000);
 }
 
@@ -101,6 +102,64 @@ li {
 	right: 16px;
 }
 
+@-webkit-keyframes spin {
+	0% {-webkit-transform:rotate(-15deg);}
+	25% {-webkit-transform:rotate(-60deg);}
+	50% {-webkit-transform:rotate(-180deg);}
+	75% {-webkit-transform:rotate(-300deg);}
+	100% {-webkit-transform:rotate(-360deg);}
+}
+ 
+.spinner:hover {
+	cursor: pointer;
+	-webkit-animation: spin 0.4s 0 ease;
+}
+
+
+
+/* ********** Settings Pane ************ */
+
+#settings-pane {
+	background-color: rgba(0, 0, 0, 0.9);
+	border: 1px solid rgba(54, 54, 54, 1);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.63);
+	color: #f5f5f6;
+	width: 250px;
+	height: 178px;
+	padding: 0 14px;
+	position: absolute;
+	text-align: right;
+	top: 43px;
+	right: 14px;
+	z-index: 1000;
+}
+
+#settings-pane #title {
+	border-bottom: 1px solid #f5f5f6;
+	font-size: 1em;
+	font-weight: 600;
+	padding: 14px 0;
+	position: relative;
+}
+
+#settings-pane #label {
+	margin: 26px 0 0 0;
+	position: relative;
+	display: inline-block;
+	color: #dcdcdc;
+	font-size: 0.5em;
+	font-weight: 500;
+	letter-spacing: 0.05em;
+}
+
+#settings-pane #answer {
+	font-weight: 600;
+	color: #fff;
+	display: inline-block;
+	font-size: 0.9em;
+	letter-spacing: 0.05em;
+	position: relative;
+}
 
 
 /* ********** Pages ********** */
@@ -165,18 +224,27 @@ li {
 	float: left;
 	margin: 16px 0 0 0;
 	position: relative;
+	height: 150px;
+	width: 300px;
 }
 
 #info-box #yaxis {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 40px;
+	float: left;
+	width: 30px;
+	height: 150px;
+}
+
+#info-box #xaxis{
+	float: right;
+	height: 25px;
+	width: 270px;
 }
 
 #info-box #graph {
-	position: relative;
-	left: 40px;
+	float: right;
+	left: 20px;
+	width: 270px;
+	height: 150px;
 }
 
 #state-wrap {
@@ -345,7 +413,7 @@ hr {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
-	max-width: 600px;
+	width: 100%;
 	min-width: 16px;
 	padding: 11px;
 	position: fixed;
@@ -359,13 +427,14 @@ hr {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
-	max-width: 600px;
+	width: 100%;
 	min-width: 238px;
-	padding: 16px;
+	/*padding: 16px;*/
 	position: fixed;
 	right: 0;
+	left: 0;
 	top: 58px;
-	width: 600px;
+	bottom: 0;
 	z-index: 100;
 }
 
@@ -377,7 +446,6 @@ hr {
 }
 
 #side-panel #panel-toggle {
-
     -moz-transform: scaleX(1);
     -o-transform: scaleX(1);
     -webkit-transform: scaleX(1);
@@ -411,7 +479,7 @@ hr {
 	color: #fff;
 	font-size: 25pt;
 	font-weight: bold;
-	float: right;
+	float: left;
 	letter-spacing: 0.01em;
 	line-height: 27pt;
 }
@@ -466,6 +534,7 @@ hr {
 	position: relative;
 	text-align: left;
 	width: 100px;
+	-webkit-transition: background-color 0.3s ease-out;
 }
 
 #layer-legend li:hover {
