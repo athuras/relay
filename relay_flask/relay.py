@@ -1,4 +1,6 @@
 import os
+import signal_helpers as sighelp
+
 from collections import defaultdict
 from db.DatabaseManager import DatabaseManager
 
@@ -64,23 +66,27 @@ def get_plan():
 def get_flows():
     if request.method == 'POST':
         int_id = request.json
-        qstr = '''
-            SELECT 
-                timestamp,
-                value,
-                in_node_id,
-                out_node_id 
-            FROM 
-                int_metrics
-            WHERE
-                name = 'flow' AND
-                int_id = :int_id AND
-                timestamp >= 0
-            ORDER BY
-                timestamp ASC;
-            '''
-        # strftime('%s', :intial_time)
-        flows = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        # qstr = '''
+        #     SELECT 
+        #         timestamp,
+        #         value,
+        #         in_node_id,
+        #         out_node_id 
+        #     FROM 
+        #         int_metrics
+        #     WHERE
+        #         name = 'flow' AND
+        #         int_id = :int_id AND
+        #         timestamp >= 0
+        #     ORDER BY
+        #         timestamp ASC;
+        #     '''
+        # # strftime('%s', :intial_time)
+        # flows = g.db.query('relay_main', qstr, int_id, as_dict=True)
+
+        A, B, C, D, E = sighelp.generate_signals(250)
+        signals = [A, B, C, D]
+        flows = sighelp.create_hist_dict(signals, 1)
 
         # flow_arrays = create_flow_arrs(flows)
         return createJSON(flows)
