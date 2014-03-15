@@ -62,6 +62,7 @@ li {
 }
 
 .header-btn:hover {
+	-webkit-transition: background 0.2s ease-in;
 	background: -webkit-linear-gradient(top, #2e2e2e, #000);
 }
 
