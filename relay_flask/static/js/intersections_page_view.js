@@ -9,6 +9,16 @@ var IntersectionsPageView = Backbone.View.extend({
 		name: 'type',
 		label: 'Intersection Type',
 		editable: false,
+	},{
+		cell: 'string',
+		name: 'status',
+		label: 'Status',
+		editable: false,
+	},{
+		cell: 'string',
+		name: 'currentState',
+		label: 'State',
+		editable: false,
 	}],
 
 	el: $('#intersections-page'),
