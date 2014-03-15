@@ -101,6 +101,20 @@ li {
 	right: 16px;
 }
 
+@-webkit-keyframes spin {
+	0% {-webkit-transform:rotate(-15deg);}
+	25% {-webkit-transform:rotate(-60deg);}
+	50% {-webkit-transform:rotate(-180deg);}
+	75% {-webkit-transform:rotate(-300deg);}
+	100% {-webkit-transform:rotate(-360deg);}
+}
+ 
+.spinner:hover {
+	cursor: pointer;
+	-webkit-animation: spin 0.4s 0 ease;
+}
+
+
 
 
 /* ********** Pages ********** */
@@ -345,7 +359,7 @@ hr {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
-	max-width: 600px;
+	width: 100%;
 	min-width: 16px;
 	padding: 11px;
 	position: fixed;
@@ -359,13 +373,14 @@ hr {
 	background: rgba(0, 0, 0, 0.8);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
-	max-width: 600px;
+	width: 100%;
 	min-width: 238px;
-	padding: 16px;
+	/*padding: 16px;*/
 	position: fixed;
 	right: 0;
+	left: 0;
 	top: 58px;
-	width: 600px;
+	bottom: 0;
 	z-index: 100;
 }
 
@@ -377,7 +392,6 @@ hr {
 }
 
 #side-panel #panel-toggle {
-
     -moz-transform: scaleX(1);
     -o-transform: scaleX(1);
     -webkit-transform: scaleX(1);
@@ -411,7 +425,7 @@ hr {
 	color: #fff;
 	font-size: 25pt;
 	font-weight: bold;
-	float: right;
+	float: left;
 	letter-spacing: 0.01em;
 	line-height: 27pt;
 }

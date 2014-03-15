@@ -20,6 +20,13 @@ var MapPageView = Backbone.View.extend({
 		// Create our map object
 		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions);
 
+		// // Create a heatmap object
+		// var heatmap = new google.maps.visualization.HeatmapLayer({
+		// 	data: bootstrap.heatmapData
+		// });
+
+		// heatmap.setMap(map);
+
 		// Create our info box
 		this.infoBoxView = new InfoBoxView({mapPageView: this, map: this.map});
 

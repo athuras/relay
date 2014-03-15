@@ -1,4 +1,27 @@
 var bootstrap = new Object();
+
+
+// // DATA DUMP!!
+
+// bootstrap.heatmapData = [
+// 	  new google.maps.LatLng(37.782, -122.447),
+// 	  new google.maps.LatLng(37.782, -122.445),
+// 	  new google.maps.LatLng(37.782, -122.443),
+// 	  new google.maps.LatLng(37.782, -122.441),
+// 	  new google.maps.LatLng(37.782, -122.439),
+// 	  new google.maps.LatLng(37.782, -122.437),
+// 	  new google.maps.LatLng(37.782, -122.435),
+// 	  new google.maps.LatLng(37.785, -122.447),
+// 	  new google.maps.LatLng(37.785, -122.445),
+// 	  new google.maps.LatLng(37.785, -122.443),
+// 	  new google.maps.LatLng(37.785, -122.441),
+// 	  new google.maps.LatLng(37.785, -122.439),
+// 	  new google.maps.LatLng(37.785, -122.437),
+// 	  new google.maps.LatLng(37.785, -122.435)
+// 	];
+
+
+
 bootstrap.mapStyles = {
 	'dark': [
 	        {
@@ -177,9 +200,10 @@ bootstrap.mapStyles = {
 bootstrap.activeLayer = 'layer-one';
 
 bootstrap.mapOptions = {
-	zoom: 11,
+	zoom: 13,
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	center: new google.maps.LatLng(43.652073, -79.382293),
+	// center: new google.maps.LatLng(37.774546, -122.433523),
 	disableDefaultUI: true
 };
 
