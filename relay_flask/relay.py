@@ -29,10 +29,46 @@ def index():
 def get_intersections():
     if request.method == 'POST':
         bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
-        qstr = '''SELECT long, lat, name, type, type_short, int_id FROM
-            intersections WHERE lat>=:minlat AND lat<=:maxlat AND
-            long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        intersects = g.db.query('relay_main', qstr, bounds, as_dict=True)
+        qstr = '''
+            SELECT 
+                i.long, 
+                i.lat, 
+                i.name, 
+                i.type, 
+                i.type_short, 
+                i.int_id,
+                s.value as status,
+                p.value as plan,
+                b.value as behaviour
+            FROM
+                intersections as i
+                LEFT JOIN (
+                    SELECT *
+                    FROM int_metrics
+                    WHERE name='status'
+                    ) as s
+                    ON i.int_id == s.int_id
+                LEFT JOIN (
+                    SELECT *
+                    FROM int_metrics
+                    WHERE name='plan'
+                    ) as p
+                    ON i.int_id == p.int_id
+                LEFT JOIN (
+                    SELECT *
+                    FROM int_metrics
+                    WHERE name='bhvr'
+                    ) as b
+                    ON i.int_id == b.int_id
+            WHERE
+                i.lat>=:minlat AND
+                i.lat<=:maxlat AND
+                i.long>=:minlong AND
+                i.long<=:maxlong AND
+                i.type_short IN  ('MJRML', 'MJRSL', 'MAJINT');
+            '''
+        intersects = g.db.query('relay_main', qstr, bounds, as_dict=True) 
+
         return createJSON(intersects)
 
 @app.route('/request_roads', methods=['POST'])
@@ -42,7 +78,7 @@ def get_roads():
         qstr = '''SELECT * FROM roads;''' 
         #WHERE lat>=:minlat AND lat<=:maxlat AND
          #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        roads = g.db.query('relay_main', qstr, as_dict=True)
+        roads = g.db.query('relay_main', qstr, bounds, as_dict=True)
         return createJSON(roads)
 
 @app.route('/request_plan', methods=['POST'])
