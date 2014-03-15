@@ -78,5 +78,11 @@ var IntersectionsCollectionView = Backbone.View.extend({
 		_.each(this.intersectionViews, function(intersection){
 			intersection.setMarkerStyle(markerStyle);
 		}, this);
+	},
+
+	setIntersectionMap: function(map){
+		_.each(this.intersectionViews, function(intersection){
+			intersection.setMap(map);
+		}, this);
 	}
 });

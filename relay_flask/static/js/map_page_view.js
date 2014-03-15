@@ -16,6 +16,11 @@ var MapPageView = Backbone.View.extend({
 		this.mapOptions = bootstrap.mapOptions;
 		this.mapStyles = bootstrap.mapStyles;
 		this.activeLayer = bootstrap.activeLayer;
+		this.heatMapStyles = bootstrap.heatMapStyles;
+
+		// other data
+		this.heatmapData = new Array();
+		this.heatmapLayer = new google.maps.visualization.HeatmapLayer();
 
 		// Create our map object
 		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions);
@@ -42,7 +47,7 @@ var MapPageView = Backbone.View.extend({
 	},
 
 	render: function(){
-		this.setActiveLayer('status-layer');
+		this.setActiveLayer(bootstrap.activeLayer);
 	},
 
 	mapClicked: function(e){
@@ -76,25 +81,44 @@ var MapPageView = Backbone.View.extend({
 		_.forEach($('.map-layer-option'), function(layer){
 			$(layer).removeClass('active')
 		})
+		//add active status to the appropriate label
 		$('#'+layer+'-label').addClass('active');
 
-		var mapStyle, markerStyle;
+		// remove any layer or markers from the map
+		this.intersectionsCollectionView.setIntersectionMap(null);
+		this.heatmapLayer.setMap(null);
+
+		// Handle the different layer cases
 		switch(layer){
 			case('status-layer'):
-				mapStyle = 'dark';
-				markerStyle = 'bw_pin';
+				// set map and glyph styles
+				this.map.setOptions({ styles: this.mapStyles['dark'] });
+				this.intersectionsCollectionView.setIntersectionStyle( 'bw_pin' );
+				// add them to the map
+				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('flow-layer'):
-				mapStyle = 'dark';
-				markerStyle = 'performance_glyph';
+				// set map and glyph styles
+				this.map.setOptions({ styles: this.mapStyles['dark'] });
+				this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
+				// add them to the map
+				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
+			case('flow-visualization'):
+				this.heatmapData = new Array();
+				_.forEach(this.intersectionsCollection.models, function(intersection){
+					var l = new google.maps.LatLng(intersection.get('lat'), intersection.get('long'));
+					var wl = new Object({
+						location: l,
+						weight: Math.random() // should be a real number.
+					});
+					this.heatmapData.push(wl);
+				}, this);
+				this.heatmapLayer.setData(this.heatmapData);
+				this.heatmapLayer.setMap(this.map);
 			default:
 				break;
 		}
-
-		this.map.setOptions({ styles: this.mapStyles[mapStyle] });
-
-		this.intersectionsCollectionView.setIntersectionStyle( markerStyle );
 	},
 
 	// when a user clicks show more in an intersection popup
