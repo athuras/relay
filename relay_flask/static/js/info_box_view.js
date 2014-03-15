@@ -56,17 +56,72 @@ var InfoBoxView = Backbone.View.extend({
 		this.infoBox.open(this.map, marker);
 		this.isOpen = true;
 
+		// make the graph
 		var graph = new Rickshaw.Graph({
-			width: 300,
-			height: 150,
-		    series: [ {
-			    color: 'steelblue',
-			    data: [ { x: 0, y: 2 }, { x: 1, y: 4 } ]
-			} ],
-		    renderer: 'area',
-		    element: $(this.boxText).find('#graph').get(0)
+			element: $(this.boxText).find('#graph').get(0),
+			width: 250,
+			height: 100,
+			renderer: 'multi',
 
+		    series: [
+		    {
+				color: 'white',
+				// data should come from model
+			    data: [
+			    { x: 1394850520, y: 3 },
+			    { x: 1394850535, y: 5 },
+			    { x: 1394850550, y: 3 },
+			    { x: 1394850565, y: 5 },
+			    ],
+			    renderer: 'bar'
+			},{
+			    color: 'steelblue',
+			    // data should come from model
+			    data: [
+			    { x: 1394850520, y: 2 },
+			    { x: 1394850535, y: 4 },
+			    { x: 1394850550, y: 2 },
+			    { x: 1394850565, y: 4 },
+			    { x: 1394850580, y: 2 },
+			    { x: 1394850595, y: 4 },
+			    { x: 1394850610, y: 2 },
+			    { x: 1394850625, y: 4 },
+			    ],
+			    renderer: 'line'
+			}],
 		});
+
+		// add axes
+		var xAxes = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+		var yAxes = new Rickshaw.Graph.Axis.Y( {
+			graph: graph,
+			orientation: 'left',
+			tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+			element: $(this.boxText).find('#legend').get(0)
+		});
+
+		// var graph = new Rickshaw.Graph( {
+		//         element: $(this.boxText).find('#graph').get(0),
+		//         width: 540,
+		//         height: 240,
+		//         series: [ {
+		//                 data: [ { x: -1893456000, y: 92228531 }, { x: -1577923200, y: 106021568 }, { x: -1262304000, y: 123202660 }, { x: -946771200, y: 132165129 }, { x: -631152000, y: 151325798 }, { x: -315619200, y: 179323175 }, { x: 0, y: 203211926 }, { x: 315532800, y: 226545805 }, { x: 631152000, y: 248709873 }, { x: 946684800, y: 281421906 }, { x: 1262304000, y: 308745538 } ], 
+		//                 color: 'steelblue'
+		//         } ]
+		// } );
+
+		// var x_axis = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+
+		// var y_axis = new Rickshaw.Graph.Axis.Y( {
+		//         graph: graph,
+		//         orientation: 'left',
+		//         tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+		//         element: $(this.boxText).find('#graph').get(0),
+		// } );
+
+		// graph.render();
+
+		// render graph
 		graph.render();
 
 		// add an event listener to check for 'show more' click
