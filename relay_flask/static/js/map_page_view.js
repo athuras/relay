@@ -45,12 +45,9 @@ var MapPageView = Backbone.View.extend({
 		console.log('map click registered');
 		console.log(e);
 		// I don't know why the details process causes another map click.
-		// if(this.infoBoxView.isOpen){
-		// 	this.infoBoxView.close();
-		// }
-		// if(this.panelView.isExpanded){
-		// 	this.panelView.collapse();
-		// }
+		if(this.infoBoxView.isOpen){
+			this.infoBoxView.close();
+		}
 	},
 
 	// handle clicks on the layers legend to change the layer
