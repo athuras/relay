@@ -437,7 +437,7 @@ hr {
 	text-align: left;
 }
 
-.map-layer-option {
+#layer-legend li {
 	color: #fff;
 	display: inline-block;
 	font-size: 0.9em;
@@ -449,12 +449,18 @@ hr {
 	width: 100px;
 }
 
-.map-layer-option:hover {
+#layer-legend li:hover {
 	background-color: #2e2e2e;
 	-webkit-transition: background-color 0.3s ease-in;
 }
 
-.map-layer-option:active {
+#layer-legend li:active {
+	background-color: #2e2e2e;
+	border-left: 2px solid #fff;
+	padding: 8px 18px 8px 16px;
+}
+
+#layer-legend li.active {
 	background-color: #2e2e2e;
 	border-left: 2px solid #fff;
 	padding: 8px 18px 8px 16px;
