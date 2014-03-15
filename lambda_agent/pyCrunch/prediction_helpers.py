@@ -32,12 +32,12 @@ def extract_probs(outlet, probs):
     
     return np.array(correct_probs)
 
-def transform_sigs(signal, prob):
+def transform_sigs(signals, prob):
     '''
     Accepts a tuple of signals from each inlet of a neighbor and the current
     behaviour probability matrix, and returns a scaled signal.
 
-    :signal    -> histogram of counts at each neighbor inlet
+    :signals    -> histogram of counts at each neighbor inlet
     :prob    -> the outlets connecting probabilities
 
     takes the last element of histogram off to keep lengths same.
@@ -45,7 +45,7 @@ def transform_sigs(signal, prob):
 
     trans_sigs = []
     for i, p in enumerate(prob):
-        trans_sigs.append((signal[i][0] * p, signal[i][1][0:-1]))
+        trans_sigs.append((signals[i][0] * p, signals[i][1][0:-1]))
     
     return trans_sigs
 
