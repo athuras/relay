@@ -1,0 +1,8 @@
+name, ts, value, nbr_node, inlet_node, int_id, nbr_int_id
+"time delay",1,"({'gamma': (3, 60, 3), 'loss': 0.9},)",3,1,11,12
+"time delay",2,"({'gamma': (3, 61.5, 3), 'loss': 0.9},)",3,1,11,12
+"time delay",3,"({'gamma': (3, 60.75, 3), 'loss': 0.9},)", 3, 1,11,12
+"time delay",1,"({'gamma': (3, 41, 3), 'loss': 0.9},)",0,2,11,13
+"time delay",2,"({'gamma': (3, 40.25, 3), 'loss': 0.9},)",0,2,11,13
+"prediction",1,"({'prediction': (0,0,0,0,0,0,0,0,1,3,5,1,4,2,0,0,0),'sampling': 1.0})", 0, 2, 11, 13
+"prediction", 2,"({'prediction': (0,0,0,0,0,0,0,1,3,5,1,4,2,0,0,0,0),'sampling': 1.0})", 0, 2, 11, 13
