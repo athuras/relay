@@ -116,6 +116,50 @@ li {
 
 
 
+/* ********** Settings Pane ************ */
+
+#settings-pane {
+	background-color: rgba(0, 0, 0, 0.9);
+	border: 1px solid rgba(54, 54, 54, 1);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.63);
+	color: #f5f5f6;
+	width: 250px;
+	height: 178px;
+	padding: 0 14px;
+	position: absolute;
+	text-align: right;
+	top: 43px;
+	right: 14px;
+	z-index: 1000;
+}
+
+#settings-pane #title {
+	border-bottom: 1px solid #f5f5f6;
+	font-size: 1em;
+	font-weight: 600;
+	padding: 14px 0;
+	position: relative;
+}
+
+#settings-pane #label {
+	margin: 26px 0 0 0;
+	position: relative;
+	display: inline-block;
+	color: #dcdcdc;
+	font-size: 0.5em;
+	font-weight: 500;
+	letter-spacing: 0.05em;
+}
+
+#settings-pane #answer {
+	font-weight: 600;
+	color: #fff;
+	display: inline-block;
+	font-size: 0.9em;
+	letter-spacing: 0.05em;
+	position: relative;
+}
+
 
 /* ********** Pages ********** */
 
