@@ -56,79 +56,61 @@ var InfoBoxView = Backbone.View.extend({
 		this.infoBox.open(this.map, marker);
 		this.isOpen = true;
 
-		// make the graph
-		var graph = new Rickshaw.Graph({
-			element: $(this.boxText).find('#graph').get(0),
-			width: 300,
-			height: 150,
-			renderer: 'multi',
+		var graph = new Rickshaw.Graph( {
+		element: /*$(this.boxText).find('#graph').get(0),*/ document.getElementById("graph"),
+		renderer: 'multi',
+		height: 150,
+		width: 270,
+		series: [
+			{
+				name: '1',
+				data: [ { x: 1394857840, y: 120 }, 
+				{ x: 1394857841, y: 890 }, 
+				{ x: 1394857842, y: 38 }, 
+				{ x: 1394857843, y: 70 }, 
+				{ x: 1394857844, y: 32 },
+				{ x: 1394857845, y: 120 }, 
+				{ x: 1394857846, y: 890 }, 
+				{ x: 1394857847, y: 38 }, 
+				{ x: 1394857848, y: 70 }, 
+				{ x: 1394857849, y: 32 } ],
+				color: "#c05020",
+				renderer: 'bar'
+			}, {
+				name: '2',
+				data: [ { x: 1394857840, y: 80 }, 
+				{ x: 1394857841, y: 200 }, 
+				{ x: 1394857842, y: 100 }, 
+				{ x: 1394857843, y: 520 }, 
+				{ x: 1394857844, y: 133 },
+				{ x: 1394857845, y: 80 }, 
+				{ x: 1394857846, y: 200 }, 
+				{ x: 1394857847, y: 100 }, 
+				{ x: 1394857848, y: 520 }, 
+				{ x: 1394857849, y: 133 } ],
+				color: "#30c020",
+				renderer: 'line'
+			}
+		]
+	} );
 
-		    series: [
-		    {
-		    	name: 'historical',
-				color: 'rgba(15, 150, 207, 0.4)',
-				// data should come from model
-			    data: [
-			    { x: 0, y: 3 },
-			    { x: 1, y: 4 },
-			    { x: 2, y: 5 },
-			    { x: 3, y: 2 },
-			    { x: 4, y: 1 },
-			    { x: 5, y: 5 },
-			    { x: 6, y: 5 },
-			    { x: 7, y: 4 },
-			    ],
-			    renderer: 'bar'
-			},{
-				name: 'predicted bars',
-			    color: 'rgba(15, 150, 207, 0.2)',
-			    // data should come from model
-			    data: [
-			    { x: 8, y: 3 },
-			    { x: 9, y: 4 },
-			    { x: 10, y: 5 },
-			    { x: 11, y: 2 },
-			    { x: 12, y: 1 },
-			    { x: 13, y: 5 },
-			    { x: 14, y: 5 },
-			    { x: 15, y: 4 },
-			    ],
-			    renderer: 'bar'
-			},{
-				name: 'predicted line',
-			    color: 'rgba(60, 180, 212, 0.9)',
-			    // data should come from model
-			    data: [
-			    { x: 8, y: 3 },
-			    { x: 9, y: 4 },
-			    { x: 10, y: 5 },
-			    { x: 11, y: 2 },
-			    { x: 12, y: 1 },
-			    { x: 13, y: 5 },
-			    { x: 14, y: 5 },
-			    { x: 15, y: 4 },
-			    ],
-			    renderer: 'line'
-			}]
-		});
-
-		// add axes
-		var xAxis = new Rickshaw.Graph.Axis.Time({
-			graph: graph
-		});
-
-		var yAxis = new Rickshaw.Graph.Axis.Y( {
+		var y_ticks = new Rickshaw.Graph.Axis.Y( {
 			graph: graph,
 			orientation: 'left',
-			// tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-			element: document.getElementById('yaxis'),
+			tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+			element: /*$(this.boxText).find('#yaxis').get(0),*/ document.getElementById('yaxis'),
+		} );
+
+		var time = new Rickshaw.Fixtures.Time();
+		var seconds = time.unit('second');
+
+		var xAxis = new Rickshaw.Graph.Axis.Time({
+		    graph: graph,
+		    timeUnit: seconds,
+		    orientation: 'bottom'
 		});
 
-		// render graph
-
 		graph.render();
-				xAxis.render();
-		yAxis.render();
 
 		// add an event listener to check for 'show more' click
 		google.maps.event.addDomListener(this.boxText, 'click', $.proxy(function(e){
