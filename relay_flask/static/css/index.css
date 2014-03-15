@@ -98,18 +98,6 @@ li {
 	right: 10px;
 }
 
-/*#legend-btn {
-	float: left;
-	border-left: 1px solid rgba(255, 255, 255, 0.2);
-	border-right: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.page-btn {
-
-}*/
-
-
-
 
 
 /* ********** Pages ********** */
@@ -150,8 +138,10 @@ li {
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	color: #f5f5f6;
 	padding: 16px;
-	min-width: 400px;
-	min-height: 140px;
+	/*min-width: 400px;
+	min-height: 200px;*/
+	width: 400px;
+	height: 200px;
 	z-index: 100000;
 }
 
@@ -186,10 +176,25 @@ li {
 }*/
 
 
-#state {
-	display: inline-block;
+#state-wrap {
 	float: left;
-	width: 44px;
+	left: 40px;
+	position: relative;
+	top: 58px;
+}
+
+#state {
+	border: 1px solid #fff;
+	height: 38px;
+	width: 38px;
+	left: 14px;
+}
+
+#countdown {
+	color: #fff;
+	font-size: 1.3em;
+	margin: 14px 0 0 0;
+	text-align: center;
 }
 
 /* ********** Intersections ********** */
