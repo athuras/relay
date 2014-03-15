@@ -7,7 +7,7 @@ var IntersectionsPageView = Backbone.View.extend({
 	},{
 		cell: 'string',
 		name: 'type',
-		label: 'type_short',
+		label: 'Intersection Type',
 		editable: false,
 	}],
 

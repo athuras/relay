@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="css/reset.css"/>
 	<link rel="stylesheet" href="css/fonts.css"/>
 	<link rel="stylesheet" href="css/index.css"/>
+	<link rel="stylesheet" href="css/clients/backgrid-relay.css"/>
 	<link rel="icon" type="image/ico" href="assets/favicon.ico"/>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization&sensor=false"></script>
 </head>
@@ -24,7 +25,7 @@
 				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page'>ROADS</li></a>
 				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
 			</ul>
-			<div id='search-box'><img id='search-icon' src='assets/search.png'/></div>
+			<!-- <div id='search-box'><img id='search-icon' src='assets/search.png'/></div> -->
 			<img id='settings' src='assets/settings.png'/>
 		</div>
 
@@ -78,10 +79,11 @@
 		<!-- Intersections Page -->
 		<div id="intersections-page" class='page'>
 			<div id='title-box'>
-				<h1>Intersections</h1>
-			</div>
-			<div id='intersections-filter-container'>
-				<!-- Backgrid filter goes in here -->
+				<span id='table-title'>Intersections</span>
+				<div id='intersections-filter-container'>
+					<img id='search-icon' src='assets/search.png'/>
+					<!-- Backgrid filter goes in here -->
+				</div>
 			</div>
 			<div id='intersections-table-container'>
 				<!-- Backgrid grid populates here -->

@@ -13,7 +13,9 @@ html, body {
 	width: 100%;
 }
 
-
+::-webkit-scrollbar {
+	display: none;
+}
 
 
 /* ********** Header *********** */
@@ -88,6 +90,7 @@ li {
 	float: left;
 	margin: 7px 0 0 6px;
 	width: 16px;
+	z-index: 100000;
 }
 
 #settings {
@@ -95,7 +98,7 @@ li {
 	float: right;
 	position: relative;
 	top: 20px;
-	right: 10px;
+	right: 16px;
 }
 
 
@@ -204,32 +207,66 @@ li {
 
 /* ********** Intersections ********** */
 
-#intersections-page{
-	/*background-color: #000;*/
+#intersections-page {
+	background-color: #2e2e2e;
+	color: #f5f5f6;
 	display: none;
 	height: 100%;
 	width: 100%;
 	float:left;
+/*    background: url(../assets/bg-1600.png) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;*/
 }
 
-#title-box{
-	margin-top: 50px;
-	width: 100%;
+#title-box {
+	margin-top: 80px;
+	width: 1200px;
 	height: 50px;
+	position: absolute;
+	left: 50%;
+	margin: 0 0 0 -600px;
+	top: 100px;
 }
 
-#title-box h1{
-	/*color: #fff*/
+#table-title {
+	font-size: 2em;
+	font-weight: 600;
 }
 
-#intersections-table-container{
-	width: 100%;
-	height: 100%;
+#intersections-table-container {
+	width: 1200px;
+	height: 550px;
 	overflow: scroll;
+	position: absolute;
+	left: 50%;
+	margin: 0 0 0 -600px;
+	top: 170px;
 }
 
-#intersections-filter-container{
-	float: right;
+#intersections-filter-container {
+	left: 260px;
+	top: 3px;
+	position: absolute;
+}
+
+.backgrid-filter input {
+	background-color: rgba(0, 0, 0, 0);
+	border: 1px solid rgba(90, 90, 90, 1);
+	color: #f5f5f6;
+	width: 200px;
+	height: 30px;
+	padding: 0 0 0 22px;
+	position: absolute;
+	border-radius: 0;
+	top: 0px;
+	left: -2px;
+}
+
+input:focus {
+	outline: 1px solid rgba(150, 150, 150, 1);
 }
 
 /*#intersections-table-container th{

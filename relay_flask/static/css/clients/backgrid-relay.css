@@ -17,6 +17,7 @@
 }
 
 .backgrid {
+  text-align: left;
   width: 100%;
   max-width: 100%;
   background-color: transparent;
@@ -29,7 +30,7 @@
 .backgrid th,
 .backgrid td {
   display: none;
-  height: 20px;
+  height: 24px;
   max-width: 250px;
   padding: 4px 5px;
   overflow: hidden;
@@ -44,6 +45,7 @@
 .backgrid th.renderable,
 .backgrid td.renderable {
   display: table-cell;
+  text-align: left;
 }
 
 .backgrid th {
@@ -60,7 +62,6 @@
 
 .backgrid thead th {
   vertical-align: bottom;
-  background-color: #f9f9f9;
 }
 
 .backgrid thead th a {
@@ -69,6 +70,10 @@
 
 .backgrid.backgrid-striped tbody tr:nth-child(even) {
   background-color: #f9f9f9;
+}
+
+.backgrid tr:hover {
+  background-color: rgba(54, 54, 54, 1);
 }
 
 .backgrid tbody tr.empty {
@@ -239,3 +244,8 @@
 .backgrid .select-cell.editor option::-o-focus-inner {
   border: 0;
 }
+
+
+
+
+
