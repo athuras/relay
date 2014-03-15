@@ -179,18 +179,27 @@ li {
 	float: left;
 	margin: 16px 0 0 0;
 	position: relative;
+	height: 150px;
+	width: 300px;
 }
 
 #info-box #yaxis {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 40px;
+	float: left;
+	width: 30px;
+	height: 150px;
+}
+
+#info-box #xaxis{
+	float: right;
+	height: 25px;
+	width: 270px;
 }
 
 #info-box #graph {
-	position: relative;
-	left: 40px;
+	float: right;
+	left: 20px;
+	width: 270px;
+	height: 150px;
 }
 
 #state-wrap {
