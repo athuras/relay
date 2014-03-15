@@ -104,13 +104,18 @@
 	<!-- The data-content tags should match up with the property name in the IntersectionModel attribute -->
 	<script type='text/template' id='info-box-template'>
 		<div id='info-box'>
-			<div id='intersection-name' data-content='name'></div>
+			<div id='heading'>
+				<div id='intersection-name' data-content='name'></div>
+				<img id='chunk-arrow' src='assets/chunk-arrow.png'/>
+			</div>
 
 			<!-- <canvas id='cap-chart' width='400' height='200'></canvas> -->
 			<div id='graph' style='display: inline-block; width: 300px; height: 150px; border: 1px solid rgba(54, 54, 54, 1); margin-top: 14px;'></div>
 
-			<img id='state' src='assets/ewt.png'/>
-
+			<div id='state-wrap'>
+				<img id='state' src='assets/ewt.png'/><br/>
+				<div id='countdown'>11</div>
+			</div>
 			<!-- <ul class='list-wrapper' id='left'>
 				<li class='list-row'>
 					<span class='info-label'>STATUS</span><br/>
