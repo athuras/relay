@@ -56,6 +56,13 @@ var InfoBoxView = Backbone.View.extend({
 		this.infoBox.open(this.map, marker);
 		this.isOpen = true;
 
+		var graph = new Rickshaw.Graph({
+		    series: [ { data: [ { x: 0, y: 2 }, { x: 1, y: 4 } ] } ],
+		    renderer: 'area',
+		    element: $(this.boxText).find('#graph').get(0)
+		});
+		graph.render();
+
 		// add an event listener to check for 'show more' click
 		google.maps.event.addDomListener(this.boxText, 'click', $.proxy(function(e){
 			// console.log(e);
