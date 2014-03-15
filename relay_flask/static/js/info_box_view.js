@@ -57,9 +57,15 @@ var InfoBoxView = Backbone.View.extend({
 		this.isOpen = true;
 
 		var graph = new Rickshaw.Graph({
-		    series: [ { data: [ { x: 0, y: 2 }, { x: 1, y: 4 } ] } ],
+			width: 300,
+			height: 150,
+		    series: [ {
+			    color: 'steelblue',
+			    data: [ { x: 0, y: 2 }, { x: 1, y: 4 } ]
+			} ],
 		    renderer: 'area',
 		    element: $(this.boxText).find('#graph').get(0)
+
 		});
 		graph.render();
 
