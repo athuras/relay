@@ -89,6 +89,10 @@ var IntersectionView = Backbone.View.extend({
 			default:
 				break;
 		}
+	},
+
+	setMap: function(map){
+		this.marker.setMap(map);
 	}
 
 });
