@@ -59,49 +59,76 @@ var InfoBoxView = Backbone.View.extend({
 		// make the graph
 		var graph = new Rickshaw.Graph({
 			element: $(this.boxText).find('#graph').get(0),
-			width: 250,
-			height: 100,
+			width: 300,
+			height: 150,
 			renderer: 'multi',
 
 		    series: [
 		    {
-				color: 'white',
+		    	name: 'historical',
+				color: 'rgba(15, 150, 207, 0.4)',
 				// data should come from model
 			    data: [
-			    { x: 1394850520, y: 3 },
-			    { x: 1394850535, y: 5 },
-			    { x: 1394850550, y: 3 },
-			    { x: 1394850565, y: 5 },
+			    { x: 0, y: 3 },
+			    { x: 1, y: 4 },
+			    { x: 2, y: 5 },
+			    { x: 3, y: 2 },
+			    { x: 4, y: 1 },
+			    { x: 5, y: 5 },
+			    { x: 6, y: 5 },
+			    { x: 7, y: 4 },
 			    ],
 			    renderer: 'bar'
 			},{
-			    color: 'steelblue',
+				name: 'predicted bars',
+			    color: 'rgba(15, 150, 207, 0.2)',
 			    // data should come from model
 			    data: [
-			    { x: 1394850520, y: 2 },
-			    { x: 1394850535, y: 4 },
-			    { x: 1394850550, y: 2 },
-			    { x: 1394850565, y: 4 },
-			    { x: 1394850580, y: 2 },
-			    { x: 1394850595, y: 4 },
-			    { x: 1394850610, y: 2 },
-			    { x: 1394850625, y: 4 },
+			    { x: 8, y: 3 },
+			    { x: 9, y: 4 },
+			    { x: 10, y: 5 },
+			    { x: 11, y: 2 },
+			    { x: 12, y: 1 },
+			    { x: 13, y: 5 },
+			    { x: 14, y: 5 },
+			    { x: 15, y: 4 },
+			    ],
+			    renderer: 'bar'
+			},{
+				name: 'predicted line',
+			    color: 'rgba(60, 180, 212, 0.9)',
+			    // data should come from model
+			    data: [
+			    { x: 8, y: 3 },
+			    { x: 9, y: 4 },
+			    { x: 10, y: 5 },
+			    { x: 11, y: 2 },
+			    { x: 12, y: 1 },
+			    { x: 13, y: 5 },
+			    { x: 14, y: 5 },
+			    { x: 15, y: 4 },
 			    ],
 			    renderer: 'line'
-			}],
+			}]
 		});
 
 		// add axes
-		var xAxes = new Rickshaw.Graph.Axis.Time( { graph: graph } );
-		var yAxes = new Rickshaw.Graph.Axis.Y( {
+		var xAxis = new Rickshaw.Graph.Axis.Time({
+			graph: graph
+		});
+
+		var yAxis = new Rickshaw.Graph.Axis.Y( {
 			graph: graph,
 			orientation: 'left',
-			tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
-			element: $(this.boxText).find('#legend').get(0)
+			// tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+			element: document.getElementById('yaxis'),
 		});
 
 		// render graph
+
 		graph.render();
+				xAxis.render();
+		yAxis.render();
 
 		// add an event listener to check for 'show more' click
 		google.maps.event.addDomListener(this.boxText, 'click', $.proxy(function(e){
