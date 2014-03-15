@@ -28,11 +28,10 @@ def estimate_time_delay(nbr_signals, nbr_bhvrs, edges, inlet_signals, dt=1.):
 
     return lsq_solns, opt_time
 
-def remove_infeasible_events(signal_est, inlet_signal, edge_params, dt):
+def remove_infeasible_events(signal_est, nbr_in_sig, edge_params, dt):
     '''
-    Need to remove events from nbr that could not have reached inlet by the
-    time the reading was taken. Also trim values from beginning of inlet that
-    could not have come from the behaviour
+    Trim values from beginning and end of inlet signal that
+    we expect didn't come from the behaviour
     '''
 
     # E = (shape * scale) + location
@@ -44,17 +43,16 @@ def remove_infeasible_events(signal_est, inlet_signal, edge_params, dt):
     index = np.round(expectation / dt, 0)
 
     len_out = signal_est.shape[0]
-    len_in = inlet_signal.shape[0]
+    len_in = nbr_in_sig.shape[0]
 
     # - determine number of elements to trim from end of inlet signal
     # - if expectation + outlet into future, then just take the end of 
     #   inlet array as max (i.e. don't remove anything)
     end_index = np.min([len_out + expectation, len_in])
 
-    signal_est[:index] = 0
-    signal_est[end_index:] = 0
-
-    return signal_est
+    nbr_in_sig[:index] = 0
+    nbr_in_sig[end_index:] = 0
+    return nbr_in_sig
 
 # Optimization
 def optimize(NBPM, nbr_signals, inlet_signals, edges, dt):
@@ -103,12 +101,12 @@ def calc_lsq(BPM, nbr_signal, inlet_signal, edge, dt):
     comb_sig_est = prh.combine_sig_ests(scaled_sigs)
     #td = prh.create_gamma(params, dt)
 
-    x = remove_infeasible_events(comb_sig_est[0], inlet_signal, params, dt)
-    y_real = inlet_signal
+    x = comb_sig_est[0]
+    y_real = remove_infeasible_events(x, inlet_signal, params, dt)
 
     # - Use old params as starting location for optimization
     # - y_real = the measured signal at inlet node
     # - x = estimated outgoing signal from neighbor
     lsq = leastsq(residuals, params, args=(y_real, x))
 
-    return (a, b, lsq[0])
+    return (a, b, lsq[0], x, y_real)
