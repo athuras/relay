@@ -71,5 +71,5 @@ ones(N) -> repeat(1, N).
 zeros(N) -> repeat(0, N).
 
 repeat(X, N) when N >= 0 -> repeat(X, N, []).
-repeat(X, 0, Acc) -> Acc;
+repeat(_, 0, Acc) -> Acc;
 repeat(X, N, Acc) -> repeat(X, N-1, [X|Acc]).

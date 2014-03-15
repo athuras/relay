@@ -1,8 +1,9 @@
 -module(testing).
 -compile([export_all]).
 
-new_state_manager() ->
-    state_manager:start_link().
+new_state_manager() -> state_manager:start_link().
+
+new_python_manager() -> python_manager:start_link().
 
 load_queues(Pid) -> load_queues(Pid, 25).
 load_queues(Pid, N) when is_integer(N) ->
@@ -16,6 +17,14 @@ current_time() ->
     element(1, now()) * 10000 + element(2, now()).
 
 do_stuff() ->
-    {ok, R} = new_state_manager(),
-    ok = load_queues(R, 15),
-    R.
+    {ok, SM} = new_state_manager(),
+    {ok, PM} = new_python_manager(),
+    ok = load_queues(SM, 100),
+
+    {ok, SM, PM}.
+
+killpy(P) ->
+    gen_event:notify(P, kill_python).
+
+get_tables(SM) ->
+    state_manager:get_tables(SM).

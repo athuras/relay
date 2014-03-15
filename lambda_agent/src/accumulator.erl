@@ -1,5 +1,5 @@
 %%  Encapsulates the Queue state for inbound and outbound objects.
--module(queue_accumulator).
+-module(accumulator).
 -behaviour(gen_event).
 
 -export([

@@ -32,6 +32,8 @@ handle_event({set_location, location}, State) ->
     {ok, State#state{location=location}};
 
 %%  Planning Related
+handle_event({new_plan, Plan_Stuff}, State) ->
+    {ok, State#state{current_plan=Plan_Stuff}};
 handle_event({set_behaviour, Bid}, State) ->
     {ok, State#state{current_behaviour=Bid}};
 
@@ -59,8 +61,7 @@ handle_call(get_current_plan, State) ->
     {ok, State#state.current_plan, State};
 
 handle_call(get_tables, State) ->
-    Tables = {{btg_table, State#state.btg_table},
-              {b_table, State#state.b_table}},
+    Tables = {ok, {State#state.btg_table, State#state.b_table}},
     {ok, Tables, State};
 
 handle_call(get_prediction_info, State) ->
