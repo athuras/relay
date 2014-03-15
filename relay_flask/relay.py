@@ -75,11 +75,11 @@ def get_intersections():
 def get_roads():
     if request.method == 'POST':
         bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
-        qstr = '''SELECT * FROM roads;''' 
-        #WHERE lat>=:minlat AND lat<=:maxlat AND
-         #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        roads = g.db.query('relay_main', qstr, bounds, as_dict=True)
-        return createJSON(roads)
+        # qstr = '''SELECT * FROM roads;''' 
+        # #WHERE lat>=:minlat AND lat<=:maxlat AND
+        #  #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
+        # roads = g.db.query('relay_main', qstr, bounds, as_dict=True)
+        return createJSON(bounds)
 
 @app.route('/request_plan', methods=['POST'])
 def get_plan():
@@ -98,10 +98,60 @@ def get_plan():
         plan = g.db.query('relay_main', qstr, int_id, as_dict=True)
         return createJSON(plan)
 
+@app.route('/request_status', methods=['POST'])
+def get_status():
+    if request.method == 'POST':
+        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''
+            SELECT 
+                timestamp,
+                value 
+            FROM 
+                int_metrics
+            WHERE
+                name = 'status' AND
+                int_id = :int_id;
+            ''' 
+        stat = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        return createJSON(stat)
+
+@app.route('/request_all_events', methods=['POST'])
+def get_all_evts():
+    if request.method == 'POST':
+        num_events = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''
+            SELECT 
+                timestamp,
+                value,
+                int_id 
+            FROM 
+                int_events
+            LIMIT :num_events;
+            ''' 
+        evts = g.db.query('relay_main', qstr, num_events, as_dict=True)
+        return createJSON(evts)
+
+@app.route('/request_int_events', methods=['POST'])
+def get_int_evts():
+    if request.method == 'POST':
+        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''
+            SELECT 
+                timestamp,
+                value,
+                int_id 
+            FROM 
+                int_events
+            WHERE
+                int_id = :int_id;
+            ''' 
+        evts = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        return createJSON(evts)
+
 @app.route('/request_flows', methods=['POST'])
 def get_flows():
     if request.method == 'POST':
-        int_id = request.json
+        flow_params = request.json # int_id, dt, duration
         # qstr = '''
         #     SELECT 
         #         timestamp,
