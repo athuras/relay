@@ -56,17 +56,51 @@ var InfoBoxView = Backbone.View.extend({
 		this.infoBox.open(this.map, marker);
 		this.isOpen = true;
 
+		// make the graph
 		var graph = new Rickshaw.Graph({
-			width: 300,
-			height: 150,
-		    series: [ {
-			    color: 'steelblue',
-			    data: [ { x: 0, y: 2 }, { x: 1, y: 4 } ]
-			} ],
-		    renderer: 'area',
-		    element: $(this.boxText).find('#graph').get(0)
+			element: $(this.boxText).find('#graph').get(0),
+			width: 250,
+			height: 100,
+			renderer: 'multi',
 
+		    series: [
+		    {
+				color: 'white',
+				// data should come from model
+			    data: [
+			    { x: 1394850520, y: 3 },
+			    { x: 1394850535, y: 5 },
+			    { x: 1394850550, y: 3 },
+			    { x: 1394850565, y: 5 },
+			    ],
+			    renderer: 'bar'
+			},{
+			    color: 'steelblue',
+			    // data should come from model
+			    data: [
+			    { x: 1394850520, y: 2 },
+			    { x: 1394850535, y: 4 },
+			    { x: 1394850550, y: 2 },
+			    { x: 1394850565, y: 4 },
+			    { x: 1394850580, y: 2 },
+			    { x: 1394850595, y: 4 },
+			    { x: 1394850610, y: 2 },
+			    { x: 1394850625, y: 4 },
+			    ],
+			    renderer: 'line'
+			}],
 		});
+
+		// add axes
+		var xAxes = new Rickshaw.Graph.Axis.Time( { graph: graph } );
+		var yAxes = new Rickshaw.Graph.Axis.Y( {
+			graph: graph,
+			orientation: 'left',
+			tickFormat: Rickshaw.Fixtures.Number.formatKMBT,
+			element: $(this.boxText).find('#legend').get(0)
+		});
+
+		// render graph
 		graph.render();
 
 		// add an event listener to check for 'show more' click
@@ -81,10 +115,11 @@ var InfoBoxView = Backbone.View.extend({
 		this.isOpen = false;
 	},
 
+	// listens for clicks and if they're on the link, we send the itersection to the panel.
 	infoBoxClicked: function(e){
 		console.log(e);
 		console.log(e.toElement);
-		if($(this.boxText).find('#more-info-link').get(0) === e.toElement){
+		if($(this.boxText).find('#chunk-arrow').get(0) === e.toElement){
 			this.mapPageView.showMore(this.currentModel);
 		}
 	}

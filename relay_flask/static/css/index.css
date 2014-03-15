@@ -160,29 +160,23 @@ li {
 	width: 16px;
 }
 
-/*.info-label {
-	font-size: 0.8em;
-	font-weight: 700;
-	letter-spacing: 0.05em;
+#info-box #y-axis{
+	display: inline-block;
+	width: 270px;
+	height: 150px;
+	border: 1px
+	solid rgba(54, 54, 54, 1);
+	margin-top: 14px;
 }
 
-.info-text {
-	padding: 3px 0 0 0;
+#info-box #graph{
+	display: inline-block;
+	width: 30px;
+	height: 150px;
+	border: 1px
+	solid rgba(54, 54, 54, 1);
+	margin-top: 14px;
 }
-
-.list-wrapper {
-	margin-top: 10px;
-}
-
-.list-row {
-	padding: 5px 0;
-}
-
-#left {
-	float: left;
-	width: 140px;
-}*/
-
 
 #state-wrap {
 	float: left;

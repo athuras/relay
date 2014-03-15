@@ -58,6 +58,9 @@ var MapPageView = Backbone.View.extend({
 		if(this.infoBoxView.isOpen){
 			this.infoBoxView.close();
 		}
+		if(this.panelView.isExpanded){
+			this.panelView.collapse();
+		}
 	},
 
 	// handle clicks on the layers legend to change the layer
