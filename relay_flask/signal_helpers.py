@@ -9,7 +9,7 @@ def generate_signals(amount):
     * amount: the number of samples to generate
     '''
 
-    sample = stats.foldnorm(1, scale=3)
+    sample = stats.foldnorm(3, scale=3)
     
     A = sample.rvs(amount)
     

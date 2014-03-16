@@ -86,7 +86,7 @@ def residuals(p, y, x):
     kernel = stats.gamma(shape, loc=loc, scale=scale).pdf(l)
 
     n = l.shape[0]
-    err = y - np.convolve(kernel, x, mode='full')[:n]
+    err = y - np.convolve(kernel * gain, x, mode='full')[:n]
 
     return err
 

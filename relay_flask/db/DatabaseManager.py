@@ -10,21 +10,24 @@ class DatabaseManager(object):
         for name, f in db_info.iteritems():
             self.connections[name] = sqlite3.connect(f, check_same_thread=False)
 
-    def prepare_cursor(self, db_name, query, options):
+    def prepare_cursor(self, db_name, query, options=None):
         '''Returns executed cursor'''
         conn = self.connections[db_name]
         cur = conn.cursor()
         if sqlite3.complete_statement(query):
             try:
                 query = query.strip()
-                cur.execute(query, options)
+                if options==None:
+                    cur.execute(query)
+                else:
+                    cur.execute(query, options)
             except sqlite3.Error as e:
                 print 'Bad news: ', str(e)
         else:
             raise ValueError('""%s"" is not a valid SQL Statement' % query)
         return cur
 
-    def iter_query(self, db_name, query, options, as_dict=False, commit=False):
+    def iter_query(self, db_name, query, options=None, as_dict=False, commit=False):
         '''Returns an iterator or dict over the query results.
         *as_dict: flag to format rows as dictionaries,
         *commit: call connection.commit() after query execution'''
@@ -39,7 +42,7 @@ class DatabaseManager(object):
             for line in cur:
                 yield line
 
-    def query(self, db_name, query, options, as_dict=False, commit=False):
+    def query(self, db_name, query, options=None, as_dict=False, commit=False):
         '''Returns entire result set.
         *as_dict: flag to format rows as dictionaries,
         *commit: call connection.commit() after query execution'''
