@@ -35,19 +35,21 @@
 				<img class='spinner' id='status' src='assets/settings.png'/>
 
 				<div id='status-pane'>
-					<div id='title'>Connection Settings</div>
-					<br/>
-					<p>Connections</p>
-					<p class='label'>socket</p>
-					<p class='answer' id='socket-status'>-</p>
-					<p class='label'>rest</p>
-					<p class='answer' id='rest-status'>-</p>
-					<br/>
-					<p>Updates</p>
-					<p class='label'>most recent:</p>
-					<p class='answer' id='local-update'>-</p>
-					<p class='label'>last global</p>
-					<p class='answer' id='global-update'>-</p>
+					<div id='title'>Connection Status</div>
+					<div class='status-wrap'>
+						<!-- <div class='status-heading'>Connections</div><br/> -->
+						<div class='label'>SOCKET</div><br/>
+						<div class='answer' id='socket-status'>-</div><br/>
+						<div class='label'>REST</div><br/>
+						<div class='answer' id='rest-status'>-</div>
+					</div>
+					<div class='status-wrap'>
+						<!-- <div class='status-heading'>Updates</div><br/> -->
+						<div class='label'>LOCAL UPDATE</div><br/>
+						<div class='answer' id='local-update'>-</div><br/>
+						<div class='label'>GLOBAL UPDATE</div><br/>
+						<div class='answer' id='global-update'>-</div>
+					</div>
 				</div>
 			</div>
 
