@@ -287,29 +287,6 @@ li {
 	text-align: center;
 }
 
-#dash-stateWrap {
-	top: -66px;
-	width: 130px;
-	left: 340px;
-	float: left;
-	position: relative;
-}
-
-#dash-state {
-	height: 38px;
-	width: 38px;
-	left: 14px;
-}
-
-#dash-countdown {
-	color: #f5f5f6;
-	font-size: 1.3em;
-	margin: 14px 0 0 0;
-	text-align: center;
-	top: -46px;
-	position: relative;
-}
-
 .list-wrapper {
 	position: relative;
 	display: inline-block;
@@ -567,6 +544,43 @@ li {
 	float: left;
 }
 
+.dash-wrap {
+	width: 150px;
+	position: relative;
+	display: inline-block;
+	float: left;
+}
+
+#dash-stateWrap {
+	top: 18px;
+	width: 30px;
+	left: -40px;
+	float: left;
+	position: relative;
+}
+
+#dash-stateWrap2 {
+	top: 18px;
+	width: 30px;
+	left: 18px;
+	float: left;
+	position: relative;
+}
+
+#dash-state {
+	height: 38px;
+	width: 38px;
+}
+
+#dash-countdown {
+	color: #f5f5f6;
+	font-size: 1.3em;
+	margin: 14px 0 0 0;
+	text-align: center;
+	top: -46px;
+	position: relative;
+}
+
 .stat-title {
 	color: #dcdcdc;
 	font-size: 0.5em;
@@ -591,6 +605,10 @@ li {
 	margin: 20px 0 0 0;
 }
 
+#next-state {
+	left: 58px;
+}
+
 
 .panel-page {
 	position: relative;
@@ -610,7 +628,7 @@ li {
 	height: 200px;
 	width: 680px;
 	border: 1px solid rgba(54, 54, 54, 1);
-	margin: 20px 0 20px 0;
+	margin: 123px 0 20px 0;
 }
 
 /*.chart-title {

@@ -87,11 +87,11 @@
 							<div id='intersection-title'>--</div>
 						</div>
 						<div id='stat-container'>
-							<div class='word-wrap'>
+							<div class='dash-wrap'>
 								<span class='stat-title'>INTERSECTION ID</span><br/>
 								<span class='stat-field' id='stat-id'>--</span>
 							</div>
-							<div class='word=wrap' id='righty'>
+							<div class='dash-wrap' id='righty'>
 								<span class='stat-title'>INTERSECTION TYPE</span><br/>
 								<span class='stat-field' id='stat-type'>--</span>
 							</div>
@@ -99,21 +99,29 @@
 					</div>
 					<div class='panel-page' id='panel-left'>
 						<div class='section-container' id='left-stats'>
-							<div class='word-wrap'>
+							<div class='dash-wrap'>
 								<span class='stat-title'>STATUS</span><br/>
-								<span class='stat-field' id='stat-status'>--</span><br/>
-								<span class='stat-title'>STATE</span><br/>
-								<span class='stat-field' id='stat-currentState'>--</span>
+								<span class='stat-field' id='stat-status'>--</span>
 							</div>
-							<div class='word=wrap' id='righty'>
-								<span class='stat-title'>NEXT STATE</span><br/>
-								<span class='stat-field' id='stat-nextState'>--</span><br/>
-								<span class='stat-title'>NEXT STATE TIME</span><br/>
+							<div class='dash-wrap' id='righty'>
+								<span class='stat-title'>STATE</span><br/>
+								<span class='stat-field' id='stat-currentState'>--</span><br/>
+								<span class='stat-title'>DURATION</span><br/>
 								<span class='stat-field' id='stat-nextStateTime'>--</span>
 							</div>
 							<div id='dash-stateWrap'>
 								<img id='dash-state' src='assets/default-status.png'/><br/>
-								<div id='dash-countdown'>11</div>
+								<!-- <div id='dash-countdown'>11</div> -->
+							</div>
+							<div class='dash-wrap' id='next-state'>
+								<span class='stat-title'>NEXT STATE</span><br/>
+								<span class='stat-field' id='stat-nextState'>--</span><br/>
+								<span class='stat-title'>TIME TO NEXT</span><br/>
+								<span class='stat-field' id='stat-nextStateTime'>--</span>
+							</div>
+							<div id='dash-stateWrap2'>
+								<img id='dash-state' src='assets/default-status.png'/><br/>
+								<!-- <div id='dash-countdown'>11</div> -->
 							</div>
 						</div>
 						<div class='section-container chart-container'>
