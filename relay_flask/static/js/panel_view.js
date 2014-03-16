@@ -2,6 +2,56 @@ var PanelView = Backbone.View.extend({
 
 	el: $('#side-panel'),
 
+	defaults: {},
+
+	flowPLotOptions: {
+		xaxis: {
+			// position: "bottom",
+			// reserveSpace: -10,
+			min: 0,
+			max: 10
+		},
+		yaxis: {
+			// position: "left",
+			reserveSpace: -10,
+			min: 0,
+			max: 50
+		},
+		legend: {
+			backgroundColor: 'rgba(0, 0, 0, 0)',
+			backgroundOpacity: 0,
+			labelBoxBorderColor: 'rgba(0, 0, 0, 0)',
+			labelFormatter: function(label, series) {
+				return '<div style="color: #cecece; position: relative; top: -4px;">' + label + '</div>';
+			},
+			margin: [-3, 32]
+		},
+		grid: {
+			borderColor: 'rgba(0, 0, 0, 0)',
+			color: 'rgba(54, 54, 54, 0.6)'
+		}
+	},
+
+	flowPlotData: [
+	{
+		data: null,
+		label: 'North',
+		color: 'rgba(0, 210, 250, 0.8)'
+	},{
+		data: null,
+		label: 'South',
+		color: 'rgba(0, 250, 200, 0.8)'
+	},{
+		data: null,
+		label: 'East',
+		color: 'rgba(209, 27, 45, 0.7)'
+	},{
+		data: null,
+		label: 'West',
+		color: 'rgba(250, 137, 52, 0.7)'
+	}],
+
+
 	events: {
 		'click #panel-toggle': 'panelToggled',
 		'click #close': 'panelToggled'
@@ -19,12 +69,15 @@ var PanelView = Backbone.View.extend({
 		editable: false,
 	}],
 
-	activityUpdateFrequency: 5000, // update activity every 5 seconds
+	activityUpdateFrequency: 1000, // update activity every 5 seconds
 
 	initialize: function(){
 		// this.chartOptions = bootstrap.chartOptions;
 		// this.chartDataFormats = bootstrap.chartDataFormats;
 		this.activitiesCollection = new ActivitiesCollection();
+
+		// Make our charts
+		this.flowPlot = $.plot(this.$('#flow-chart'), this.flowPlotData, this.flowPlotOptions);
 
 		// make our intersection backgrid
 		this.activitiesTable = new Backgrid.Grid({
@@ -107,6 +160,45 @@ var PanelView = Backbone.View.extend({
 				console.log('dashboard data');
 				console.log(d);
 				// reset the activity collection with the new list of events.
+
+				// update general status things
+				var general = d[0]['general'][0];
+				pv.$('#stat-status').html(general['status']);
+				pv.$('#stat-currentState').html(general['behaviour']);
+				pv.$('#stat-nextState').html(general['plan']);
+
+				//handle time nicely
+
+				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				pv.$('#stat-nextStateTime').html(timeUntilNextState);
+
+				// change the icon
+				pv.$('#dash-state').attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
+
+				// update activity
+				pv.activitiesCollection.reset(d[1]['events']);
+
+				// update graphs
+				// Flow plot
+	        	// for each direction
+	        	var flows = d[2]['flows'];
+	        	for(var dir = 0; dir < 4; dir++){
+	        		var flotSeries = new Array();
+
+	        		//for each point in the array
+	        		for(var index = 0; index < Math.min(flows[dir].flow[0].length, flows[dir].flow[1].length); index++ ){
+	        			flotSeries.push([ flows[dir].flow[1][index] , flows[dir].flow[0][index] ]); // flip x and y.
+	        		}
+	        		// put the new data series in the flotData obj
+	        		pv.flowPlotData[dir].data = flotSeries;
+	        	}
+	        	// set the data.
+	        	pv.flowPlot.setData(pv.flowPlotData);
+	        	pv.flowPlot.setupGrid();
+		        pv.flowPlot.draw();
+
+
+				// tell s
 				s.localUpdate();
 				s.restConnected();
 			})
@@ -124,10 +216,12 @@ var PanelView = Backbone.View.extend({
 				console.log(d);
 				// reset the activity collection with the new list of events.
 				pv.activitiesCollection.reset(d);
+
+				// tell s
 				s.localUpdate();
 				s.restConnected();
 			})
-			
+
 			//update anyhting non-static.
 
 		}, this.activityUpdateFrequency, this)

@@ -112,22 +112,18 @@
 								<span class='stat-field' id='stat-nextStateTime'>--</span>
 							</div>
 							<div id='dash-stateWrap'>
-								<img id='dash-state' src='assets/ewt.png'/><br/>
+								<img id='dash-state' src='assets/default-status.png'/><br/>
 								<div id='dash-countdown'>11</div>
 							</div>
 						</div>
 						<div class='section-container chart-container'>
-							<span class='stat-title'>CAPACITY</span>
+							<span class='stat-title'>FLOW</span>
 							<span class='clear'></span>
-							<div class='chart-box'>
-								<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
-							</div>
+							<div id="flow-chart" style="width:225px; height:150px;"></div><!-- chart goes in here -->
 						</div>
 						<div class='section-container chart-container'>
 							<span class='stat-title'>FLOW</span>
-							<div class='chart-box'>
-								<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
-							</div>
+							<div id="performance-chart" style="width:225px; height:150px;"></div><!-- chart goes in here -->
 						</div>
 					</div>
 					<div class='panel-page' id='panel-right'>
@@ -320,6 +316,8 @@
 	<script type="text/javascript" src='js/clients/backgrid.js'></script>
 	<script type="text/javascript" src='js/clients/backgrid-filter.js'></script>
 
+	<script type="text/javascript" src='js/clients/date.format.js'></script>
+
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
 
 	<script type="text/javascript" src="js/clients/Chart.min.js"></script>
@@ -333,12 +331,6 @@
 	<script type="text/javascript" src='js/clients/jquery.loadTemplate-1.4.1.js'></script>
 
 	<script type="text/javascript" src='js/clients/snap.svg-min.js'></script>
-
-	<!-- status pane going -->
-	<script type="text/javascript">
-		// var status = new StatusPaneView();
-	</script>
-
 
 	<!-- bootstrap data -->
 	<script type="text/javascript" src="js/bootstrap_data.js"></script>
