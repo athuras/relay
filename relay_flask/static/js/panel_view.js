@@ -168,8 +168,8 @@ var PanelView = Backbone.View.extend({
 				pv.$('#stat-nextState').html(general['plan']);
 
 				//handle time nicely
-				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
-				pv.$('#stat-nextStateTime').html(timeUntilNextState);
+				// var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				// pv.$('#stat-nextStateTime').html(timeUntilNextState);
 
 				// change the icon
 				pv.$('#dash-state').attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');

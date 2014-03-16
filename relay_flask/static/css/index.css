@@ -335,31 +335,23 @@ li {
 /* ********** Intersections ********** */
 
 #intersections-page {
-	background-color: #2e2e2e;
+	background-color: #080808;
 	color: #f5f5f6;
 	display: none;
+	padding: 0 16px;
 	height: 100%;
 	width: 100%;
 	float:left;
-/*    background: url(../assets/bg-1600.png) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;*/
 }
 
 #title-box {
-	margin-top: 80px;
-	width: 1200px;
-	height: 50px;
-	position: absolute;
-	left: 50%;
-	margin: 0 0 0 -600px;
-	top: 100px;
+	position: relative;
+	padding: 98px 0 15px 0;
+	border-bottom: 5px solid #f5f5f6;
 }
 
 #table-title {
-	font-size: 2em;
+	font-size: 25pt;
 	font-weight: 600;
 }
 
@@ -367,39 +359,43 @@ li {
 	width: 1200px;
 	height: 550px;
 	overflow: scroll;
-	position: absolute;
-	left: 50%;
-	margin: 0 0 0 -600px;
-	top: 170px;
+	position: relative;
+	top: 39px;
 }
 
 #intersections-filter-container {
-	left: 260px;
-	top: 3px;
-	position: absolute;
+	left: 360px;
+	top: -32px;
+	position: relative;
 }
-
-/*#intersections-table-container th{
-	color: #fff;
-}
-
-#intersections-table-container td{
-	color: #fff;
-}
-*/
 
 
 
 /* ********** Map ********** */
 
-#roads-page{
+#roads-page {
 	display: none;
 	height: 100%;
 	width: 100%;
-	float:left;
+	float: left;
+	background-color: #080808;
 }
 
+.centred {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin: -20px 0 0 -200px;
+	width: 400px;
+	height: 40px;
+}
 
+#not-populated {
+	font-size: 1.2em;
+	font-weight: 600;
+	text-align: center;
+	color: #f5f5f6;
+}
 
 
 
@@ -616,8 +612,9 @@ li {
 	float: left;
 }
 
-.section-container{
+.section-container {
 	width: 100%;
+	height: 84px;
 }
 
 #stats-container p {
@@ -628,7 +625,7 @@ li {
 	height: 200px;
 	width: 680px;
 	border: 1px solid rgba(54, 54, 54, 1);
-	margin: 123px 0 20px 0;
+	margin: 20px 0 20px 0;
 }
 
 /*.chart-title {

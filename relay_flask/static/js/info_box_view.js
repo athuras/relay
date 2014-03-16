@@ -156,8 +156,8 @@ var InfoBoxView = Backbone.View.extend({
 				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = general['plan'];
 
 				//handle time nicely
-				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
-				$(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
+				// var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				// $(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
 
 				// change the icon
 				$($(ibv.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
