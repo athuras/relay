@@ -1,5 +1,7 @@
 import os
 import signal_helpers as sighelp
+import merge_queues as mqs
+import datetime as dt
 
 from collections import defaultdict
 from db.DatabaseManager import DatabaseManager
@@ -24,6 +26,7 @@ db = create_engine('sqlite:///db/relay.db')
 @app.route('/')
 def index():
     # spawn something to keep track of information for simulated intersections
+    setup_simulation()
 
     return redirect(url_for('static', filename='index.html'))
 
@@ -122,7 +125,7 @@ def get_all_evts():
             LIMIT 
                 :num_events;
             ''' 
-        evts = g.db.query('relay_main', qstr, num_events, as_dict=True)
+        evts = g.db.query('relay_main', qstr, num_events, as_dict=False)
         return createJSON(evts)
 
 @app.route('/request_int_events', methods=['POST'])
@@ -145,8 +148,19 @@ def get_int_evts():
 @app.route('/request_dashboard', methods=['POST'])
 def get_dash():
     if request.method == 'POST':
-        int_id = request.json
-        q1 = ['general','''
+        params = request.json
+
+        # Get new values from erlang processes
+        int_id = params['int_id']
+
+        if int_id in g.sim_ids:
+            b_res = update_behaviour(int_id)
+            p_res = update_plan(int_id)
+            g.sim_queues, new_qs_dict = mqs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
+        else:
+            new_qs_dict = mqs.make_queues()
+
+        q1 = '''
             SELECT 
                 s.status as status,
                 s.timestamp as status_time,
@@ -162,9 +176,9 @@ def get_dash():
                     ON s.int_id = b.int_id
             WHERE
                 s.int_id = :int_id;
-            ''']
+            '''
 
-        q2 = ['events','''
+        q2 = '''
             SELECT 
                 timestamp,
                 value,
@@ -173,14 +187,12 @@ def get_dash():
                 int_events
             WHERE
                 int_id = :int_id;
-            ''']
+            '''
 
-        qstrs = [q1,q2]
+        info = g.db.query('relay_main', q1, params, as_dict=True)
+        info.append({'events': g.db.query('relay_main', q2, params, as_dict=True)})
+        info.append(new_qs_dict)
 
-        info = [{q[0]: g.db.query('relay_main', q[1], int_id, 
-            as_dict=True)} for q in qstrs]
-
-        info.append({'flows': gen_flows()})
         return createJSON(info)
 
 @app.route('/request_flows', methods=['POST'])
@@ -255,27 +267,28 @@ def get_chart():
 
         return createJSON(pivot)
 
-
 @app.before_request
 def before_request():
     '''Open the database connections in preparation for response'''
     # connection = db.connect()
     x = os.path.join(os.getcwd(), 'db/relay.db')
     g.db = DatabaseManager(db_info={'relay_main': x})
+    setup_simulation()
 
+def setup_simulation():
+    if not hasattr(g, 'sim_ids'):
+        g.sim_ids = [13464373, 13464094, 13463747, 13463548, 13463436]
+        g.sim_queues = [] # [IN, OUT, REMOTE]
 
 @app.after_request
 def after_request(response):
     '''Close the database connections'''
-    # connection.close()
     g.db.close_all()
     return response
-
 
 @app.errorhandler(404)
 def page_not_found(error):
     return 'This page does not exist.', 404
-
 
 def createJSON(vals):
     ''' Use this for constructing JSON to send to app. '''
@@ -289,3 +302,54 @@ def createJSON(vals):
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='localhost', port=port, debug=True)
+
+## UPDATING FUNCTIONS ##########################################################
+def update_plan(int_id):
+    '''
+    Given an intersection ID, we want to query erlang and get the newest plan.
+    Then take this plan, turn it into a "code" and update the intersections entry
+    in the database.
+    '''
+    def get_plan(int_id):
+        '''placeholder for erl call'''
+        return ('SWT', dt.datetime.now().strftime('%s'))
+
+    plan, plan_time = get_plan(int_id)
+    params = {'int_id': int_id, 'plan': plan, 'plan_time': plan_time}
+    qstr = '''
+        UPDATE
+            int_plans
+        SET
+            plan = :plan,
+            plan_time = :plan_time,
+            timestamp = strftime('%s','now')
+        WHERE
+            int_id = :int_id;
+        '''
+    result = g.db.query('relay_main', qstr, params, as_dict=True)
+    return result
+
+def update_behaviour(int_id):
+    '''
+    Given an intersection ID, we want to query erlang and get the current bhvr.
+    Then take this bhvr, turn it into a "code" and update the intersections entry
+    in the database.
+    '''
+    def get_bhvr(int_id):
+        '''placeholder for erl call'''
+        return ('SWT', dt.datetime.now().strftime('%s'))
+
+    bhvr, bhvr_time = get_bhvr(int_id)
+    params = {'int_id': int_id, 'bhvr': bhvr, 'bhvr_time': bhvr_time}
+    qstr = '''
+        UPDATE
+            int_bhvrs
+        SET
+            bhvr = :bhvr,
+            bhvr_time = :bhvr_time,
+            timestamp = strftime('%s','now')
+        WHERE
+            int_id = :int_id;
+        '''
+    result = g.db.query('relay_main', qstr, params, as_dict=True)
+    return result

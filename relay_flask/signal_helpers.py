@@ -1,4 +1,5 @@
 import numpy as np
+import datetime
 
 from scipy import stats
 
@@ -31,16 +32,18 @@ def create_hist_dict(signals, dt=1.):
     '''
     Takes a set of arrays timestamps and turns them into histograms
     '''
-    def create_hist(s, dt):
+    def create_hist(s, dt, now):
         s = np.array(s)
 
         min_time = s[0]
-        max_time = np.max((100,s[-1] - min_time))
+        max_time = s[-1] - min_time#np.max((100,s[-1] - min_time))
         s_mod = s - min_time
 
         l = np.linspace(0, max_time, max_time/dt)
         hist = np.histogram(s_mod, l)
-        return {'flow': [hist[0].tolist(), np.round(hist[1],0).tolist()], 'min_time': min_time}
 
-    hists = [create_hist(s, dt) for s in signals]
+        return zip(*[now - np.round(hist[1],0)[:-1], hist[0]])
+
+    curtime = int(datetime.datetime.now().strftime('%s'))
+    hists = [create_hist(s, dt, curtime) for s in signals]
     return hists
