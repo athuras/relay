@@ -513,11 +513,29 @@ hr {
 
 #panel-container {
 	display: none;
+	width: 100%;
+	height: 100%;
 }
 
 #panel-container.expanded {
 	display: block;
 }
+
+
+#panel-container .panel-page{
+	width: 45%;
+	height: 100%;
+}
+
+#panel-container #panel-left {
+	float: left;
+}
+
+#panel-container #panel-right {
+	float: right;
+}
+
+
 
 
 
@@ -533,6 +551,10 @@ hr {
 	float: left;
 	letter-spacing: 0.01em;
 	line-height: 27pt;
+}
+
+#stats-container p {
+	color: #fff;
 }
 
 .chart-container {

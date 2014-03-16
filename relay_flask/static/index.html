@@ -68,20 +68,38 @@
 						<!-- <a id='panel-toggle' href='#'><img id='arrow-right' src='assets/arrow-right.png'/></a> -->
 						<span id='intersection-title'>Geary Blvd &amp;<br/>Divisadero St</span>
 					</div>
-					<div class='chart-container'>
-						<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-						<span class='chart-title'>CAPACITY</span>
-						<span class='clear'></span>
-						<div class='chart-box'>
-							<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+					<div class='panel-page' id='panel-left'>
+						<div class='section-container' id='stats-container'>
+							<p>intersection id</p>
+							<p class='stat-field' data-stat='id'></p>
+							<p>intersection type</p>
+							<p class='stat-field' data-stat='type'></p>
+							<p>intersection status</p>
+							<p class='stat-field' data-stat='status'></p>
+							<p>intersection state</p>
+							<p class='stat-field' data-stat='currentState'></p>
+							<p>intersection status</p>
+							<p class='stat-field' data-stat='nextState'></p>
+							<p>intersection status</p>
+							<p class='stat-field' data-stat='nextStateTime'></p>
+						</div>
+						<div class='chart-container'>
+							<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+							<span class='chart-title'>CAPACITY</span>
+							<span class='clear'></span>
+							<div class='chart-box'>
+								<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+							</div>
+						</div>
+						<div class='chart-container'>
+							<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+							<span class='chart-title'>PERFORMANCE</span>
+							<div class='chart-box'>
+								<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+							</div>
 						</div>
 					</div>
-					<div class='chart-container'>
-						<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-						<span class='chart-title'>PERFORMANCE</span>
-						<div class='chart-box'>
-							<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
-						</div>
+					<div class='panel-page' id='panel-right'>
 					</div>
 				</div>
 			</div>
