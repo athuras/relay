@@ -1,7 +1,7 @@
-var ActivityModel = new Backbone.Model.Extend({
+var ActivityModel = Backbone.Model.extend({
 	defaults:{},
 
-	intitialize: function(){
+	initialize: function(){
 
 	},
 })

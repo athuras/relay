@@ -553,8 +553,12 @@ hr {
 	line-height: 27pt;
 }
 
+.section-container{
+	width: 100%;
+}
+
 #stats-container p {
-	color: #fff;
+	color: #fff;v
 }
 
 .chart-container {
@@ -569,6 +573,10 @@ hr {
 	margin: 0 0 0 6px;
 	position: relative;
 	top: -1px;
+}
+
+#activities-table-container{
+	height: 400px;
 }
 
 
