@@ -199,9 +199,9 @@ li {
 	border: 1px solid rgba(54, 54, 54, 1);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	color: #f5f5f6;
-	padding: 16px;
+	padding: 16px 16px 8px 16px;
 	min-width: 400px;
-	min-height: 200px;
+	min-height: 250px;
 	z-index: 100000;
 }
 
@@ -220,12 +220,18 @@ li {
 }
 
 #info-box #graph-wrap {
-	background-color: rgba(17, 110, 205, 0.2);
+	/*background-color: rgba(17, 110, 205, 0.2);*/
+	/*border: 1px solid rgba(17, 110, 205, 0.3);*/
+	/*border: 1px solid rgba(54, 54, 54, 1);*/
 	float: left;
-	margin: 16px 0 0 0;
+	margin: 16px 0 0 10px;
 	position: relative;
 	height: 150px;
-	width: 300px;
+	width: 320px;
+}
+
+.flot-y-axis {
+	margin: 0 0 0 -12px;
 }
 
 #info-box #yaxis {
@@ -234,7 +240,7 @@ li {
 	height: 150px;
 }
 
-#info-box #xaxis{
+#info-box #xaxis {
 	float: right;
 	height: 25px;
 	width: 270px;
@@ -249,9 +255,9 @@ li {
 
 #state-wrap {
 	float: left;
-	left: 40px;
+	left: 20px;
 	position: relative;
-	top: 58px;
+	top: 64px;
 }
 
 #state {
@@ -265,6 +271,51 @@ li {
 	font-size: 1.3em;
 	margin: 14px 0 0 0;
 	text-align: center;
+}
+
+.list-wrapper {
+	position: relative;
+	display: inline-block;
+	margin: 180px 0 0 -350px;
+}
+
+.list-row {
+	width: 150px;
+	margin: 0 0 8px 0;
+}
+
+.info-label {
+	margin: 26px 0 6px 0;
+	color: #dcdcdc;
+	font-size: 0.6em;
+	font-weight: 500;
+	letter-spacing: 0.05em;
+}
+
+.info-text {
+	color: #f5f5f6;
+	font-size: 1em;
+	font-weight: 600;
+	padding: 14px 0;
+}
+
+#left {
+	position: relative;
+	width: 100px;
+}
+
+#right {
+	position: relative;
+	float: left;
+	width: 100px;
+	left: 125px;
+}
+
+#far-right {
+	position: relative;
+	float: left;
+	width: 100px;
+	left: 225px;
 }
 
 /* ********** Intersections ********** */

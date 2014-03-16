@@ -8,26 +8,50 @@ var InfoBoxView = Backbone.View.extend({
 	},
 
 	flotOptions: {
-
+		xaxis: {
+			// position: "bottom",
+			// reserveSpace: -10,
+			min: 0,
+			max: 10
+		},
+		yaxis: {
+			// position: "left",
+			reserveSpace: -10,
+			min: 0,
+			max: 50
+		},
+		legend: {
+			backgroundColor: 'rgba(0, 0, 0, 0)',
+			backgroundOpacity: 0,
+			labelBoxBorderColor: 'rgba(0, 0, 0, 0)',
+			labelFormatter: function(label, series) {
+				return '<div style="color: #cecece; position: relative; top: -4px;">' + label + '</div>';
+			},
+			margin: [-3, 32]
+		},
+		grid: {
+			borderColor: 'rgba(0, 0, 0, 0)',
+			color: 'rgba(54, 54, 54, 0.6)'
+		}
 	},
 
 	flotData: [
 	{
 		data: null,
-		label: 'n',
-		color: 0
+		label: 'North',
+		color: 'rgba(0, 210, 250, 0.8)'
 	},{
 		data: null,
-		label: 'e',
-		color: 1
+		label: 'South',
+		color: 'rgba(0, 250, 200, 0.8)'
 	},{
 		data: null,
-		label: 's',
-		color: 2
+		label: 'East',
+		color: 'rgba(209, 27, 45, 0.7)'
 	},{
 		data: null,
-		label: 'w',
-		color: 3
+		label: 'West',
+		color: 'rgba(250, 137, 52, 0.7)'
 	}],
 
 	events: {
