@@ -53,7 +53,7 @@
 				</div>
 			</div>
 
-		</div>s
+		</div>
 
 		<!-- Map page -->
 		<div id="map-page" class='page'>
@@ -157,7 +157,61 @@
 
 		<!-- Network Page -->
 		<div id="network-page" class='page'>
-			<p>network</p>
+			<div id='network-header'>
+				<div id='title-wrap'>
+					<div id='network-title'>Network Details</div>
+				</div>
+				<div id='stat-container'>
+					<div class='word-wrap'>
+						<span class='stat-title'>INTERSECTION ID</span><br/>
+						<span class='stat-field' id='stat-id'>--</span>
+					</div>
+					<div class='word=wrap' id='righty'>
+						<span class='stat-title'>INTERSECTION TYPE</span><br/>
+						<span class='stat-field' id='stat-type'>--</span>
+					</div>
+				</div>
+			</div>
+			<div class='panel-page' id='panel-left'>
+				<div class='section-container' id='left-stats'>
+					<div class='word-wrap'>
+						<span class='stat-title'>STATUS</span><br/>
+						<span class='stat-field' id='stat-status'>--</span><br/>
+						<span class='stat-title'>STATE</span><br/>
+						<span class='stat-field' id='stat-currentState'>--</span>
+					</div>
+					<div class='word=wrap' id='righty'>
+						<span class='stat-title'>NEXT STATE</span><br/>
+						<span class='stat-field' id='stat-nextState'>--</span><br/>
+						<span class='stat-title'>NEXT STATE TIME</span><br/>
+						<span class='stat-field' id='stat-nextStateTime'>--</span>
+					</div>
+				</div>
+				<div class='section-container chart-container'>
+					<span class='stat-title'>CAPACITY</span>
+					<span class='clear'></span>
+					<div class='chart-box'>
+						<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+					</div>
+				</div>
+				<div class='section-container chart-container'>
+					<span class='stat-title'>FLOW</span>
+					<div class='chart-box'>
+						<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+					</div>
+				</div>
+			</div>
+			<div class='panel-page' id='panel-right'>
+				<div class='section-container' id='activities-table-container'></div>
+			</div>
+		</div>
+
+
+
+
+
+
+<!-- 			<p>network</p>
 				<div id='info-box'>
 				<div id='heading'>
 					<div id='intersection-name' data-content='name'></div>
@@ -200,8 +254,7 @@
 						<span class='info-text' data-content='nextStateTime'></span>
 					</li>
 				</ul>	
-			</div>
-		</div>
+			</div> -->
 
 	</div> <!-- End of app div -->
 
