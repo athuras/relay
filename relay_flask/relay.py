@@ -1,5 +1,4 @@
 import os
-import signal_helpers as sighelp
 import merge_queues as mqs
 import datetime as dt
 
@@ -25,9 +24,7 @@ db = create_engine('sqlite:///db/relay.db')
 
 @app.route('/')
 def index():
-    # spawn something to keep track of information for simulated intersections
     setup_simulation()
-
     return redirect(url_for('static', filename='index.html'))
 
 @app.route('/request_intersections', methods=['POST'])
@@ -74,7 +71,7 @@ def get_roads():
         # qstr = '''SELECT * FROM roads;''' 
         # #WHERE lat>=:minlat AND lat<=:maxlat AND
         #  #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        # roads = g.db.query('relay_main', qstr, bounds, as_dict=True)
+        #v broads = g.db.query('relay_main', qstr, bounds, as_dict=True)
         return createJSON(bounds)
 
 @app.route('/request_plan', methods=['POST'])
@@ -193,40 +190,32 @@ def get_dash():
         info.append({'events': g.db.query('relay_main', q2, params, as_dict=True)})
         info.append(new_qs_dict)
 
+        print info
+
         return createJSON(info)
 
-@app.route('/request_flows', methods=['POST'])
-def get_flows():
+@app.route('/request_network', methods=['POST'])
+def sdlfkj():
     if request.method == 'POST':
-        flow_params = request.json # int_id, dt, duration
-        # qstr = '''
-        #     SELECT 
-        #         timestamp,
-        #         value,
-        #         in_node_id,
-        #         out_node_id 
-        #     FROM 
-        #         int_metrics
-        #     WHERE
-        #         name = 'flow' AND
-        #         int_id = :int_id AND
-        #         timestamp >= 0
-        #     ORDER BY
-        #         timestamp ASC;
-        #     '''
-        # # strftime('%s', :intial_time)
-        # flows = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        int_id = request.json 
+        qstr = '''
+            SELECT 
+                timestamp,
+                value,
+                int_id 
+            FROM 
+                int_events
+            WHERE
+                int_id = :int_id;
+            ''' 
+        evts = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        return createJSON(evts)
 
-        flows = gen_flows()
-
-        # flow_arrays = create_flow_arrs(flows)
+@app.route('/request_flows', methods=['GET'])
+def get_flows():
+    if request.method == 'GET':
+        flows = mqs.make_queues()
         return createJSON(flows)
-
-def gen_flows():
-    A, B, C, D, E = sighelp.generate_signals(250)
-    signals = [A, B, C, D]
-
-    return sighelp.create_hist_dict(signals, 1)
 
 @app.route('/api/charts', methods=['POST'])
 def get_chart():
