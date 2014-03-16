@@ -28,22 +28,35 @@
 				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page'>ROADS</li></a>
 				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
 			</ul>
+
 			<!-- <div id='search-box'><img id='search-icon' src='assets/search.png'/></div> -->
-			<img class='spinner' id='settings' src='assets/settings.png'/>
-		</div>
+
+			<div id='status-container'>
+				<img class='spinner' id='status' src='assets/settings.png'/>
+
+				<div id='status-pane'>
+					<div id='title'>Connection Settings</div>
+					<br/>
+					<p>Connections</p>
+					<p class='label'>socket</p>
+					<p class='answer' id='socket-status'>-</p>
+					<p class='label'>rest</p>
+					<p class='answer' id='rest-status'>-</p>
+					<br/>
+					<p>Updates</p>
+					<p class='label'>most recent:</p>
+					<p class='answer' id='local-update'>-</p>
+					<p class='label'>last global</p>
+					<p class='answer' id='global-update'>-</p>
+				</div>
+			</div>
+
+		</div>s
 
 		<!-- Map page -->
 		<div id="map-page" class='page'>
 			<!-- Where the map goes -->
 			<div id="map"></div>
-
-<!-- 			<div id='settings-pane'>
-				<div id='title'>Connection Settings</div>
-				<span id='label'>DATA FEED</span><br/>
-				<span id='answer'>Live</span><br/>
-				<span id='label'>LAST UPDATED</span><br/>
-				<span id='answer'>30s ago</span>
-			</div> -->
 
 			<!-- dat LEGEND -->
 			<div id='layer-legend'>
@@ -266,6 +279,11 @@
 
 	<script type="text/javascript" src='js/clients/snap.svg-min.js'></script>
 
+	<!-- status pane going -->
+	<script type="text/javascript">
+		// var status = new StatusPaneView();
+	</script>
+
 
 	<!-- bootstrap data -->
 	<script type="text/javascript" src="js/bootstrap_data.js"></script>
@@ -288,12 +306,15 @@
 	<script type="text/javascript" src="js/intersection_view.js"></script>
 	<script type="text/javascript" src="js/intersections_collection_view.js"></script>
 	<script type="text/javascript" src='js/info_box_view.js'></script>
+	<script type="text/javascript" src='js/status_pane_view.js'></script>
 
 	<script type="text/javascript" src="js/app_view.js"></script>
 
 	<script>
 	var app; // global reference
+	var s;
 	$(document).ready(function(){
+		s = new StatusPaneView();
 		app = new AppView;
 	});
 	</script>

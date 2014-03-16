@@ -1,5 +1,7 @@
 var IntersectionsCollectionView = Backbone.View.extend({
 
+	intervalFrequency: 10000,
+
 	// initialize()
 	initialize: function(options){
 		this.map = options.map;
@@ -10,8 +12,15 @@ var IntersectionsCollectionView = Backbone.View.extend({
 
 		// If there are intersections in the collection already, make views for them
 		this.model.forEach(this.onAddedIntersection, this);
+
 		// whenever an intersection is added to the model, we make the appropriate views for it.
 		this.model.on('add', this.onAddedIntersection, this);
+
+		// this.render();
+		this.startInterval();
+	},
+
+	render: function(){
 
 	},
 
@@ -84,5 +93,15 @@ var IntersectionsCollectionView = Backbone.View.extend({
 		_.each(this.intersectionViews, function(intersection){
 			intersection.setMap(map);
 		}, this);
-	}
+	},
+
+ 	startInterval: function(){
+ 		this.interval = setInterval(function(icv){
+ 			icv.model.update();
+ 		}, this.intervalFrequency, this);
+ 	},
+
+ 	stopInterval: function() {
+ 		clearInterval(this.interval);
+ 	}
 });

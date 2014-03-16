@@ -2,7 +2,9 @@ import numpy as np
 import prediction_helpers as prh
 
 from datetime import datetime
-from scipy import stats
+from scipy.stats import gamma
+from itertools import izip
+from collections import namedtuple
 
 def gen_prediction(nbr_signals, nbr_bhvrs, edges, dt=1.):
     '''
@@ -21,6 +23,40 @@ def gen_prediction(nbr_signals, nbr_bhvrs, edges, dt=1.):
     prediction_time = datetime.now()
 
     return predictions, prediction_time
+
+def gen_local_prediction(remote_egress, taus, now, t=40, dt=1., lookback=2*60):
+    '''Erlang Entry Point for gen_prediction(...).
+    :remote_egress  -> [incoming_1, ..., incoming_d],
+    :taus           -> [tau_1, ..., tau_d],
+    :t              -> Prediction time
+    :dt             -> time-step.
+    :lookback       -> How much to consider from egress queues
+
+    Arguably, the filtering could be done more efficiently on the Erlang
+    side, but doing it internally keeps it clean. /athuras
+    '''
+    G = namedtuple('Gamma', ['shape', 'loc', 'scale', 'gain'])
+
+    def render_queue(q, dt, min_time, max_time):
+        T = int(max_time - min_time)
+        FQ = [x for x in q if x >= min_time and x <= max_time]
+        raster = np.histogram(FQ, bins=int(T/dt), range=(min_time, max_time))
+        return raster[0]
+
+    def render_gamma(tau, T, dt):
+        l = np.linspace(0, T, int(T/dt))
+        return gamma(tau.shape, tau.loc, tau.scale).pdf(l)
+
+    n = int(t/dt)
+    egress = [render_queue(e, dt, now - lookback, now) for e in remote_egress]
+    delay = [render_gamma(G(*tau), int(t/dt)*5, dt) for tau in taus]
+    prediction_rasters = [
+            np.convolve(k, e, mode='full')[lookback:lookback + n].tolist()
+                            for e, k in izip(egress, delay)
+        ]
+    P = [map(float, p) for p in prediction_rasters]
+    return int(now), P
+
 
 def gen_full_prediction(nbr_predictions, nbr_signals, nbr_bhvrs, edges, t, dt=1.):
     '''
@@ -49,7 +85,6 @@ def gen_full_prediction(nbr_predictions, nbr_signals, nbr_bhvrs, edges, t, dt=1.
             full_preditions.append(pred)
 
     return full_preditions, pred_time
-
 
 def calc_prediction(NBPM, SIG, TD, dt):
     '''

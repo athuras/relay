@@ -76,16 +76,18 @@ class Stepper(object):
         return x
 
 
-def optimize_path(paths, behaviours, btg, prediction, dt=1.):
+def optimize_path(paths, behaviours, btg, prediction, dt, maxiter):
     '''Erlang Entry Point to Optimization Module'''
     B_table = parse_behaviours(behaviours)
     BTG = parse_edgelist(btg)
-    F = parse_prediction(prediction)
+    start, F = parse_prediction(prediction)
 
-    return best_path(paths, B_table, BTG, F, dt=dt)
+    path, t =  best_path(paths, B_table, BTG, F, dt=dt, maxiter=10)
+    return list(path), map(int,t.x), int(t.nfev), int(t.fun), int(t.nit)
+
 
 def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
-              maxiter=400, Acc0=None, method="COBYLA"):
+              maxiter=20, Acc0=None, method="SLSQP"):
     '''
     Perform the mixed ILP optimization (without queues, or memory), that yields
     the optimal behaviour transition through the BTG.
@@ -113,7 +115,7 @@ def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
 
         minimizer_kwargs = {'method': method, 'bounds': bounds.SLSQP_bounds(),
                             'constraints': bounds.SLSQP_constraints()[method.lower()],
-                            'maxiter': 25}
+                            }
         result = basinhopping(L, x0.copy(),
                             accept_test=bounds,
                             take_step=step_taker, stepsize=10*dt,
@@ -154,7 +156,9 @@ def opt_params(path, BTable, BTG, t_max, F, dt, Acc0,
 
         Deadtimes = np.where(Z == 0, 0, 1).sum(1)
 
-        return -1 * obj(x, B, cum_Z, taus, dt=dt) + avg_rates.dot(Deadtimes) ** 2
+        return (-obj(x, B, cum_Z, taus, dt=dt)
+                + 0.25* avg_rates.dot(Deadtimes) ** 2
+                - avg_rates.sum()*Acc.sum())  # ????
 
 
     step_taker = Stepper(bounds, 10, 20)
@@ -163,16 +167,17 @@ def opt_params(path, BTable, BTG, t_max, F, dt, Acc0,
 
 #  Parsers      ###############################################################
 def parse_edgelist(edges):
-    '''[(a, b, tau)] -> {(a, b): tau}'''
-    return {(a, b): tau for a, b, tau in edges}
+    '''[((a, b), tau)] -> {(a, b): tau}'''
+    return {(a, b): tau for (a, b), tau in edges}
 
 def parse_behaviours(behaviours, dtype=np.float32):
-    '''[(bid, <bvec>)] -> {bid: <bvec>}'''
-    return {bid: np.array(tuple(bvec), dtype=dtype) for bid, bvec in behaviours}
+    '''[(bid, [bvec])] -> {bid: <bvec>}'''
+    return {bid: np.array(bvec).sum(1) for bid, bvec in behaviours}
 
 def parse_prediction(F):
     '''[[float]] -> np.array(...) of same shape'''
-    return np.array(F)  # Might not work, will check back later
+    start, data = F
+    return start, np.array(data)  # Might not work, will check back later
 
 
 #  Optimization ###############################################################

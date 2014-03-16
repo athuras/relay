@@ -26,7 +26,7 @@ var IntersectionView = Backbone.View.extend({
 
 		this.performanceGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
 		this.flowGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
-				
+
 		this.performanceGlyph = {
 			path: '',
 		    fillColor: '',

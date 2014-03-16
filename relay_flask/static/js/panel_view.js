@@ -110,6 +110,8 @@ var PanelView = Backbone.View.extend({
 				console.log(d);
 				// reset the activity collection with the new list of events.
 				pv.activitiesCollection.reset(d);
+				s.localUpdate();
+				s.restConnected();
 			})
 			//update anyhting non-static.
 		}, this.activityUpdateFrequency, this)

@@ -94,7 +94,7 @@ li {
 	z-index: 100000;
 }
 
-#settings {
+#status {
 	width: 14px;
 	float: right;
 	position: relative;
@@ -117,9 +117,10 @@ li {
 
 
 
-/* ********** Settings Pane ************ */
+/* ********** Status Pane ************ */
 
-#settings-pane {
+#status-pane {
+	display: none;
 	background-color: rgba(0, 0, 0, 0.9);
 	border: 1px solid rgba(54, 54, 54, 1);
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.63);
@@ -134,7 +135,7 @@ li {
 	z-index: 1000;
 }
 
-#settings-pane #title {
+#status-pane #title {
 	border-bottom: 1px solid #f5f5f6;
 	font-size: 1em;
 	font-weight: 600;
@@ -142,7 +143,7 @@ li {
 	position: relative;
 }
 
-#settings-pane #label {
+#status-pane .label {
 	margin: 26px 0 0 0;
 	position: relative;
 	display: inline-block;
@@ -152,7 +153,7 @@ li {
 	letter-spacing: 0.05em;
 }
 
-#settings-pane #answer {
+#status-pane .answer {
 	font-weight: 600;
 	color: #fff;
 	display: inline-block;

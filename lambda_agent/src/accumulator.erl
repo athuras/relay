@@ -14,15 +14,20 @@
 -record(state, {current_behaviour,
                 ingress,
                 egress,
+                remote_egress,
                 maxlen=300,
                 ports=4}).
 
 init(Initial_Behaviour) ->
-    NumQueues = length(Initial_Behaviour),
-    Ingress = [queue:new() || _ <- lists:seq(1, NumQueues)],
-    Egress = [queue:new() || _ <- lists:seq(1, NumQueues)],
-    {ok, #state{ingress=Ingress, egress=Egress,
-                ports=NumQueues, current_behaviour=Initial_Behaviour}}.
+    N = length(Initial_Behaviour),
+    {ok, #state{ingress=new_queues(N),
+                egress=new_queues(N),
+                remote_egress=new_queues(N),
+                ports=N,
+                current_behaviour=Initial_Behaviour}}.
+
+new_queues(N) ->
+    [queue:new() || _ <- lists:seq(1, N)].
 
 %%  Event Handlers  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Add the event to the proper ingress queue,
@@ -37,6 +42,12 @@ handle_event({incoming, Index, Time, Weight}, State) ->
     NewEgress = update_queues(State#state.egress, Items, State#state.maxlen),
     {ok, State#state{ingress=NewIngress, egress=NewEgress}};
 
+handle_event({incoming_upstream, Index, Time, Weight}, State) ->
+    NewR = update_queue(State#state.remote_egress,
+                         {Index, Time, Weight},
+                        State#state.maxlen),
+    {ok, State#state{remote_egress=NewR}};
+
 %%  Update the current behaviour
 handle_event({new_behaviour, B_mat}, State) ->
     {ok, State#state{current_behaviour=B_mat}};
@@ -46,9 +57,16 @@ handle_event(_, State) ->
 
 
 %%  Calls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-handle_call(all_ingress, State) ->
-    {ok, render_queues(State#state.ingress), State};
+handle_call(get_egress, State=#state{egress=E}) ->
+    {ok, [render_queues(X) || X <- E], State};
 
+handle_call(get_ingress, State=#state{ingress=I}) ->
+    {ok, [render_queue(X) || X <- I], State};
+
+handle_call(get_remote_egress, State=#state{remote_egress=E}) ->
+    {ok, [render_queue(X) || X <- E], State};
+
+%%  There must be some way of doing this non-explicitely ...
 handle_call({get_ingress, N}, State) ->
     case N > 0 andalso N =< State#state.ports of
         true -> {ok, render_queue(lists:nth(N, State#state.ingress)), State};
@@ -60,6 +78,14 @@ handle_call({get_egress, N}, State) ->
         true -> {ok, render_queue(lists:nth(N, State#state.egress)), State};
         false -> {ok, {error, no_queue}, State}
     end;
+
+handle_call({get_remote_egress, N}, State) ->
+    case N > 0 andalso N =< State#state.ports of
+        true -> {ok, render_queue(lists:nth(N, State#state.remote_egress)), State};
+        false -> {ok, {error, no_queue}, State}
+    end;
+
+
 
 handle_call(_, State) ->
     {ok, ok, State}.
