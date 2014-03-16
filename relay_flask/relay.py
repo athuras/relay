@@ -111,7 +111,7 @@ def get_status():
 @app.route('/request_all_events', methods=['POST'])
 def get_all_evts():
     if request.method == 'POST':
-        num_events = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        num_events = request.json
         qstr = '''
             SELECT 
                 timestamp,
@@ -128,7 +128,7 @@ def get_all_evts():
 @app.route('/request_int_events', methods=['POST'])
 def get_int_evts():
     if request.method == 'POST':
-        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        int_id = request.json 
         qstr = '''
             SELECT 
                 timestamp,
@@ -145,8 +145,26 @@ def get_int_evts():
 @app.route('/request_dashboard', methods=['POST'])
 def get_dash():
     if request.method == 'POST':
-        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
-        qstr = '''
+        int_id = request.json
+        q1 = ['general','''
+            SELECT 
+                s.status as status,
+                s.timestamp as status_time,
+                p.plan as plan,
+                p.plan_time as plan_time,
+                b.bhvr as behaviour,
+                b.bhvr_time as bhvr_time
+            FROM
+                int_status as s
+                LEFT OUTER JOIN int_plans as p
+                    ON s.int_id = p.int_id
+                LEFT JOIN int_bhvrs as b
+                    ON s.int_id = b.int_id
+            WHERE
+                s.int_id = :int_id;
+            ''']
+
+        q2 = ['events','''
             SELECT 
                 timestamp,
                 value,
@@ -155,42 +173,15 @@ def get_dash():
                 int_events
             WHERE
                 int_id = :int_id;
+            ''']
 
-            SELECT 
-                s.value as status,
-                p.value as plan,
-                b.value as behaviour
-            FROM
-                intersections as i
-                LEFT JOIN (
-                    SELECT *
-                    FROM int_metrics
-                    WHERE name='status'
-                    ) as s
-                    ON i.int_id == s.int_id
-                LEFT JOIN (
-                    SELECT *
-                    FROM int_metrics
-                    WHERE name='plan'
-                    ) as p
-                    ON i.int_id == p.int_id
-                LEFT JOIN (
-                    SELECT *
-                    FROM int_metrics
-                    WHERE name='bhvr'
-                    ) as b
-                    ON i.int_id == b.int_id
-            WHERE
-                i.lat>=:minlat AND
-                i.lat<=:maxlat AND
-                i.long>=:minlong AND
-                i.long<=:maxlong AND
-                i.type_short IN  ('MJRML', 'MJRSL', 'MAJINT');
-            '''
+        qstrs = [q1,q2]
 
+        info = [{q[0]: g.db.query('relay_main', q[1], int_id, 
+            as_dict=True)} for q in qstrs]
 
-        evts = g.db.query('relay_main', qstr, int_id, as_dict=True)
-        return createJSON(evts)
+        info.append({'flows': gen_flows()})
+        return createJSON(info)
 
 @app.route('/request_flows', methods=['POST'])
 def get_flows():
