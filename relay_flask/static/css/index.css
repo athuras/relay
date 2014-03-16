@@ -441,6 +441,10 @@ li {
 	padding: 78px 0;
 }
 
+#network-header #stat-container {
+	top: -2px;
+}
+
 #title-wrap {
 	padding: 20px 0 0 0;
 }
@@ -618,9 +622,35 @@ li {
 	top: -1px;
 }*/
 
-#activities-table-container{
-	height: 400px;
+.log-title {
+	font-size: 18pt;
+	font-weight: 600;
+	color: #f5f5f6;
+	position: relative;
+	top: 70px;
+	left: -33px;
 }
+
+#activities-table-container {
+	color: #f5f5f6;
+	position: relative;
+	top: 96px;
+	right: 38px;
+	/*border: 1px solid rgba(54, 54, 54, 1);*/
+}
+
+#activities-table-container tbody {
+	font-size: 0.8em;
+}
+
+#activities-table-container tr {
+	border: none;
+}
+
+.backgrid {
+	border-radius: 0;
+}
+
 
 
 

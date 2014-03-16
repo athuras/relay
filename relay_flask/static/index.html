@@ -131,6 +131,7 @@
 						</div>
 					</div>
 					<div class='panel-page' id='panel-right'>
+						<div class='log-title'>Activity Log</div>
 						<div class='section-container' id='activities-table-container'></div>
 					</div>
 				</div>
@@ -156,6 +157,20 @@
 		</div>
 
 		<!-- Network Page -->
+
+<!-- 
+total # intersections
+# of OK
+# of failures
+
+header: city, random codes or w/e
+
+activity log, full height of right panel
+
+graph 1: total flow over time
+graph 2: histogram
+-->
+
 		<div id="network-page" class='page'>
 			<div id='network-header'>
 				<div id='title-wrap'>
@@ -163,27 +178,27 @@
 				</div>
 				<div id='stat-container'>
 					<div class='word-wrap'>
-						<span class='stat-title'>INTERSECTION ID</span><br/>
-						<span class='stat-field' id='stat-id'>--</span>
+						<span class='stat-title'>LOCATION</span><br/>
+						<span class='stat-field' id='stat-id'>Toronto, ON</span>
 					</div>
 					<div class='word=wrap' id='righty'>
-						<span class='stat-title'>INTERSECTION TYPE</span><br/>
-						<span class='stat-field' id='stat-type'>--</span>
+						<span class='stat-title'>COORDINATES</span><br/>
+						<span class='stat-field' id='stat-type'>43.652073, -79.382293</span>
 					</div>
 				</div>
 			</div>
 			<div class='panel-page' id='panel-left'>
 				<div class='section-container' id='left-stats'>
 					<div class='word-wrap'>
-						<span class='stat-title'>STATUS</span><br/>
+						<span class='stat-title'>INTERSECTIONS</span><br/>
 						<span class='stat-field' id='stat-status'>--</span><br/>
-						<span class='stat-title'>STATE</span><br/>
+						<span class='stat-title'>DECISIONS PER MINUTE</span><br/>
 						<span class='stat-field' id='stat-currentState'>--</span>
 					</div>
 					<div class='word=wrap' id='righty'>
-						<span class='stat-title'>NEXT STATE</span><br/>
+						<span class='stat-title'>WORKING</span><br/>
 						<span class='stat-field' id='stat-nextState'>--</span><br/>
-						<span class='stat-title'>NEXT STATE TIME</span><br/>
+						<span class='stat-title'>FAILING</span><br/>
 						<span class='stat-field' id='stat-nextStateTime'>--</span>
 					</div>
 				</div>
