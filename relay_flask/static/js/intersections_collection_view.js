@@ -29,7 +29,7 @@ var IntersectionsCollectionView = Backbone.View.extend({
 			'status': 'OK',
 
 			'currentState': 'EWT',
-			'nextState': 'EWC',
+			'nextState': 'EWY',
 			'nextStateTime': 12569537329,
 
 			'flowVolumeRunningHour': [1000, 2000, 1000, 2000],

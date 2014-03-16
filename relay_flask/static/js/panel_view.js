@@ -3,7 +3,8 @@ var PanelView = Backbone.View.extend({
 	el: $('#side-panel'),
 
 	events: {
-		'click #panel-toggle': 'panelToggled'
+		'click #panel-toggle': 'panelToggled',
+		'click #close': 'panelToggled'
 	},
 
 	activityGridColumns: [{
@@ -41,7 +42,9 @@ var PanelView = Backbone.View.extend({
 
 	expand: function(){
 		this.$el.addClass('expanded');
-		this.$('#panel-container').addClass('expanded');
+		this.$('#panel-container').addClass('expanded')
+		this.$('#panel-toggle').css('visibility', 'hidden');
+		this.$('#close').css('visibility', 'visible');
 		this.isExpanded = true;
 	},
 
@@ -49,6 +52,8 @@ var PanelView = Backbone.View.extend({
 		// remove all the styling and hide
 		this.$('#panel-container').removeClass('expanded');
 		this.$el.removeClass('expanded');
+		this.$('#panel-toggle').css('visibility', 'visible');
+		this.$('#close').css('visibility', 'hidden');
 		this.isExpanded = false;
 
 		// stop the pulling
