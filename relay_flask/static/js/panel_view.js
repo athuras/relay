@@ -157,8 +157,8 @@ var PanelView = Backbone.View.extend({
 				data: JSON.stringify({int_id: 11}),
 				async: false
 			}).then( function(d){
-				console.log('dashboard data');
-				console.log(d);
+				// console.log('dashboard data');
+				// console.log(d);
 				// reset the activity collection with the new list of events.
 
 				// update general status things
@@ -168,7 +168,6 @@ var PanelView = Backbone.View.extend({
 				pv.$('#stat-nextState').html(general['plan']);
 
 				//handle time nicely
-
 				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
 				pv.$('#stat-nextStateTime').html(timeUntilNextState);
 

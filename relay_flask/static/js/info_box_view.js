@@ -136,42 +136,58 @@ var InfoBoxView = Backbone.View.extend({
 
 	startInterval: function(){
 		this.interval = setInterval(function(ibv){
-				// run the request for flow data,
-				$.ajax({
-					type: "POST",
-					datatype: "JSON",
-					contentType: "application/json",
-					url: "http://localhost:5000/request_flows",
-					data: JSON.stringify({int_id: 11 /*this.currentModel.get('int_id')*/, dt: 1, duration: 60}),
-					async: false
-		        }).then( function(d){
-		        	//what does it look like?
-		        	console.log(d)
 
-		        	// for each direction
-		        	for(var dir = 0; dir < 4; dir++){
-		        		var flotSeries = new Array();
+			// run the request for flow data,
+			$.ajax({
+				type: "POST",
+				datatype: "JSON",
+				contentType: "application/json",
+				url: "http://localhost:5000/request_dashboard",
+				data: JSON.stringify({int_id: 11 /*this.currentModel.get('int_id')*/, dt: 1, duration: 60}),
+				async: false
+			}).then( function(d){
+				//what does it look like?
+				// console.log(d)
 
-		        		//for each point in the array
-		        		for(var index = 0; index < Math.min(d[dir].flow[0].length, d[dir].flow[1].length); index++ ){
-		        			flotSeries.push([ d[dir].flow[1][index] , d[dir].flow[0][index] ]); // flip x and y.
-		        		}
-		        		// put the new data series in the flotData obj
-		        		ibv.flotData[dir].data = flotSeries;
-		        	}
+				// update general status things
+				var general = d[0]['general'][0];
+				$(ibv.boxText).find('#info-box-status').get(0).innerHTML = general['status'];
+				$(ibv.boxText).find('#info-box-currentState').get(0).innerHTML = general['behaviour'];
+				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = general['plan'];
 
-		        	// set the data.
-		        	ibv.flotPlot.setData(ibv.flotData);
-		        	ibv.flotPlot.setupGrid();
-		        	ibv.flotPlot.draw();
+				//handle time nicely
+				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				$(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
 
-					// update s
-					s.localUpdate();
-					s.restConnected()
+				// change the icon
+				$($(ibv.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
 
-		        });;
+				// update graphs
+				// Flow plot
+	        	// for each direction
+	        	var flows = d[2]['flows'];
+	        	for(var dir = 0; dir < 4; dir++){
+	        		var flotSeries = new Array();
 
-			}, this.updateFrequency, this);
+	        		//for each point in the array
+	        		for(var index = 0; index < Math.min(flows[dir].flow[0].length, flows[dir].flow[1].length); index++ ){
+	        			flotSeries.push([ flows[dir].flow[1][index] , flows[dir].flow[0][index] ]); // flip x and y.
+	        		}
+	        		// put the new data series in the flotData obj
+	        		ibv.flotData[dir].data = flotSeries;
+	        	}
+
+				// set the data.
+				ibv.flotPlot.setData(ibv.flotData);
+				ibv.flotPlot.setupGrid();
+				ibv.flotPlot.draw();
+
+				// update s
+				s.localUpdate();
+				s.restConnected();
+
+			});;
+		}, this.updateFrequency, this);
 	},
 
 	stopInterval: function(){
