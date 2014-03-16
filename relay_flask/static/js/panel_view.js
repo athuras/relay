@@ -72,36 +72,17 @@ var PanelView = Backbone.View.extend({
 
 	// populate the intersection name and info
 	showIntersectionDetails: function(intersectionModel){
+
+		// set static values
 		this.$('#intersection-title').text( intersectionModel.get('name') );
+		this.$('#stat-id').html(intersectionModel.get('int_id'));
+		this.$('#stat-type').html(intersectionModel.get('type'));
 
-		// $.ajax({
-		// 	type: 'POST',
-		// 	datatype: 'JSON',
-		// 	contentType: 'application/json',
-		// 	url: 'http://localhost:5000/api/charts',
-		// 	data: JSON.stringify({}),
-		// 	async: false
-		// }).then( function(d){
-		// 	console.log(d);
-		// 	var performance_data = bootstrap.chartDataFormats;
-		// 	performance_data.labels = d.time;
-		// 	performance_data.datasets[0].data = d.perf;
-		// 	performance_data.datasets[1].data = d.vol;
-
-		// 	var p_ctx = document.getElementById("performance-chart").getContext("2d");
-		// 	var performanceChart = new Chart(p_ctx).Line(performance_data, this.chartOptions);
-
-		// 	var capacity_data = bootstrap.chartDataFormats;
-		// 	capacity_data.labels = d.time;
-		// 	capacity_data.datasets[0].data = d.costUD;
-		// 	capacity_data.datasets[1].data = d.costLR;
-
-		// 	var c_ctx = document.getElementById("capacity-chart").getContext("2d");
-		// 	var capacityChart = new Chart(c_ctx).Line(capacity_data, this.chartOptions);
-		// });
-
-		// this.$('#intersection-volume').text( intersectionModel.get('volume') );
-		// this.$('#intersection-performance').text( intersectionModel.get('performance') );
+		// set what we do know before live updates kick in
+		this.$('#stat-status').html(intersectionModel.get('status'));
+		this.$('#stat-currentState').html(intersectionModel.get('currentState'));
+		this.$('#stat-nextState').html(intersectionModel.get('nextState'));
+		this.$('#stat-nextStateTime').html(intersectionModel.get('nextStateTime'));
 
 		// For anything that requires real-time data, we use a set interval!
 		this.startInterval();
