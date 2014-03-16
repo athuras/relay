@@ -52,8 +52,16 @@ var StatusPaneView = Backbone.View.extend({
 		this.$('#socket-status').html(this.sMessage);
 
 		// write the connection times
-		this.$('#local-update').html(Math.floor((Date.now() - this.lastLocalUpdate) / 1000) + 's ago.');
-		this.$('#global-update').html(Math.floor((Date.now() - this.lastGlobalUpdate) / 1000) + 's ago.');
+		if((Date.now() - this.lastLocalUpdate) <= 1000){
+			this.$('#local-update').html('(live)');
+		} else {
+			this.$('#local-update').html(Math.floor((Date.now() - this.lastLocalUpdate) / 1000) + 's ago');
+		}
+		if((Date.now() - this.lastGlobalUpdate) <= 1000){
+			this.$('#global-update').html('(live)');
+		} else{
+			this.$('#global-update').html(Math.floor((Date.now() - this.lastGlobalUpdate) / 1000) + 's ago');
+		}
 
 	},
 
