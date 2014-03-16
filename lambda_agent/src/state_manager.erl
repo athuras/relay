@@ -11,6 +11,8 @@
     start_link/0
     ]).
 
+-export([clock/0]).
+
 %%  Interface
 -export([
     get_tables/1,
@@ -20,6 +22,7 @@
     refresh_store/1
     ]).
 
+clock() -> element(1, now()) * 10000 + element(2, now()).
 
 
 %%  API

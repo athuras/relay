@@ -18,9 +18,11 @@
 -record(state, {name, location,
                 btg_table=new_ets_table(agent_graphs:new_btg()),
                 b_table=new_ets_table(agent_graphs:new_behaviour_table()),
+                prediction=[],
                 base_graph=agent_graphs:new_base_graph(),
                 current_behaviour=0, current_plan=[],
-                delay_kernels=[]}).
+                delay_params=[]
+                }).
 
 init([]) ->
     {ok, #state{}}.
@@ -32,17 +34,21 @@ handle_event({set_location, location}, State) ->
     {ok, State#state{location=location}};
 
 %%  Planning Related
-handle_event({new_plan, Plan_Stuff}, State) ->
+handle_event({set_plan, Plan_Stuff}, State) ->
     {ok, State#state{current_plan=Plan_Stuff}};
 handle_event({set_behaviour, Bid}, State) ->
     {ok, State#state{current_behaviour=Bid}};
 
 
 %%  Statistics and Inferred Properties
-handle_event({update_delay_kernels, Taus}, State) ->
-    {ok, State#state{delay_kernels=Taus}};
+handle_event({update_delay_params, Taus}, State) ->
+    {ok, State#state{delay_params=Taus}};
+
 handle_event({update_graph_params, Base}, State) ->
     {ok, State#state{base_graph=Base}};
+
+handle_event({new_prediction, P}, State) ->
+    {ok, State#state{prediction=P}};
 
 handle_event(_, State) ->
     {ok, State}.
@@ -64,12 +70,21 @@ handle_call(get_tables, State) ->
     Tables = {ok, {State#state.btg_table, State#state.b_table}},
     {ok, Tables, State};
 
-handle_call(get_prediction_info, State) ->
-    {ok, State, State};
+handle_call(get_delay_params, State=#state{delay_params=DP}) ->
+    Taus = case DP of
+        [] -> [lol_matrices:ones(4)
+               || _ <- lists:seq(1, length(State#state.base_graph))
+                 ];
+        _ -> DP
+    end,
+    {ok, Taus, State#state{delay_params=Taus}};
 
 handle_call(get_current_graph, State) ->
     B = ets:lookup(State#state.b_table, State#state.current_behaviour),
     {ok, lol_matrices:mult(B, State#state.base_graph), State};
+
+handle_call(get_prediction, State) ->
+    {ok, State#state.prediction, State};
 
 handle_call(_Call, State) ->
     {ok, ok, State}.
