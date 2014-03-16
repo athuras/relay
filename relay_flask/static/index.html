@@ -65,23 +65,41 @@
 				<a href='#'><img id='panel-toggle' src='assets/arrow-left.png'/></a>
 				<div id='panel-container'>
 					<div id='title-container'>
-						<!-- <a id='panel-toggle' href='#'><img id='arrow-right' src='assets/arrow-right.png'/></a> -->
-						<span id='intersection-title'>Geary Blvd &amp;<br/>Divisadero St</span>
+						<h3 id='intersection-title'>--</h3>
+						<p>intersection id</p>
+						<p class='stat-field' id='stat-id'>--</p>
+						<p>intersection type</p>
+						<p class='stat-field' id='stat-type'>--</p>
 					</div>
-					<div class='chart-container'>
-						<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-						<span class='chart-title'>CAPACITY</span>
-						<span class='clear'></span>
-						<div class='chart-box'>
-							<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+					<div class='panel-page' id='panel-left'>
+						<div class='section-container' id='stats-container'>
+							<p>intersection status</p>
+							<p class='stat-field' id='stat-status'>--</p>
+							<p>intersection state</p>
+							<p class='stat-field' id='stat-currentState'>--</p>
+							<p>intersection Next status</p>
+							<p class='stat-field' id='stat-nextState'>--</p>
+							<p>intersection next status time</p>
+							<p class='stat-field' id='stat-nextStateTime'>--</p>
+						</div>
+						<div class='section-container chart-container'>
+							<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+							<span class='chart-title'>CAPACITY</span>
+							<span class='clear'></span>
+							<div class='chart-box'>
+								<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+							</div>
+						</div>
+						<div class='section-container chart-container'>
+							<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
+							<span class='chart-title'>PERFORMANCE</span>
+							<div class='chart-box'>
+								<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+							</div>
 						</div>
 					</div>
-					<div class='chart-container'>
-						<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-						<span class='chart-title'>PERFORMANCE</span>
-						<div class='chart-box'>
-							<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
-						</div>
+					<div class='panel-page' id='panel-right'>
+						<div class='section-container' id='activities-table-container'></div>
 					</div>
 				</div>
 			</div>
@@ -124,6 +142,32 @@
 					<img id='state' src='assets/ewt.png'/><br/>
 					<div id='countdown'>11</div>
 				</div>
+				<ul class='list-wrapper' id='left'>
+					<li class='list-row'>
+						<span class='info-label'>STATUS</span><br/>
+						<span class='info-text' data-content='status'></span>
+					</li>
+					<li class='list-row'>
+						<span class='info-label'>INTERSECTION TYPE</span><br/>
+						<span class= 'info-text' data-content='type_short'></span>
+					</li>
+				</ul>
+				<ul class='list-wrapper' id='right'>
+					<li class='list-row'>
+						<span class='info-label'>STATE</span><br/>
+						<span class='info-text' data-content='currentState'></span>
+					</li>
+					<li class='list-row'>
+						<span class='info-label'>NEXT STATE</span><br/>
+						<span class='info-text' data-content='nextState'></span>
+					</li>
+				</ul>
+				<ul class='list-wrapper' id='far-right'>
+					<li class='list-row'>
+						<span class='info-label'>NEXT STATE TIME</span><br/>
+						<span class='info-text' data-content='nextStateTime'></span>
+					</li>
+				</ul>	
 			</div>
 		</div>
 
@@ -137,18 +181,15 @@
 				<div id='intersection-name' data-content='name'></div>
 				<img id='chunk-arrow' src='assets/chunk-arrow.png'/>
 			</div>
-
 			<div id='graph-wrap'>
 				<div id='yaxis'></div>
-				<div id='graph' style='height: 150px; width: 270px;'>></div>
+				<div id='graph' style='height: 150px; width: 270px;'></div>
 				<div id='xaxis'></div>
 			</div>
-
 			<div id='state-wrap'>
 				<img id='state' src='assets/ewt.png'/><br/>
 				<div id='countdown'>11</div>
 			</div>
-
 			<ul class='list-wrapper' id='left'>
 				<li class='list-row'>
 					<span class='info-label'>STATUS</span><br/>
@@ -158,23 +199,23 @@
 					<span class='info-label'>INTERSECTION TYPE</span><br/>
 					<span class= 'info-text' data-content='type_short'></span>
 				</li>
+			</ul>
+			<ul class='list-wrapper' id='right'>
 				<li class='list-row'>
 					<span class='info-label'>STATE</span><br/>
 					<span class='info-text' data-content='currentState'></span>
 				</li>
-			</ul>
-			<ul class='list-wrapper' id='right'>
 				<li class='list-row'>
 					<span class='info-label'>NEXT STATE</span><br/>
 					<span class='info-text' data-content='nextState'></span>
 				</li>
+			</ul>
+			<ul class='list-wrapper' id='far-right'>
 				<li class='list-row'>
 					<span class='info-label'>NEXT STATE TIME</span><br/>
 					<span class='info-text' data-content='nextStateTime'></span>
 				</li>
-				<p id='more-info-link'>more</p>
 			</ul>
-
 		</div>
 	</script>
 
@@ -216,9 +257,11 @@
 	<!-- models, collections, views -->
 	<script type="text/javascript" src="js/intersection_model.js"></script>
 	<script type="text/javascript" src='js/road_model.js'></script>
+	<script type="text/javascript" src='js/activity_model.js'></script>
 
 	<script type="text/javascript" src="js/intersections_collection.js"></script>
 	<script type="text/javascript" src='js/roads_collection.js'></script>
+	<script type="text/javascript" src='js/activities_collection.js'></script>
 
 	<script type="text/javascript" src='js/map_page_view.js'></script>
 	<script type="text/javascript" src='js/intersections_page_view.js'></script>

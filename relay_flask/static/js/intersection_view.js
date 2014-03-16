@@ -106,9 +106,9 @@ var IntersectionView = Backbone.View.extend({
 				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/cx/g, cx.toString());
 				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/cy/g, cy.toString());
 
-				this.flowGlyph['fillColor'] = 'rgba(22, 214, 62, 0.4)';
-				this.flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.2)';
-				this.flowGlyph['strokeWeight'] = '12';
+				this.flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.45)';
+				this.flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.12)';
+				this.flowGlyph['strokeWeight'] = '14';
 				
 				this.flowGlyph['path'] = this.flowGlyphTemplate;
 

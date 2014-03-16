@@ -23,6 +23,8 @@ db = create_engine('sqlite:///db/relay.db')
 
 @app.route('/')
 def index():
+    # spawn something to keep track of information for simulated intersections
+
     return redirect(url_for('static', filename='index.html'))
 
 @app.route('/request_intersections', methods=['POST'])
@@ -37,29 +39,20 @@ def get_intersections():
                 i.type, 
                 i.type_short, 
                 i.int_id,
-                s.value as status,
-                p.value as plan,
-                b.value as behaviour
+                s.status as status,
+                s.timestamp as status_time,
+                p.plan as plan,
+                p.plan_time as plan_time,
+                b.bhvr as behaviour,
+                b.bhvr_time as bhvr_time
             FROM
                 intersections as i
-                LEFT JOIN (
-                    SELECT *
-                    FROM int_metrics
-                    WHERE name='status'
-                    ) as s
-                    ON i.int_id == s.int_id
-                LEFT JOIN (
-                    SELECT *
-                    FROM int_metrics
-                    WHERE name='plan'
-                    ) as p
-                    ON i.int_id == p.int_id
-                LEFT JOIN (
-                    SELECT *
-                    FROM int_metrics
-                    WHERE name='bhvr'
-                    ) as b
-                    ON i.int_id == b.int_id
+                LEFT OUTER JOIN int_status as s 
+                    ON i.int_id = s.int_id
+                LEFT OUTER JOIN int_plans as p
+                    ON i.int_id = p.int_id
+                LEFT JOIN int_bhvrs as b
+                    ON i.int_id = b.int_id
             WHERE
                 i.lat>=:minlat AND
                 i.lat<=:maxlat AND
@@ -118,7 +111,7 @@ def get_status():
 @app.route('/request_all_events', methods=['POST'])
 def get_all_evts():
     if request.method == 'POST':
-        num_events = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        num_events = request.json
         qstr = '''
             SELECT 
                 timestamp,
@@ -126,7 +119,8 @@ def get_all_evts():
                 int_id 
             FROM 
                 int_events
-            LIMIT :num_events;
+            LIMIT 
+                :num_events;
             ''' 
         evts = g.db.query('relay_main', qstr, num_events, as_dict=True)
         return createJSON(evts)
@@ -134,7 +128,7 @@ def get_all_evts():
 @app.route('/request_int_events', methods=['POST'])
 def get_int_evts():
     if request.method == 'POST':
-        int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        int_id = request.json 
         qstr = '''
             SELECT 
                 timestamp,
@@ -147,6 +141,47 @@ def get_int_evts():
             ''' 
         evts = g.db.query('relay_main', qstr, int_id, as_dict=True)
         return createJSON(evts)
+
+@app.route('/request_dashboard', methods=['POST'])
+def get_dash():
+    if request.method == 'POST':
+        int_id = request.json
+        q1 = ['general','''
+            SELECT 
+                s.status as status,
+                s.timestamp as status_time,
+                p.plan as plan,
+                p.plan_time as plan_time,
+                b.bhvr as behaviour,
+                b.bhvr_time as bhvr_time
+            FROM
+                int_status as s
+                LEFT OUTER JOIN int_plans as p
+                    ON s.int_id = p.int_id
+                LEFT JOIN int_bhvrs as b
+                    ON s.int_id = b.int_id
+            WHERE
+                s.int_id = :int_id;
+            ''']
+
+        q2 = ['events','''
+            SELECT 
+                timestamp,
+                value,
+                int_id 
+            FROM 
+                int_events
+            WHERE
+                int_id = :int_id;
+            ''']
+
+        qstrs = [q1,q2]
+
+        info = [{q[0]: g.db.query('relay_main', q[1], int_id, 
+            as_dict=True)} for q in qstrs]
+
+        info.append({'flows': gen_flows()})
+        return createJSON(info)
 
 @app.route('/request_flows', methods=['POST'])
 def get_flows():
@@ -170,21 +205,16 @@ def get_flows():
         # # strftime('%s', :intial_time)
         # flows = g.db.query('relay_main', qstr, int_id, as_dict=True)
 
-        A, B, C, D, E = sighelp.generate_signals(250)
-        signals = [A, B, C, D]
-        flows = sighelp.create_hist_dict(signals, 1)
+        flows = gen_flows()
 
         # flow_arrays = create_flow_arrs(flows)
         return createJSON(flows)
 
-# @app.route('/get_intersections', methods=['get'])
-# def get_intersections():
-#     connection = db.connect()
-#     qstr = '''SELECT * FROM
-#             intersections WHERE type_short IN  ('MJRML', 'MJRSL');'''
-#     result = connection.execute(qstr)
-#     data = []
-#     return jsonify(data)
+def gen_flows():
+    A, B, C, D, E = sighelp.generate_signals(250)
+    signals = [A, B, C, D]
+
+    return sighelp.create_hist_dict(signals, 1)
 
 @app.route('/api/charts', methods=['POST'])
 def get_chart():
