@@ -112,22 +112,18 @@
 								<span class='stat-field' id='stat-nextStateTime'>--</span>
 							</div>
 							<div id='dash-stateWrap'>
-								<img id='dash-state' src='assets/ewt.png'/><br/>
+								<img id='dash-state' src='assets/default-status.png'/><br/>
 								<div id='dash-countdown'>11</div>
 							</div>
 						</div>
 						<div class='section-container chart-container'>
-							<span class='stat-title'>CAPACITY</span>
+							<span class='stat-title'>FLOW</span>
 							<span class='clear'></span>
-							<div class='chart-box'>
-								<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
-							</div>
+							<div id="flow-chart" style="width:225px; height:150px;"></div><!-- chart goes in here -->
 						</div>
 						<div class='section-container chart-container'>
 							<span class='stat-title'>FLOW</span>
-							<div class='chart-box'>
-								<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
-							</div>
+							<div id="performance-chart" style="width:225px; height:150px;"></div><!-- chart goes in here -->
 						</div>
 					</div>
 					<div class='panel-page' id='panel-right'>
@@ -287,13 +283,13 @@ graph 2: histogram
 				<div id='xaxis'></div>
 			</div>
 			<div id='state-wrap'>
-				<img id='state' src='assets/ewt.png'/><br/>
+				<img id='icon-state' src='assets/ewt.png'/><br/>
 				<div id='countdown'>11</div>
 			</div>
 			<ul class='list-wrapper' id='left'>
 				<li class='list-row'>
 					<span class='info-label'>STATUS</span><br/>
-					<span class='info-text' data-content='status'></span>
+					<span class='info-text' id='info-box-status' data-content='status'></span>
 				</li>
 				<li class='list-row'>
 					<span class='info-label'>INTERSECTION TYPE</span><br/>
@@ -303,17 +299,17 @@ graph 2: histogram
 			<ul class='list-wrapper' id='right'>
 				<li class='list-row'>
 					<span class='info-label'>STATE</span><br/>
-					<span class='info-text' data-content='currentState'></span>
+					<span class='info-text' id='info-box-currentState' data-content='currentState'></span>
 				</li>
 				<li class='list-row'>
 					<span class='info-label'>NEXT STATE</span><br/>
-					<span class='info-text' data-content='nextState'></span>
+					<span class='info-text' id='info-box-nextState' data-content='nextState'></span>
 				</li>
 			</ul>
 			<ul class='list-wrapper' id='far-right'>
 				<li class='list-row'>
 					<span class='info-label'>NEXT STATE TIME</span><br/>
-					<span class='info-text' data-content='nextStateTime'></span>
+					<span class='info-text' id='info-box-nextStateTime' data-content='nextStateTime'></span>
 				</li>
 			</ul>
 		</div>
@@ -335,6 +331,8 @@ graph 2: histogram
 	<script type="text/javascript" src='js/clients/backgrid.js'></script>
 	<script type="text/javascript" src='js/clients/backgrid-filter.js'></script>
 
+	<script type="text/javascript" src='js/clients/date.format.js'></script>
+
 	<script type="text/javascript" src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
 
 	<script type="text/javascript" src="js/clients/Chart.min.js"></script>
@@ -348,12 +346,6 @@ graph 2: histogram
 	<script type="text/javascript" src='js/clients/jquery.loadTemplate-1.4.1.js'></script>
 
 	<script type="text/javascript" src='js/clients/snap.svg-min.js'></script>
-
-	<!-- status pane going -->
-	<script type="text/javascript">
-		// var status = new StatusPaneView();
-	</script>
-
 
 	<!-- bootstrap data -->
 	<script type="text/javascript" src="js/bootstrap_data.js"></script>
