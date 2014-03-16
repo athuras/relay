@@ -28,22 +28,35 @@
 				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page'>ROADS</li></a>
 				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
 			</ul>
+
 			<!-- <div id='search-box'><img id='search-icon' src='assets/search.png'/></div> -->
-			<img class='spinner' id='settings' src='assets/settings.png'/>
-		</div>
+
+			<div id='status-container'>
+				<img class='spinner' id='status' src='assets/settings.png'/>
+
+				<div id='status-pane'>
+					<div id='title'>Connection Settings</div>
+					<br/>
+					<p>Connections</p>
+					<p class='label'>socket</p>
+					<p class='answer' id='socket-status'>-</p>
+					<p class='label'>rest</p>
+					<p class='answer' id='rest-status'>-</p>
+					<br/>
+					<p>Updates</p>
+					<p class='label'>most recent:</p>
+					<p class='answer' id='local-update'>-</p>
+					<p class='label'>last global</p>
+					<p class='answer' id='global-update'>-</p>
+				</div>
+			</div>
+
+		</div>s
 
 		<!-- Map page -->
 		<div id="map-page" class='page'>
 			<!-- Where the map goes -->
 			<div id="map"></div>
-
-<!-- 			<div id='settings-pane'>
-				<div id='title'>Connection Settings</div>
-				<span id='label'>DATA FEED</span><br/>
-				<span id='answer'>Live</span><br/>
-				<span id='label'>LAST UPDATED</span><br/>
-				<span id='answer'>30s ago</span>
-			</div> -->
 
 			<!-- dat LEGEND -->
 			<div id='layer-legend'>
@@ -62,37 +75,54 @@
 
 			<!-- Side Panel -->
 			<div class='' id='side-panel'>
-				<a href='#'><img id='panel-toggle' src='assets/arrow-left.png'/></a>
+				<a href='#'>
+					<img id='panel-toggle' src='assets/chunk-left.png'/>
+					<img id='close' src='assets/close.png'/>
+				</a>
 				<div id='panel-container'>
-					<div id='title-container'>
-						<h3 id='intersection-title'>--</h3>
-						<p>intersection id</p>
-						<p class='stat-field' id='stat-id'>--</p>
-						<p>intersection type</p>
-						<p class='stat-field' id='stat-type'>--</p>
+					<div id='panel-header'>
+						<div id='title-container'>
+							<div id='intersection-title'>--</div>
+						</div>
+						<div id='stat-container'>
+							<div class='word-wrap'>
+								<span class='stat-title'>INTERSECTION ID</span><br/>
+								<span class='stat-field' id='stat-id'>--</span>
+							</div>
+							<div class='word=wrap' id='righty'>
+								<span class='stat-title'>INTERSECTION TYPE</span><br/>
+								<span class='stat-field' id='stat-type'>--</span>
+							</div>
+						</div>
 					</div>
 					<div class='panel-page' id='panel-left'>
-						<div class='section-container' id='stats-container'>
-							<p>intersection status</p>
-							<p class='stat-field' id='stat-status'>--</p>
-							<p>intersection state</p>
-							<p class='stat-field' id='stat-currentState'>--</p>
-							<p>intersection Next status</p>
-							<p class='stat-field' id='stat-nextState'>--</p>
-							<p>intersection next status time</p>
-							<p class='stat-field' id='stat-nextStateTime'>--</p>
+						<div class='section-container' id='left-stats'>
+							<div class='word-wrap'>
+								<span class='stat-title'>STATUS</span><br/>
+								<span class='stat-field' id='stat-status'>--</span><br/>
+								<span class='stat-title'>STATE</span><br/>
+								<span class='stat-field' id='stat-currentState'>--</span>
+							</div>
+							<div class='word=wrap' id='righty'>
+								<span class='stat-title'>NEXT STATE</span><br/>
+								<span class='stat-field' id='stat-nextState'>--</span><br/>
+								<span class='stat-title'>NEXT STATE TIME</span><br/>
+								<span class='stat-field' id='stat-nextStateTime'>--</span>
+							</div>
+							<div id='dash-stateWrap'>
+								<img id='dash-state' src='assets/ewt.png'/><br/>
+								<div id='dash-countdown'>11</div>
+							</div>
 						</div>
 						<div class='section-container chart-container'>
-							<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-							<span class='chart-title'>CAPACITY</span>
+							<span class='stat-title'>CAPACITY</span>
 							<span class='clear'></span>
 							<div class='chart-box'>
 								<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
 							</div>
 						</div>
 						<div class='section-container chart-container'>
-							<a href='#'><img class='eye-con' src='assets/eye-con.png'/></a>
-							<span class='chart-title'>PERFORMANCE</span>
+							<span class='stat-title'>FLOW</span>
 							<div class='chart-box'>
 								<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
 							</div>
@@ -249,6 +279,11 @@
 
 	<script type="text/javascript" src='js/clients/snap.svg-min.js'></script>
 
+	<!-- status pane going -->
+	<script type="text/javascript">
+		// var status = new StatusPaneView();
+	</script>
+
 
 	<!-- bootstrap data -->
 	<script type="text/javascript" src="js/bootstrap_data.js"></script>
@@ -271,12 +306,15 @@
 	<script type="text/javascript" src="js/intersection_view.js"></script>
 	<script type="text/javascript" src="js/intersections_collection_view.js"></script>
 	<script type="text/javascript" src='js/info_box_view.js'></script>
+	<script type="text/javascript" src='js/status_pane_view.js'></script>
 
 	<script type="text/javascript" src="js/app_view.js"></script>
 
 	<script>
 	var app; // global reference
+	var s;
 	$(document).ready(function(){
+		s = new StatusPaneView();
 		app = new AppView;
 	});
 	</script>

@@ -165,8 +165,12 @@ var InfoBoxView = Backbone.View.extend({
 		        	ibv.flotPlot.setupGrid();
 		        	ibv.flotPlot.draw();
 
+					// update s
+					s.localUpdate();
+					s.restConnected()
+
 		        });;
-				// redraw the graph
+
 			}, this.updateFrequency, this);
 	},
 

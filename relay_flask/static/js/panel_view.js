@@ -3,7 +3,8 @@ var PanelView = Backbone.View.extend({
 	el: $('#side-panel'),
 
 	events: {
-		'click #panel-toggle': 'panelToggled'
+		'click #panel-toggle': 'panelToggled',
+		'click #close': 'panelToggled'
 	},
 
 	activityGridColumns: [{
@@ -41,7 +42,9 @@ var PanelView = Backbone.View.extend({
 
 	expand: function(){
 		this.$el.addClass('expanded');
-		this.$('#panel-container').addClass('expanded');
+		this.$('#panel-container').addClass('expanded')
+		this.$('#panel-toggle').css('visibility', 'hidden');
+		this.$('#close').css('visibility', 'visible');
 		this.isExpanded = true;
 	},
 
@@ -49,6 +52,8 @@ var PanelView = Backbone.View.extend({
 		// remove all the styling and hide
 		this.$('#panel-container').removeClass('expanded');
 		this.$el.removeClass('expanded');
+		this.$('#panel-toggle').css('visibility', 'visible');
+		this.$('#close').css('visibility', 'hidden');
 		this.isExpanded = false;
 
 		// stop the pulling
@@ -91,6 +96,20 @@ var PanelView = Backbone.View.extend({
 	startInterval: function(){
 		this.interval = setInterval(function(pv){
 			// do your data pull on the intersection
+			$.ajax({
+				type: "POST",
+				datatype: "JSON",
+				contentType: "application/json",
+				url: "http://localhost:5000/request_dashboard",
+				data: JSON.stringify({int_id: 11}),
+				async: false
+			}).then( function(d){
+				console.log('dashboard data');
+				console.log(d);
+				// reset the activity collection with the new list of events.
+				s.localUpdate();
+				s.restConnected();
+			})
 
 			//data pull on activity for intersection
 			$.ajax({
@@ -105,8 +124,12 @@ var PanelView = Backbone.View.extend({
 				console.log(d);
 				// reset the activity collection with the new list of events.
 				pv.activitiesCollection.reset(d);
+				s.localUpdate();
+				s.restConnected();
 			})
+			
 			//update anyhting non-static.
+
 		}, this.activityUpdateFrequency, this)
 	},
 
