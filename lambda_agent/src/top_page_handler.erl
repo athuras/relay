@@ -1,4 +1,6 @@
--module(toppage_handler).
+-module(top_page_handler).
+
+-include("jsonerl.hrl").
 
 -export([init/3,
          handle/2,
@@ -15,11 +17,16 @@ handle(Req, State) ->
     {ok, Req4, State}.
 
 reply(<<"GET">>, undefined, Req) ->
+    cowboy_req:reply(400, [], <<"undefined">>, Req);
+
+reply(<<"GET">>, bad_agent, Req) ->
     cowboy_req:reply(400, [], <<"missing agent parameter">>, Req);
+
 reply(<<"GET">>, Response, Req) ->
     cowboy_req:reply(200, [
             {<<"content-type">>, <<"test/plain; charset=utf-8">>}
             ], Response, Req);
+
 reply(_, _, Req) ->
         %% Method not allowed
         cowboy_req:reply(405, Req).
@@ -31,5 +38,5 @@ get_state(Agent) ->
     case lists:member(A=erlang:binary_to_atom(Agent, utf8),
                       registered()) of
         true -> gen_event:call(A, relay_store, request_state);
-        false -> undefined
+        false -> bad_agent
     end.
