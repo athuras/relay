@@ -192,7 +192,6 @@ def get_dash():
         info.append(new_behaviour)
         info.append(new_plan)
 
-        print jsonify(results=info)
         return createJSON(info)
 
 @app.route('/request_network', methods=['GET'])
