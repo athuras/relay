@@ -19,7 +19,7 @@ var MapPageView = Backbone.View.extend({
 		this.heatmapStyles = bootstrap.heatmapStyles;
 
 		// other data
-		this.flowMarkers = new Array();
+		this.flowData = new Array();
 		this.heatmapData = new Array();
 		this.heatmapLayer = new google.maps.visualization.HeatmapLayer();
 		this.heatmapLayer.setOptions(this.heatmapStyles);
@@ -107,32 +107,34 @@ var MapPageView = Backbone.View.extend({
 				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('flow-layer'):
+				var points = new Array();
 
-				// _.each(this.intersectionsCollection, function(intersection){
-					
-				// 	var lat = intersection.get('lat');
-				// 	var lng = intersection.get('long');
+				//lat and long references
+				var lat = intersection.get('lat');
+				var lng = intersection.get('long');
 
-					
+				var flow = Math.floor(Math.random()*10); //get a flow number from the model
 
-				// }, this);
+				// get one marker for each flow
+				for(var i = 0; i < flow; i++){
+					var olat = lat + (Math.random()-0.5)*0.1;
+					var olng = lng + (Math.random()-0.5)*0.1;
+					var m = new google.maps.LatLng(olat, olng);
+					points.push(m);
+				}
 
-				// var flow = Math.floor(Math.random()*10); //get a flow number from the model
+				_.each(points, function(p){
+					var m = new google.maps.marker({
+						position: p,
 
-				// // get one marker for each flow
-				// for (var i = 0; i < flow; i++) {
-				// 	var olat = lat + (Math.random()-0.5)*0.1;
-				// 	var olng = lng + (Math.random()-0.5)*0.1;
-				// 	var m = new google.maps.LatLng(olat, olng);
-				// 	this.heatmapData.push(m);
-				// }
+					});
+				})
 
-
-				// set map and glyph styles
-				this.map.setOptions({ styles: this.mapStyles['dark'] });
-				this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
-				// add them to the map
-				this.intersectionsCollectionView.setIntersectionMap(this.map);
+				// // set map and glyph styles
+				// this.map.setOptions({ styles: this.mapStyles['dark'] });
+				// this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
+				// // add them to the map
+				// this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('line-layer'):
 				// set map and glyph styles
