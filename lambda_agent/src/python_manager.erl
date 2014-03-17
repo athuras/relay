@@ -59,4 +59,4 @@ py_start() ->
     python:start([{python_path, python_module_dir()}]).
 
 python_module_dir() ->
-    "/Users/ath/Documents/Dev/relay/lambda_agent/pyCrunch".
+    "../pyCrunch".
