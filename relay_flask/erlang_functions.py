@@ -81,7 +81,7 @@ def make_queues():
     signals = [A, B, C, D]
     qs = sighelp.create_hist_dict(signals, 1)
 
-    return {'in': qs, 'out': qs2, 'prediction': qs}
+    return {'in': qs, 'out': qs, 'prediction': qs}
 
 def make_status_info():
     status_info = [{'bhvr_mtx': [[ 0. ,  0.1,  0.6,  0.3],

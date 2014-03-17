@@ -78,7 +78,7 @@ var InfoBoxView = Backbone.View.extend({
 		};
 
 		// interval for pulling data
-		this.updateFrequency = 3000;
+		this.updateFrequency = 1000;
 		this.interval = setInterval();
 
 		// We create ourselves an infobox
@@ -179,11 +179,12 @@ var InfoBoxView = Backbone.View.extend({
 				//handle time nicely
 				// console.log(general['plan_time'])
 				// console.log(general['bhvr_time'])
-				console.log(plans['plan_times'][0])
-				var duration = Math.round(plans['plan_times'][0]-(new Date).getTime()/1000);//general['bhvr_time'])//.format('i:s');
+				
+				var duration = Math.round((new Date).getTime()/1000 - general['bhvr_time']);//general['bhvr_time'])//.format('i:s');
 				$(ibv.boxText).find('#info-box-duration').get(0).innerHTML = duration;
 				if(plans['plan_times'].length > 0){
-				var timeUntilNextState = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000); //assuming it's in the future
+				var timeUntilNextState = Math.round(plans['plan_times'][0]-(new Date).getTime()/1000); //assuming it's in the future
+				$(ibv.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState
 				} else {
 					$(ibv.boxText).find('#countdown').get(0).innerHTML = '--:--' //timeUntilNextState;
 				}
