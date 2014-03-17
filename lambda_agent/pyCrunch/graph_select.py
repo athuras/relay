@@ -76,11 +76,11 @@ class Stepper(object):
         return x
 
 
-def optimize_path(paths, behaviours, btg, prediction, dt, maxiter):
+def optimize_path(paths, behaviours, btg, start, prediction, dt, maxiter):
     '''Erlang Entry Point to Optimization Module'''
     B_table = parse_behaviours(behaviours)
     BTG = parse_edgelist(btg)
-    start, F = parse_prediction(prediction)
+    F = parse_prediction(prediction)
 
     path, t =  best_path(paths, B_table, BTG, F, dt=dt, maxiter=10)
     return list(path), map(int,t.x), int(t.nfev), int(t.fun), int(t.nit)
@@ -176,8 +176,7 @@ def parse_behaviours(behaviours, dtype=np.float32):
 
 def parse_prediction(F):
     '''[[float]] -> np.array(...) of same shape'''
-    start, data = F
-    return start, np.array(data)  # Might not work, will check back later
+    return np.array(F)  # Might not work, will check back later
 
 
 #  Optimization ###############################################################
