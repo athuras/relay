@@ -89,9 +89,10 @@ def make_status_info():
         [ 0. ,  0. ,  1. ,  0. ]]}]
 
     p = 'EWT'
-    if np.random.rand(1) > 0.5:
-        p = 'NST'
-    status_info.append({'plans': [p], 'plan_times': 
-        [int(dt.datetime.now().strftime('%s')) * 1000 + np.random.randint(15,45)]})
+    p2 = 'NST'
+    # if np.random.rand(1) > 0.5:
+    #     p = 'NST'
+    status_info.append({'plans': [p, p2], 'plan_times': 
+        [(int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)) * 1000]})
 
     return status_info
