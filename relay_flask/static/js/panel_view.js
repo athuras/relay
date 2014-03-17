@@ -72,7 +72,7 @@ var PanelView = Backbone.View.extend({
 		},
 		yaxis: {
 			min: 0,
-			max: 12
+			max: 2
 		},
 		legend: {
 			backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -319,12 +319,12 @@ var PanelView = Backbone.View.extend({
 		        pv.flowPlot.draw();
 
 	        	// add perf data
-	        	perf = d[2]['in'];
+	        	perf = d[2]['out'];
 	        	for(var dir = 0; dir < 4; dir++){
 	        		pv.perfPlotData[dir].data = perf[dir];
 	        	}
 	        	// add prediction data
-	        	perfPredicts = d[2]['in'];
+	        	perfPredicts = d[2]['out'];
 	        	for(var dir = 0; dir < 4; dir++){
 	        		pv.perfPlotData[dir+4].data = perf[dir];
 	        	}
