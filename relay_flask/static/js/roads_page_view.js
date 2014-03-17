@@ -1,3 +1,4 @@
+
 var RoadsPageView = Backbone.View.extend({
 	el: $('#roads-page'),
 
@@ -12,6 +13,14 @@ var RoadsPageView = Backbone.View.extend({
 	render: function(){
 
 	},
+
+	setActive: function(){
+
+	},
+
+	setInactive: function(){
+		
+	}
 
 
 });

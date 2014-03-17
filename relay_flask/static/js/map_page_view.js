@@ -135,6 +135,14 @@ var MapPageView = Backbone.View.extend({
 		this.infoBoxView.close();
 		this.panelView.expand();
 		this.panelView.showIntersectionDetails(model);
+	},
+
+	setActive: function(){
+
+	},
+
+	setInactive: function(){
+
 	}
 
 });
