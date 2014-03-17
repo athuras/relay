@@ -13,19 +13,19 @@ def make_queues():
     qs = sighelp.create_hist_dict(signals, 1)
     return {'in': qs, 'out': qs, 'prediction': qs}
 
-def merge_simulated_queues(int_id, sim_queues, length):
+def merge_simulated_queues(new_queues, sim_queues, length):
     #pull from database the timestamps for this intersection
     #arrange them into order based on node id
     #merge with new queue
     #write new queue back to database
+    if sim_queues = None:
+        updated_queues = [reduce_qs(qs) for qs in new_queues]
+    else:
+        updated_queues = [merge_queues(q, sim_queues[i], length) for i, q in enumerate(new_queues)]
+    return updated_queues
 
-    def get_queues(int_id):
-        return [2,3,2,2,3,2,1,2]
-
-    # new_queues = [inlet_queues, outlet_queues, remote_outlet_queues]
-    new_queues = get_queues(int_id)
-
-    updated_queues = [merge_queues(q, sim_queues[i]) for i, q in enumerate(new_queues)]
+def reduce_qs(qs):
+    return [reduce_q(q) for q in qs]
 
 def merge_queues(new_qs, old_qs, length):
     '''take two sets of queues (one for each node) and merge them'''
