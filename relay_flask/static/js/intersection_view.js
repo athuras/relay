@@ -87,9 +87,7 @@ var IntersectionView = Backbone.View.extend({
 				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/cx/g, cx.toString());
 				this.performanceGlyphTemplate = this.performanceGlyphTemplate.replace(/cy/g, cy.toString());
 
-				// this.performanceGlyph['fillOpacity'] = Math.random();
-				var capacity = Math.random();
-				if(capacity < 0.95){
+				if(this.model.get('status') == 'OK'){
 					this.performanceGlyph['fillColor'] = 'rgba(255, 255, 255, 0.8)';
 				} else {
 					this.performanceGlyph['fillColor'] = 'rgba(234, 20, 20, 1)';
