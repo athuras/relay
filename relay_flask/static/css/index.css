@@ -480,6 +480,15 @@ li {
 	font-weight: 500;
 }
 
+#righty {
+	position: relative;
+	left: 40px;
+}
+
+#bottom-chart {
+	margin-bottom: 0;
+}
+
 
 /* ********** Side Panel ************ */
 
@@ -729,7 +738,6 @@ li {
 .backgrid {
 	border-radius: 0;
 }
-
 
 #matrix {
 	position: relative;

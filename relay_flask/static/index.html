@@ -98,7 +98,7 @@
 								<span class='stat-title'>INTERSECTION ID</span><br/>
 								<span class='stat-field' id='stat-id'>--</span>
 							</div>
-							<div class='dash-wrap' id='righty'>
+							<div class='dash-wrap' id='rightie'>
 								<span class='stat-title'>INTERSECTION TYPE</span><br/>
 								<span class='stat-field' id='stat-type'>--</span>
 							</div>
@@ -110,7 +110,7 @@
 								<span class='stat-title'>STATUS</span><br/>
 								<span class='stat-field' id='stat-status'>--</span>
 							</div>
-							<div class='dash-wrap' id='righty'>
+							<div class='dash-wrap' id='rightie'>
 								<span class='stat-title'>STATE</span><br/>
 								<span class='stat-field' id='stat-currentState'>--</span><br/>
 								<span class='stat-title'>DURATION</span><br/>
@@ -164,11 +164,11 @@
 							<div class="cell" id='e-s'>-</div>
 							<div class="cell" id='e-e'>-</div>
 							<div class="cell right-col" id='e-w'>-</div>
-							<div class="cell" class='bottom-row'>W</div>
-							<div class="cell" class='bottom-row' id='w-n'>-</div>
-							<div class="cell" class='bottom-row' id='w-s'>-</div>
-							<div class="cell" class='bottom-row' id='w-e'>-</div>
-							<div class="cell right-col" class='bottom-row' id='w-w'>-</div>
+							<div class="cell bottom-row">W</div>
+							<div class="cell bottom-row" id='w-n'>-</div>
+							<div class="cell bottom-row" id='w-s'>-</div>
+							<div class="cell bottom-row" id='w-e'>-</div>
+							<div class="cell right-col bottom-row" id='w-w'>-</div>
 						</div>
 						<div class='log-title'>Activity Log</div>
 						<div class='section-container' id='activities-table-container'></div>
@@ -233,13 +233,13 @@
 					<span class='stat-title'>CAPACITY</span>
 					<span class='clear'></span>
 					<div class='chart-box'>
-						<canvas id="capacity-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+						<canvas id="capacity-chart" width="500" height="180"></canvas><!-- chart goes in here -->
 					</div>
 				</div>
-				<div class='section-container chart-container'>
+				<div class='section-container chart-container' id='bottom-chart'>
 					<span class='stat-title'>FLOW</span>
 					<div class='chart-box'>
-						<canvas id="performance-chart" width="500" height="200"></canvas><!-- chart goes in here -->
+						<canvas id="performance-chart" width="500" height="180"></canvas><!-- chart goes in here -->
 					</div>
 				</div>
 			</div>
