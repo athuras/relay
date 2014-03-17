@@ -9,8 +9,8 @@ var InfoBoxView = Backbone.View.extend({
 
 	flotOptions: {
 		xaxis: {
-			min: 0,
-			max: 10
+			// min: 0,
+			// max: 10
 		},
 		yaxis: {
 			reserveSpace: -10,
