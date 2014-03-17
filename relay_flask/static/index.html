@@ -57,6 +57,10 @@
 
 		<!-- Map page -->
 		<div id="map-page" class='page'>
+			<div class='preload'>
+				<img class='loader' id='dots-logo' src='assets/dots.png'/>
+			</div>
+
 			<!-- Where the map goes -->
 			<div id="map"></div>
 
@@ -388,6 +392,10 @@ graph 2: histogram
 	$(document).ready(function(){
 		s = new StatusPaneView();
 		app = new AppView;
+
+	    $(".preload").fadeOut(1500, function() {
+	       $(".map").fadeIn(1000);
+	    });
 	});
 	</script>
 
