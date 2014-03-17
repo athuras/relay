@@ -32,14 +32,14 @@
   display: none;
   height: 24px;
   max-width: 250px;
-  padding: 4px 5px;
+  padding: 6px 5px;
   overflow: hidden;
   line-height: 20px;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid rgba(80, 80, 80, 1);
 }
 
 .backgrid th.renderable,
@@ -49,8 +49,9 @@
 }
 
 .backgrid th {
-  font-weight: bold;
-  text-align: center;
+  font-weight: 500;
+  text-align: left;
+  vertical-align: middle;
 }
 
 .backgrid th.sortable a {
@@ -73,7 +74,7 @@
 }
 
 .backgrid tr:hover {
-  background-color: rgba(54, 54, 54, 1);
+  background-color: rgba(54, 54, 54, 0.2);
 }
 
 .backgrid tbody tr.empty {
@@ -90,7 +91,7 @@
   padding: 0;
 }
 
-.backgrid td.editor,
+/*.backgrid td.editor,
 .backgrid tbody tr:nth-child(odd) td.editor {
   background-color: rgba(82, 168, 236, 0.1);
   outline: 1px solid rgba(82, 168, 236, 0.8);
@@ -110,7 +111,7 @@
      -moz-transition-timing-function: ease-in-out;
        -o-transition-timing-function: ease-in-out;
           transition-timing-function: ease-in-out;
-}
+}*/
 
 .backgrid td.editor input[type=text] {
   display: block;
@@ -158,17 +159,17 @@
 .backgrid .ascending .sort-caret {
   vertical-align: baseline;
   border-top: none;
-  border-right: 4px solid transparent;
-  border-bottom: 4px solid #000000;
-  border-left: 4px solid transparent;
+  /*border-right: 4px solid transparent;*/
+  /*border-bottom: 4px solid #000000;*/
+  /*border-left: 4px solid transparent;*/
 }
 
 .backgrid .descending .sort-caret {
   vertical-align: super;
-  border-top: 4px solid #000000;
-  border-right: 4px solid transparent;
-  border-bottom: none;
-  border-left: 4px solid transparent;
+  /*border-top: 4px solid #000000;*/
+  /*border-right: 4px solid transparent;*/
+  /*border-bottom: none;*/
+  /*border-left: 4px solid transparent;*/
 }
 
 .backgrid .string-cell,

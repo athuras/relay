@@ -6,11 +6,10 @@ var PanelView = Backbone.View.extend({
 
 	flowPlotOptions: {
 		xaxis: {
-			min: 0,
-			max: 5
+			mode: "time",
+			timeformat: "%I/%M/%S"
 		},
 		yaxis: {
-			// reserveSpace: -10,
 			min: 0,
 			max: 50
 		},
@@ -19,9 +18,9 @@ var PanelView = Backbone.View.extend({
 			backgroundOpacity: 0,
 			labelBoxBorderColor: 'rgba(0, 0, 0, 0)',
 			labelFormatter: function(label, series) {
-				return '<div style="color: #cecece; position: relative; top: -4px;">' + label + '</div>';
+				return '<div style="font-size: 0.7em; padding: 0 6px; color: #cecece; position: relative; top: -4px;">' + label + '</div>';
 			},
-			margin: [-3, 32],
+			margin: [-120, 0],
 			noColumns: 2
 		},
 		grid: {
@@ -50,21 +49,80 @@ var PanelView = Backbone.View.extend({
 	},{
 		data: null,
 		label: 'North Predict',
-		color: 'rgba(0, 210, 250, 0.8)'
+		color: 'rgba(0, 210, 250, 0.6)'
 	},{
 		data: null,
 		label: 'South Predict',
-		color: 'rgba(0, 250, 200, 0.8)'
+		color: 'rgba(0, 250, 200, 0.6)'
 	},{
 		data: null,
 		label: 'East Predict',
-		color: 'rgba(209, 27, 45, 0.7)'
+		color: 'rgba(209, 27, 45, 0.5)'
 	},{
 		data: null,
 		label: 'West Predict',
-		color: 'rgba(250, 137, 52, 0.7)'
+		color: 'rgba(250, 137, 52, 0.5)'
 	}],
 
+	perfPlotOptions: {
+		xaxis: {
+			mode: "time",
+			timeformat: "%I/%M/%S"
+		},
+		yaxis: {
+			min: 0,
+			max: 50
+		},
+		legend: {
+			backgroundColor: 'rgba(0, 0, 0, 0)',
+			backgroundOpacity: 0,
+			labelBoxBorderColor: 'rgba(0, 0, 0, 0)',
+			labelFormatter: function(label, series) {
+				return '<div style="font-size: 0.7em; padding: 0 6px; color: #cecece; position: relative; top: -4px;">' + label + '</div>';
+			},
+			margin: [-120, 0],
+			noColumns: 2
+		},
+		grid: {
+			borderColor: 'rgba(0, 0, 0, 0)',
+			color: 'rgba(54, 54, 54, 0.6)'
+		}
+	},
+
+	perfPlotData: [
+	{
+		data: null,
+		label: 'North',
+		color: 'rgba(0, 210, 250, 0.8)'
+	},{
+		data: null,
+		label: 'South',
+		color: 'rgba(0, 250, 200, 0.8)'
+	},{
+		data: null,
+		label: 'East',
+		color: 'rgba(209, 27, 45, 0.7)'
+	},{
+		data: null,
+		label: 'West',
+		color: 'rgba(250, 137, 52, 0.7)'
+	},{
+		data: null,
+		label: 'North Predict',
+		color: 'rgba(0, 210, 250, 0.6)'
+	},{
+		data: null,
+		label: 'South Predict',
+		color: 'rgba(0, 250, 200, 0.6)'
+	},{
+		data: null,
+		label: 'East Predict',
+		color: 'rgba(209, 27, 45, 0.5)'
+	},{
+		data: null,
+		label: 'West Predict',
+		color: 'rgba(250, 137, 52, 0.5)'
+	}],
 
 	events: {
 		'click #panel-toggle': 'panelToggled',
@@ -74,7 +132,7 @@ var PanelView = Backbone.View.extend({
 	activityGridColumns: [{
 		cell: 'string',
 		name: 'timestamp',
-		label: 'Time',
+		label: 'Date',
 		editable: false,
 	},{
 		cell: 'string',
@@ -92,6 +150,7 @@ var PanelView = Backbone.View.extend({
 
 		// Make our charts
 		this.flowPlot = $.plot(this.$('#flow-chart'), this.flowPlotData, this.flowPlotOptions);
+		this.perfPlot = $.plot(this.$('#perf-chart'), this.perfPlotData, this.perfPlotOptions);
 
 		// make our intersection backgrid
 		this.activitiesTable = new Backgrid.Grid({
@@ -227,6 +286,25 @@ var PanelView = Backbone.View.extend({
 	        	pv.flowPlot.setData(pv.flowPlotData);
 	        	pv.flowPlot.setupGrid();
 		        pv.flowPlot.draw();
+
+
+
+	        	// add perf data
+	        	perf = d[2]['in'];
+	        	for(var dir = 0; dir < 4; dir++){
+	        		pv.perfPlotData[dir].data = perf[dir];
+	        	}
+	        	// add prediction data
+	        	perfPredicts = d[2]['in'];
+	        	for(var dir = 0; dir < 4; dir++){
+	        		pv.perfPlotData[dir+4].data = perf[dir];
+	        	}
+
+	        	// set the data.
+	        	pv.perfPlot.setData(pv.perfPlotData);
+	        	pv.perfPlot.setupGrid();
+		        pv.perfPlot.draw();
+
 
 
 				// tell s

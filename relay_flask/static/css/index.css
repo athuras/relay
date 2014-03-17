@@ -597,6 +597,11 @@ li {
 	width: 38px;
 }
 
+#dash-next-state {
+	height: 38px;
+	width: 38px;
+}
+
 #dash-countdown {
 	color: #f5f5f6;
 	font-size: 1.3em;
@@ -627,7 +632,7 @@ li {
 }
 
 #left-stats {
-	margin: 20px 0 0 0;
+	margin: 25px 0 0 0;
 }
 
 #next-state {
@@ -653,8 +658,19 @@ li {
 .chart-container {
 	height: 200px;
 	width: 680px;
-	border: 1px solid rgba(54, 54, 54, 1);
-	margin: 20px 0 20px 0;
+	margin: 20px 0 40px 10px;
+}
+
+.chart-title {
+	color: #dcdcdc;
+	font-size: 0.5em;
+	font-weight: 500;
+	display: inline-block;
+	letter-spacing: 0.05em;
+	text-align: left;
+	position: relative;
+	left: -10px;
+	margin: 0 0 10px 0;
 }
 
 /*.chart-title {
@@ -671,7 +687,7 @@ li {
 	font-weight: 600;
 	color: #f5f5f6;
 	position: relative;
-	top: 70px;
+	top: 25px;
 	left: -33px;
 }
 
@@ -680,15 +696,15 @@ li {
 	position: relative;
 	top: 96px;
 	right: 38px;
-	/*border: 1px solid rgba(54, 54, 54, 1);*/
 }
 
 #activities-table-container tbody {
 	font-size: 0.8em;
 }
 
-#activities-table-container tr {
-	border: none;
+#activities-table-container thead {
+	font-size: 0.9em;
+	font-weight: 500;
 }
 
 .backgrid {
