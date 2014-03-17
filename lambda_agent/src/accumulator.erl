@@ -13,15 +13,17 @@
     ]).
 
 -record(state, {current_behaviour, ingress, egress,
-                remote_egress, maxlen=300, ports=4}).
+                remote_egress, maxlen=300, ports=4,
+               conn_manager}).
 
-init(Initial_Behaviour) ->
+init({Initial_Behaviour, Router}) ->
     N = length(Initial_Behaviour),
     {ok, #state{ingress=new_queues(N),
                 egress=new_queues(N),
                 remote_egress=new_queues(N),
                 ports=N,
-                current_behaviour=Initial_Behaviour}}.
+                current_behaviour=Initial_Behaviour,
+                conn_manager=Router}}.
 
 new_queues(N) ->
     [queue:new() || _ <- lists:seq(1, N)].
@@ -29,13 +31,26 @@ new_queues(N) ->
 %%  Event Handlers  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%  Add the event to the proper ingress queue,
 %%  then add the expected events to the egress queues.
-handle_event({incoming, Index, Time, Weight}, State) ->
+handle_event({incoming, Index, Time, Weight}, State=#state{conn_manager=Router}) ->
+    %%  Update the Ingress Queue
     NewIngress = update_queue(State#state.ingress,
                               {Index, Time, Weight},
                               State#state.maxlen),
+    %%  Calculate Egress Items
     X = calc_egress(Index, Weight, State#state.current_behaviour),
-    Items = lists:map(fun({I, W}) -> {I, Time, W} end,
-                      lists:zip(lists:seq(1, State#state.ports), X)),
+    Items = lists:map(
+            fun({I, W}) -> {I, Time, W} end,
+            lists:zip(lists:seq(1, State#state.ports), X)
+            ),
+
+    %$  Inform the Neighbours
+    lists:foreach(
+        fun({J, T, W2}) ->
+                gen_event:notify(Router, {outbound, J, T, W2})
+        end,
+        Items
+        ),
+    %%  Update the Edgess Queue
     NewEgress = update_queues(State#state.egress, Items, State#state.maxlen),
     {ok, State#state{ingress=NewIngress, egress=NewEgress}};
 
