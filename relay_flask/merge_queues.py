@@ -19,7 +19,6 @@ def merge_simulated_queues(new_queues, sim_queues=None, length=150):
     #merge with new queue
     #write new queue back to database
     if sim_queues == None:
-        print 'UHOH', sim_queues
         updated_queues = [reduce_qs(qs) for qs in new_queues]
     else:
         updated_queues = [merge_queues(q, sim_queues[i], length) for i, q in enumerate(new_queues)]
