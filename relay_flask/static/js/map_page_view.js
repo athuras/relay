@@ -205,9 +205,9 @@ var MapPageView = Backbone.View.extend({
 
 				// // set map and glyph styles
 				// this.map.setOptions({ styles: this.mapStyles['dark'] });
-				 this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
+				 // this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
 				// // add them to the map
-				 this.intersectionsCollectionView.setIntersectionMap(this.map);
+				 // this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('line-layer'):
 				// set map and glyph styles
