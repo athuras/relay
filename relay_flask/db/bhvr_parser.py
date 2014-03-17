@@ -1,9 +1,11 @@
-def bhvr_parser(bhvr_mtx):
+import numpy as np
+
+def parse(bhvr_mtx):
     '''
     Given a matrix of the current behaviour, hack together a name for it
     '''
 
-    allow_paths = (bhvr_mtx > 0)*1
+    allow_paths = (np.array(bhvr_mtx) > 0)*1
 
     name = ""
     if allow_paths[0,2] == 1:

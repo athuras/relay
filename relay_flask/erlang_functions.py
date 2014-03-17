@@ -2,24 +2,32 @@ import numpy as np
 import signal_helpers as sighelp
 import merge_queues as mq
 import datetime as dt
+import requests as rqs
+import db.bhvr_parser as b_parser
 
 def fetch_queues(int_id, length=150):
     ''' get queues from erlang and turn them into histos for front end'''
 
     # new queues, queue dict
 
-def fetch_behaviour(int_id):
-    return {'bhvr_mtx': [[ 0. ,  0.1,  0.6,  0.3],
-            [ 1. ,  0. ,  0. ,  0. ], 
-            [ 0.7,  0.2,  0. ,  0.1],
-            [ 0. ,  0. ,  1. ,  0. ]]}
+def fetch_status_info(int_id):
+    r = rqs.get("http://localhost:8081/?agent=Agent1")
+    data = r.json()
 
-def fetch_plans(int_id):
-    p = 'EWT'
-    if np.random.rand(1) > 0.5:
-        p = 'NST'
-    return {'plan': p, 'plan_time': 
-        int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)}
+    erl_info = [{'bhvr_mtx': data['behaviour']}]
+
+    plan_codes = [b_parser.parse(b) for b in data['current_plan']]
+    erl_info.append({'plans': plan_codes, 'plan_times': data['current_timing']})
+
+    return erl_info
+
+
+# def fetch_plans(int_id):
+#     p = 'EWT'
+#     if np.random.rand(1) > 0.5:
+#         p = 'NST'
+#     return {'plan': p, 'plan_time': 
+#         int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)}
 
 ## UPDATING FUNCTIONS ##########################################################
 def update_plan(int_id):
@@ -79,15 +87,16 @@ def make_queues():
     qs = sighelp.create_hist_dict(signals, 1)
     return {'in': qs, 'out': qs, 'prediction': qs}
 
-def make_behaviour():
-    return {'bhvr_mtx': [[ 0. ,  0.1,  0.6,  0.3],
+def make_status_info():
+    status_info = [{'bhvr_mtx': [[ 0. ,  0.1,  0.6,  0.3],
         [ 1. ,  0. ,  0. ,  0. ], 
         [ 0.7,  0.2,  0. ,  0.1],
-        [ 0. ,  0. ,  1. ,  0. ]]}
+        [ 0. ,  0. ,  1. ,  0. ]]}]
 
-def make_plans():
     p = 'EWT'
     if np.random.rand(1) > 0.5:
         p = 'NST'
-    return {'plan': p, 'plan_time': 
-        int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)}
+    status_info.append({'plans': [p], 'plan_times': 
+        [int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)]})
+
+    return status_info
