@@ -99,8 +99,13 @@ var InfoBoxView = Backbone.View.extend({
 		this.boxText = $('<div></div>').loadTemplate('#info-box-template', model.attributes).get(0);
 
 		//handle time nicely
-		var timeUntilNextState = new Date(model.get('nextStateTime')*1000 - Date.now()).format('i:s'); //assuming it's in the future
-		$(this.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
+		var duration = new Date((model.get('plan_time')-model.get('bhvr_time')*1000)).format('i:s');
+		$(this.boxText).find('#info-box-duration').get(0).innerHTML = duration
+		var timeUntilNextState = new Date(model.get('plan_time')*1000 - Date.now()).format('i:s'); //assuming it's in the future
+		$(this.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState;
+
+		//set the icon
+		$($(this.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + model.get('behaviour').toLowerCase() + '.png');
 
 		this.showMoreDom = $('#more-info-link').get(0);
 		this.infoBox.setContent(this.boxText);
@@ -160,8 +165,10 @@ var InfoBoxView = Backbone.View.extend({
 				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = general['plan'];
 
 				//handle time nicely
+				var duration = new Date((general['plan_time']-general['bhvr_time']*1000)).format('i:s');
+				$(ibv.boxText).find('#info-box-duration').get(0).innerHTML = duration
 				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
-				$(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
+				$(ibv.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState;
 
 				// change the icon
 				$($(ibv.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
