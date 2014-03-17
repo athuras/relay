@@ -1,5 +1,5 @@
 import os
-import merge_queues as mqs
+import erlang_functions as erlfuncs
 import datetime as dt
 
 from collections import defaultdict
@@ -64,15 +64,13 @@ def get_intersections():
 
         return createJSON(intersects)
 
-@app.route('/request_roads', methods=['POST'])
+@app.route('/request_roads', methods=['GET'])
 def get_roads():
-    if request.method == 'POST':
-        bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
-        # qstr = '''SELECT * FROM roads;''' 
-        # #WHERE lat>=:minlat AND lat<=:maxlat AND
-        #  #   long>=:minlong AND long<=:maxlong and type_short IN  ('MJRML', 'MJRSL');'''
-        #v broads = g.db.query('relay_main', qstr, bounds, as_dict=True)
-        return createJSON(bounds)
+    if request.method == 'GET':
+        qstr = '''SELECT obj_id, lf_name as name, lfn_id, TNODE, FNODE FROM roads;''' 
+
+        roads = g.db.query('relay_main', qstr, as_dict=True)
+        return createJSON(roads)
 
 @app.route('/request_plan', methods=['POST'])
 def get_plan():
@@ -151,11 +149,13 @@ def get_dash():
         int_id = params['int_id']
 
         if int_id in g.sim_ids:
-            b_res = update_behaviour(int_id)
-            p_res = update_plan(int_id)
-            g.sim_queues, new_qs_dict = mqs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
+            new_behaviour = erlfuncs.fetch_behaviour(int_id)
+            new_plan = erlfuncs.fetch_plan(int_id)
+            g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
         else:
-            new_qs_dict = mqs.make_queues()
+            new_behaviour = erlfuncs.make_behaviour()
+            new_plan = erlfuncs.make_plans()
+            new_qs_dict = erlfuncs.make_queues()
 
         q1 = '''
             SELECT 
@@ -189,8 +189,9 @@ def get_dash():
         info = g.db.query('relay_main', q1, params, as_dict=True)
         info.append({'events': g.db.query('relay_main', q2, params, as_dict=True)})
         info.append(new_qs_dict)
+        info.append(new_behaviour)
+        info.append(new_plan)
 
-        print info
         return createJSON(info)
 
 @app.route('/request_network', methods=['GET'])
@@ -204,7 +205,7 @@ def request_netowkr():
                 int_status
             GROUP BY
                 status;
-            ''' 
+            '''
         evts = g.db.query('relay_main', qstr, as_dict=True)
 
         return createJSON(evts)
