@@ -20,7 +20,7 @@ def fetch_status_info(int_id, old_queues, length=150):
     erl_info.append({'plans': plan_codes, 'plan_times': data['current_timing']})
 
     new_queues = [data['ingress'],data['egress'],data['egress']]
-    updated_qs = merge_simulated_queues(new_queues, old_queues, length):
+    updated_qs = merge_simulated_queues(new_queues, old_queues, length)
 
     return erl_info, updated_qs, {'in': up_qs[0], 'out': up_qs[1], 'prediction': 0}
 
