@@ -24,8 +24,9 @@ var IntersectionView = Backbone.View.extend({
 			intersectionView: this
 		});
 
-		this.performanceGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
+		this.performanceGlyphTemplate = 'M cx cy  m -r,0  a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
 		this.flowGlyphTemplate = 'M cx cy m -r, 0 a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
+		this.lineGlyphTemplate = 'M cx,cy  L xn,yn  M cx,cy  L xs,ys  M cx,cy  L xe,ye  M cx,cy  L xw, yw';
 
 		this.performanceGlyph = {
 			path: '',
@@ -35,6 +36,13 @@ var IntersectionView = Backbone.View.extend({
 		};
 
 		this.flowGlyph = {
+			path: '',
+		    fillColor: '',
+		    fillOpacity: 0.8,
+		    scale: 1
+		};
+
+		this.lineGlyph = {
 			path: '',
 		    fillColor: '',
 		    fillOpacity: 0.8,
@@ -95,7 +103,7 @@ var IntersectionView = Backbone.View.extend({
 				break;
 
 			case('performance_glyph'):
-				// size the glyph appropriately
+				//size the glyph appropriately
 				var r = 14;
 				var d = 2*r;
 				var cx = r;
@@ -113,6 +121,56 @@ var IntersectionView = Backbone.View.extend({
 				this.flowGlyph['path'] = this.flowGlyphTemplate;
 
 				this.marker.setOptions({ icon: this.flowGlyph });
+
+				break;
+
+			case('line_glyph'):
+
+				var randNorth = Math.pow(Math.random() * 9.5, 2) * (-1);
+				// var randSouth = Math.random()*15;
+				// var randEast = Math.random()*10;
+				// var randWest = Math.random()*(-25);
+
+				var r = 0;
+				var xn = 0;
+				var yn = randNorth;
+				var xs = 0;
+				var ys = 5;
+				var xe = 5;
+				var ye = 0;
+				var xw = -5;
+				var yw = 0;
+				var cx = r;
+				var cy = r;
+
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/r/g, r.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/xn/g, xn.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/yn/g, yn.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/xs/g, xs.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/ys/g, ys.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/xe/g, xe.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/ye/g, ye.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/xw/g, xw.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/yw/g, yw.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/cx/g, cx.toString());
+				this.lineGlyphTemplate = this.lineGlyphTemplate.replace(/cy/g, cy.toString());
+
+				// if (randNorth > -8) {
+				// 	this.lineGlyph['strokeColor'] = 'rgba(255, 255, 255, 0.5)';
+				// } else if (randNorth < -13) {
+				// 	this.lineGlyph['strokeColor'] = 'rgba(28, 247, 64, 0.5)';
+				// } else {
+				// 	this.lineGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.5)';
+				// }
+
+
+				// this.lineGlyph['fillColor'] = 'rgba(28, 247, 64, 0)';
+				this.lineGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.9)';
+				this.lineGlyph['strokeWeight'] = '1.5';
+				
+				this.lineGlyph['path'] = this.lineGlyphTemplate;
+
+				this.marker.setOptions({ icon: this.lineGlyph });
 
 				break;
 			default:
