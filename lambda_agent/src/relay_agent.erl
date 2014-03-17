@@ -22,7 +22,7 @@ start(_Type, [Name|_Args]) ->
     gen_event:notify(SM, {set_location, <<"My Butt">>}),
     gen_event:call(PM, predict, {gen_local_prediction, SM, E}),
     gen_event:call(PM, plan, {gen_plan, SM, E}),
-    timer:apply_interval(2000, ?MODULE, random_ingress, [SM]),
+    timer:apply_interval(1000, ?MODULE, random_ingress, [SM]),
     {ok, SM, [PM, PyState, E]}.
 
 stop(State) ->
@@ -34,4 +34,4 @@ random_ingress(SM) ->
     gen_event:notify(SM, incoming()).
 
 incoming() ->
-    {incoming, random:uniform(4), state_manager:clock(), 1}.
+    {incoming, random:uniform(4), state_manager:clock(), 1 + random:uniform(4)}.

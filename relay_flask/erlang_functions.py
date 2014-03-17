@@ -77,7 +77,7 @@ def update_behaviour(int_id):
 
 # DUMMY FOR FAKE INTERSECTIONS
 def make_queues():
-    A, B, C, D, E = sighelp.generate_signals(250)
+    A, B, C, D, E = sighelp.generate_signals(30)
     signals = [A, B, C, D]
     qs = sighelp.create_hist_dict(signals, 1)
     return {'in': qs, 'out': qs, 'prediction': qs}
