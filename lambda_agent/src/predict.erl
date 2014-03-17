@@ -65,7 +65,5 @@ remote_gen_local_prediction({Store, P, T, Listener}) ->
             Listener ! {error, ExClass, ExArgs, Stack},
             {error, ExClass, ExArgs, Stack}
     end,
-    gen_event:notify(Store, {set_prediction, {Time, Prediction}}),
+    gen_event:notify(Store, {new_prediction, {Time, Prediction}}),
     exit(normal).
-
-

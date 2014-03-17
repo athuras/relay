@@ -45,13 +45,13 @@ terminate(_Reason, _State) ->
 remote_gen_plan({Store, P, Listener}) ->
     {ok, {BTG_Tid, B_Tid}} = gen_event:call(Store, relay_store, get_tables),
     B_id = gen_event:call(Store, relay_store, get_current_state),
-    F = gen_event:call(Store, relay_store, get_prediction),
-    Args = prepare_plan_args(BTG_Tid, B_Tid, B_id, F),
+    {[Start], F} = gen_event:call(Store, relay_store, get_prediction),
+    Args = prepare_plan_args(BTG_Tid, B_Tid, B_id, Start, F),
     Result = try python:call(P, graph_select, optimize_path, Args)
              catch error:{python, ExClass, ExArgs, Stack} ->
                 Listener ! {error, ExClass, ExArgs, Stack}
             end,
-    gen_event:notify(Store, {set_plan, Result}),
+    gen_event:notify(Store, {new_plan, Result}),
     exit(normal).
     %gen_event:notify(Controller, {new_plan, done, self()}).
 
@@ -59,20 +59,20 @@ remote_gen_plan({Store, P, Listener}) ->
 table_to_list(Tid) ->
     ets:foldl(fun(X, Acc) -> [X|Acc] end, [], Tid).
 
--spec prepare_plan_args(ets:tid(), ets:tid(), integer(), list()) -> list().
-prepare_plan_args(BTG_Tid, B_Tid, Current_Bid, F) ->
+-spec prepare_plan_args(ets:tid(), ets:tid(), integer(), integer(), list()) -> list().
+prepare_plan_args(BTG_Tid, B_Tid, Current_Bid, Start, F) ->
     BTG_Edges = table_to_list(BTG_Tid),
     B_Table = table_to_list(B_Tid),
     B = [lists:sum(X) || X <- lookup_behaviour(B_Tid, Current_Bid)],
-    Predict = case F of
+    {S2, Predict} = case F of
         [] -> {state_manager:clock(),
                gen_random_prediction(length(B), 100)};
-            _ -> F
+            _ -> {Start, F}
     end,
     Paths = lists:foldl(fun(X, Y) ->
                     gen_paths(BTG_Edges, Current_Bid, X) ++ Y
             end, [], lists:seq(2, 3)),
-    [Paths, B_Table, BTG_Edges, Predict, 1.0, 15].
+    [Paths, B_Table, BTG_Edges, Start, Predict, 1.0, 15].
 
 -spec gen_paths(list(), integer(), integer()) -> list().
 gen_paths(Edges, Start, Depth) ->

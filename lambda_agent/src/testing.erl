@@ -1,10 +1,6 @@
 -module(testing).
 -compile([export_all]).
 
-new_state_manager() -> state_manager:start_link().
-
-new_python_manager() -> python_manager:start_link().
-
 load_queues(Pid) -> load_queues(Pid, 25).
 load_queues(Pid, N) when is_integer(N) ->
     lists:foreach(fun(_) ->
@@ -22,17 +18,9 @@ test_incoming_upstream() ->
     {incoming_upstream, random:uniform(4), state_manager:clock(), random:uniform()}.
 
 
-do_stuff() ->
-    {ok, SM} = new_state_manager(),
-    {ok, PM} = new_python_manager(),
-    {ok, E} = echo:start_link(),
-    ok = load_queues(SM, 100),
-    ok = load_upstream(SM, 100),
-    {SM, PM, E}.
-
 new_agent(Name) ->
-    {ok, SM} = new_state_manager(),
-    {ok, PM} = new_python_manager(),
+    {ok, SM} = state_manager:start_link(worker, []),
+    {ok, PM, [Py]} = python_manager:start_link(worker, []),
     {ok, E} = echo:start_link(),
     register(Name, SM),
     ok = load_queues(SM, 20),
@@ -53,3 +41,12 @@ test_local_prediction({SM, PM, E}) ->
 
 test_plan({SM, PM, E}) ->
     gen_event:call(PM, plan, {gen_plan, SM, E}).
+
+get_plan({SM, PM, E}) ->
+    gen_event:call(SM, relay_store, get_current_plan).
+
+get_prediction({SM, PM, E}) ->
+    gen_event:call(SM, relay_store, get_prediction).
+
+request_state({SM, PM, E}) ->
+    gen_event:call(SM, relay_store, request_state).

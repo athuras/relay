@@ -35,6 +35,7 @@ terminate(_Reason, _Req, _State) ->
     ok.
 
 get_state(Agent) ->
+
     case lists:member(A=erlang:binary_to_atom(Agent, utf8),
                       registered()) of
         true -> gen_event:call(A, relay_store, request_state);
