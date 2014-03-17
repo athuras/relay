@@ -313,7 +313,7 @@ var PanelView = Backbone.View.extend({
 				// tell s
 				s.localUpdate();
 				s.restConnected();
-			})
+			});
 
 			//data pull on activity for intersection
 			$.ajax({
@@ -332,11 +332,11 @@ var PanelView = Backbone.View.extend({
 				// tell s
 				s.localUpdate();
 				s.restConnected();
-			})
+			});
 
 			//update anyhting non-static.
 
-		}, this.activityUpdateFrequency, this)
+		}, this.activityUpdateFrequency, this);
 	},
 
 	stopInterval: function(){
