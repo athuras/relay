@@ -121,12 +121,12 @@ var MapPageView = Backbone.View.extend({
 					var lng = i.get('long');
 
 					// flow value
-					var flow = Math.floor(Math.random()*10); //get a flow number from the model
+					var flow = Math.floor(Math.random()*3); //get a flow number from the model
 
 					// get one marker for each flow
 					for(var i = 0; i < flow; i++){
-						var olat = lat + (Math.random()-0.5)*0.005;
-						var olng = lng + (Math.random()-0.5)*0.005;
+						var olat = lat + (Math.random()-0.5)*0.006;
+						var olng = lng + (Math.random()-0.5)*0.006;
 						var m = new google.maps.LatLng(olat, olng);
 						this.flowPoints.push(m);
 					}
@@ -146,7 +146,7 @@ var MapPageView = Backbone.View.extend({
 
 					var setter = Math.random()*10;
 
-					var r = 20;
+					var r = 30;
 					var d = 2*r;
 					var cx = r;
 					var cy = r;
@@ -157,7 +157,7 @@ var MapPageView = Backbone.View.extend({
 					flowGlyphTemplate = flowGlyphTemplate.replace(/cy/g, cy.toString());
 
 					flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.1)';
-					flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.07)';
+					flowGlyph['strokeColor'] = 'rgba(17, 27, 236, 0.05)';
 					flowGlyph['strokeWeight'] = '14';
 
 					flowGlyph['path'] = flowGlyphTemplate;
@@ -178,9 +178,9 @@ var MapPageView = Backbone.View.extend({
 
 				// // set map and glyph styles
 				// this.map.setOptions({ styles: this.mapStyles['dark'] });
-				// this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
+				 this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
 				// // add them to the map
-				// this.intersectionsCollectionView.setIntersectionMap(this.map);
+				 this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('line-layer'):
 				// set map and glyph styles
