@@ -128,7 +128,7 @@ def get_int_evts():
     if request.method == 'POST':
         int_id = request.json 
         qstr = '''
-            SELECT
+            SELECT 
                 timestamp * 1000 as timestamp,
                 value,
                 int_id 
@@ -178,9 +178,10 @@ def get_dash():
             '''
 
         if int_id in g.sim_ids:
-            new_status_info = erlfuncs.fetch_status_info(int_id)
-            new_qs_dict = erlfuncs.make_queues()
-            # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
+            new_status_info, g.sim_queues, new_qs_dict = \
+                erlfuncs.fetch_status_info(int_id)
+            # new_qs_dict = erlfuncs.make_queues()
+            # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id, g.sim_queues, g.db)
         else:
             new_status_info = erlfuncs.make_status_info()
             new_qs_dict = erlfuncs.make_queues()

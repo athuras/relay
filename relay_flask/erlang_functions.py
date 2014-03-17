@@ -10,7 +10,7 @@ def fetch_queues(int_id, length=150):
 
     # new queues, queue dict
 
-def fetch_status_info(int_id):
+def fetch_status_info(int_id, old_queues, length=150):
     r = rqs.get("http://localhost:8081/?agent=Agent1")
     data = r.json()
 
@@ -19,15 +19,10 @@ def fetch_status_info(int_id):
     plan_codes = [b_parser.parse(b) for b in data['current_plan']]
     erl_info.append({'plans': plan_codes, 'plan_times': data['current_timing']})
 
-    return erl_info
+    new_queues = [data['ingress'],data['egress'],data['egress']]
+    updated_qs = merge_simulated_queues(new_queues, old_queues, length)
 
-
-# def fetch_plans(int_id):
-#     p = 'EWT'
-#     if np.random.rand(1) > 0.5:
-#         p = 'NST'
-#     return {'plan': p, 'plan_time': 
-#         int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)}
+    return erl_info, updated_qs, {'in': up_qs[0], 'out': up_qs[1], 'prediction': 0}
 
 ## UPDATING FUNCTIONS ##########################################################
 def update_plan(int_id):
