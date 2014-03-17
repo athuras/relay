@@ -148,15 +148,6 @@ def get_dash():
         # Get new values from erlang processes
         int_id = params['int_id']
 
-        if int_id in g.sim_ids:
-            new_behaviour = erlfuncs.fetch_behaviour(int_id)
-            new_plan = erlfuncs.fetch_plan(int_id)
-            g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
-        else:
-            new_behaviour = erlfuncs.make_behaviour()
-            new_plan = erlfuncs.make_plans()
-            new_qs_dict = erlfuncs.make_queues()
-
         q1 = '''
             SELECT 
                 s.status as status,
@@ -186,11 +177,18 @@ def get_dash():
                 int_id = :int_id;
             '''
 
+        if int_id in g.sim_ids:
+            new_status_info = erlfuncs.fetch_status_info(int_id)
+            new_qs_dict = erlfuncs.make_queues()
+            # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
+        else:
+            new_status_info = erlfuncs.make_status_info()
+            new_qs_dict = erlfuncs.make_queues()
+
         info = g.db.query('relay_main', q1, params, as_dict=True)
         info.append({'events': g.db.query('relay_main', q2, params, as_dict=True)})
         info.append(new_qs_dict)
-        info.append(new_behaviour)
-        info.append(new_plan)
+        info.append(new_status_info)
 
         return createJSON(info)
 
