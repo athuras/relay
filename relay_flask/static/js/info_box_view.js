@@ -171,14 +171,19 @@ var InfoBoxView = Backbone.View.extend({
 				var general = d[0];
 				// var general = d[0]['general'][0];
 				$(ibv.boxText).find('#info-box-status').get(0).innerHTML = general['status'];
-				$(ibv.boxText).find('#info-box-currentState').get(0).innerHTML = general['behaviour'];
-				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = general['plan'];
+
+				var plans = d[3][1];
+				$(ibv.boxText).find('#info-box-currentState').get(0).innerHTML = plans['plans'][0];
+				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = plans['plans'].length >1 ? plans['plans'][1] : '-';
 
 				//handle time nicely
-				var duration = new Date((general['plan_time']-general['bhvr_time'])).format('i:s');
-				$(ibv.boxText).find('#info-box-duration').get(0).innerHTML = duration
-				var timeUntilNextState = new Date(general['bhvr_time'] - Date.now()).format('i:s'); //assuming it's in the future
-				$(ibv.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState;
+				var duration = '--:--' //new Date((general['plan_time']-general['bhvr_time'])).format('i:s');
+				$(ibv.boxText).find('#info-box-duration').get(0).innerHTML = duration;
+				if(plans['plan_times'].length > 0){
+				var timeUntilNextState = new Date(plans['plan_times'][0] - Date.now()).format('i:s'); //assuming it's in the future
+				} else {
+					$(ibv.boxText).find('#countdown').get(0).innerHTML = '--:--' //timeUntilNextState;
+				}
 
 				// change the icon
 				$($(ibv.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');

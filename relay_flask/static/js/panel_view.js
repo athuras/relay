@@ -256,12 +256,6 @@ var PanelView = Backbone.View.extend({
 				// var general = d[0]['general'][0];
 				pv.$('#stat-status').html(general['status']);
 
-				//handle time nicely
-				var stateDuration = new Date((general['plan_time']-general['bhvr_time']) ).format('i:s');
-				pv.$('#stat-duration').html(stateDuration);
-				var timeUntilNextState = new Date(general['plan_time'] - Date.now()).format('i:s'); //assuming it's in the future
-				pv.$('#stat-nextStateTime').html(timeUntilNextState);
-
 				// change the icons
 				pv.$('#dash-state').attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
 				pv.$('#dash-next-state').attr('src', 'assets/' + general['plan'].toLowerCase() + '.png');
@@ -279,8 +273,19 @@ var PanelView = Backbone.View.extend({
 					}
 				}
 
-				pv.$('#stat-currentState').html(general['behaviour']);
-				pv.$('#stat-nextState').html(general['plan']);
+				var plans = d[3][1];
+				pv.$('#stat-currentState').html(plans['plans'][0]);
+				pv.$('#stat-nextState').html(plans['plans'].length >1 ? plans['plans'][1] : '-');
+
+				//handle time nicely
+				var stateDuration = '--:--' //new Date((general['plan_time']-general['bhvr_time']) ).format('i:s');
+				pv.$('#stat-duration').html(stateDuration);
+				if(plans['plan_times'].length > 0){
+					var timeUntilNextState = new Date(plans['plan_times'][0] - Date.now()).format('i:s'); //assuming it's in the future
+					pv.$('#stat-nextStateTime').html(timeUntilNextState);
+				} else {
+					pv.$('#stat-nextStateTime').html('--:--');
+				}
 
 				// update graphs
 				// Flow plot
