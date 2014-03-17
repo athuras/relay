@@ -29,7 +29,7 @@ handle_call(test, State=#state{py_pid=P}) ->
     {ok, python:call(P, test, test, [lists:seq(1, 10)]), State};
 
 handle_call({gen_local_prediction, Store, L}, State=#state{py_pid=P}) ->
-    Pid = spawn(?MODULE, remote_gen_local_prediction, [{Store, P, 60, L}]),
+    Pid = spawn(?MODULE, remote_gen_local_prediction, [{Store, P, 200, L}]),
     %% Some Stuff
     {ok, Pid, State};
 
