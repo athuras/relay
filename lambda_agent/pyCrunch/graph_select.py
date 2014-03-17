@@ -83,7 +83,7 @@ def optimize_path(paths, behaviours, btg, start, prediction, dt, maxiter):
     F = parse_prediction(prediction)
 
     path, t =  best_path(paths, B_table, BTG, F, dt=dt, maxiter=10)
-    return list(path), map(int,t.x)
+    return list(path), map(lambda x: int(x) + start, t.x)
 
 
 def best_path(paths, Behaviour_Table, BTG, F, dt=1.,
