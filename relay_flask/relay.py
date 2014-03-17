@@ -147,7 +147,7 @@ def get_dash():
 
         # Get new values from erlang processes
         int_id = params['int_id']
-        length = params['length']
+        length = params['duration']
 
         q1 = '''
             SELECT 
@@ -179,7 +179,7 @@ def get_dash():
             '''
 
         if int_id in g.sim_ids:
-            new_status_info, new_qs_dict = erlfuncs.fetch_status_info(int_id, length)
+            new_status_info, new_qs_dict = erlfuncs.fetch_status_info(int_id, 150)
             print new_qs_dict
             # new_qs_dict = erlfuncs.make_queues()
             # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id, g.sim_queues, g.db)
