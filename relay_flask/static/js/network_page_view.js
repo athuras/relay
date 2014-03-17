@@ -63,7 +63,7 @@ var NetworkPageView = Backbone.View.extend({
 				npv.$('#stat-intersections').html(String(d[0]['num']+d[1]['num']));
 				npv.$('#stat-working-count').html(String(d[1]['num']));
 				npv.$('#stat-failure-count').html(String(d[0]['num']));
-				npv.$('#stat-decisions').html(String(Math.random()*100));
+				npv.$('#stat-decisions').html(String(Math.floor(1000+Math.random()*25)));
 
 
 				// tell s
