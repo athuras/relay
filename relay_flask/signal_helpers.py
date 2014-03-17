@@ -42,7 +42,7 @@ def create_hist_dict(signals, dt=1.):
         l = np.linspace(0, max_time, max_time/dt)
         hist = np.histogram(s_mod, l)
 
-        return zip(*[now - np.round(hist[1],0)[:-1], hist[0]])
+        return [list(x) for x in zip(*[now - np.round(hist[1],0)[:-1], hist[0]])]
 
     curtime = int(datetime.datetime.now().strftime('%s'))
     hists = [create_hist(s, dt, curtime) for s in signals]
