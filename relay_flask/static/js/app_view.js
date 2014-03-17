@@ -11,6 +11,8 @@ var AppView = Backbone.View.extend({
 	roadsHeaderBtn: $('#roads-header-btn'),
 	networkHeaderbtn: $('#network-header-btn'),
 
+	activePage: 'mapPageView',
+
 	// Events
 	events: {
 		'click .page-btn' : 'pageSelected',
@@ -54,6 +56,18 @@ var AppView = Backbone.View.extend({
 
 		this.activeTab.addClass('active'); // select the new tab
 		$( '#' + this.activeTab.data('page-id')).addClass('page-active'); // show the new tab
+
+		this[this.activePage].setInactive();
+		var newPage = this.activeTab.data('page-name');
+		this[newPage].setActive();
+		this.activePage = newPage;
+	},
+
+	setActive: function(){
+
+	},
+
+	setInactive: function(){
 
 	}
 });

@@ -23,10 +23,13 @@
 	    <div id='header'>
 			<img id='logo' src='assets/relay-logo.png'/>
 		    <ul id='header-btns'>
-				<a href='#'><li class='header-btn page-btn' id='map-header-btn' data-page-id='map-page'>MAP</li></a>
-				<a href='#'><li class='header-btn page-btn' id='intersections-header-btn' data-page-id='intersections-page'>INTERSECTIONS</li></a>
-				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page'>ROADS</li></a>
-				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page'>NETWORK</li></a>
+				<a href='#'><li class='header-btn page-btn' id='map-header-btn' data-page-id='map-page' data-page-name='mapPageView'>MAP</li></a>
+
+				<a href='#'><li class='header-btn page-btn' id='intersections-header-btn' data-page-id='intersections-page' data-page-name='intersectionsPageView'>INTERSECTIONS</li></a>
+
+				<a href='#'><li class='header-btn page-btn' id='roads-header-btn' data-page-id='roads-page' data-page-name='roadsPageView'>ROADS</li></a>
+
+				<a href='#'><li class='header-btn page-btn far-right' id='network-header-btn' data-page-id='network-page' data-page-name='networkPageView'>NETWORK</li></a>
 			</ul>
 
 			<!-- <div id='search-box'><img id='search-icon' src='assets/search.png'/></div> -->
@@ -69,9 +72,9 @@
 				<div class='legend-label'>LAYERS</div>
 				<ul>
 					<li class='map-layer-option' id='status-layer-label' data-layer='status-layer'>
-						<!-- <img class='status-icon' src='assets/status.png'/> -->
 						Status</li>
 					<li class='map-layer-option' id='flow-layer-label' data-layer='flow-layer'>Flow</li>
+					<li class='map-layer-option' id='line-layer-label' data-layer='line-layer'>Queue</li>
 				</ul>
 				<div class='legend-label' id='visualizations'>VISUALIZATIONS</div>
 				<ul>
@@ -167,20 +170,6 @@
 		</div>
 
 		<!-- Network Page -->
-
-<!-- 
-total # intersections
-# of OK
-# of failures
-
-header: city, random codes or w/e
-
-activity log, full height of right panel
-
-graph 1: total flow over time
-graph 2: histogram
--->
-
 		<div id="network-page" class='page'>
 			<div id='network-header'>
 				<div id='title-wrap'>
@@ -201,15 +190,15 @@ graph 2: histogram
 				<div class='section-container' id='left-stats'>
 					<div class='word-wrap'>
 						<span class='stat-title'>INTERSECTIONS</span><br/>
-						<span class='stat-field' id='stat-status'>--</span><br/>
+						<span class='stat-field' id='stat-intersections'>--</span><br/>
 						<span class='stat-title'>DECISIONS PER MINUTE</span><br/>
-						<span class='stat-field' id='stat-currentState'>--</span>
+						<span class='stat-field' id='stat-decisions'>--</span>
 					</div>
 					<div class='word=wrap' id='righty'>
 						<span class='stat-title'>WORKING</span><br/>
-						<span class='stat-field' id='stat-nextState'>--</span><br/>
+						<span class='stat-field' id='stat-working-count'>--</span><br/>
 						<span class='stat-title'>FAILING</span><br/>
-						<span class='stat-field' id='stat-nextStateTime'>--</span>
+						<span class='stat-field' id='stat-failure-count'>--</span>
 					</div>
 				</div>
 				<div class='section-container chart-container'>
