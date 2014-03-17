@@ -11,11 +11,10 @@ var RoadsCollection = Backbone.Collection.extend({
 		var data = null;
 
 		$.ajax({
-			type: "POST",
+			type: "GET",
 			datatype: "JSON",
 			contentType: "application/json",
 			url: "http://localhost:5000/request_roads",
-			data: JSON.stringify(bounds),
 			async: false
         }).then( function(d){
         	data = d;
