@@ -22,7 +22,9 @@
     refresh_store/1
     ]).
 
-clock() -> element(1, now()) * 10000 + element(2, now()).
+clock() ->
+    calendar:datetime_to_gregorian_seconds(
+        calendar:universal_time()) - 62167219200.
 
 
 %%  API

@@ -17,11 +17,17 @@ start(_Type, _Args) ->
                 {env, [{dispatch, Dispatch}]}
                 ]),
     {ok, S1,
-     [P1, PyState1, E1]} =
+     [P1, PyPid, R1]} =
             relay_agent:start(worker, [<<"Agent1">>, undefined]),
-    {ok, S2, [P2, PyState2, E2]} =
-            relay_agent:start(worker, [<<"Agent2">>, PyState1]),
+    Workers = make_workers([<<"Agent2">>, <<"Agent3">>,
+                            <<"Agent4">>, <<"Agent5">>],
+                           PyPid),
+    Routers = [R1|lists:map(fun({ok, _, [_, _, R]}) -> R end, Workers)],
+    spider:spin(Routers),
     relay_sup:start_link().
 
 stop(_State) ->
     ok.
+
+make_workers(Names, PyPid) ->
+    [relay_agent:start(worker, [N, PyPid]) || N <- Names].
