@@ -16,11 +16,12 @@ var MapPageView = Backbone.View.extend({
 		this.mapOptions = bootstrap.mapOptions;
 		this.mapStyles = bootstrap.mapStyles;
 		this.activeLayer = bootstrap.activeLayer;
-		this.heatMapStyles = bootstrap.heatMapStyles;
+		this.heatmapStyles = bootstrap.heatmapStyles;
 
 		// other data
 		this.heatmapData = new Array();
 		this.heatmapLayer = new google.maps.visualization.HeatmapLayer();
+		this.heatmapLayer.setOptions(this.heatmapStyles);
 
 		// Create our map object
 		this.map = new google.maps.Map(document.getElementById('map'), bootstrap.mapOptions);
@@ -117,7 +118,7 @@ var MapPageView = Backbone.View.extend({
 					var l = new google.maps.LatLng(intersection.get('lat'), intersection.get('long'));
 					var wl = new Object({
 						location: l,
-						weight: Math.random() // should be a real number.
+						weight: Math.log(Math.random()*10+1) // should be a real number.
 					});
 					this.heatmapData.push(wl);
 				}, this);
