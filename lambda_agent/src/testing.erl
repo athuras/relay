@@ -28,16 +28,28 @@ do_stuff() ->
     {ok, E} = echo:start_link(),
     ok = load_queues(SM, 100),
     ok = load_upstream(SM, 100),
-    {ok, SM, PM, E}.
+    {SM, PM, E}.
+
+new_agent(Name) ->
+    {ok, SM} = new_state_manager(),
+    {ok, PM} = new_python_manager(),
+    {ok, E} = echo:start_link(),
+    register(Name, SM),
+    ok = load_queues(SM, 20),
+    ok = load_upstream(SM, 20),
+    test_local_prediction({PM, SM, E}),
+    {SM, PM, E}.
+
 
 killpy(P) ->
     gen_event:notify(P, kill_python).
 
 get_tables(SM) ->
-    state_manager:get_tables(SM).
+    {ok, {BTG, BT}} = state_manager:get_tables(SM),
+    {BTG, BT}.
 
-test_local_prediction(PM, SM, E) ->
+test_local_prediction({SM, PM, E}) ->
     gen_event:call(PM, predict, {gen_local_prediction, SM, E}).
 
-test_plan(PM, SM, E) ->
+test_plan({SM, PM, E}) ->
     gen_event:call(PM, plan, {gen_plan, SM, E}).

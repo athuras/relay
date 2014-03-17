@@ -191,24 +191,22 @@ def get_dash():
         info.append(new_qs_dict)
 
         print info
-
         return createJSON(info)
 
-@app.route('/request_network', methods=['POST'])
-def sdlfkj():
-    if request.method == 'POST':
-        int_id = request.json 
+@app.route('/request_network', methods=['GET'])
+def request_netowkr():
+    if request.method == 'GET':
         qstr = '''
-            SELECT 
-                timestamp,
-                value,
-                int_id 
+            SELECT
+                status,
+                count(*) as num
             FROM 
-                int_events
-            WHERE
-                int_id = :int_id;
+                int_status
+            GROUP BY
+                status;
             ''' 
-        evts = g.db.query('relay_main', qstr, int_id, as_dict=True)
+        evts = g.db.query('relay_main', qstr, as_dict=True)
+
         return createJSON(evts)
 
 @app.route('/request_flows', methods=['GET'])

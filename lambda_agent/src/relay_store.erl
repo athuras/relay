@@ -15,14 +15,26 @@
     terminate/2
     ]).
 
+-include("jsonerl.hrl").
+
+%%  State that isn't changed 'asynchronously', in that it isn't changed very fast.
+%%  The accumulator handler manages the 'real-time' aspects of the Agent's state.
 -record(state, {name, location,
                 btg_table=new_ets_table(agent_graphs:new_btg()),
                 b_table=new_ets_table(agent_graphs:new_behaviour_table()),
                 prediction=[],
                 base_graph=agent_graphs:new_base_graph(),
-                current_behaviour=0, current_plan=[],
+                current_behaviour=0, current_plan=[0],
                 delay_params=[]
                 }).
+
+%%  Controls what is json-ified, and shunted to the cowboy server.
+-record(visible_state, {name,
+                        location,
+                        behaviour,
+                        prediction,
+                        current_plan,
+                        delay_params}).
 
 init([]) ->
     {ok, #state{}}.
@@ -80,11 +92,16 @@ handle_call(get_delay_params, State=#state{delay_params=DP}) ->
     {ok, Taus, State#state{delay_params=Taus}};
 
 handle_call(get_current_graph, State) ->
-    B = ets:lookup(State#state.b_table, State#state.current_behaviour),
-    {ok, lol_matrices:mult(B, State#state.base_graph), State};
+    {ok, get_current_graph(State), State};
 
 handle_call(get_prediction, State) ->
     {ok, State#state.prediction, State};
+
+%%  Web-Server Call, Serialize Everything...
+handle_call(request_state, State) ->
+    %% First look up the behaviour
+    VS = state_to_visible_state(State),
+    {ok, ?record_to_json(visible_state, VS), State};
 
 handle_call(_Call, State) ->
     {ok, ok, State}.
@@ -100,6 +117,26 @@ code_change(_OldVsn, State, _Extra) ->
 terminate(_Reason, _State) ->
     %  May want to bequest the various data structures to another process...
     ok.
+
+
+%%  Private
+get_behaviour(Tid, Bid) ->
+    [{_, B}|_] = ets:lookup(Tid, Bid),
+    B.
+get_current_graph(State=#state{b_table=Tid, base_graph=G}) ->
+    Bid = State#state.current_behaviour,
+    lol_matrices:mult(get_behaviour(Tid, Bid), G).
+
+%%  There has to be a better way, but I don't know it.
+state_to_visible_state(State=#state{b_table=Tid, base_graph=G}) ->
+    Rendered_Plan = [lol_matrices:mult(get_behaviour(Tid, B), G)
+                     || B <- State#state.current_plan],
+    #visible_state{name=State#state.name,
+                   location=State#state.name,
+                   behaviour=get_current_graph(State),
+                   prediction=State#state.prediction,
+                   current_plan=Rendered_Plan,
+                   delay_params=State#state.delay_params}.
 
 new_ets_table(Data) ->
     Tid = ets:new(unnamed, [set]),

@@ -10,7 +10,7 @@
 start(_Type, _Args) ->
     Dispatch = cowboy_router:compile([
                 {'_', [
-                        {"/", toppage_handler, []}
+                        {"/", top_page_handler, []}
                         ]}
                 ]),
     {ok, _} = cowboy:start_http(http, 100, [{port, ?LISTEN_PORT}], [
