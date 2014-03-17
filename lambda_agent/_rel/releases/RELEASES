@@ -1,0 +1,10 @@
+[{release,"relay","0.1","5.10.4",
+          [{kernel,"2.16.4","./lib/kernel-2.16.4"},
+           {stdlib,"1.19.4","./lib/stdlib-1.19.4"},
+           {ranch,"0.9.0","./lib/ranch-0.9.0"},
+           {crypto,"3.2","./lib/crypto-3.2"},
+           {erlport,"0.9.8","./lib/erlport-0.9.8"},
+           {cowlib,"0.5.1","./lib/cowlib-0.5.1"},
+           {cowboy,"0.9.0","./lib/cowboy-0.9.0"},
+           {relay,"0.1","./lib/relay-0.1"}],
+          permanent}].

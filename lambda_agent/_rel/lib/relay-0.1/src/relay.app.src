@@ -1,0 +1,14 @@
+{application, relay, [
+	{description, "Relay Agent"},
+	{vsn, "0.1"},
+	{modules, []},
+	{registered, [relay_sup]},
+	{applications, [
+		kernel,
+		stdlib,
+		cowboy,
+		erlport
+	]},
+	{mod, {relay_app, []}},
+	{env, []}
+]}.
