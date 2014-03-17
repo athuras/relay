@@ -320,8 +320,8 @@ var PanelView = Backbone.View.extend({
 				type: "POST",
 				datatype: "JSON",
 				contentType: "application/json",
-				url: "http://localhost:5000/request_int_events",
-				data: JSON.stringify({int_id: 11}),
+				url: "http://localhost:5000/request_all_events",
+				data: JSON.stringify({num_events: 20}),
 				async: false
 			}).then( function(d){
 				console.log('activity data');
