@@ -269,7 +269,7 @@ var PanelView = Backbone.View.extend({
 				var ords = ['n','e','s','w'];
 				for(var i = 0; i < 4; i++){
 					for(var j = 0; j < 4; j++){
-						pv.$('#'+ords[i]+'-'+ords[j]).html(String(Math.floor(bMat[i][j] * flows[i][0][1] * 3600 )));
+						pv.$('#'+ords[i]+'-'+ords[j]).html(flows[i].length > 0 ? String(Math.floor(bMat[i][j] * flows[i][0][1] * 3600 )) : '-');
 					}
 				}
 
@@ -278,10 +278,10 @@ var PanelView = Backbone.View.extend({
 				pv.$('#stat-nextState').html(plans['plans'].length >1 ? plans['plans'][1] : '-');
 
 				//handle time nicely
-				var stateDuration = '--:--' //new Date((general['plan_time']-general['bhvr_time']) ).format('i:s');
+				var stateDuration = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000); //new Date((general['plan_time']-general['bhvr_time']) ).format('i:s');
 				pv.$('#stat-duration').html(stateDuration);
 				if(plans['plan_times'].length > 0){
-					var timeUntilNextState = new Date(plans['plan_times'][0] - Date.now()).format('i:s'); //assuming it's in the future
+					var timeUntilNextState = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000);; //assuming it's in the future
 					pv.$('#stat-nextStateTime').html(timeUntilNextState);
 				} else {
 					pv.$('#stat-nextStateTime').html('--:--');

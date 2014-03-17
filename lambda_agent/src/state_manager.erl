@@ -19,7 +19,6 @@
     get_tables/1,
     get_queue/3,
     get_name/1,
-    refresh_acc/1,
     refresh_store/1
     ]).
 
@@ -30,9 +29,10 @@ clock() -> element(1, now()) * 10000 + element(2, now()).
 start_link() -> start_link(none, none).
 start_link(_Type, _Args) ->
     {ok, Pid} = gen_event:start_link(),
-    gen_event:add_sup_handler(Pid, accumulator, agent_graphs:default_behaviour()),
+    {ok, R} = connection_manager:start_link(),
+    gen_event:add_sup_handler(Pid, accumulator, {agent_graphs:default_behaviour(), R}),
     gen_event:add_sup_handler(Pid, relay_store, []),
-    {ok, Pid}.
+    {ok, Pid, R}.
 
 %%  Interface
 get_tables(Pid) ->
@@ -45,10 +45,6 @@ get_queue(Pid, I, egress) ->
 
 get_name(Pid) ->
     gen_event:call(Pid, relay_store, get_name).
-
-refresh_acc(Pid) ->
-    gen_event:delete_handler(Pid, accumulator, []),
-    gen_event:add_sup_handler(Pid, accumulator, agent_graphs:default_behaviour()).
 
 refresh_store(Pid) ->
     gen_event:delete_handler(Pid, relay_store, []),

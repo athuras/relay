@@ -16,8 +16,11 @@ start(_Type, _Args) ->
     {ok, _} = cowboy:start_http(http, 100, [{port, ?LISTEN_PORT}], [
                 {env, [{dispatch, Dispatch}]}
                 ]),
-    {ok, S1, [P1, PyState1, E1]} = relay_agent:start(worker, [<<"Agent1">>]),
-    %{ok, S2, [P2, PyState2, E2]} = relay_agent:start(worker, [<<"Agent2">>]),
+    {ok, S1,
+     [P1, PyState1, E1]} =
+            relay_agent:start(worker, [<<"Agent1">>, undefined]),
+    {ok, S2, [P2, PyState2, E2]} =
+            relay_agent:start(worker, [<<"Agent2">>, PyState1]),
     relay_sup:start_link().
 
 stop(_State) ->

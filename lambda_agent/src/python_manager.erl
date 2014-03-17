@@ -9,6 +9,7 @@
     py_start/0,
     python_module_dir/0,
     reload_handlers/1,
+    start_link/0,
     start_link/2,
     stop/1,
     test_plan/1,
@@ -16,8 +17,11 @@
     ]).
 
 %% API
-start_link(Type, _Args) ->
+start_link() ->
     {ok, PyPid} = py_start(),
+    start_link(worker, PyPid).
+
+start_link(_Type, PyPid) ->
     {ok, Pid} = gen_event:start_link(),
     gen_event:add_handler(Pid, predict, PyPid),
     gen_event:add_handler(Pid, plan, PyPid),
