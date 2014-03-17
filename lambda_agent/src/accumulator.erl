@@ -12,6 +12,8 @@
     terminate/2
     ]).
 
+-export([set_nth/3]).
+
 -record(state, {current_behaviour, ingress, egress,
                 remote_egress, maxlen=300, ports=4,
                conn_manager}).

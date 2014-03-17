@@ -31,7 +31,14 @@
                 }).
 
 init([]) ->
-    {ok, #state{}}.
+    State = #state{},
+    Taus = case D = State#state.delay_params of
+        [] -> [lol_matrices:ones(4)
+               || _ <- lists:seq(1, length(State#state.base_graph))
+                 ];
+        _ -> D
+    end,
+    {ok, State#state{delay_params=Taus}}.
 
 %%  Maintenance Related
 handle_event({set_name, Name}, State) ->
@@ -47,6 +54,12 @@ handle_event({set_behaviour, Bid}, State) ->
 
 
 %%  Statistics and Inferred Properties
+handle_event({set_delay_param, I, Tau}, State=#state{delay_params=D}) ->
+    New_Delays = accumulator:set_nth(I, D, Tau),
+    {ok, State#state{delay_params=New_Delays}};
+
+handle_event({set_delay_params, Taus}, State) ->
+    {ok, State#state{delay_params=Taus}};
 handle_event({update_delay_params, Taus}, State) ->
     {ok, State#state{delay_params=Taus}};
 
@@ -77,13 +90,7 @@ handle_call(get_tables, State) ->
     {ok, Tables, State};
 
 handle_call(get_delay_params, State=#state{delay_params=DP}) ->
-    Taus = case DP of
-        [] -> [lol_matrices:ones(4)
-               || _ <- lists:seq(1, length(State#state.base_graph))
-                 ];
-        _ -> DP
-    end,
-    {ok, Taus, State#state{delay_params=Taus}};
+    {ok, DP, State};
 
 handle_call(get_current_graph, State) ->
     {ok, get_current_graph(State), State};

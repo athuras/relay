@@ -33,7 +33,7 @@ start(_Type, [Name, PyPid|_]) ->
     timer:apply_interval(5000, ?MODULE, make_predictions, [SM, PM, E]),
     timer:apply_interval(15000, ?MODULE, make_plans, [SM, PM, E]),
 
-    {ok, SM, [PM, PyPid2, E]}.
+    {ok, SM, [PM, PyPid2, R]}.
 
 stop(State) ->
     [_PM, PyState|_] = State,
@@ -41,7 +41,7 @@ stop(State) ->
     ok.
 
 random_ingress(SM) ->
-    gen_event:notify(SM, incoming()).
+    [gen_event:notify(SM, incoming()) || _ <- [1, 2, 3]].
 
 incoming() ->
     {incoming, random:uniform(4), state_manager:clock(), 1}.
