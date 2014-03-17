@@ -120,7 +120,7 @@ def get_all_evts():
             LIMIT 
                 :num_events;
             ''' 
-        evts = g.db.query('relay_main', qstr, num_events, as_dict=False)
+        evts = g.db.query('relay_main', qstr, num_events, as_dict=True)
         return createJSON(evts)
 
 @app.route('/request_int_events', methods=['POST'])
