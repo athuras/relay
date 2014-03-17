@@ -106,6 +106,21 @@ var MapPageView = Backbone.View.extend({
 				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('flow-layer'):
+				// //lat and long references
+				// var lat = intersection.get('lat');
+				// var lng = intersection.get('long');
+
+				// var flow = Math.floor(Math.random()*10); //get a flow number from the model
+
+				// // get one marker for each flow
+				// for(var i = 0; i < flow; i++){
+				// 	var olat = lat + (Math.random()-0.5)*0.1;
+				// 	var olng = lng + (Math.random()-0.5)*0.1;
+				// 	var m = new google.maps.LatLng(olat, olng);
+				// 	this.heatmapData.push(m);
+				// }
+
+
 				// set map and glyph styles
 				this.map.setOptions({ styles: this.mapStyles['dark'] });
 				this.intersectionsCollectionView.setIntersectionStyle( 'performance_glyph' );
@@ -120,37 +135,16 @@ var MapPageView = Backbone.View.extend({
 				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('flow-visualization'):
-				// heatmap array
+				// // heatmap array
 				this.heatmapData = new Array();
-
-				// for each intersection, we add randomized points around it.
-				// # points based on flow value
 				_.forEach(this.intersectionsCollection.models, function(intersection){
-					//lat and long references
-					var lat = intersection.get('lat');
-					var lng = intersection.get('lng');
-
-					var flow = Math.floor(Math.random()*10); //get a flow number from the model
-
-					// get one marker for each flow
-					for(var i = 0; i < flow; i++){
-						var olat = lat + (Math.random()-0.5)*0.1;
-						var olng = lng + (Math.random()-0.5)*0.1;
-						var m = new google.maps.LatLng(lat, lng);
-						this.heatmapData.push(m);
-					}
-
-					// var l = new google.maps.LatLng(lat, lng);
-					// var wl = new Object({
-					// 	location: l,
-					// 	weight: Math.log(Math.random()*10+1) // should be a real number.
-					// });
-					// this.heatmapData.push(wl);
+					var l = new google.maps.LatLng(intersection.get('lat'), intersection.get('long'));
+					var wl = new Object({
+						location: l,
+						weight: Math.log(Math.random()*10+1) // should be a real number.
+					});
+					this.heatmapData.push(wl);
 				}, this);
-
-				// for each road, we add points along the road
-				// # based on the flow value of the two roads it connects to
-
 				this.heatmapLayer.setData(this.heatmapData);
 				this.heatmapLayer.setMap(this.map);
 			default:
