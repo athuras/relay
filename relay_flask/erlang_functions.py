@@ -80,6 +80,7 @@ def make_queues():
     A, B, C, D, E = sighelp.generate_signals(30)
     signals = [A, B, C, D]
     qs = sighelp.create_hist_dict(signals, 1)
+
     return {'in': qs, 'out': qs, 'prediction': qs}
 
 def make_status_info():
@@ -93,6 +94,6 @@ def make_status_info():
     # if np.random.rand(1) > 0.5:
     #     p = 'NST'
     status_info.append({'plans': [p, p2], 'plan_times': 
-        [(int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)) * 1000]})
+        [int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)]})
 
     return status_info
