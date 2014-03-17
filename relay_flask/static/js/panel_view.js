@@ -12,7 +12,7 @@ var PanelView = Backbone.View.extend({
 		},
 		yaxis: {
 			min: 0,
-			max: 50
+			max: 12
 		},
 		legend: {
 			backgroundColor: 'rgba(0, 0, 0, 0)',
@@ -68,11 +68,11 @@ var PanelView = Backbone.View.extend({
 	perfPlotOptions: {
 		xaxis: {
 			mode: "time",
-			timeformat: "%I/%M/%S"
+			timeformat: "%I:%M:%S"
 		},
 		yaxis: {
 			min: 0,
-			max: 50
+			max: 12
 		},
 		legend: {
 			backgroundColor: 'rgba(0, 0, 0, 0)',
