@@ -22,9 +22,11 @@
 -record(state, {name, location,
                 btg_table=new_ets_table(agent_graphs:new_btg()),
                 b_table=new_ets_table(agent_graphs:new_behaviour_table()),
+                prediction_time=[0],
                 prediction=[],
                 base_graph=agent_graphs:new_base_graph(),
-                current_behaviour=0, current_plan=[0],
+                current_behaviour=0,
+                current_plan={[0],[0]},
                 delay_params=[]
                 }).
 
@@ -32,8 +34,10 @@
 -record(visible_state, {name,
                         location,
                         behaviour,
+                        prediction_time,
                         prediction,
                         current_plan,
+                        current_timing,
                         delay_params}).
 
 init([]) ->
@@ -46,7 +50,7 @@ handle_event({set_location, location}, State) ->
     {ok, State#state{location=location}};
 
 %%  Planning Related
-handle_event({set_plan, Plan_Stuff}, State) ->
+handle_event({new_plan, Plan_Stuff}, State) ->
     {ok, State#state{current_plan=Plan_Stuff}};
 handle_event({set_behaviour, Bid}, State) ->
     {ok, State#state{current_behaviour=Bid}};
@@ -59,8 +63,8 @@ handle_event({update_delay_params, Taus}, State) ->
 handle_event({update_graph_params, Base}, State) ->
     {ok, State#state{base_graph=Base}};
 
-handle_event({new_prediction, P}, State) ->
-    {ok, State#state{prediction=P}};
+handle_event({new_prediction, {Time, P}}, State) ->
+    {ok, State#state{prediction=P, prediction_time=[Time]}};
 
 handle_event(_, State) ->
     {ok, State}.
@@ -95,7 +99,9 @@ handle_call(get_current_graph, State) ->
     {ok, get_current_graph(State), State};
 
 handle_call(get_prediction, State) ->
-    {ok, State#state.prediction, State};
+    {ok, {State#state.prediction_time,
+          State#state.prediction},
+     State};
 
 %%  Web-Server Call, Serialize Everything...
 handle_call(request_state, State) ->
@@ -129,13 +135,16 @@ get_current_graph(State=#state{b_table=Tid, base_graph=G}) ->
 
 %%  There has to be a better way, but I don't know it.
 state_to_visible_state(State=#state{b_table=Tid, base_graph=G}) ->
+    {Behaviours, Times} = State#state.current_plan,
     Rendered_Plan = [lol_matrices:mult(get_behaviour(Tid, B), G)
-                     || B <- State#state.current_plan],
+                     || B <- Behaviours],
     #visible_state{name=State#state.name,
                    location=State#state.name,
                    behaviour=get_current_graph(State),
+                   prediction_time=State#state.prediction_time,
                    prediction=State#state.prediction,
                    current_plan=Rendered_Plan,
+                   current_timing=Times,
                    delay_params=State#state.delay_params}.
 
 new_ets_table(Data) ->

@@ -8,6 +8,7 @@
 
 %%  API
 -export([
+    start_link/2,
     start_link/0
     ]).
 
@@ -26,8 +27,9 @@ clock() -> element(1, now()) * 10000 + element(2, now()).
 
 
 %%  API
-start_link() ->
-    {ok, Pid} = gen_event:start(),
+start_link() -> start_link(none, none).
+start_link(_Type, _Args) ->
+    {ok, Pid} = gen_event:start_link(),
     gen_event:add_sup_handler(Pid, accumulator, agent_graphs:default_behaviour()),
     gen_event:add_sup_handler(Pid, relay_store, []),
     {ok, Pid}.
