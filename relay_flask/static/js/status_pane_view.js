@@ -17,6 +17,9 @@ var StatusPaneView = Backbone.View.extend({
 		this.sMessage = '-';
 		this.lastLocalUpdate = Date.now();
 		this.lastGlobalUpdate = Date.now();
+		this.localLiveTag = false;
+		this.globalLiveTag = false;
+
 
 		// listener
 		$(document).keyup($.proxy(function(e){
@@ -52,14 +55,24 @@ var StatusPaneView = Backbone.View.extend({
 		this.$('#socket-status').html(this.sMessage);
 
 		// write the connection times
-		if((Date.now() - this.lastLocalUpdate) <= 1000){
-			this.$('#local-update').html('(live)');
+		if((Date.now() - this.lastLocalUpdate) <= 1000 && this.localLiveTag){
+			this.$('#local-update').html('live.');
+		} else if((Date.now() - this.lastLocalUpdate) <= 1000) {
+			this.localLiveTag = true;
+			this.$('#local-update').html(Math.floor((Date.now() - this.lastLocalUpdate) / 1000) + 's ago');
 		} else {
+			this.localLiveTag = false;
 			this.$('#local-update').html(Math.floor((Date.now() - this.lastLocalUpdate) / 1000) + 's ago');
 		}
-		if((Date.now() - this.lastGlobalUpdate) <= 1000){
-			this.$('#global-update').html('(live)');
+
+
+		if((Date.now() - this.lastGlobalUpdate) <= 1000 && this.globalLiveTag){
+			this.$('#global-update').html('live.');
+		} else if((Date.now() - this.lastGlobalUpdate) <= 1000) {
+			this.globalLiveTag = true;
+			this.$('#global-update').html(Math.floor((Date.now() - this.lastGlobalUpdate) / 1000) + 's ago');
 		} else{
+			this.globalLiveTag = false;
 			this.$('#global-update').html(Math.floor((Date.now() - this.lastGlobalUpdate) / 1000) + 's ago');
 		}
 

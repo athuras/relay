@@ -172,7 +172,6 @@ var MapPageView = Backbone.View.extend({
 
 					var setter = Math.random()*10;
 
-
 					var r = 10;
 					var d = 2*r;
 					var cx = r;
