@@ -97,6 +97,6 @@ def make_status_info():
     if np.random.rand(1) > 0.5:
         p = 'NST'
     status_info.append({'plans': [p], 'plan_times': 
-        [int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)]})
+        [int(dt.datetime.now().strftime('%s')) * 1000 + np.random.randint(15,45)]})
 
     return status_info
