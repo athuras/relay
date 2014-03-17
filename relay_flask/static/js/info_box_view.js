@@ -15,7 +15,7 @@ var InfoBoxView = Backbone.View.extend({
 		},
 		yaxis: {
 			min: 0,
-			max: 50
+			max: 12
 		},
 		legend: {
 			backgroundColor: 'rgba(0, 0, 0, 0)',
