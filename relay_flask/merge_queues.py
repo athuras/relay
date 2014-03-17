@@ -18,7 +18,7 @@ def merge_simulated_queues(new_queues, sim_queues, length):
     #arrange them into order based on node id
     #merge with new queue
     #write new queue back to database
-    if sim_queues = None:
+    if sim_queues == None:
         updated_queues = [reduce_qs(qs) for qs in new_queues]
     else:
         updated_queues = [merge_queues(q, sim_queues[i], length) for i, q in enumerate(new_queues)]
