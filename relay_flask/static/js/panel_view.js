@@ -211,11 +211,13 @@ var PanelView = Backbone.View.extend({
 
 		// set what we do know before live updates kick in
 		this.$('#stat-status').html(intersectionModel.get('status'));
-		this.$('#stat-currentState').html(intersectionModel.get('currentState'));
-		this.$('#stat-nextState').html(intersectionModel.get('nextState'));
+		this.$('#stat-currentState').html(intersectionModel.get('behaviour'));
+		this.$('#stat-nextState').html(intersectionModel.get('plan'));
 
 		//handle time nicely
-		var timeUntilNextState = new Date(intersectionModel.get('nextStateTime')*1000 - Date.now()).format('i:s'); //assuming it's in the future
+		var stateDuration = new Date((intersectionModel.get('plan_time')-intersectionModel.get('bhvr_time'))*1000 ).format('i:s');
+		this.$('#stat-duration').html(stateDuration);
+		var timeUntilNextState = new Date(intersectionModel.get('plan_time')*1000 - Date.now()).format('i:s'); //assuming it's in the future
 		this.$('#stat-nextStateTime').html(timeUntilNextState);
 
 		// For anything that requires real-time data, we use a set interval!
@@ -247,11 +249,14 @@ var PanelView = Backbone.View.extend({
 				pv.$('#stat-nextState').html(general['plan']);
 
 				//handle time nicely
-				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				var stateDuration = new Date((general['plan_time']-general['bhvr_time'])*1000 ).format('i:s');
+				pv.$('#stat-duration').html(stateDuration);
+				var timeUntilNextState = new Date(general['plan_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
 				pv.$('#stat-nextStateTime').html(timeUntilNextState);
 
-				// change the icon
+				// change the icons
 				pv.$('#dash-state').attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
+				pv.$('#dash-next-state').attr('src', 'assets/' + general['plan'].toLowerCase() + '.png');
 
 				// update activity
 				pv.activitiesCollection.reset(d[1]['events']);
@@ -287,8 +292,6 @@ var PanelView = Backbone.View.extend({
 	        	pv.flowPlot.setupGrid();
 		        pv.flowPlot.draw();
 
-
-
 	        	// add perf data
 	        	perf = d[2]['in'];
 	        	for(var dir = 0; dir < 4; dir++){
@@ -304,8 +307,6 @@ var PanelView = Backbone.View.extend({
 	        	pv.perfPlot.setData(pv.perfPlotData);
 	        	pv.perfPlot.setupGrid();
 		        pv.perfPlot.draw();
-
-
 
 				// tell s
 				s.localUpdate();
