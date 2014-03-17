@@ -132,12 +132,12 @@
 							</div>
 						</div>
 						<div class='section-container chart-container'>
-							<span class='chart-title'>FLOW</span>
+							<span class='chart-title'>IN FLOW</span>
 							<span class='clear'></span>
 							<div id="flow-chart" style="width:500px; height:180px;"></div><!-- chart goes in here -->
 						</div>
 						<div class='section-container chart-container'>
-							<span class='chart-title'>PERFORMANCE</span>
+							<span class='chart-title'>OUT FLOW</span>
 							<div id="perf-chart" style="width:500px; height:180px;"></div><!-- chart goes in here -->
 						</div>
 					</div>
@@ -229,17 +229,17 @@
 						<span class='stat-field' id='stat-failure-count'>--</span>
 					</div>
 				</div>
-				<div class='section-container chart-container'>
+				<div class='section-container chart-container' style='visibility: hidden;'>
 					<span class='stat-title'>CAPACITY</span>
 					<span class='clear'></span>
 					<div class='chart-box'>
-						<canvas id="capacity-chart" width="500" height="180"></canvas><!-- chart goes in here -->
+						<canvas id="capacity-chart" width="500" height="180"></canvas>
 					</div>
 				</div>
-				<div class='section-container chart-container' id='bottom-chart'>
+				<div class='section-container chart-container' id='bottom-chart' style='visibility: hidden;'>
 					<span class='stat-title'>FLOW</span>
 					<div class='chart-box'>
-						<canvas id="performance-chart" width="500" height="180"></canvas><!-- chart goes in here -->
+						<canvas id="performance-chart" width="500" height="180"></canvas>
 					</div>
 				</div>
 			</div>
