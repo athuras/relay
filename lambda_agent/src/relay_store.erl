@@ -15,7 +15,7 @@
     terminate/2
     ]).
 
--include("jsonerl.hrl").
+-include("relay.hrl").
 
 %%  State that isn't changed 'asynchronously', in that it isn't changed very fast.
 %%  The accumulator handler manages the 'real-time' aspects of the Agent's state.
@@ -29,16 +29,6 @@
                 current_plan={[0],[0]},
                 delay_params=[]
                 }).
-
-%%  Controls what is json-ified, and shunted to the cowboy server.
--record(visible_state, {name,
-                        location,
-                        behaviour,
-                        prediction_time,
-                        prediction,
-                        current_plan,
-                        current_timing,
-                        delay_params}).
 
 init([]) ->
     {ok, #state{}}.
@@ -106,8 +96,7 @@ handle_call(get_prediction, State) ->
 %%  Web-Server Call, Serialize Everything...
 handle_call(request_state, State) ->
     %% First look up the behaviour
-    VS = state_to_visible_state(State),
-    {ok, ?record_to_json(visible_state, VS), State};
+    {ok, state_to_visible_state(State), State};
 
 handle_call(_Call, State) ->
     {ok, ok, State}.
