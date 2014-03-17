@@ -217,9 +217,9 @@ var PanelView = Backbone.View.extend({
 	        		pv.flowPlotData[dir].data = inFlows[dir];
 	        	}
 	        	// add prediction data
-	        	inFlows = d[2]['in'];
+	        	predicts = d[2]['in'];
 	        	for(var dir = 0; dir < 4; dir++){
-	        		pv.flowPlotData[dir].data = inFlows[dir+4];
+	        		pv.flowPlotData[dir+4].data = inFlows[dir];
 	        	}
 
 	        	// set the data.
