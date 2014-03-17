@@ -456,13 +456,44 @@ li {
 	letter-spacing: 0.01em;
 }
 
+#network-activity {
+	left: 133px;
+}
 
+#network-table-container {
+	color: #f5f5f6;
+	position: relative;
+	top: 96px;
+	right: -130px;
+	width: 500px;
+	height: 450px;
+	white-space: nowrap;
+	overflow: scroll;
+}
+
+#network-table-container tbody {
+	font-size: 0.8em;
+}
+
+#network-table-container thead {
+	font-size: 0.9em;
+	font-weight: 500;
+}
+
+#righty {
+	position: relative;
+	left: 40px;
+}
+
+#bottom-chart {
+	margin-bottom: 0;
+}
 
 
 /* ********** Side Panel ************ */
 
 #side-panel {
-	background: rgba(0, 0, 0, 0.9);
+	background: rgba(0, 0, 0, 0.93);
 	box-shadow: -4px 0 6px rgba(0, 0, 0, 0.6);
 	height: 100%;
 	width: 100%;
@@ -677,15 +708,22 @@ li {
 	font-weight: 600;
 	color: #f5f5f6;
 	position: relative;
-	top: 42px;
+	top: 62px;
 	left: -33px;
+}
+
+#upper-label {
+	top: 58px;
 }
 
 #activities-table-container {
 	color: #f5f5f6;
 	position: relative;
-	top: 74px;
+	top: 86px;
 	right: 38px;
+	height: 222px;
+	white-space: nowrap;
+	overflow: scroll;
 }
 
 #activities-table-container tbody {
@@ -701,6 +739,36 @@ li {
 	border-radius: 0;
 }
 
+#matrix {
+	position: relative;
+	width: 300px;
+	height: 200px;
+	font-size: 0.8em;
+	color: #f5f5f6;
+	text-align: center;
+	top: 67px;
+	right: -146px;
+}
+
+.cell {
+	border-left: 1px solid rgba(54, 54, 54, 1);
+	border-top: 1px solid rgba(54, 54, 54, 1);
+	padding: 8px 4px;
+	width: 50px;
+	float: left;
+}
+
+#first {
+	visibility: hidden;
+}
+
+.bottom-row {
+	border-bottom: 1px solid rgba(54, 54, 54, 1);
+}
+
+.right-col {
+	border-right: 1px solid rgba(54, 54, 54, 1);
+}
 
 
 

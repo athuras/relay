@@ -5,10 +5,10 @@ var NetworkPageView = Backbone.View.extend({
 
 	},
 
-	updateFrequency: 5000,
+	updateFrequency: 1000,
 
 	activityGridColumns: [{
-		cell: 'string',
+		cell: Backgrid.DateCell,
 		name: 'timestamp',
 		label: 'Date',
 		editable: false,
@@ -29,7 +29,7 @@ var NetworkPageView = Backbone.View.extend({
 		});
 
 		this.render();
-		this.$('#activities-table-container').append(this.activitiesTable.el);
+		this.$('#network-table-container').append(this.activitiesTable.el);
 	},
 
 	render: function(){

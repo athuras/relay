@@ -10,7 +10,7 @@ def fetch_queues(int_id, length=150):
 
     # new queues, queue dict
 
-def fetch_status_info(int_id):
+def fetch_status_info(int_id, length=150):
     r = rqs.get("http://localhost:8081/?agent=Agent1")
     data = r.json()
 
@@ -19,15 +19,10 @@ def fetch_status_info(int_id):
     plan_codes = [b_parser.parse(b) for b in data['current_plan']]
     erl_info.append({'plans': plan_codes, 'plan_times': data['current_timing']})
 
-    return erl_info
+    new_queues = [data['ingress'],data['egress']]
+    up_qs = mq.merge_simulated_queues(new_queues, length=150)
 
-
-# def fetch_plans(int_id):
-#     p = 'EWT'
-#     if np.random.rand(1) > 0.5:
-#         p = 'NST'
-#     return {'plan': p, 'plan_time': 
-#         int(dt.datetime.now().strftime('%s')) + np.random.randint(15,45)}
+    return erl_info, {'in': up_qs[0], 'out': up_qs[1], 'prediction': 0}
 
 ## UPDATING FUNCTIONS ##########################################################
 def update_plan(int_id):
@@ -82,7 +77,7 @@ def update_behaviour(int_id):
 
 # DUMMY FOR FAKE INTERSECTIONS
 def make_queues():
-    A, B, C, D, E = sighelp.generate_signals(250)
+    A, B, C, D, E = sighelp.generate_signals(30)
     signals = [A, B, C, D]
     qs = sighelp.create_hist_dict(signals, 1)
     return {'in': qs, 'out': qs, 'prediction': qs}

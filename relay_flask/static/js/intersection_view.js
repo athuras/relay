@@ -102,7 +102,10 @@ var IntersectionView = Backbone.View.extend({
 
 			case('performance_glyph'):
 				//size the glyph appropriately
-				var r = 14;
+
+				var setter = Math.random()*10;
+
+				var r = 20;
 				var d = 2*r;
 				var cx = r;
 				var cy = r;
@@ -112,7 +115,7 @@ var IntersectionView = Backbone.View.extend({
 				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/cx/g, cx.toString());
 				this.flowGlyphTemplate = this.flowGlyphTemplate.replace(/cy/g, cy.toString());
 
-				this.flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.15)';
+				this.flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.1)';
 				this.flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.07)';
 				this.flowGlyph['strokeWeight'] = '14';
 				

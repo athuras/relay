@@ -128,7 +128,7 @@ def get_int_evts():
     if request.method == 'POST':
         int_id = request.json 
         qstr = '''
-            SELECT
+            SELECT 
                 timestamp * 1000 as timestamp,
                 value,
                 int_id 
@@ -147,6 +147,7 @@ def get_dash():
 
         # Get new values from erlang processes
         int_id = params['int_id']
+        length = params['duration']
 
         q1 = '''
             SELECT 
@@ -178,9 +179,7 @@ def get_dash():
             '''
 
         if int_id in g.sim_ids:
-            new_status_info = erlfuncs.fetch_status_info(int_id)
-            new_qs_dict = erlfuncs.make_queues()
-            # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
+            new_status_info, new_qs_dict = erlfuncs.fetch_status_info(int_id, 150)
         else:
             new_status_info = erlfuncs.make_status_info()
             new_qs_dict = erlfuncs.make_queues()
@@ -225,7 +224,7 @@ def before_request():
 def setup_simulation():
     if not hasattr(g, 'sim_ids'):
         g.sim_ids = [13464373, 13464094, 13463747, 13463548, 13463436]
-        g.sim_queues = [] # [IN, OUT, REMOTE]
+        # g.sim_queues = [] # [IN, OUT, REMOTE]
 
 @app.after_request
 def after_request(response):
