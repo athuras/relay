@@ -19,6 +19,7 @@ var MapPageView = Backbone.View.extend({
 		this.heatmapStyles = bootstrap.heatmapStyles;
 
 		// other data
+		this.flowPoints = new Array();
 		this.flowData = new Array();
 		this.heatmapData = new Array();
 		this.heatmapLayer = new google.maps.visualization.HeatmapLayer();
@@ -96,6 +97,9 @@ var MapPageView = Backbone.View.extend({
 		// remove any layer or markers from the map
 		this.intersectionsCollectionView.setIntersectionMap(null);
 		this.heatmapLayer.setMap(null);
+		_.each(this.flowData, function(m){
+			m.setMap(null);
+		}, this);
 
 		// Handle the different layer cases
 		switch(layer){
@@ -107,28 +111,70 @@ var MapPageView = Backbone.View.extend({
 				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
 			case('flow-layer'):
-				var points = new Array();
+				this.flowPoints = new Array();
+				this.flowData = new Array();
 
-				//lat and long references
-				var lat = intersection.get('lat');
-				var lng = intersection.get('long');
+				// for each intersection
+				_.each(this.intersectionsCollection.models, function(i){
+					// get lat lng references
+					var lat = i.get('lat');
+					var lng = i.get('long');
 
-				var flow = Math.floor(Math.random()*10); //get a flow number from the model
+					// flow value
+					var flow = Math.floor(Math.random()*10); //get a flow number from the model
 
-				// get one marker for each flow
-				for(var i = 0; i < flow; i++){
-					var olat = lat + (Math.random()-0.5)*0.1;
-					var olng = lng + (Math.random()-0.5)*0.1;
-					var m = new google.maps.LatLng(olat, olng);
-					points.push(m);
-				}
+					// get one marker for each flow
+					for(var i = 0; i < flow; i++){
+						var olat = lat + (Math.random()-0.5)*0.005;
+						var olng = lng + (Math.random()-0.5)*0.005;
+						var m = new google.maps.LatLng(olat, olng);
+						this.flowPoints.push(m);
+					}
 
-				_.each(points, function(p){
-					var m = new google.maps.marker({
+				}, this);
+
+				// make markers out of the points
+				_.each(this.flowPoints, function(p){
+					var flowGlyphTemplate = 'M cx cy  m -r,0  a r,r 0 1,0 d,0 a r,r 0 1,0 -d,0';
+
+					var flowGlyph = {
+						path: '',
+					    fillColor: '',
+					    fillOpacity: 0.8,
+					    scale: 1
+					};
+
+					var setter = Math.random()*10;
+
+					var r = 20;
+					var d = 2*r;
+					var cx = r;
+					var cy = r;
+
+					flowGlyphTemplate = flowGlyphTemplate.replace(/r/g, r.toString());
+					flowGlyphTemplate = flowGlyphTemplate.replace(/d/g, d.toString());
+					flowGlyphTemplate = flowGlyphTemplate.replace(/cx/g, cx.toString());
+					flowGlyphTemplate = flowGlyphTemplate.replace(/cy/g, cy.toString());
+
+					flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.1)';
+					flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.07)';
+					flowGlyph['strokeWeight'] = '14';
+
+					flowGlyph['path'] = flowGlyphTemplate;
+
+					// this.marker.setOptions({ icon: this.flowGlyph });
+
+					var m = new google.maps.Marker({
 						position: p,
-
+						icon: flowGlyph
 					});
-				})
+					this.flowData.push(m);
+				}, this);
+
+				// add to the map
+				_.each(this.flowData, function(marker){
+					marker.setMap(this.map);
+				}, this);
 
 				// // set map and glyph styles
 				// this.map.setOptions({ styles: this.mapStyles['dark'] });
