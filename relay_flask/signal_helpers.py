@@ -44,6 +44,6 @@ def create_hist_dict(signals, dt=1.):
 
         return [list(x) for x in zip(*[now - np.round(hist[1],0)[:-1], hist[0]])]
 
-    curtime = int(datetime.datetime.now().strftime('%s'))
+    curtime = int(datetime.datetime.now().strftime('%s')) * 1000
     hists = [create_hist(s, dt, curtime) for s in signals]
     return hists
