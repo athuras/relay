@@ -26,13 +26,15 @@ var AppView = Backbone.View.extend({
 		// the app view is responsible for collecting the data and keeping it up to date.
 		// the pages read from here and build their own views and collectionviews from here.
 		this.intersectionsCollection = new IntersectionsCollection();
+		this.allIntersectionsCollection = new AllIntersectionsCollection();
 		this.roadsCollection = new RoadsCollection();
 
 		this.intersectionsCollection.fetch();
+		this.allIntersectionsCollection.fetch();
 		this.roadsCollection.fetch();
 
 		// Get pages
-		this.mapPageView = new MapPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
+		this.mapPageView = new MapPageView({ic: this.intersectionsCollection, aic: this.allIntersectionsCollection, rc: this.roadsCollection});
 		this.intersectionsPageView = new IntersectionsPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
 		this.roadsPageView = new RoadsPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
 		this.networkPageView = new NetworkPageView({ic: this.intersectionsCollection, rc: this.roadsCollection});
