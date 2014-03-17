@@ -269,7 +269,7 @@ var PanelView = Backbone.View.extend({
 				var ords = ['n','e','s','w'];
 				for(var i = 0; i < 4; i++){
 					for(var j = 0; j < 4; j++){
-						pv.$('#'+ords[i]+'-'+ords[j]).html(String(Math.floor(bMat[i][j] * flows[i][0][1] * 3600 )));
+						pv.$('#'+ords[i]+'-'+ords[j]).html(flows[i].length > 0 ? String(Math.floor(bMat[i][j] * flows[i][0][1] * 3600 )) : '-');
 					}
 				}
 
