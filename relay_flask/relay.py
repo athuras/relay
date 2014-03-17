@@ -112,7 +112,7 @@ def get_all_evts():
         num_events = request.json
         qstr = '''
             SELECT 
-                timestamp,
+                timestamp * 1000 as timestamp,
                 value,
                 int_id 
             FROM 
@@ -129,7 +129,7 @@ def get_int_evts():
         int_id = request.json 
         qstr = '''
             SELECT 
-                timestamp,
+                timestamp * 1000 as timestamp,
                 value,
                 int_id 
             FROM 
