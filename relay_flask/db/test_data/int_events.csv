@@ -1,3 +1,10 @@
-"ts", "value", "int_id"
-1,"Light outage",11
-24,"Accident causing major delays.",11
+1394933766,"Light outage",11
+1394933000,"Accident causing major delays",11
+1394931060,"Scheduled Maintenance",13464373
+1394731060,"Scheduled Maintenance",13464094
+1394131060,"Scheduled Maintenance",13463747
+1394731060,"Scheduled Maintenance",13463548
+1394571766,"Light outage",13464373
+1394733060,"Pedestrian signal outage",13464094
+1394031870,"Minor accident causing delays",13463747
+1394731060,"Light outage",13463548
