@@ -1,6 +1,7 @@
 -module(top_page_handler).
 
 -include("jsonerl.hrl").
+-include("relay.hrl").
 
 -export([init/3,
          handle/2,
@@ -35,9 +36,11 @@ terminate(_Reason, _Req, _State) ->
     ok.
 
 get_state(Agent) ->
-
-    case lists:member(A=erlang:binary_to_atom(Agent, utf8),
-                      registered()) of
-        true -> gen_event:call(A, relay_store, request_state);
-        false -> bad_agent
-    end.
+    {State, Qs} = case
+        lists:member(A=erlang:binary_to_atom(Agent, utf8), registered()) of
+            true -> {gen_event:call(A, relay_store, request_state),
+                    gen_event:call(A, accumulator, request_queues)};
+            false -> bad_agent
+    end,
+    VS = ?merge_to_agent_state(State, Qs),
+    ?record_to_json(agent_state, VS).

@@ -1,6 +1,7 @@
 %%  Encapsulates the Queue state for inbound and outbound objects.
 -module(accumulator).
 -behaviour(gen_event).
+-include("relay.hrl").
 
 -export([
     init/1,
@@ -11,12 +12,8 @@
     terminate/2
     ]).
 
--record(state, {current_behaviour,
-                ingress,
-                egress,
-                remote_egress,
-                maxlen=300,
-                ports=4}).
+-record(state, {current_behaviour, ingress, egress,
+                remote_egress, maxlen=300, ports=4}).
 
 init(Initial_Behaviour) ->
     N = length(Initial_Behaviour),
@@ -66,6 +63,9 @@ handle_call(get_ingress, State=#state{ingress=I}) ->
 handle_call(get_remote_egress, State=#state{remote_egress=E}) ->
     {ok, [render_queue(X) || X <- E], State};
 
+handle_call(request_queues, State) ->
+    {ok, state_to_visible_queues(State), State};
+
 %%  There must be some way of doing this non-explicitely ...
 handle_call({get_ingress, N}, State) ->
     case N > 0 andalso N =< State#state.ports of
@@ -85,8 +85,6 @@ handle_call({get_remote_egress, N}, State) ->
         false -> {ok, {error, no_queue}, State}
     end;
 
-
-
 handle_call(_, State) ->
     {ok, ok, State}.
 
@@ -102,6 +100,16 @@ terminate(_Reason, _State) ->
     ok.
 
 %%  Private  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+state_to_visible_queues(State=#state{ingress=I, egress=E}) ->
+    Rendered_Ingress = listify(render_queues(I)),
+    Rendered_Egress = listify(render_queues(E)),
+    #visible_queues{ingress=Rendered_Ingress, egress=Rendered_Egress}.
+
+listify(Q) ->
+    lists:map(fun(X) -> lists:map(fun tuple_to_list/1, X) end,
+              Q).
+
 -spec shorten_queue(queue(), integer()) -> queue().
 shorten_queue(Q, 0) -> Q;
 shorten_queue(Q, N) ->

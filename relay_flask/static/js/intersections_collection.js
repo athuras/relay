@@ -28,6 +28,10 @@ var IntersectionsCollection = Backbone.Collection.extend({
         	s.globalUpdate();
         });
 
+        _.forEach(data, function(i){
+        	console.log(i['status']);
+        });
+
         this.add(data); // adds all the intersection objects to the collection
 	},
 

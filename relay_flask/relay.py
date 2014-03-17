@@ -40,11 +40,11 @@ def get_intersections():
                 i.type_short, 
                 i.int_id,
                 s.status as status,
-                s.timestamp as status_time,
+                s.timestamp * 1000 as status_time,
                 p.plan as plan,
-                p.plan_time as plan_time,
+                p.plan_time * 1000 as plan_time,
                 b.bhvr as behaviour,
-                b.bhvr_time as bhvr_time
+                b.bhvr_time * 1000 as bhvr_time
             FROM
                 intersections as i
                 LEFT OUTER JOIN int_status as s 
@@ -78,7 +78,7 @@ def get_plan():
         int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
         qstr = '''
             SELECT 
-                timestamp,
+                timestamp * 1000 as timestamp,
                 value 
             FROM 
                 int_metrics
@@ -95,7 +95,7 @@ def get_status():
         int_id = request.json # dictionary of: minlat, maxlat, minlong, maxlong
         qstr = '''
             SELECT 
-                timestamp,
+                timestamp * 1000 as timestamp,
                 value 
             FROM 
                 int_metrics
@@ -168,7 +168,7 @@ def get_dash():
 
         q2 = '''
             SELECT 
-                timestamp,
+                timestamp * 1000,
                 value,
                 int_id 
             FROM 
@@ -178,9 +178,10 @@ def get_dash():
             '''
 
         if int_id in g.sim_ids:
-            new_status_info = erlfuncs.fetch_status_info(int_id)
-            new_qs_dict = erlfuncs.make_queues()
-            # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id) #merge_simulated_queues(int_id, g.sim_queues, g.db)
+            new_status_info, g.sim_queues, new_qs_dict = \
+                erlfuncs.fetch_status_info(int_id)
+            # new_qs_dict = erlfuncs.make_queues()
+            # g.sim_queues, new_qs_dict = erlfuncs.fetch_queues(int_id, g.sim_queues, g.db)
         else:
             new_status_info = erlfuncs.make_status_info()
             new_qs_dict = erlfuncs.make_queues()
@@ -213,45 +214,6 @@ def get_flows():
     if request.method == 'GET':
         flows = mqs.make_queues()
         return createJSON(flows)
-
-@app.route('/api/charts', methods=['POST'])
-def get_chart():
-    if request.method == 'POST':
-        int_id = request.json
-        qstr = '''
-        SELECT
-            a.time,
-            a.value as costUD,
-            b.value as costLR,
-            c.value as vol,
-            d.value as perf
-        from
-            intstats as a
-            inner join intstats as b
-            inner join intstats as c
-            inner join intstats as d
-        on
-            a.time = b.time
-            and b.time = c.time
-            and c.time = d.time
-        where
-            a.series_type = 'costUD'
-            and b.series_type = 'costLR'
-            and c.series_type = 'vol'
-            and d.series_type = 'perf'
-            and a.int_id = :int_id
-            and b.int_id = :int_id
-            and c.int_id = :int_id
-            and d.int_id = :int_id;
-        '''
-        int_id['int_id'] = 13463459  # Change this eventually
-        chart_data = g.db.query('relay_main', qstr, int_id, as_dict=True)
-        pivot = defaultdict(lambda: [])
-        for row in chart_data:
-            for k, v in row.iteritems():
-                pivot[k].append(v)
-
-        return createJSON(pivot)
 
 @app.before_request
 def before_request():
