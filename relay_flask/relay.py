@@ -64,6 +64,42 @@ def get_intersections():
 
         return createJSON(intersects)
 
+@app.route('/request_all_intersections', methods=['POST'])
+def get_all_intersections():
+    if request.method == 'POST':
+        bounds = request.json # dictionary of: minlat, maxlat, minlong, maxlong
+        qstr = '''
+            SELECT 
+                i.long, 
+                i.lat, 
+                i.name, 
+                i.type, 
+                i.type_short, 
+                i.int_id,
+                s.status as status,
+                s.timestamp * 1000 as status_time,
+                p.plan as plan,
+                p.plan_time * 1000 as plan_time,
+                b.bhvr as behaviour,
+                b.bhvr_time * 1000 as bhvr_time
+            FROM
+                intersections as i
+                LEFT OUTER JOIN int_status as s 
+                    ON i.int_id = s.int_id
+                LEFT OUTER JOIN int_plans as p
+                    ON i.int_id = p.int_id
+                LEFT JOIN int_bhvrs as b
+                    ON i.int_id = b.int_id
+            WHERE
+                i.lat>=:minlat AND
+                i.lat<=:maxlat AND
+                i.long>=:minlong AND
+                i.long<=:maxlong;
+            '''
+        intersects = g.db.query('relay_main', qstr, bounds, as_dict=True) 
+
+        return createJSON(intersects)
+
 @app.route('/request_roads', methods=['GET'])
 def get_roads():
     if request.method == 'GET':

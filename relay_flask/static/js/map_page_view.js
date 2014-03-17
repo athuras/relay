@@ -11,6 +11,8 @@ var MapPageView = Backbone.View.extend({
 	initialize: function(options){
 		// Add data from options
 		this.intersectionsCollection = options.ic;
+		this.roadsCollection = options.rc;
+		this.allIntersectionsCollection = options.aic;
 
 		// Get bootstrapped data
 		this.mapOptions = bootstrap.mapOptions;
@@ -121,16 +123,40 @@ var MapPageView = Backbone.View.extend({
 					var lng = i.get('long');
 
 					// flow value
-					var flow = Math.floor(Math.random()*3); //get a flow number from the model
+					var flow = Math.floor(Math.random()*5); //get a flow number from the model
 
 					// get one marker for each flow
 					for(var i = 0; i < flow; i++){
-						var olat = lat + (Math.random()-0.5)*0.006;
-						var olng = lng + (Math.random()-0.5)*0.006;
+						var olat = lat + (Math.random()-0.5)*0.02;
+						var olng = lng + (Math.random()-0.5)*0.02;
 						var m = new google.maps.LatLng(olat, olng);
 						this.flowPoints.push(m);
 					}
 
+				}, this);
+
+				// for each road
+				_.each(this.roadsCollection.models, function(r){
+					if(this.allIntersectionsCollection.get(r.get('FNODE')) && this.allIntersectionsCollection.get(r.get('TNODE')) && ((this.allIntersectionsCollection.get(r.get('FNODE')).get('type_short') == 'MJRML' || this.allIntersectionsCollection.get(r.get('FNODE')).get('type_short') == 'MJRSL' || this.allIntersectionsCollection.get(r.get('FNODE')).get('type_short') == 'MAJINT') || (this.allIntersectionsCollection.get(r.get('TNODE')).get('type_short') == 'MJRML' || this.allIntersectionsCollection.get(r.get('TNODE')).get('type_short') == 'MJRSL' || this.allIntersectionsCollection.get(r.get('TNODE')).get('type_short') == 'MAJINT') ) ){
+						console.log('one');
+
+						var lat1 = this.allIntersectionsCollection.get(r.get('TNODE')).get('lat');
+						var lng1 = this.allIntersectionsCollection.get(r.get('TNODE')).get('long');
+						var lat2 = this.allIntersectionsCollection.get(r.get('FNODE')).get('lat');
+						var lng2 = this.allIntersectionsCollection.get(r.get('FNODE')).get('long');
+
+						// make a flow value
+						var flow = Math.floor(Math.random()*5); //get a flow number from the model
+
+						// get one marker for each flow
+						for(var i = 0; i < flow; i++){
+							var dist = (Math.random()*15)-7.5;
+							var olat = lat1 + (lat2 - lat1)*dist;
+							var olng = lng1 + (lng2 - lng1)*dist;
+							var m = new google.maps.LatLng(olat, olng);
+							this.flowPoints.push(m);
+						}
+					}
 				}, this);
 
 				// make markers out of the points
@@ -140,13 +166,14 @@ var MapPageView = Backbone.View.extend({
 					var flowGlyph = {
 						path: '',
 					    fillColor: '',
-					    fillOpacity: 0.8,
+					    fillOpacity: 0.5,
 					    scale: 1
 					};
 
 					var setter = Math.random()*10;
 
-					var r = 30;
+
+					var r = 10;
 					var d = 2*r;
 					var cx = r;
 					var cy = r;
@@ -156,9 +183,9 @@ var MapPageView = Backbone.View.extend({
 					flowGlyphTemplate = flowGlyphTemplate.replace(/cx/g, cx.toString());
 					flowGlyphTemplate = flowGlyphTemplate.replace(/cy/g, cy.toString());
 
-					flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.1)';
-					flowGlyph['strokeColor'] = 'rgba(17, 27, 236, 0.05)';
-					flowGlyph['strokeWeight'] = '14';
+					flowGlyph['fillColor'] = 'rgba(28, 247, 64, 0.2)';
+					flowGlyph['strokeColor'] = 'rgba(13, 139, 209, 0.02)';
+					flowGlyph['strokeWeight'] = '64';
 
 					flowGlyph['path'] = flowGlyphTemplate;
 
