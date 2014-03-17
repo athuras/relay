@@ -156,7 +156,10 @@ var PanelView = Backbone.View.extend({
 		this.$('#stat-status').html(intersectionModel.get('status'));
 		this.$('#stat-currentState').html(intersectionModel.get('currentState'));
 		this.$('#stat-nextState').html(intersectionModel.get('nextState'));
-		this.$('#stat-nextStateTime').html(intersectionModel.get('nextStateTime'));
+
+		//handle time nicely
+		var timeUntilNextState = new Date(intersectionModel.get('nextStateTime')*1000 - Date.now()).format('i:s'); //assuming it's in the future
+		this.$('#stat-nextStateTime').html(timeUntilNextState);
 
 		// For anything that requires real-time data, we use a set interval!
 		this.startInterval();
@@ -187,8 +190,8 @@ var PanelView = Backbone.View.extend({
 				pv.$('#stat-nextState').html(general['plan']);
 
 				//handle time nicely
-				// var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
-				// pv.$('#stat-nextStateTime').html(timeUntilNextState);
+				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				pv.$('#stat-nextStateTime').html(timeUntilNextState);
 
 				// change the icon
 				pv.$('#dash-state').attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');

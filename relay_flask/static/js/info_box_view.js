@@ -100,6 +100,11 @@ var InfoBoxView = Backbone.View.extend({
 		this.infoBox.close(); // close it if it's already on the map.
 		// set the content of the info box to that of the new intersection
 		this.boxText = $('<div></div>').loadTemplate('#info-box-template', model.attributes).get(0);
+
+		//handle time nicely
+		var timeUntilNextState = new Date(model.get('nextStateTime')*1000 - Date.now()).format('i:s'); //assuming it's in the future
+		$(this.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
+
 		this.showMoreDom = $('#more-info-link').get(0);
 		this.infoBox.setContent(this.boxText);
 
@@ -158,8 +163,8 @@ var InfoBoxView = Backbone.View.extend({
 				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = general['plan'];
 
 				//handle time nicely
-				// var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
-				// $(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
+				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				$(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
 
 				// change the icon
 				$($(ibv.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
