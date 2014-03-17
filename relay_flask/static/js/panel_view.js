@@ -4,16 +4,13 @@ var PanelView = Backbone.View.extend({
 
 	defaults: {},
 
-	flowPLotOptions: {
+	flowPlotOptions: {
 		xaxis: {
-			// position: "bottom",
-			// reserveSpace: -10,
 			min: 0,
-			max: 10
+			max: 5
 		},
 		yaxis: {
-			// position: "left",
-			reserveSpace: -10,
+			// reserveSpace: -10,
 			min: 0,
 			max: 50
 		},
@@ -24,7 +21,8 @@ var PanelView = Backbone.View.extend({
 			labelFormatter: function(label, series) {
 				return '<div style="color: #cecece; position: relative; top: -4px;">' + label + '</div>';
 			},
-			margin: [-3, 32]
+			margin: [-3, 32],
+			noColumns: 2
 		},
 		grid: {
 			borderColor: 'rgba(0, 0, 0, 0)',
