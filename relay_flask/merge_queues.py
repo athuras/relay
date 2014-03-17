@@ -11,7 +11,7 @@ def make_queues():
     A, B, C, D, E = sighelp.generate_signals(250)
     signals = [A, B, C, D]
     qs = sighelp.create_hist_dict(signals, 1)
-    return {'in': qs, 'out': qs, 'r_out': qs}
+    return {'in': qs, 'out': qs, 'prediction': qs}
 
 def merge_simulated_queues(int_id, sim_queues, length):
     #pull from database the timestamps for this intersection
@@ -60,16 +60,19 @@ def execute_merge(n_q, n_mint, o_q, o_maxt, l):
 
 def reduce_q(q):
     r_q = []
-    t_last = None
-    v_last = 0
-
-    for t, v in q:
-        if t == t_last:
-            v_last += v
-        else:
-            r_q.append((t_last, v_last))
-            v_last = v
-
+    if len(q)>0:
+        t, w = q[0]
         t_last = t
+        w_last = w
+
+        for t, w in q[1:]:
+            if t == t_last:
+                w_last += w
+            else:
+                r_q.append((t_last, w_last))
+                w_last = w
+            t_last = t
+            
+        r_q.append((t_last, w_last))
 
     return r_q
