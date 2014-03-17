@@ -148,6 +148,7 @@ var PanelView = Backbone.View.extend({
 		// this.chartOptions = bootstrap.chartOptions;
 		// this.chartDataFormats = bootstrap.chartDataFormats;
 		this.activitiesCollection = new ActivitiesCollection();
+		this.currentIntersectionModel = null;
 
 		// Make our charts
 		this.flowPlot = $.plot(this.$('#flow-chart'), this.flowPlotData, this.flowPlotOptions);
@@ -204,6 +205,7 @@ var PanelView = Backbone.View.extend({
 
 	// populate the intersection name and info
 	showIntersectionDetails: function(intersectionModel){
+		this.currentIntersectionModel = intersectionModel;
 
 		// set static values
 		this.$('#intersection-title').text( intersectionModel.get('name') );
@@ -233,7 +235,7 @@ var PanelView = Backbone.View.extend({
 				datatype: "JSON",
 				contentType: "application/json",
 				url: "http://localhost:5000/request_dashboard",
-				data: JSON.stringify({int_id: 11}),
+				data: JSON.stringify({int_id: pv.currentIntersectionModel.get('int_id'), duration: 60}),
 				async: false
 			}).then( function(d){
 				// console.log('dashboard data');

@@ -153,7 +153,7 @@ var InfoBoxView = Backbone.View.extend({
 				datatype: "JSON",
 				contentType: "application/json",
 				url: "http://localhost:5000/request_dashboard",
-				data: JSON.stringify({int_id: 11 /*this.currentModel.get('int_id')*/, dt: 1, duration: 60}),
+				data: JSON.stringify({int_id: ibv.currentModel.get('int_id'), duration: 60}),
 				async: false
 			}).then( function(d){
 				//what does it look like?
