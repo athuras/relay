@@ -180,6 +180,7 @@ def get_dash():
 
         if int_id in g.sim_ids:
             new_status_info, new_qs_dict = erlfuncs.fetch_status_info(int_id, 150)
+            print new_qs_dict
         else:
             new_status_info = erlfuncs.make_status_info()
             new_qs_dict = erlfuncs.make_queues()
