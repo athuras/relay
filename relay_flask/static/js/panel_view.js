@@ -278,10 +278,10 @@ var PanelView = Backbone.View.extend({
 				pv.$('#stat-nextState').html(plans['plans'].length >1 ? plans['plans'][1] : '-');
 
 				//handle time nicely
-				var stateDuration = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000); //new Date((general['plan_time']-general['bhvr_time']) ).format('i:s');
+				var stateDuration = Math.round(plans['plan_times'][0]-(new Date).getTime()/1000); //new Date((general['plan_time']-general['bhvr_time']) ).format('i:s');
 				pv.$('#stat-duration').html(stateDuration);
 				if(plans['plan_times'].length > 0){
-					var timeUntilNextState = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000);; //assuming it's in the future
+					var timeUntilNextState = Math.round((plans['plan_times'][0]-(new Date).getTime()/1000));; //assuming it's in the future
 					pv.$('#stat-nextStateTime').html(timeUntilNextState);
 				} else {
 					pv.$('#stat-nextStateTime').html('--:--');

@@ -180,7 +180,7 @@ var InfoBoxView = Backbone.View.extend({
 				// console.log(general['plan_time'])
 				// console.log(general['bhvr_time'])
 				console.log(plans['plan_times'][0])
-				var duration = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000);//general['bhvr_time'])//.format('i:s');
+				var duration = Math.round(plans['plan_times'][0]-(new Date).getTime()/1000);//general['bhvr_time'])//.format('i:s');
 				$(ibv.boxText).find('#info-box-duration').get(0).innerHTML = duration;
 				if(plans['plan_times'].length > 0){
 				var timeUntilNextState = Math.round((plans['plan_times'][0]-(new Date).getTime())/1000); //assuming it's in the future
