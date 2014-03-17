@@ -6,8 +6,10 @@ var PanelView = Backbone.View.extend({
 
 	flowPlotOptions: {
 		xaxis: {
-			mode: "time",
-			timeformat: "%I/%M/%S"
+			labelHeight: 0
+			// mode: "time",
+			// timeformat: "%I/%M/%S/%p",
+			// minTickSize: [1, "minute"]
 		},
 		yaxis: {
 			min: 0,

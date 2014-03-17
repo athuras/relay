@@ -9,8 +9,8 @@ var InfoBoxView = Backbone.View.extend({
 
 	flotOptions: {
 		xaxis: {
-			min: 0,
-			max: 10
+			// min: 0,
+			// max: 10
 		},
 		yaxis: {
 			reserveSpace: -10,
@@ -99,7 +99,7 @@ var InfoBoxView = Backbone.View.extend({
 		this.boxText = $('<div></div>').loadTemplate('#info-box-template', model.attributes).get(0);
 
 		//handle time nicely
-		var duration = new Date((model.get('plan_time')-model.get('bhvr_time')*1000)).format('i:s');
+		var duration = new Date((model.get('plan_time')-model.get('bhvr_time'))*1000).format('i:s');
 		$(this.boxText).find('#info-box-duration').get(0).innerHTML = duration
 		var timeUntilNextState = new Date(model.get('plan_time')*1000 - Date.now()).format('i:s'); //assuming it's in the future
 		$(this.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState;
@@ -190,6 +190,7 @@ var InfoBoxView = Backbone.View.extend({
 	        	// add flow data
 	        	inFlows = d[2]['in'];
 	        	for(var dir = 0; dir < 4; dir++){
+	        		var series = new Array();
 	        		ibv.flotData[dir].data = inFlows[dir];
 	        	}
 
