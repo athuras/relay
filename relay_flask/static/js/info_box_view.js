@@ -9,13 +9,10 @@ var InfoBoxView = Backbone.View.extend({
 
 	flotOptions: {
 		xaxis: {
-			// position: "bottom",
-			// reserveSpace: -10,
 			min: 0,
 			max: 10
 		},
 		yaxis: {
-			// position: "left",
 			reserveSpace: -10,
 			min: 0,
 			max: 50
@@ -100,6 +97,16 @@ var InfoBoxView = Backbone.View.extend({
 		this.infoBox.close(); // close it if it's already on the map.
 		// set the content of the info box to that of the new intersection
 		this.boxText = $('<div></div>').loadTemplate('#info-box-template', model.attributes).get(0);
+
+		//handle time nicely
+		var duration = new Date((model.get('plan_time')-model.get('bhvr_time')*1000)).format('i:s');
+		$(this.boxText).find('#info-box-duration').get(0).innerHTML = duration
+		var timeUntilNextState = new Date(model.get('plan_time')*1000 - Date.now()).format('i:s'); //assuming it's in the future
+		$(this.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState;
+
+		//set the icon
+		$($(this.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + model.get('behaviour').toLowerCase() + '.png');
+
 		this.showMoreDom = $('#more-info-link').get(0);
 		this.infoBox.setContent(this.boxText);
 
@@ -148,16 +155,20 @@ var InfoBoxView = Backbone.View.extend({
 			}).then( function(d){
 				//what does it look like?
 				// console.log(d)
+				d = JSON.parse('[{"status": "FAILURE", "behaviour": "NST", "plan": "EWT", "status_time": 1394925246, "bhvr_time": 1394925077, "plan_time": 1394924738}, {"events": [{"timestamp": 1, "int_id": 11, "value": "Light outage"}, {"timestamp": 24, "int_id": 11, "value": "Accident causing major delays."}]}, {"r_out": [[[1395015629.0, 2], [1395015628.0, 0], [1395015627.0, 4], [1395015626.0, 5], [1395015625.0, 10], [1395015623.0, 22], [1395015622.0, 25], [1395015621.0, 33], [1395015620.0, 41], [1395015619.0, 30], [1395015618.0, 25], [1395015617.0, 19], [1395015616.0, 11], [1395015615.0, 8], [1395015614.0, 9], [1395015612.0, 4], [1395015611.0, 2]], [[1395015629.0, 1], [1395015628.0, 1], [1395015627.0, 2], [1395015626.0, 5], [1395015625.0, 6], [1395015624.0, 12], [1395015622.0, 29], [1395015621.0, 19], [1395015620.0, 29], [1395015619.0, 41], [1395015618.0, 30], [1395015617.0, 17], [1395015616.0, 23], [1395015615.0, 9], [1395015614.0, 8], [1395015613.0, 7], [1395015612.0, 8], [1395015610.0, 2], [1395015609.0, 1]], [[1395015629.0, 1], [1395015628.0, 1], [1395015627.0, 2], [1395015626.0, 2], [1395015625.0, 5], [1395015624.0, 7], [1395015622.0, 17], [1395015621.0, 24], [1395015620.0, 21], [1395015619.0, 24], [1395015618.0, 35], [1395015617.0, 24], [1395015616.0, 17], [1395015615.0, 19], [1395015614.0, 15], [1395015613.0, 14], [1395015612.0, 3], [1395015611.0, 7], [1395015609.0, 5], [1395015608.0, 5], [1395015607.0, 1], [1395015606.0, 1]], [[1395015629.0, 2], [1395015628.0, 0], [1395015627.0, 3], [1395015626.0, 6], [1395015625.0, 10], [1395015624.0, 20], [1395015623.0, 26], [1395015622.0, 32], [1395015620.0, 35], [1395015619.0, 36], [1395015618.0, 28], [1395015617.0, 16], [1395015616.0, 13], [1395015615.0, 7], [1395015614.0, 8], [1395015613.0, 5], [1395015612.0, 3]]], "in": [[[1395015629.0, 2], [1395015628.0, 0], [1395015627.0, 4], [1395015626.0, 5], [1395015625.0, 10], [1395015623.0, 22], [1395015622.0, 25], [1395015621.0, 33], [1395015620.0, 41], [1395015619.0, 30], [1395015618.0, 25], [1395015617.0, 19], [1395015616.0, 11], [1395015615.0, 8], [1395015614.0, 9], [1395015612.0, 4], [1395015611.0, 2]], [[1395015629.0, 1], [1395015628.0, 1], [1395015627.0, 2], [1395015626.0, 5], [1395015625.0, 6], [1395015624.0, 12], [1395015622.0, 29], [1395015621.0, 19], [1395015620.0, 29], [1395015619.0, 41], [1395015618.0, 30], [1395015617.0, 17], [1395015616.0, 23], [1395015615.0, 9], [1395015614.0, 8], [1395015613.0, 7], [1395015612.0, 8], [1395015610.0, 2], [1395015609.0, 1]], [[1395015629.0, 1], [1395015628.0, 1], [1395015627.0, 2], [1395015626.0, 2], [1395015625.0, 5], [1395015624.0, 7], [1395015622.0, 17], [1395015621.0, 24], [1395015620.0, 21], [1395015619.0, 24], [1395015618.0, 35], [1395015617.0, 24], [1395015616.0, 17], [1395015615.0, 19], [1395015614.0, 15], [1395015613.0, 14], [1395015612.0, 3], [1395015611.0, 7], [1395015609.0, 5], [1395015608.0, 5], [1395015607.0, 1], [1395015606.0, 1]], [[1395015629.0, 2], [1395015628.0, 0], [1395015627.0, 3], [1395015626.0, 6], [1395015625.0, 10], [1395015624.0, 20], [1395015623.0, 26], [1395015622.0, 32], [1395015620.0, 35], [1395015619.0, 36], [1395015618.0, 28], [1395015617.0, 16], [1395015616.0, 13], [1395015615.0, 7], [1395015614.0, 8], [1395015613.0, 5], [1395015612.0, 3]]], "out": [[[1395015629.0, 2], [1395015628.0, 0], [1395015627.0, 4], [1395015626.0, 5], [1395015625.0, 10], [1395015623.0, 22], [1395015622.0, 25], [1395015621.0, 33], [1395015620.0, 41], [1395015619.0, 30], [1395015618.0, 25], [1395015617.0, 19], [1395015616.0, 11], [1395015615.0, 8], [1395015614.0, 9], [1395015612.0, 4], [1395015611.0, 2]], [[1395015629.0, 1], [1395015628.0, 1], [1395015627.0, 2], [1395015626.0, 5], [1395015625.0, 6], [1395015624.0, 12], [1395015622.0, 29], [1395015621.0, 19], [1395015620.0, 29], [1395015619.0, 41], [1395015618.0, 30], [1395015617.0, 17], [1395015616.0, 23], [1395015615.0, 9], [1395015614.0, 8], [1395015613.0, 7], [1395015612.0, 8], [1395015610.0, 2], [1395015609.0, 1]], [[1395015629.0, 1], [1395015628.0, 1], [1395015627.0, 2], [1395015626.0, 2], [1395015625.0, 5], [1395015624.0, 7], [1395015622.0, 17], [1395015621.0, 24], [1395015620.0, 21], [1395015619.0, 24], [1395015618.0, 35], [1395015617.0, 24], [1395015616.0, 17], [1395015615.0, 19], [1395015614.0, 15], [1395015613.0, 14], [1395015612.0, 3], [1395015611.0, 7], [1395015609.0, 5], [1395015608.0, 5], [1395015607.0, 1], [1395015606.0, 1]], [[1395015629.0, 2], [1395015628.0, 0], [1395015627.0, 3], [1395015626.0, 6], [1395015625.0, 10], [1395015624.0, 20], [1395015623.0, 26], [1395015622.0, 32], [1395015620.0, 35], [1395015619.0, 36], [1395015618.0, 28], [1395015617.0, 16], [1395015616.0, 13], [1395015615.0, 7], [1395015614.0, 8], [1395015613.0, 5], [1395015612.0, 3]]]}]');
 
 				// update general status things
-				var general = d[0]['general'][0];
+				var general = d[0];
+				// var general = d[0]['general'][0];
 				$(ibv.boxText).find('#info-box-status').get(0).innerHTML = general['status'];
 				$(ibv.boxText).find('#info-box-currentState').get(0).innerHTML = general['behaviour'];
 				$(ibv.boxText).find('#info-box-nextState').get(0).innerHTML = general['plan'];
 
 				//handle time nicely
-				// var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
-				// $(ibv.boxText).find('#info-box-nextStateTime').get(0).innerHTML = timeUntilNextState;
+				var duration = new Date((general['plan_time']-general['bhvr_time']*1000)).format('i:s');
+				$(ibv.boxText).find('#info-box-duration').get(0).innerHTML = duration
+				var timeUntilNextState = new Date(general['bhvr_time']*1000 - Date.now()).format('i:s'); //assuming it's in the future
+				$(ibv.boxText).find('#countdown').get(0).innerHTML = timeUntilNextState;
 
 				// change the icon
 				$($(ibv.boxText).find('#icon-state').get(0)).attr('src', 'assets/' + general['behaviour'].toLowerCase() + '.png');
@@ -165,16 +176,21 @@ var InfoBoxView = Backbone.View.extend({
 				// update graphs
 				// Flow plot
 	        	// for each direction
-	        	var flows = d[2]['flows'];
-	        	for(var dir = 0; dir < 4; dir++){
-	        		var flotSeries = new Array();
+	        	// var flows = d[2]['flows'];
+	        	// for(var dir = 0; dir < 4; dir++){
+	        	// 	var flotSeries = new Array();
 
-	        		//for each point in the array
-	        		for(var index = 0; index < Math.min(flows[dir].flow[0].length, flows[dir].flow[1].length); index++ ){
-	        			flotSeries.push([ flows[dir].flow[1][index] , flows[dir].flow[0][index] ]); // flip x and y.
-	        		}
-	        		// put the new data series in the flotData obj
-	        		ibv.flotData[dir].data = flotSeries;
+	        	// 	//for each point in the array
+	        	// 	for(var index = 0; index < Math.min(flows[dir].flow[0].length, flows[dir].flow[1].length); index++ ){
+	        	// 		flotSeries.push([ flows[dir].flow[1][index] , flows[dir].flow[0][index] ]); // flip x and y.
+	        	// 	}
+	        	// 	// put the new data series in the flotData obj
+	        	// 	ibv.flotData[dir].data = flotSeries;
+	        	// }
+	        	// add flow data
+	        	inFlows = d[2]['in'];
+	        	for(var dir = 0; dir < 4; dir++){
+	        		ibv.flotData[dir].data = inFlows[dir];
 	        	}
 
 				// set the data.

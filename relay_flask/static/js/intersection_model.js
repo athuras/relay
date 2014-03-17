@@ -1,4 +1,7 @@
+
 var IntersectionModel = Backbone.Model.extend({
+
+	idAttribute: 'int_id',
 
 	defaults: { // So we know what should be in there.
 			// 'int_id': null,

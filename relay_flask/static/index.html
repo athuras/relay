@@ -57,6 +57,10 @@
 
 		<!-- Map page -->
 		<div id="map-page" class='page'>
+			<div class='preload'>
+				<img class='loader' id='dots-logo' src='assets/dots.png'/>
+			</div>
+
 			<!-- Where the map goes -->
 			<div id="map"></div>
 
@@ -107,7 +111,7 @@
 								<span class='stat-title'>STATE</span><br/>
 								<span class='stat-field' id='stat-currentState'>--</span><br/>
 								<span class='stat-title'>DURATION</span><br/>
-								<span class='stat-field' id='stat-nextStateTime'>--</span>
+								<span class='stat-field' id='stat-duration'>--</span>
 							</div>
 							<div id='dash-stateWrap'>
 								<img id='dash-state' src='assets/default-status.png'/><br/>
@@ -120,18 +124,18 @@
 								<span class='stat-field' id='stat-nextStateTime'>--</span>
 							</div>
 							<div id='dash-stateWrap2'>
-								<img id='dash-state' src='assets/default-status.png'/><br/>
+								<img id='dash-next-state' src='assets/default-status.png'/><br/>
 								<!-- <div id='dash-countdown'>11</div> -->
 							</div>
 						</div>
 						<div class='section-container chart-container'>
-							<span class='stat-title'>FLOW</span>
+							<span class='chart-title'>FLOW</span>
 							<span class='clear'></span>
-							<div id="flow-chart" style="width:225px; height:150px;"></div><!-- chart goes in here -->
+							<div id="flow-chart" style="width:500px; height:180px;"></div><!-- chart goes in here -->
 						</div>
 						<div class='section-container chart-container'>
-							<span class='stat-title'>FLOW</span>
-							<div id="performance-chart" style="width:225px; height:150px;"></div><!-- chart goes in here -->
+							<span class='chart-title'>PERFORMANCE</span>
+							<div id="perf-chart" style="width:500px; height:180px;"></div><!-- chart goes in here -->
 						</div>
 					</div>
 					<div class='panel-page' id='panel-right'>
@@ -158,7 +162,7 @@
 		<!-- Roads Page -->
 		<div id="roads-page" class='page'>
 			<div class='centred'>
-				<div id='not-populated'>Road Data is not supported in this release.</div>
+				<div id='not-populated'>Road Data is not supported at this time.</div>
 			</div>
 		</div>
 
@@ -218,7 +222,7 @@ graph 2: histogram
 				<div class='section-container chart-container'>
 					<span class='stat-title'>FLOW</span>
 					<div class='chart-box'>
-						<canvas id="performance-chart" width="225" height="150"></canvas><!-- chart goes in here -->
+						<canvas id="performance-chart" width="500" height="200"></canvas><!-- chart goes in here -->
 					</div>
 				</div>
 			</div>
@@ -293,8 +297,8 @@ graph 2: histogram
 				<div id='xaxis'></div>
 			</div>
 			<div id='state-wrap'>
-				<img id='icon-state' src='assets/ewt.png'/><br/>
-				<div id='countdown'>11</div>
+				<img id='icon-state' src='assets/default-status.png'/><br/>
+				<div id='countdown'>--</div>
 			</div>
 			<ul class='list-wrapper' id='left'>
 				<li class='list-row'>
@@ -318,8 +322,8 @@ graph 2: histogram
 			</ul>
 			<ul class='list-wrapper' id='far-right'>
 				<li class='list-row'>
-					<span class='info-label'>NEXT STATE TIME</span><br/>
-					<span class='info-text' id='info-box-nextStateTime' data-content='nextStateTime'></span>
+					<span class='info-label'>DURATION</span><br/>
+					<span class='info-text' id='info-box-duration' data-content='nextStateTime'></span>
 				</li>
 			</ul>
 		</div>
@@ -388,6 +392,10 @@ graph 2: histogram
 	$(document).ready(function(){
 		s = new StatusPaneView();
 		app = new AppView;
+
+	    $(".preload").fadeOut(1500, function() {
+	       $(".map").fadeIn(1000);
+	    });
 	});
 	</script>
 

@@ -1,7 +1,7 @@
 var IntersectionsCollection = Backbone.Collection.extend({
 
 	// define the collection type
-	type: IntersectionModel,
+	model: IntersectionModel,
 
 	// fetch()
 	// temporary replacement/override for getting the intersections.
@@ -53,7 +53,7 @@ var IntersectionsCollection = Backbone.Collection.extend({
         	s.globalUpdate();
         });
 
-        this.set(data, {add: false}); // adds all the intersection objects to the collection
+        this.set(data); // adds all the intersection objects to the collection
 	}
 
 });

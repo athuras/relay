@@ -186,7 +186,7 @@ bootstrap.markerStyles = {
 	}
 };
 
-bootstrap.heatMapStyles = {
+bootstrap.heatmapStyles = {
 	gradient: [
 	    'rgba(0, 255, 255, 0)',
 	    'rgba(0, 255, 255, 1)',
@@ -203,8 +203,10 @@ bootstrap.heatMapStyles = {
 	    'rgba(191, 0, 31, 1)',
 	    'rgba(255, 0, 0, 1)'
 	],
-	radius: 20,
-	opacity: 0.2,
+	radius: 50,
+	opacity: 0.8,
+	dissipating: true,
+	maxIntensity: 10
 	// add more as you wish
 };
 
