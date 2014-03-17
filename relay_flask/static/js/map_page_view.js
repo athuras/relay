@@ -112,6 +112,13 @@ var MapPageView = Backbone.View.extend({
 				// add them to the map
 				this.intersectionsCollectionView.setIntersectionMap(this.map);
 				break;
+			case('line-layer'):
+				// set map and glyph styles
+				this.map.setOptions({ styles: this.mapStyles['dark'] });
+				this.intersectionsCollectionView.setIntersectionStyle( 'line_glyph' );
+				// add them to the map
+				this.intersectionsCollectionView.setIntersectionMap(this.map);
+				break;
 			case('flow-visualization'):
 				this.heatmapData = new Array();
 				_.forEach(this.intersectionsCollection.models, function(intersection){

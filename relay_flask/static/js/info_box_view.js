@@ -115,6 +115,9 @@ var InfoBoxView = Backbone.View.extend({
 		this.isOpen = true;
 
 		this.flotPlot = $.plot($(this.boxText).find('#graph').get(0), this.flotData, this.flotOptions);
+		this.flotPlot.setupGrid();
+		this.flotPlot.draw();
+
 
 		// add an event listener to check for 'show more' click
 		google.maps.event.addDomListener(this.boxText, 'click', $.proxy(function(e){
