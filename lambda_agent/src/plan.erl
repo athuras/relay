@@ -10,6 +10,7 @@
     remote_gen_plan/1,
     terminate/2
     ]).
+-export([notify_behaviour/2]).
 
 -record(state, {py_pid, stuff}).
 
@@ -47,13 +48,21 @@ remote_gen_plan({Store, P, Listener}) ->
     B_id = gen_event:call(Store, relay_store, get_current_state),
     {[Start], F} = gen_event:call(Store, relay_store, get_prediction),
     Args = prepare_plan_args(BTG_Tid, B_Tid, B_id, Start, F),
-    Result = try python:call(P, graph_select, optimize_path, Args)
+    {Plan, Times, First} = try python:call(P, graph_select, optimize_path, Args)
              catch error:{python, ExClass, ExArgs, Stack} ->
-                Listener ! {error, ExClass, ExArgs, Stack}
+                Listener ! {error, ExClass, ExArgs, Stack},
+            {[0], [0], 0}
             end,
-    gen_event:notify(Store, {new_plan, Result}),
+    Next_B = lists:nth(1, Plan),
+    timer:apply_after(First * 1000, ?MODULE, notify_behaviour, [Next_B, Store]),
+    gen_event:notify(Store, {new_plan, {Plan, Times}}),
+
     exit(normal).
     %gen_event:notify(Controller, {new_plan, done, self()}).
+
+notify_behaviour(Next_B, Store) ->
+    gen_event:notify(Store, {set_behaviour, Next_B}).
+
 
 -spec table_to_list(ets:tid()) -> list().
 table_to_list(Tid) ->
