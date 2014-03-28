@@ -72,7 +72,7 @@ var PanelView = Backbone.View.extend({
 		},
 		yaxis: {
 			min: 0,
-			max: 50
+			max: 10
 		},
 		legend: {
 			backgroundColor: 'rgba(0, 0, 0, 0)',

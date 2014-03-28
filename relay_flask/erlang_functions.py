@@ -11,7 +11,8 @@ def fetch_queues(int_id, length=150):
     # new queues, queue dict
 
 def fetch_status_info(int_id, length=150):
-    r = rqs.get("http://localhost:8081/?agent=Agent1")
+    print int_id
+    r = rqs.get("http://localhost:8081/?agent=Agent" + str(int_id))
     data = r.json()
 
     erl_info = [{'bhvr_mtx': data['behaviour']}]

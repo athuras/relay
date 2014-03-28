@@ -214,9 +214,8 @@ def get_dash():
                 int_id = :int_id;
             '''
 
-        if int_id in g.sim_ids:
-            new_status_info, new_qs_dict = erlfuncs.fetch_status_info(int_id, 150)
-            print new_qs_dict
+        if str(int_id) in g.sim_ids:
+            new_status_info, new_qs_dict = erlfuncs.fetch_status_info(g.sim_ids[str(int_id)], 150)
         else:
             new_status_info = erlfuncs.make_status_info()
             new_qs_dict = erlfuncs.make_queues()
@@ -260,7 +259,7 @@ def before_request():
 
 def setup_simulation():
     if not hasattr(g, 'sim_ids'):
-        g.sim_ids = [13464373, 13464094, 13463747, 13463548, 13463436]
+        g.sim_ids = {'13464373': 1, '13464094': 2, '13463747': 3, '13463548': 4, '13463436': 5}
         # g.sim_queues = [] # [IN, OUT, REMOTE]
 
 @app.after_request

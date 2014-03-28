@@ -78,7 +78,7 @@ var InfoBoxView = Backbone.View.extend({
 		};
 
 		// interval for pulling data
-		this.updateFrequency = 1000;
+		this.updateFrequency = 2500;
 		this.interval = setInterval();
 
 		// We create ourselves an infobox

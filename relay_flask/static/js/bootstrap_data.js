@@ -6,6 +6,8 @@ bootstrap.activeLayer = 'status-layer'; // default layer
 
 bootstrap.mapOptions = {
 	zoom: 13,
+	minZoom: 11,
+	maxZoom: 15,
 	mapTypeId: google.maps.MapTypeId.ROADMAP,
 	center: new google.maps.LatLng(43.652073, -79.382293),
 	disableDefaultUI: true

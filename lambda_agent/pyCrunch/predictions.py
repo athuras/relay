@@ -51,7 +51,7 @@ def gen_local_prediction(remote_egress, taus, now, t=40, dt=1., lookback=2*60):
     egress = [render_queue(e, dt, now - lookback, now) for e in remote_egress]
     delay = [render_gamma(G(*tau), int(t/dt)*5, dt) for tau in taus]
     prediction_rasters = [
-            np.convolve(k, e, mode='full')[lookback:lookback + n].tolist()
+            np.convolve(k, e, mode='full')[:n].tolist()
                             for e, k in izip(egress, delay)
         ]
     P = [map(float, p) for p in prediction_rasters]
