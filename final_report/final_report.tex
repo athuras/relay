@@ -112,7 +112,7 @@ What this means is that the system does not update the timings at a specific amo
 If a large traffic system is expected at an intersection in the next minute, the actor of interest should be able to respond to this as soon as it becomes aware, and take the prediction into account when selecting timings.
 While this problem is being addressed in research it is still not implemented in many commercial traffic systems \cite{155481, 5349439, ACS:2008}, and truly acyclic control is still in its infancy in industry.
 Our solution will also address this issue, utilizing existing research findings where applicable.
-This will be measured by the saturation of the intersection (i.e. the volume/flow-to-capacity ratio). 
+This will be measured by the saturation of the intersection (i.e. the volume/flow-to-capacity ratio).
 This tracks how much load the intersection is handling versus is potential capacity for each behaviour.\\
 
 Thirdly, the benefits of these systems can sometimes be unclear.
@@ -152,7 +152,7 @@ Figure \ref{fig:scats-screenshot} shows an example of the GUI for monitoring an 
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.8]{scat-screen.jpg}
+    \includegraphics[scale=0.8]{figures/scat-screen.jpg}
     \caption{The SCATS interface is overwhelming and not optimized.}
     \label{fig:scats-screenshot}
   \end{centering}
@@ -177,7 +177,7 @@ However, insights into traffic patterns derived from this method are extremely b
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.46]{apple-maps.png}
+    \includegraphics[scale=0.46]{figures/apple-maps.png}
     \caption{Basic traffic insight provided by Apple Maps.}
     \label{fig:apple-maps}
   \end{centering}
@@ -322,7 +322,7 @@ Figures \ref{fig:wire-1} - \ref{fig:wire-4} show sketches and wireframes of the 
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{wire-1.png}
+    \includegraphics[scale=1]{figures/wire-1.png}
     \caption{Initial wireframe for histogram approach.}
     \label{fig:wire-1}
   \end{centering}
@@ -330,7 +330,7 @@ Figures \ref{fig:wire-1} - \ref{fig:wire-4} show sketches and wireframes of the 
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{wire-2.png}
+    \includegraphics[scale=1]{figures/wire-2.png}
     \caption{Application wireframes showing interaction controls and pop-up menu.}
     \label{fig:wire-2}
   \end{centering}
@@ -338,7 +338,7 @@ Figures \ref{fig:wire-1} - \ref{fig:wire-4} show sketches and wireframes of the 
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{wire-4.png}
+    \includegraphics[scale=1]{figures/wire-4.png}
     \caption{Sketch of potential side menu for the Relay Interface application.}
     \label{fig:wire-3}
   \end{centering}
@@ -346,7 +346,7 @@ Figures \ref{fig:wire-1} - \ref{fig:wire-4} show sketches and wireframes of the 
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{wire-5.png}
+    \includegraphics[scale=1]{figures/wire-5.png}
     \caption{Sketch of a detailed pop-up menu showing intersection data.}
     \label{fig:wire-4}
   \end{centering}
@@ -365,7 +365,7 @@ The size of the circle is positively correlated to the volume of traffic at the 
 A second degree of data is then shown through use of colour, to illustrate the performance of the intersection itself.
 In other words, how well the intersection is moving traffic given it's high-volume state.
 It was agreed upon that a well-performing high-volume intersection should receive a colour that is neutral, while a high-volume intersection with poor performance should emit a colour that indicates that something is wrong, such as orange or red.\\
- 
+
 It can also be seen in the figures that other components of the prototype application were accounted for in the wireframes.
 These include interactions such as pop-up dialogues, highlighting routes and communicating intersections, as well as a side-panel for showing detailed metrics on intersection and overall city-wide traffic performance.
 From this stage, the prototype moved to a mid-fidelity phase to further build out the concepts and refine the aesthetic of the application.\\
@@ -382,7 +382,7 @@ The custom-made style package has been made freely available for the public on t
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.35]{map-style.png}
+    \includegraphics[scale=0.35]{figures/map-style.png}
     \caption{Map design for the Relay GUI.}
     \label{fig:map-styling}
   \end{centering}
@@ -393,7 +393,7 @@ Figures \ref{fig:histo-1} - \ref{fig:dots-2} show multiple iterations of both th
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.77]{histo-1.png}
+    \includegraphics[scale=0.77]{figures/histo-1.png}
     \caption{Mid-fidelity histogram overlay design.}
     \label{fig:histo-1}
   \end{centering}
@@ -401,7 +401,7 @@ Figures \ref{fig:histo-1} - \ref{fig:dots-2} show multiple iterations of both th
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.77]{histo-2.png}
+    \includegraphics[scale=0.77]{figures/histo-2.png}
     \caption{A second mid-fidelity approach to histogram design.}
     \label{fig:histo-2}
   \end{centering}
@@ -409,7 +409,7 @@ Figures \ref{fig:histo-1} - \ref{fig:dots-2} show multiple iterations of both th
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{dots-1.png}
+    \includegraphics[scale=1]{figures/dots-1.png}
     \caption{Traffic data visualized as a heat map using a concentric circle approach.}
     \label{fig:dots-1}
   \end{centering}
@@ -417,7 +417,7 @@ Figures \ref{fig:histo-1} - \ref{fig:dots-2} show multiple iterations of both th
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{side-panel.png}
+    \includegraphics[scale=1]{figures/side-panel.png}
     \caption{Mid-fidelity design of a side-panel containing visualizations of traffic metrics.}
     \label{fig:side-panel}
   \end{centering}
@@ -425,7 +425,7 @@ Figures \ref{fig:histo-1} - \ref{fig:dots-2} show multiple iterations of both th
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=1]{dots-2.png}
+    \includegraphics[scale=1]{figures/dots-2.png}
     \caption{A second mid-fidelity design for the concentric circle approach.}
     \label{fig:dots-2}
   \end{centering}
@@ -443,7 +443,7 @@ HTML and CSS styling was done to emulate and build out the mid-fidelity prototyp
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.5]{screen-2.png}
+    \includegraphics[scale=0.5]{figures/screen-2.png}
     \caption{Localized screenshot of a traffic cluster in the city of Toronto - from working prototype.}
     \label{fig:screen-1}
   \end{centering}
@@ -451,7 +451,7 @@ HTML and CSS styling was done to emulate and build out the mid-fidelity prototyp
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.47]{screen-1.png}
+    \includegraphics[scale=0.47]{figures/screen-1.png}
     \caption{Screenshot from working prototype showcasing popup menu, side panel, and graphical traffic data.}
     \label{fig:screen-2}
   \end{centering}
@@ -473,7 +473,7 @@ For this task the ``Flask'' python framework was chosen, as many team members ha
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.3]{flow-chart.png}
+    \includegraphics[scale=0.3]{figures/flow-chart.png}
     \caption{Relay: System Map}
     \label{fig:Back_end_system_map}
   \end{centering}
@@ -514,7 +514,7 @@ For full-scale applications, many of the third party services are not free (such
 Furthermore, in the interest of developing a highly \emph{democratic} adaptive traffic control framework, open-source technologies were preferred whenever available.
 For example, WindShaft is a tiling server/cache that is built on entirely open-source technologies.
 Windshaft is used explicitly by both CartoDB and MapBox.
-Thus while we could assume the burden of running a Windshaft server, it is dramatically simpler in the short-term to take advantage of a third-party's Windshaft instance.\\ 
+Thus while we could assume the burden of running a Windshaft server, it is dramatically simpler in the short-term to take advantage of a third-party's Windshaft instance.\\
 
 \begin{longtable}{|p{2.6cm}|p{2.1cm}|p{2cm}|p{2cm}|p{2.8cm}|p{2.8cm}|} \hline
     \textbf{Attribute}                        & \textbf{Google/Bing}            & \textbf{WindShaft}         & \textbf{CloudMade (OSM)}                 & \textbf{CartoDB}               & \textbf{MapBox}               \\ \hline
@@ -602,7 +602,7 @@ It also follows from this that the sum of out-going edge weights for a given inl
 
 \begin{figure}[!ht]
 	\caption{Relay Intersection Graph Model}
-	\includegraphics[width=\textwidth]{Relay_Intersection_Graph.png}
+	\includegraphics[width=\textwidth]{figures/Relay_Intersection_Graph.png}
 	\label{fig:Relay_Intersection_Graph}
 \end{figure}
 
@@ -618,7 +618,7 @@ The controller is set up as a maximization process which weighs the current and 
 
 \begin{figure}[!htpb]
 	\caption{Relay Agent Controller}
-	\includegraphics[width=\textwidth]{Relay_Agent_Controller.png}
+	\includegraphics[width=\textwidth]{figures/Relay_Agent_Controller.png}
 	\label{fig:Relay_Agent_Controller}
 \end{figure}
 
@@ -652,7 +652,7 @@ This depth-wise priority is shown in Figure \ref{fig:Relay_Network}.\\
 
 \begin{figure}[!htpb]
 	\caption{Relay Network Neighbourhood}
-	\includegraphics[width=\textwidth]{Relay_Network.png}
+	\includegraphics[width=\textwidth]{figures/Relay_Network.png}
 	\label{fig:Relay_Network}
 \end{figure}
 
@@ -669,7 +669,7 @@ This is outlined in Figure \ref{fig:Relay_Macro_Graph}.\\
 
 \begin{figure}[!htpb]
 	\caption{Relay Macroscopic Information}
-	\includegraphics[width=\textwidth]{Relay_Macro_Graph.png}
+	\includegraphics[width=\textwidth]{figures/Relay_Macro_Graph.png}
 	\label{fig:Relay_Macro_Graph}
 \end{figure}
 
@@ -812,7 +812,7 @@ The deliverable column, where applicable, identifies the high-level product of e
 \subsection{Gantt Chart}
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.5]{gantt-vertical.png}
+    \includegraphics[scale=0.5]{figures/gantt-vertical.png}
     \caption{Gantt Chart for Winter 2014}
     \label{fig:gantt}
   \end{centering}
@@ -823,11 +823,11 @@ The deliverable column, where applicable, identifies the high-level product of e
 
 Over the last decade there has been a resurgence in interest surrounding intelligent traffic control systems as the burden of congestion in urban centres has continued to increase.
 Relay proposes to attack this problem from two angles: providing transparency to the traffic network, and providing a platform for sophisticated agent-based control mechanisms for adaptive signal timing; yielding the Relay Interface and Framework respectively.\\
- 
+
 The Interface includes detailed metrics regarding traffic flow and provides insight into transportation network performance for both traffic engineers and the general public.
-The Framework will be constructed in two parts (network and algorithms), acting as the brain of the system. 
+The Framework will be constructed in two parts (network and algorithms), acting as the brain of the system.
 The network will consist of independent agents that interface and communicate with each other to share up-to-date information and predictive models.
-The algorithms will sit on top of this layer and will make decisions about signal timing, behaviours, and overall traffic flow. 
+The algorithms will sit on top of this layer and will make decisions about signal timing, behaviours, and overall traffic flow.
 Information, statistics, and a queriable interface will be shared between the front- and back-end to provide greater transparency to users of the system.\\
 
 Relay is a proof of concept for a democratic, distributed peer-to-peer intelligent traffic control system, and associated open data initiatives, thus it is important to note that the team is approaching this as a research problem and as such, creating sustainable business (while enticing) is not a priority.
@@ -836,7 +836,7 @@ The main goal is to push the envelope of the state-of-the art in ATCS, which in 
  Guided by the open-source philosophy, the team will continue to strive to create a solution that is open and freely available to the public, with the overarching vision of a large-scale positive impact on society---one which paves the way to smarter cities.
  In this sense, the project straddles the line between product and research, where advances in either direction will strongly influence the final state of the project.\\
 
-The team is confident the proposed concept will successfully meet the performance goals outlined. 
+The team is confident the proposed concept will successfully meet the performance goals outlined.
 Extensive research has been, and will continue to be, conducted to ensure the best techniques and tools are used in development.
  We will continuously prototype, integrate, iterate and test our implementation, making alterations and revisions when necessary.
 By incorporating feedback from peers, academic advisors, industry affiliates, and the community at large, we work towards inventing a novel technology with strong positive societal, environmental, and economic impacts.
