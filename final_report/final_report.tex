@@ -39,15 +39,18 @@
 
 \newpage
 
-\subsection{Front End}
 \chapter{Engineering Design}
 
-\section{Design Process}
+\section{Front End}
+
+\subsection{Design Research}
+
+\subsection{Design Process}
 With sufficient Design Research conducted, and functional requirements compiled, the front-end application design moved into an iterative process of defining the user interface (UI), interactions, and visual design of the app through various levels of fidelity.
 The use of many design tools was employed, as best suited for each given stage of the design process. 
 These tools include Adobe Photoshop and Illustrator, HTML/CSS/JavaScript, and sketching using pencil and paper to quickly illustrate low-fidelity ideas.
 
-\subsection{Wireframing}
+\subsubsection{Wireframing}
 The process began with a wireframing stage, involving the quick iteration of information architecture and UI techniques, to discover optimal implementations for each of the functional requirements.
 Global app navigation, page layout, modularity, and fundamental UI elements were initiated at this stage, to begin to define the design language used in the application.
 This was accomplished mainly through static paper-based sketches of various screens.
@@ -82,7 +85,7 @@ More vehicles means more histograms, shown as translucent graphs which when over
 \end{figure}
 
 Response for this concept was generally critical, as probability functions overlaid on a map were found to not be particularly easy to understand, at least not immediately at a glance.
-It was evident at this stage that a simpler - more intuitive - visualization was needed for this application to be useful for both consumers and traffic engineers.\\
+It was evident at this stage that a simpler - more intuitive - visualization was needed for this application to be useful for both consumers and traffic engineers.
 
 \begin{figure}[htbp!]
   \begin{centering}
@@ -108,7 +111,7 @@ While not all of these early-stage concepts were used in the final product, the 
 These initial visualization concepts helped to spawn and guide future implementations, and helped attain a clear understanding of the data being presented.
 The next step in the design process moved into a medium-fidelity stage, such that navigation and interaction could be explored at a deeper level.
 
-\subsection{Medium-Fidelity Prototyping}
+\subsubsection{Medium-Fidelity Prototyping}
 Through the use of prototyping software Balsamiq, a set of interactive mockups were created to both reflect the requirements of the application, as well as ideas and lessons learned from the previous wireframing stage.
 In this prototype, the main tenets for the final version of the application were created in an illustrative form, to identify key architectural components and the user's interaction within.
 By doing this in a medium that does not put too much focus on the specifics of visual design, it was easier to concentrate on the core features of the application, and how they satisfy (or dissatisfy) the original requirements. 
@@ -120,7 +123,7 @@ A screenshot of the mockup showing a Status visualization in the Relay app is pr
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.6]{figures/bals-1.png}
+    \includegraphics[scale=0.65]{figures/bals-1.png}
     \caption{Balsamiq mockup of a data layer in the Relay app.}
     \label{fig:bals-1}
   \end{centering}
@@ -170,7 +173,7 @@ A mockup of the Intersections page is shown in Figure \ref{fig:bals-4}, with pla
 
 \begin{figure}[htbp!]
   \begin{centering}
-    \includegraphics[scale=0.6]{figures/bals-4.png}
+    \includegraphics[scale=0.65]{figures/bals-4.png}
     \caption{Balsamiq mockup of the Intersections page.}
     \label{fig:bals-4}
   \end{centering}
@@ -196,7 +199,7 @@ Additional detail can be seen on the right hand side of the screen, with quantit
 Overall, the medium-fidelity prototyping stage was essential in moving the design of the Relay application forward towards its final state.
 With functional requirements set in place, and now a strong roadmap of UI elements, navigation, page layout, and interactions to fulfill the requirements, the application was ready to be built in a high-fidelity form, as described in the following section.
 
-\subsection{High-Fidelity Prototyping}
+\subsubsection{High-Fidelity Prototyping}
 In preparation for the development of the Relay application, the design of the environment moved into a final high-fidelity prototyping phase.
 This stage involved a major visual overhaul of the application, focusing on the definition of a unique design language to bring Relay together as a cohesive product.
 Considerations at this stage include the creation of a custom grid structure, typography, colour, branding, the development of data visualization layers, and repurposing the search functionality in the app.
@@ -371,13 +374,6 @@ A screenshot of the high-fidelity dashboard is shown in Figure \ref{fig:dashboar
 With these elements in place, the final developmental/functional touches to the Relay application were ready to be built for the demo, as showcased on Symposium day.
 As a unit, the application is held together using the modular design elements described above, which makes the application easily scalable and modifiable for individual implementations or changing metrics and requirements.
 With a unique and well-defined design language established, further extrapolations of this implementation have a library of best practices and UI elements that can be carried forward into new scenarios.
-
-\section{Front End}
-
-\subsection{Deep End}
-\subsection{Design Research}
-
-\subsection{Design Process}
 
 \subsection{Application Architecture}
 
