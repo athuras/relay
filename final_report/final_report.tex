@@ -6,11 +6,14 @@
 \usepackage{ragged2e}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage[toc]{glossaries}
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
+
+\makeglossaries
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%    Begin Document    %%%
@@ -29,6 +32,19 @@
   }
 
 \dotableofcontents
+
+\newpage
+
+\chapter*{Glossary of Terms}
+\begin{description}
+\item[Angular.js] A client-side JavaScript Framework.
+\item[Backbone.js] A client-side JavaScript Framework.
+\item[DOJO] A client-side Javascvript Framework.
+\item[JavaScript MVC] A client-side JavaScript Framework.
+\item[jQuery] A client-side JavaScript Utility Library.
+\item[Underscore.js] A client-side JavaScript Utility Library.
+\end{description}
+
 
 \newpage
 \doublespacing
