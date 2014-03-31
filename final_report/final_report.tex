@@ -377,7 +377,58 @@ With a unique and well-defined design language established, further extrapolatio
 
 \subsection{Application Architecture}
 
+Application interfaces for critical infrastructure must be highly robust and reliable. Furthermore, it is important the the systems are able to scale in order to accomodate the inevitable growth of the system. These main ideas drove the design of the front-end (web application) application architecture. 
+
+Given the breadth of choices in software technology, it was necessary to use a quantifiable selection process for determining the appropriate solutions from a group of candidates. The three main areas of the front-end application which required such a process are the Framework, Mapping Library, and Visualization Library. The selection process for these is discussed in the following sections.
+
 \subsubsection{Framework Selection}
+
+Software frameworks are code libraries which provide functionality that enables developers to more easily implement a specific software pattern. One of the most common software patterns is the Model-View-Controller (MVC) pattern, which is commonly used in complex and large software applications to ensure the application is reliable, structured, and can scale effectively. Similarly, front-end software frameworks allows for the development of structered and scalable applications by providing software pattern untilities. Given the critical nature of our application, it was determined that the use of a framework would be appropriate for ensuring the scalability and reliabilty of the application.
+
+Four JavaScript frameworks were selected for comparison. Javascript MVC is a mature, well-known front-end MVC implementation which is build off of jQuery, a JavaScript Utility Library, which offers a well-rounded feature base. DOJO is another mature and well-known framework which does not offer an MVC-style framework, yet is class-oriented. Backbone.JS is a relatively new Model-View (MV) framework built off of the Underscore.js utility library. Finally, Angular.js is a new and highly functional front-end framework which loosely follows an MVC pattern.
+
+The frameworks are scored across five weighted features. The scores are justified and a winning framework is selected.
+
+\begin{enumerate}
+
+\item \textbf{Size} - The use of large JavaScript libraries can cause performance issues within the application. The selected library should be as small as possible. Candidate frameworks will be assesed based on the size of their encompassing code files. This feature has been given a weight of 0.5.
+
+\item \textbf{Independance} - The selected framework should be self-contained and not require many prerequisite JavaScript Libraries in order to function. The presence of many prerequisite libraries increases the size of the application and will slow down performance. Candidate frameworks are assesed based on the number of prerequisite frameworks and plug-ins required for the framework's application within the proposed solution. This feature has been given a weight of 0.5.
+
+\item \textbf{Functionality} - The selected JavaScript framework should provide a rich set functionality which is not available within the native Javascript language. Important functionality includes utility functions, templating, Document Object Model (DOM) binding, client-server communication methods, and data structure classes. Candidate frameworks are assessed based on the both the quantity and quality of the functionality provided, in the context of the proposed soluction. This feature has been given a weight of 0.8, as it is important that the framework provide sufficient functionality to implement the solution.
+
+\item \textbf{Modularity} - It is important that the selected JavaScvript framework supports the creation of modular code, given the complexity of the proposed solution. The selected MVC framework should encourage an exablished code pattern, such as and MV- or MVC-style structure. Candidate frameworks are assesed based on their similarity to known software architecture patterns, such as MV or MVC. Due to the importance of scalability and modularity in the proposed solution, this feature has been given a weighting of 0.8.
+
+\item \textbf{Implementation Overhead} - The selected JavaScript framework should not require excessive amounts of overhead code in order to successfully suit the needs of the proposed solution. The selected framework should have as little overhead as possible. Candidate frameworks are assessed by examining tutorial code implementations for each framework, to determine the proportion of development required as overhead compared to application-specific code. This feature has been given a weight of 0.5.
+
+\end{enumerate}
+
+The frameworks are presented in a weighted decision matrix below. Each attribute is weighted out of 5 points for each of the candidate frameworks. Weightings for each attribute are on a scale from 0 to 1.
+
+\begin{table}
+\centering
+    \begin{tabular}{l|llll}
+    ~                             & Angular.js & \textbf{Backbone.js} & DOJO    & JavaScript MVC \\ \hline
+    Size (0.5)                    & 5 (2.5)    & \textbf{3 (1.5)}     & 2 (1)   & 2 (1)        \\
+    Independence (0.5)            & 5 (2.5)    & \textbf{4 (2)}       & 3 (1.5)   & 4 (2)          \\
+    Functionality (0.8)           & 3 (2.4)    & \textbf{5 (4)}       & 4 (3.6)   & 4 (3.6)          \\
+    Modularity (0.8)              & 2 (1.6)    & \textbf{4 (3.6)}     & 4 (3.6) & 4 (3.6)        \\
+    Implementation Overhead (0.7) & 4 (2.8)    & \textbf{4 (2.8)}     & 3 (2.1) & 4 (2.8)        \\ \hline
+    Totals                        & 11.8       & \textbf{13.9}        & 11.8    & 13.0           \\
+    \end{tabular}
+\caption{Weighted Decision Matrix for JavaScript Framework Selection}
+\label{table:framework-matrix}
+\end{table}
+
+Angular.js is the smallest candidate framework at 36kb. Angular.js also has no dependancy JavaScript libraries, and is thus completely independant. Although Angular.js offers rich DOM and interaction functionality, it provides few utility features for data structures and architectures. Angular.js does not follow a rigid MVC or MV structure, which was a major downfall for the framework. Anjular.js does not require much overhead code to implement, primarily because it does not follow a rigid software architecture, and thus is more functionally-oriented.
+
+The Backbone JavaScript framework is 64kb in size. Backbone.js relies on Underscore.js and jQuery.js two relatively large JavaScript utility libraries. However, both of these libraries will be used in the application regardless of the choice of framework, thus are not direct detriment of this candidate. Backbone.js follows a MV framework style, where both controller and view functionality are both kept in the view. This pattern is a good comprimise between no framework and an extremely heavy MVC structure. Backbone.js's two utility libraries provide rich functionality for working with the DOM model, and structured objects. Furthermore, Backbone provides a native collection-oriented pattern developed specifically for handling large numbers of similar objects, which fits well with the applications need to support many intersection and road models. Finally, Backbone.js has minimal development overhead considering it's MV structure, as Backbone.js provides a range of default functionality for it's classes.
+
+The DOJO JavaScript framework is 155kb in size, making it the largest of the candidate frameworks. DOJO requires no prerequisite JavaScript Libraries, yet many of DOJO's features are in add-on libraries. This reduces the effectiveness of DOJO's core code, yet means a wider range of features are available as the feature set distributed and open. However, DOJO's functionality is not aimed specifically at dealing with large collections of data, and does not offer strong support for client-server synchronicity. In terms of modularity, the DOJO framework supports the creation of class objects yet does not explicitly support an MV- or MVC-style framework. DOJO requires a significant amount of implementation overhead, which makes it suitable for extremely large and diverse applications. However, this level of overhead is less suited to the complex yet relatively consistent nature of our application with respect to object and data needs.
+
+JavaScript MVC is 105kb in size. JavaScrvipt MVC relies on the jQuery.js JavaScript library, however this library is already a requirement for the proposed solution. JavaScript MVC is composed of four sub-frameworks, each of which specializes in a different set of features, and together provide sufficient functionality for the proposed solution. However, like DOJO, JavaScript MVC lacks the specific functionality for dealing with large amounts of similar objects. As suggested by the name, JavaScript MVC follows a strong MVC model in it's implementation.
+
+As seen in table \ref{table:framework-matrix}, Backbone.js is the winning candidate. Backbone is not the smallest candidate, yet it's feature set and MV framework fit well with the needs of the proposed solution. Specifically, Backbone's use of already-implemented JavaScript utility libraries to provide enhanced data structure tools and algorithms, as well as it's specialized collection template for dealing with large amounts of data objects. Furthermore, Backbone.js provides functionality for client-server communication for said collection structures. Finally, the overhead associated with Backbone.js is acceptable given the strong fit of the functionality with that of the proposed solution.
 
 \subsubsection{Mapping Library Selection}
 
