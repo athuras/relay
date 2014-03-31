@@ -42,13 +42,12 @@
 \subsection{Front End}
 \chapter{Engineering Design}
 
-\subsubsection{Design Process}
+\section{Design Process}
 With sufficient Design Research conducted, and functional requirements compiled, the front-end application design moved into an iterative process of defining the user interface (UI), interactions, and visual design of the app through various levels of fidelity.
 The use of many design tools was employed, as best suited for each given stage of the design process. 
 These tools include Adobe Photoshop and Illustrator, HTML/CSS/JavaScript, and sketching using pencil and paper to quickly illustrate low-fidelity ideas.
 
-\paragraph{Wireframing}
-\mbox{ }\\ \\
+\subsection{Wireframing}
 The process began with a wireframing stage, involving the quick iteration of information architecture and UI techniques, to discover optimal implementations for each of the functional requirements.
 Global app navigation, page layout, modularity, and fundamental UI elements were initiated at this stage, to begin to define the design language used in the application.
 This was accomplished mainly through static paper-based sketches of various screens.
@@ -109,8 +108,7 @@ While not all of these early-stage concepts were used in the final product, the 
 These initial visualization concepts helped to spawn and guide future implementations, and helped attain a clear understanding of the data being presented.
 The next step in the design process moved into a medium-fidelity stage, such that navigation and interaction could be explored at a deeper level.
 
-\paragraph{Medium-Fidelity Prototyping}
-\mbox{ }\\ \\
+\subsection{Medium-Fidelity Prototyping}
 Through the use of prototyping software Balsamiq, a set of interactive mockups were created to both reflect the requirements of the application, as well as ideas and lessons learned from the previous wireframing stage.
 In this prototype, the main tenets for the final version of the application were created in an illustrative form, to identify key architectural components and the user's interaction within.
 By doing this in a medium that does not put too much focus on the specifics of visual design, it was easier to concentrate on the core features of the application, and how they satisfy (or dissatisfy) the original requirements. 
@@ -198,8 +196,7 @@ Additional detail can be seen on the right hand side of the screen, with quantit
 Overall, the medium-fidelity prototyping stage was essential in moving the design of the Relay application forward towards its final state.
 With functional requirements set in place, and now a strong roadmap of UI elements, navigation, page layout, and interactions to fulfill the requirements, the application was ready to be built in a high-fidelity form, as described in the following section.
 
-\paragraph{High-Fidelity Prototyping}
-\mbox{ }\\ \\
+\subsection{High-Fidelity Prototyping}
 In preparation for the development of the Relay application, the design of the environment moved into a final high-fidelity prototyping phase.
 This stage involved a major visual overhaul of the application, focusing on the definition of a unique design language to bring Relay together as a cohesive product.
 Considerations at this stage include the creation of a custom grid structure, typography, colour, branding, the development of data visualization layers, and repurposing the search functionality in the app.
@@ -375,7 +372,6 @@ With these elements in place, the final developmental/functional touches to the 
 As a unit, the application is held together using the modular design elements described above, which makes the application easily scalable and modifiable for individual implementations or changing metrics and requirements.
 With a unique and well-defined design language established, further extrapolations of this implementation have a library of best practices and UI elements that can be carried forward into new scenarios.
 
-\subsection{Back End}
 \section{Front End}
 
 \subsection{Deep End}
@@ -403,11 +399,11 @@ The following sections explain how these variables are learned and updated.
 
 \subsubsection{Time Delay Estimation}
 The first important parameter needed to calculate predictions is the time delay estimate between two agents. 
-This can be thought of as the estimated time to travel from one intersection to a neighboring one. 
-However, this is not a fixed time, so the delay is modeled using a gamma distribution, as discussed previously. 
+This can be thought of as the estimated time to travel from one intersection to a neighbouring one. 
+However, this is not a fixed time, so the delay is modelled using a gamma distribution, as discussed previously. 
 
 The first step in performing this estimation, is determining which portion of the downstream signal is relevant – meaning what part of the signal should be considered for the estimation. 
-This is required because it must ``match” the departing signal from the upstream intersection. 
+This is required because it must match the departing signal from the upstream intersection. 
 To extract the downstream signal, an upstream sub-signal is first selected. It was determined that the most efficient way to do this is to this is to select the upstream departure signal created by the previous behaviour cycle. 
 To ensure that events are not missed, the downstream signal is determined by time-shifting the upstream signal by the expected value of the previous time delay distribution, and a small buffer is added to each end.
 
@@ -437,8 +433,8 @@ These represent the likelihood of a signal to travel along this edge during the 
 \paragraph{Behaviour Probability Matrix (BPM)}
 Figure \ref{fig:BPM-example} provides a visualization of this to help parse this idea. 
 The matrix represents how these edge probabilities are used within the system; in the matrix, departing nodes are along the columns and entering along the rows -- $p_{02}$ would represent entering node 0 and exiting node 2. 
-It is seen in the diagram that an event occurring at node 0 has a 60% likelihood of exiting node 2, for this behaviour.
- It is important to not that edges that are not traversable will always have a probability of 0. 
+It is seen in the diagram that an event occurring at node 0 has a 60\% likelihood of exiting node 2, for this behaviour.
+It is important to not that edges that are not traversable will always have a probability of 0. 
 Essentially, this probability matrix is used to split an entering signal into components, to then be combined with other estimates in a departing signal. 
 This estimated signal is then used in combination with the time delay estimation to predict expected traffic, which will be discussed further in the following section.
 
