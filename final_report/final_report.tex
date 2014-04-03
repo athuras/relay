@@ -448,6 +448,41 @@ As seen in table \ref{table:framework-matrix}, Backbone.js is the winning candid
 
 \subsubsection{Mapping Library Selection}
 
+Next, a front-end mapping library needed to be selected. The proposed solution required that information be viewed in a geographic context. Thus, it was necessary to select a client-side library which would support these needs. Generally, it was important the the library be highly-customizable, as the data presentation layers would be completely customized. Furthermore, the library had to be high-performance to support the needs of our application. Finally, it was necesary to find a map hosting service which could support the library, as setting up a hosting service was not in the scope of this solution.
+
+\begin{enumerate}
+\item \textbf{Style Customizability} - The selected mapping candidate should be highly customizable. Colour and styling for map features such as roads, buildings, water, and land must be allowed.
+\item \textbf{Feature Customizability} - The selected mapping candidate must allow for the customization of built-in features, such as markers and info boxes. Markers should be completely customizable, through the use of either a scalable vector graphic (SVG) or HTML and CSS. Info boxes should be customizable using HTML, CSS, and JavaScript.
+\item \textbf{Layer Customizability} - The selected mapping candidate must allow for the customization of map data layers. The candidate must support multiple simultaneous layers of data. It should also support the display of both point-based and vector-based data.
+\item \textbf{Tile Hosting Support} - The selected mapping candidate must either support tile hosting as part of its service, or be compatible with an existing tile hosting service. Ideally, the selected candidate offers both tile hosting and serving in the same package for convenience.
+\item \textbf{Price} - The selected mapping candidate must be cost effective. The service should be free, or minimize the cost of tile serving and hosting.
+
+\end{enumerate}
+
+Four Mapping Libraries were considered as potential candidates: Google Maps API, Leaflet.js, MapBox, and TileMill in conjunction with CloudMade.
+
+The Google Maps API is the industry standard of mapping libraries. It is the same framework which runs Google Maps, and is thus well-supported and reliable. The Google Map API allows for styling customizations on-the-go throught it's JavaScript API. Unfortunately, not all aspects of the map are stylable. The API provides functionality for both markers and info boxes. The Google Maps API allows for custom CSV marker icons, however the info box is not easily customizable. However, Google Maps does offer a plug-in info box, which is fully customizable. Tiles are hosted directly through Google Maps, requiring no extra work for tile hosting support. Finally, the Google Maps API is a free service with very high courtesy limits.
+
+Leaftlet.js is a map-oriented JavaScript Library which provides a variety of map-related features on top of a tile service. Leaflet.js does not host map tiles, and thus it must be used in conjunction with a tile hosting service such as CloudMade. As such, styling the map must be done through a CloudMade's third party service which is restrictive in styling. Leatlet.js offers rich map functionality, including markers and info boxes. Furthermore, leaflet.js' map features are highly-customizable, as it is an open-source project. However, Leaflet.js id not geared towards handling data layers. Leaflet.js is a free library.
+
+Mapbox is a new JavaScript mapping library which works in conjunction with TileMill, a tile styling styling service. TileMill is designed specifically for creating highly-customized map styles, and thus offers very rich styling capability. Due to MapBox's immaturity as a platform, it's feature set is limited and not very customizable. The MapBox JavaScript Library is not structured towards handling data layers, rather individual data points. Furthermore, TileMill tiles must be hosted using a third part platform, or through MapBox directly, which required a paid membership for the service.
+
+\begin{table}
+    \begin{tabular}{l |r r r l}
+    ~                             & \textbf{Google Maps API} & Leaflet.js \& CloudMade & MapBox \& TileMill \\ \hline
+    Style Customizability  (0.5)  & \textbf{3 (1.5)}         & 3 (1.5)                 & 5 (2.5)            \\
+    Feature Customizability (0.7) & \textbf{4 (2.8)}         & 5 (3.5)                 & 3 (2.1)            \\
+    Layer Customizability (0.9)   & \textbf{5 (4.5)}         & 4 (3.6)                 & 3 (2.7)            \\
+    Tile Hosting Support (0.6)    & \textbf{5 (3.0)}           & 3 (1.8)                 & 3 (1.8)            \\
+    Price (1)                     & \textbf{5 (5.0)}           & 4 (4.0)                   & 3 (3.0)              \\ \hline
+    Total                         & \textbf{16.8}            & 14.4                    & 12.1               \\
+    \end{tabular}
+\caption{Weighted Decision Matrix for Mapping Library Selection}
+\label{table:mapping-matrix}
+\end{table}
+
+The candidate mapping libraries are compared in Table \ref{table:mapping-matrix}. The Google Maps API is the winning mapping library. Although the Google Maps Library lacks full native customizability for both it's map styling and map features, sufficient customizability is found within the native functionality and through the use of add-on libraries. The Google Maps API provides excellent data layer functionality, which is unparalled in feature breadth and support. Finally, the Google Maps combined tile hosting and JavaScript functionality provided within a free service make it the clear choice.
+
 \subsubsection{Visualization Library Selection}
 
 \section{Back End}
