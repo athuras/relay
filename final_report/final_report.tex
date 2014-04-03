@@ -468,6 +468,7 @@ Leaftlet.js is a map-oriented JavaScript Library which provides a variety of map
 Mapbox is a new JavaScript mapping library which works in conjunction with TileMill, a tile styling styling service. TileMill is designed specifically for creating highly-customized map styles, and thus offers very rich styling capability. Due to MapBox's immaturity as a platform, it's feature set is limited and not very customizable. The MapBox JavaScript Library is not structured towards handling data layers, rather individual data points. Furthermore, TileMill tiles must be hosted using a third part platform, or through MapBox directly, which required a paid membership for the service.
 
 \begin{table}
+\centering
     \begin{tabular}{l |r r r l}
     ~                             & \textbf{Google Maps API} & Leaflet.js \& CloudMade & MapBox \& TileMill \\ \hline
     Style Customizability  (0.5)  & \textbf{3 (1.5)}         & 3 (1.5)                 & 5 (2.5)            \\
@@ -484,6 +485,51 @@ Mapbox is a new JavaScript mapping library which works in conjunction with TileM
 The candidate mapping libraries are compared in Table \ref{table:mapping-matrix}. The Google Maps API is the winning mapping library. Although the Google Maps Library lacks full native customizability for both it's map styling and map features, sufficient customizability is found within the native functionality and through the use of add-on libraries. The Google Maps API provides excellent data layer functionality, which is unparalled in feature breadth and support. Finally, the Google Maps combined tile hosting and JavaScript functionality provided within a free service make it the clear choice.
 
 \subsubsection{Visualization Library Selection}
+
+Given the proposed solution's heavy focus on data presentation and visualization, it was important to select a visualization library which supported a wie range of data visualization formats. It was necessary to select a library which allowed for heavy style customization, including line format, colours, grid styles, and legend displays. Considering that traffic information exists in the temporal space, it was imporant that the library handle time series data well. Specifically, functionality for handling timestamp formatting and real-time or high-frequency updating.
+
+The candidate visualization libraries are assessed across 5 feature categories.
+
+\begin{enumerate}
+
+\item \textbf{Prerequisites and Add-Ons} - The selected visualization library should require minimal additional plug-ins or libraries to run. All of the necessary functionality should be available within the core library files. Candidate libraries will be assessed based on the number of additional files or libraries required to perform.
+
+\item \textbf{Implementation Complexity} - The selected visualization should minimize the amount of code required to produce the necessary visualization. Unnecessarily long setup scripts may cause performance issues in the code. Candidate mapping libraries will be assesed by examining example code and tutorials in order to understand the complexity of visualization implementation.
+
+\item \textbf{Time-Series Support} - The selected visualization library should have rich time-series support. The library should support timestamps in various data formats and allow for the display of time values in a variety of formats. Candidate mapping libraries will be assessed based on the extent of the documented time-series formatting functionality available for the library.
+
+\item \textbf{Style Customizability} - The selected visualization library must allow for highly customized visualizations. The library should allow for the customization of visualization style, line style, legend style and placement, grid style and placement, and axis style and placement. Candidate mapping libraries will be assessed based on the extent of documented customizable features available for the library.
+
+\item \textbf{Ease of Updating} - The selected visualization library must support real-time updating of the data within the visualization. The library should either explicitly support data updating through JavaScript methods, or allow for the replacement of the data object and the redrawing of the visualization. Candidate libraries will be assesed based on the perceived presence of such functionality within the library documentation.
+
+\end{enumerate}
+
+Four JavaScript-based visualization libraries were assessed as candidates.
+
+Chart.js is an HTML5-based visualization library, focused on delivering implementations of several core data presentation formats, e.g. bar charts and line charts. Chart.js is a stand-alone library, requiring no outside code. The implementation of visualizations in Chart.js is easy and requires minimal amounts of code. Chart.js does not support any formatting for axis labels, including support for date formatting and time-series support. Chart.js provides an intermediate amount of formatting options for visualizations, however the restriction of the library to 6 main visualization formats limits the presentations options while using this library. Furthermore, Chart.js does not support the updating of chart data in any way, and would require the chart to be recreated in order to display new data.
+
+D3, or Data-Driven Documents, is the most well-known and feautre-rich HTML visualization library today. D3 provides an extremely wide range of visualization formats which are completely customizable. D3 has no pre-requisite libraries, and is a stand-alone library. D3's main downfall is the complexity of implementaion, as basic data presentations can require up to 300 lines of code. As an extension of D3's extreme customizability, it is possible to use time-series data, however the library provides little native formatting support. D3 provides the widest range of visualization options by far. Finally, D3's support of data updating depends on the visualization method used, however it is generally poor due to the static nature of the library.
+
+Flot is a JavaScipt-based visualization library built on top of the jQuery utility library. Flot is a medium-complexity visualization library which emphasizes informative and real-time visualizations. As mentioned, the Flot library requires jQuery to run, however jQuery is already a prerequisite for multiple other libraries and feature in the proposed solution. Flot charts are not designed to be extremely easy to implement; their implementation complexity is significant, yet more efficient than other candidates and understandable given the functionality available. Flot natively offers moderate time-series formatting support: Flot accepts JavaScript timestamps as time-series data, and is able to format said data in a variety of styles. With the addition of a jQuery plugin, the range of styles is greatly increased. Flot provides a moderate amount of customizability for their data presentations. However, due to the open-source nature of Flot, the inner styling variables are publicly known, which allows them to be customized far beyond what is suppored through public JavaScript methods. Finally, Flot handles data updating very well, with explicit JavaScript functions for updating data objects and re-rendering visualizations.
+
+Rickshaw is a new, static visualization library build using D3 functionality. It aims to offer less complex implementations of basic data visualizations using the D3 framework. Obviously, D3 must be loaded in order for Rickshaw to run, which brings the negative performance implications of loading such a large library as D3. Rickshaw data presentations are exceptionally easy to define and require minimal code. However, the immaturity of the library means that only a few plotting styles are supported, greatly limiting the library's capability. Furthermore, Rickshaw is a private library and is thus less accessible to customizing beyond the limited exposed styling options. Rickshaw does provide time-series formatting support, however it is limited in scope and buggy as the library is not yet a mature project. Finally, due to the static nature of the underlying D3 platform, the Rickshaw library has no support for updating the data object, and thus would require the recreation of the visualization.
+
+\begin{table}
+\centering
+    \begin{tabular}{l | r r r r}
+    ~                               & Chart.js & D3      & \textbf{Flot}    & Rickshaw \\ \hline
+    Prerequisites \& Add-Ons (0.5)  & 5 (2.5)  & 5 (2.5) & \textbf{4 (2.0)} & 4 (2.0)  \\
+    Implementation Complexity (0.8) & 4 (3.6)  & 1 (0.8) & \textbf{3 (2.4)} & 5 (4.0)  \\
+    Time-Series Support (0.9)       & 1 (0.9)  & 3 (2.7) & \textbf{5 (4.5)} & 3 (2.7)  \\
+    Style Customizability (0.8)     & 2 (1.6)  & 5 (4.0) & \textbf{4 (3.6)} & 3 (2.4)  \\
+    Ease of Updating (0.9)          & 1 (0.9)  & 2 (1.4) & \textbf{4 (3.6)} & 1 (0.9)  \\ \hline
+    Total                           & 9.5      & 11.4    & \textbf{16.1}    & 12.0     \\
+    \end{tabular}
+\caption{Weighted Decision Matrix for Visualization Library Selection}
+\label{table:visualization-matrix}
+\end{table}
+
+Assessment of the candidate visualization libraries is done through a Weighted Decision Matrix, as seen in Table \ref{table:visualization-matrix}. As seen in Table \ref{table:visualization-matrix}, Flot is the winning visualization candidate. Flot's ecxceptional functionality with regards to time-series data and data updating fit well with the needs of the proposed solution. Furthermore, the Flot visualization library provided a suitable balance of complexity and customizability for the proposed solution.
 
 \section{Back End}
 
