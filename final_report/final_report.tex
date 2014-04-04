@@ -620,6 +620,37 @@ In \ref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is the
     \label{eqn:BPM-update}
 \end{equation}t
 
+\subsection{Predictions in Relay}
+
+\subsubsection{Exploiting Neighborhood Information}
+
+\subsubsection{Making a Prediction}
+
+\begin{equation}
+	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
+	\label{eqn:first-order-pred}
+\end{equation}
+Where
+\begin{equation}
+	d_{e_i} = \sum_{k=0}^{3} p_{kj}^{nbr} \times c_{k}^{nbr}
+	\label{eqn:first-order-d}
+\end{equation}
+
+
+\subsubsection{Higher-Order Predictions}
+
+\begin{equation}
+	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
+	\label{eqn:higher-order-pred}
+\end{equation}
+Where
+\begin{equation}
+	d_{e_i} = \sum_{k=0}^{3} (p_{kj}^{nbr} + Pr_{k}^{nbr}) \times c_{k}^{nbr}
+	\label{eqn:higher-order-d}
+\end{equation}
+	k = neighbor inlet id, \\
+	j = neighbor outlet id
+
 \newpage
 \chapter{Design Testing and Validation}
 
