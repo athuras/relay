@@ -688,6 +688,11 @@ Tables have been created for these and could easily be integrated into the syste
   \end{centering}
 \end{figure}
 
+\subsection{Client-Server Communication}
+It is a goal of the solution to present up-to-date information about the network in the interface. This requires frequent communication between the client and the server. Client-server communication was achieved via the development of an Application Programming Interface (API) on the server, with which the client could connect to receive new information. The API was designed to specifically meet the needs of the solution, as API calls were designed specific features within the interface.
+
+In order to maintain up-to-date information in the interface, the client was required to request new information from the API on a high-frequency schedule. Traditional HTTP requests require for the reload of a web page each time a request is made, so Ajax techniques were used in lieu of traditional HTTP requests. Ajax allows for asynchronous HTTP requests between the client and the server, which do not require the reload of the page upon completion. This successfully allowed for high frequency updates of the client without the negative performance implications of traditional HTTP calls.
+
 \section{Deep End - Relay Framework}
 
 Real-time, distributed traffic control is an interesting problem, with many creative solutions.
@@ -1003,6 +1008,12 @@ This design pattern is commonly referred to as ``Ports and Adapters'' or ``Hexag
 
 \newpage
 \chapter{Recommended Design Modifications}
+
+\section{Front End}
+
+\section{Back End}
+
+\section{Deep End}
 
 \newpage
 \chapter{Timeline and Project Management}
