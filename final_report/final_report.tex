@@ -6,9 +6,11 @@
 \usepackage{ragged2e}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{float}
 \usepackage[toc]{glossaries}
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
+
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
@@ -591,8 +593,141 @@ The value of storing one instance of the intersection and road collection object
 \end{figure}
 
 \section{Back End}
+The infrastructure powering the user-facing component of Relay is colloquially referred to as the ``back-end''.
+The design goal for this particular component consisted of providing all the necessary resources to the client-side application with minimal development effort (effort that would otherwise be spent on more innovative areas of development).
+Additionally, this layer acts as the \emph{glue} that holds together the Relay system.
+This is outlined at a high level in a full system map in Figure \ref{fig:Back_end_system_map}.
+The back-end exposes APIs required for the client-side application (front-end), as well as data processing and scheduling routines for the Relay Framework.
+This component is characterized by an application server, database, and associated services (such as map tiling).
 
-\section{Deep End}
+The core application framework was chosen based on familiarity and flexibility (rather than performance).
+For this task the ``Flask'' python framework was chosen, as many team members had worked in this environment successfully in previous projects.
+
+\begin{figure}[H]
+  \begin{centering}
+    \includegraphics[scale=0.3]{figures/flow-chart.png}
+    \caption{Relay: System Map}
+    \label{fig:Back_end_system_map}
+  \end{centering}
+\end{figure}
+
+Aside from the web-framework, the back-end design choices and technologies are broken up into modules.
+To deliver the minimum viable product, the back-end must support online mapping via either a tile server or third party service, it must have some place to store various geospatial information (database), as well as some service to interface with the controller network (Relay Framework).
+The various module design decisions and technologies selected are detailed below.
+
+\subsection{Server - Flask and Python}
+The Flask application acts a server with Relay passing information through the system to desired endpoints. This application contains functionality for transforming data, making network requests, serving information to front-end, and interacting with the database.
+
+	Relay has multiple components and each works with the data in a specific format. Formatting is kept consistent throughout the system, using JSON formatted strings, but transformations are still required. The main transformation that needs to be performed is to change the time series data from the Erlang-server into information that can be better visualized on the front-end – explained in a <SECTION>.
+
+	Network requests are defined by calls made to the Erlang-server, or “Framework”. The network contains all information regarding intersections, such as current behaviour, plans, and predictions. The Flask application is responsible for extracting this information and sending it to the database, front-end, or both.
+
+	Lastly, the main function of the server is to accept requests from the front-end, process them, and serve the required information. Initially the majority of the information served comes from the database, but once the system is running, data is sent directly from the network to the front-end. This linkage is depicted in the system diagram, Figure \ref{fig:system-diagram}.
+
+\subsection{Database - SQLite3}
+
+As with most applications, the Relay web-service requires some medium to safely and efficiently store structured data, the canonical use case of a database.
+Database technology is highly mature, and for its ease of use, familiarity, and extensive documentation, additionally, many members of the team are familiar with SQL.
+To capitalize on this, a SQL relational database management system was chosen to power the Relay iInterface.
+
+SQLite3 was chosen as the database for its simplicity. 
+These databases are contained entirely within a single file, and as such can be quickly and easily moved around the development environment (as well as captured by version control). 
+The database contains information for: road metrics, intersection metrics, events, and Toronto's intersections and roads, aquired from their public data website <TORONTO>.
+
+'Road metrics' stores the time delay parameters for each segment, along with a timestamp and associated node ids at the ends of the segment. 
+'Intersection status' contains the current status of each intersection. 
+In the case of 'failure' states at any intersection, explainations and further information would be found in 'Intersection events'. 
+Intersection behaviours and plans are not contained within the database as of this iteration. 
+In the future they could be added for historical lookups and use in planning, but for the purposes of the prototype this feature was not included. 
+Tables have been created for these and could easily be integrated into the system.
+
+\begin{figure}[H]
+  \begin{centering}
+    \includegraphics[scale=0.3,  angle=90]{figures/Relay_Backend_System_Diagram.png}
+    \caption{Relay: Back-end System Diagram}
+    \label{fig:system-diagram}
+  \end{centering}
+\end{figure}
+
+\section{Deep End - Relay Framework}
+
+Real-time, distributed traffic control is an interesting problem, with many creative solutions.
+The modules and operators that handle individual intersection signal timing, data collection and backup, and statistical modelling, as well as the network topology that holds it all together is brought under the umbrella term ``Relay Framework''. \\
+
+The goal of the framework is to address the intelligent traffic control problem from the \emph{bottom-up}.
+Within the framework, each intersection is endowed with its own autonomous signal timing controller or ``Agent''.
+In isolation, each Relay Agent seeks to maximize intersection throughput (as measured through various arbitrary metrics) subject to local environmental/contextual constraints. \\
+
+\subsection{Architecture and Design}
+\subsubsection{Relay Intersection Modelling}
+
+In general, any intersection in Relay can be modelled as a graph (physically this is also the case).
+Intersections in Relay are modelled as directed acyclic graphs, where each inlet and outlet are distinct nodes/vertices, and the edges are legal paths that a vehicle could follow to get from one inlet to a corresponding reachable outlet.
+Each edge in the graph (aside from containing reachability/adjacency information) contains probabilistic information pertaining to that particular physical path.
+This is shown in Figure \ref{fig:Relay_Intersection_Graph}.
+At the highest level, the Relay Agent, in conjunction with its local prediction service learns a probability for each edge, which represents the liklihood that a vehicle will choose to traverse that given edge if it arrives at the originating inlet.
+For example, in the case of an intersection with a dedicated left turn lane, the associated edge would have a probability of 1, meaning we would expect that all vehicles who enter the left-turn inlet, proceed to execute a left turn.
+It also follows from this that the sum of out-going edge weights for a given inlet will always be one. \\
+
+\begin{figure}[H]
+	\caption{Relay Intersection Graph Model}
+	\includegraphics[width=\textwidth]{figures/Relay_Intersection_Graph.png}
+	\label{fig:Relay_Intersection_Graph}
+\end{figure}
+
+Similar to the complete intersection graph, legal signal states (i.e. Green vs. Red lights) are also described as a graph.
+These \emph{Behaviours} are subgraphs of the complete intersection graph, with similar properties.
+Thus each behaviour describes a discrete number of inlets (and associated outbound edges) to serve at a given time, in this manner Behaviours can be chosen (by the controller) to serve the inlets that best maximize short-horizon flow.
+Additional information regarding this process is discussed in the ``Relay Agent'' section below.\\
+
+\subsubsection{Relay Agent}
+The Agent module contains all the necessary ingredients for soft-real-time acyclic reactive adaptive signal timing.
+An outline of the Agent module is contained in Figure \ref{fig:Relay_Agent_Controller}.
+The controller is set up as a maximization process which weighs the current and predicted traffic profile (as well as queue statistics if they are available) and selects the appropriate \emph{behaviour} to optimally fulfill its objective function.\\
+
+\begin{figure}[H]
+	\caption{Relay Agent Controller}
+	\includegraphics[width=\textwidth]{figures/Relay_Agent_Controller.png}
+	\label{fig:Relay_Agent_Controller}
+\end{figure}
+
+Similar to the Relay Intersection model, the behaviour transition graph (or matrix, depending on the implementation) contains information related to the cost associated with changing the current signal, as well as logistic information such as minimum behaviour durations.
+Where signal behaviours are encoded as nodes/vertices, transition costs (dead time, minimum signal duration, vehicle lag, etc.) are among the edge properties. \\
+
+For example, switching the direction of traffic flow cannot be done instantaneously, furthermore in most countries there is a minimum amount of ``red'' time that must be allocated in both directions to allow lagging traffic to safely exit the intersection.
+Thus the amount of time required to switch a particular signal behaviour depends on the current state of the intersection.
+As another example, consider the concept of an \emph{advance-green} a behaviour typically following ``red''-time favouring a particular direction, granting vehicles wishing to turn left right of way for an arbitrary amount of time.
+In Relay, this advance green signal is treated no differently from any other signal behaviour.
+In this case the associated transition cost to switch behaviours from advance green to \emph{full} green is very low.
+This information is encoded in the edges of the behaviour transition graph. \\
+
+Aside from dictating the signal behaviours and durations, the Agent is also responsible for updating its internal intersection probabilities, and processing/interpreting local traffic sensor data.
+It is important that in the scope of this project, we have assumed we have \emph{perfect} traffic data at the intersection level.
+We acknowledge that this is a large assumption that is not necessarily realistic most traffic systems have notoriously poor sensing capabilities \cite{Miovision:2012}.
+However as a matter of scope, many companies (such as the Kitchener-based Miovision) have commercial solutions to this problem.
+As a coping mechanism, it may be possible to leverage the Relay prediction service to develop an internal \emph{trust} model associated with each intersection's sensors.\\
+
+\subsubsection{Network Topology}
+
+To a particular Agent, the Relay Framework appears as a mesh network centred around it.
+The choice of network topology was not difficult given our design constraints (for the Framework) include a high degree of fault tolerance, robustness, and physical distribution.
+Peer-to-peer (p2p) Mesh network topology (aside from being relatively novel) is a natural fit for these kinds of constraints.
+Particularly as many of the technology's weaknesses (poor latency, poor scaling behaviour for complete connectivity of all Agents, etc.) are explicitly avoided by the Relay Framework Architecture.\\
+
+In traditional Mesh Networks, each node is tasked with repeating the messages of other nodes to its neighbours/peers.
+This results in a lot of overhead for individual nodes.
+Within the Relay Framework, Intersection Agents do not require an active connection to every other Agent in the network, they only care about their immediate (or to some finite-depth) neighbours.
+This depth-wise priority is shown in Figure \ref{fig:Relay_Network}.\\
+
+\begin{figure}[!htpb]
+	\caption{Relay Network Neighbourhood}
+	\includegraphics[width=\textwidth]{figures/Relay_Network.png}
+	\label{fig:Relay_Network}
+\end{figure}
+
+Alternative network topologies have been used by current adaptive traffic implementations.
+For small scale (arterial) installations, it is trivial to have all agents permanently connected to all peers.
+Modern installations have also implemented so-called ``cloud-service'' based approaches, and Miovision's Spectrum is one such example.\\
 
 \subsection{Learning in Relay}
 \subsubsection{Design Parameter Updates}
@@ -620,7 +755,7 @@ Below, in Figure \ref{fig:time-delay-est}, an example estimate is performed.
 Two signals are provided (departure is pre-calculated within the agent and not shown here), trimmed, and then the optimization procedure is executed. 
 The resulting distribution is overlaid on the downstream signal and estimated time delay gamma plotted above.
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
   \begin{centering}
     \includegraphics[scale=0.75]{figures/time-delay-est.png}
     \caption{Example time delay estimation.}
@@ -637,11 +772,11 @@ These represent the likelihood of a signal to travel along this edge during the 
 Figure \ref{fig:BPM-example} provides a visualization of this to help parse this idea. 
 The matrix represents how these edge probabilities are used within the system; in the matrix, departing nodes are along the columns and entering along the rows -- $p_{02}$ would represent entering node 0 and exiting node 2. 
 It is seen in the diagram that an event occurring at node 0 has a 60\% likelihood of exiting node 2, for this behaviour.
-It is important to not that edges that are not traversable will always have a probability of 0. 
+ It is important to not that edges that are not traversable will always have a probability of 0. 
 Essentially, this probability matrix is used to split an entering signal into components, to then be combined with other estimates in a departing signal. 
 This estimated signal is then used in combination with the time delay estimation to predict expected traffic, which will be discussed further in the following section.
 
-\begin{figure}[htbp!]
+\begin{figure}[H]
   \begin{centering}
     \includegraphics[scale=0.3]{figures/BPM-example.png}
     \caption{Example intra-agent edge probabilities for node 0.}
@@ -665,14 +800,50 @@ p_{30} & p_{31} & p_{32} & p_{33} \\
 \paragraph{Updating BPMs}
 After the optimization procedure has arrived at a solution, the existing BPM must be updated. 
 It would be unwise to directly use the newly calculated BPM as temporary inhibitors to traffic flow, such as accidents, can greatly skew results. 
-Therefore, a learning parameter is used to update existing probabilities, seen in Equation \ref{eqn:BPM-update}. 
+Therefore, a learning parameter is used to update existing probabilities, seen in Equation \eqref{eqn:BPM-update}. 
 This can be tuned, on an agent-by-agent basis, to alter how quickly these values are modified and adapt – an average of the two values is a good starting point, to enable quick transitions, while remaining relatively stable. 
-In \ref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is the newly estimated behaviour probability matrix for that agent.
+In \eqref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is the newly estimated behaviour probability matrix for that agent.
 
 \begin{equation}
     BPM_{new}^{i} = \alpha^{i} \times BPM_{old}^{i} + (1 - \alpha^{i}) \times BPM_{est}^{i}
     \label{eqn:BPM-update}
 \end{equation}t
+
+\subsection{Predictions in Relay}
+Making predictions of traffic is an essential component of Relay. 
+This is the foundation of intelligence in the system and assists each agent in making decisions regarding behaviour execution. 
+Predictions represent an estimation of local traffic $x$ seconds into the future, with the length being determined by the needs of the controller. 
+Higher-order predictions, one’s that require information from the larger neighborhood, can also be generated, but with less fidelity. 
+The details on how these predictions are performed is discussed below.
+
+\subsubsection{Exploiting Neighborhood Information}
+
+\subsubsection{Making a Prediction}
+
+\begin{equation}
+	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
+	\label{eqn:first-order-pred}
+\end{equation}
+Where
+\begin{equation}
+	d_{e_i} = \sum_{k=0}^{3} p_{kj}^{nbr} \times c_{k}^{nbr}
+	\label{eqn:first-order-d}
+\end{equation}
+
+
+\subsubsection{Higher-Order Predictions}
+
+\begin{equation}
+	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
+	\label{eqn:higher-order-pred}
+\end{equation}
+Where
+\begin{equation}
+	d_{e_i} = \sum_{k=0}^{3} (p_{kj}^{nbr} + Pr_{k}^{nbr}) \times c_{k}^{nbr}
+	\label{eqn:higher-order-d}
+\end{equation}
+	k = neighbor inlet id, \\
+	j = neighbor outlet id
 
 \newpage
 \chapter{Design Testing and Validation}
@@ -680,6 +851,20 @@ In \ref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is the
 \section{Front End}
 
 \section{Back End}
+As the intermediate layer between the Relay Framework, and the Relay Interface, the back-end performs little in the way of computation (other than ETL associated with communication).
+Thus the main requirement is to respond to requests from the Relay Interface promptly.
+Noticeable lag between modules, especially as it relates to the interface can dramatically reduce the end-user experience.
+While this may not be of paramount importance for prototyping, it does become useful during development, and is further exacerbated by our technological constraints (hosting the platform locally on our personal computers).
+
+That said, within the realm of software development there are a large battery of tests/testing-related-philosophies that could see application within this project.
+At the highest level, system integration tests will be used to ensure platform robustness, especially in development.
+At the code module level, the typical suite of unit tests will be used to assert correctness.
+However, due to time requirements, rigorous testing is neither wanted nor warranted, and as such only the most critical systems will be tested in this way.
+For example, the request handler is invoked every time the Interface needs new information, this module should be exceptionally robust to failure.
+In a similar fashion, database connections can involve a significant amount of complexity if handled poorly.
+Within this respect we follow the motto that the architecture should guide development to reduce the likelihood of system failure.
+In this string, we have endeavoured to architect the Relay system as multiple pseudo-independent modules, each with their own functional (correct) core.
+This design pattern is commonly referred to as ``Ports and Adapters'' or ``Hexagonal Architecture''.
 
 \section{Deep End}
 
@@ -688,6 +873,93 @@ In \ref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is the
 
 \newpage
 \chapter{Timeline and Project Management}
+
+\section{Tasks and Deliverables}
+
+\subsection{Fall 2013}
+Below is an overview of the tasks to be completed over the Fall 2013 term. 
+These outline the major milestones and steps that will be taken to create the first prototype, presented at the end of this term. 
+The description column goes into detail about what will be performed in this task, and in many cases describes what will be included in that tasks deliverable. 
+The deliverable column, where applicable, identifies the high-level product of each specific task.
+\\
+
+\begin{longtable}[htbp] {| P{2.5cm} | P{10cm} | P{2.5cm} |}
+    \hline
+    Task                                       & Description                                                                                                                                                                                                                                                                                                                                                                                & Deliverable                                        \\ \hline
+    Idea Generation (W0-W1)                    & Researched existing solutions that attempt to tackle the problem or interest, or something similar. Brainstormed ideas and identified shortcomings of existing products to determine specifications and features of our proposed solution. Researched applicable technologies that will be potentially useful in building solution. Met with supervisor to gain initial thoughts. & N/A                                                \\ \hline
+    Design Proposal (Oct 11)                   & Outlining and detailing the proposed design project idea. State of the art, needs analysis, and design specifications and requirements are provided.                                                                                                                                                                                                                                       & Report                                             \\ \hline
+    Gain Supervisor Insight (W2)               & Meet again with supervisor to discuss our proposed idea and plan. Get his insight on our solution/plan/etc. and input on what we could change or improve.                                                                                                                                                                                                                                  & Copy of Design Proposal                            \\ \hline
+    Design Proposal Presentation (W2)          & Presentation of project proposal. Summarize contents of report and gain feedback from classmates on idea. This will be a project `defence' and will also gain feedback from MBET students.                                                                                                                                                                                                 & Presentation and slides                            \\ \hline
+    Design Critique/ Feedback (W2)             & Submit an assessment for two other projects both during presentation and prototype demo.                                                                                                                                                                                                                                                                                                   & Report                                             \\ \hline
+    Low-fidelity Simulation Design (W3)        & Based on proposal, begin designing simulation environment for underlying system. This will be a set of wireframes and sketches of the final product. The team will discuss and iterate on these until a final design is chosen.                                                                                                                                                             & Wireframes and sketches of proposed solution       \\ \hline
+    Early System Architecture (W3)             & Based on proposal begin designing and further researching each of the initial ideas. Obtain better understanding of what will be required to be developed (e.g. intersection network). Decide what technology will be used (e.g. CartoDB).                                                                                                                                                 & System architecture design and required technology \\ \hline
+    Ongoing Research and Learning (W3 - W5)    & Perform further research on technologies and knowledge required to construct system. Will need to learn concepts in: machine learning, neural networks, network programming, distributed systems, and simulating these types of systems.                                                                                                                                                   & N/A                                                \\ \hline
+    Update Meeting (W3/4)                      & Meet with supervisor to discuss current progress. Bring up any difficulties we are having and work through these.                                                                                                                                                                                                                                                                          & N/A                                                \\ \hline
+    Mid-Fidelity Design (W3 - W4)              & Basic Quartz Composer mock-up created. This will have interactions developed and will allow us to iterate and improve the simulation environment.                                                                                                                                                                                                                                          & Quartz Composer mock-up                            \\ \hline
+    Mid-Fidelity System Architecture (W4 - W6) & Designing functionality of ``actors'' (i.e. intersections). Begin development of network architecture (how do you connect all actors together?). Further research of programming paradigms required to construct the system.                                                                                                                                                                 & Architecture designs                               \\ \hline
+    High-Fidelity Simulation Design (W6)       & High quality quartz composer mock-up. Have all basic functionality designed and prototyped. UI assets designed/created.                                                                                                                                                                                                                                                                    & Quartz-Composer mock-up                            \\ \hline
+    Initial System Development (W6 - W7)       & Begin construction of system: ``agents'', ``network'' components, application infrastructure. Begin designing/building interfaces with sim-env.                                                                                                                                                                                                                                                & N/A                                                \\ \hline
+    Sim-env Dev (W7-W8)                        & Begin developing the simulation environment. Create basic features.                                                                                                                                                                                                                                                                                                                        & Passes unit tests                                  \\ \hline
+    Finish Prototype System Dev (W7-W8)        & Ability to set-up a network of actors, actor functionality established, and actors able to `talk' to each other.                                                                                                                                                                                                                                                                           & Passes unit tests                                  \\ \hline
+    Simulation and System Testing (W8-W9)      & Testing of sim-env and system for prototype demo. Fix any issues that arise.                                                                                                                                                                                                                                                                                                               & Passes unit tests                                  \\ \hline
+    Design Critique (TBD)                      & This will be a presentation to a group of ``Dragon's''. Similar to design proposal presentation and group will defend the proposed idea and solution. Will go in depth in how the solution is superior to current state of art.                                                                                                                                                              & Presentation and slides                            \\ \hline
+    Prototype Demo (Nov 29)                    & First demo of project. Team will present the first prototype that has been created. Will identify challenges that arose, what modifications needed to be made, and what the next steps will be to reach end goal.                                                                                                                                                                          & Presentation, demo, and slides                     \\ \hline
+    Design Brief (Dec 7)                       & ~        Summary of progress this term.                                                                                                                                                                                                                                                                                                                                                                                   & ~           Report                                       \\ \hline
+    Outreach Presentation (TBD)                & Participate in UW sponsored event to demonstrate project. Will be used to showcase SYDE design projects and gain outside feedback on our project.                                                                                                                                                                                                                                          & ~                     Presentation, summary.                             \\ \hline
+
+\end{longtable}
+
+\subsection{Winter 2014}
+Below is an overview of the tasks to be completed over the Winter 2014 term.
+These outline the major milestones and steps that will be taken to create the final prototype, presented at the final symposium.
+The description column goes into detail about what will be performed in this task, and in many cases describes what will be included in that tasks deliverable.
+The deliverable column, where applicable, identifies the high-level product of each specific task.\\
+
+\begin{longtable}{|p{4.5cm}|p{6cm}|p{4.5cm}|} \hline
+    Task                                              & Description                                                                                                & Deliverable                           \\ \hline
+    Team Debrief, Update (W1)                         & After the Holiday's team will meet over the first few weeks to get back up to speed with what was accomplished the previous term and over the break as well. Will begin creating a detailed list of tasks to be completed.         & N/A                                   \\ \hline
+    Response to Feedback (Jan 21)                     & Details of this report TBD                                                                                                                                                                                                         & Report                                \\ \hline
+    Meet with Supervisor (W2)                         & Meet again with supervisor to discuss our progress and plan. Get his insight on our solution/plan/etc. and input on what we could change or improve.                                                                               & N/A                                   \\ \hline
+    Actor Development and Research (W2)               & Continue building functionality of ``actors'' (i.e. intersections). Begin development of network architecture (how do you connect all actors together?). Further research of programming paradigms required to construct the system. & Architecture designs and construction \\ \hline
+    Application Development (W2)                      & Continue iterating on current interface/interaction design. Add more features (e.g. advanced traffic information panel) and incorporate newest functionality from back-end.                                                        & Updated interfaces and application    \\ \hline
+    Network Development (W3-W4)                       & Ability to set-up a network of actors, actor functionality established, and actors able to ?talk? to each other.                                                                                                                   & Passes unit tests                     \\ \hline
+    Online Predictive Model Prototyping (W4-W5)       & Begin prototyping algorithms for controlling the network. Will utilize knowledge gained from researching other systems and reading papers on current state of the art.                                                             & Direction to proceed with algorithms  \\ \hline
+    Small Network Trials (W4 - W5)                    & With algorithms, perform tests with a small network of actors (e.g. 2-5 nodes). Iterate on designs as needed. Also, connect with front-end to test data streaming capabilities.                                                    & Passes network tests and benchmarks   \\ \hline
+    Update Meeting and Simulation Research (W4/5)     & Meet with supervisor to discuss current progress. Bring up any difficulties we are having and work through these. Continue investigating simulation environments. May revise timeline after decision about this is made.           & Simulation environment understanding  \\ \hline
+    Prototype Update Demo/ Feedback (Jan 31 - Feb 11) & Present updated prototype. Show current progress and gain feedback from peers. Make changes to solution based on this where needed.                                                                                                & Feedback, Presentation                \\ \hline
+    Online Predictive Model Development (W5 - W6)     & Based off prototype and testing conducted, formalize the algorithms to be used in traffic control. May updated after large-scale network tests completed                                                                           & Passes network tests and benchmarks   \\ \hline
+    Application Development (W6)                      & Continue adding features to the interactive application. Integrate more features with back-end                                                                                                                                     & Refined application experience        \\ \hline
+    Larger Network Tests (W6 - W7)                    & With algorithms, perform tests with a larger network of actors (e.g. \~50-100 nodes). Changes to model will be made based on the results of this.                                                                                  & Passes network tests and benchmarks   \\ \hline
+    High-Fidelity Model Development (W7-W8)           & Continue adding features to algorithms, improving stability, testing network, and providing information for front-end                                                                                                              & Passes unit tests                     \\ \hline
+    High-Fidelity Application Development (W7-W8)     & Finish developing application. Test all functionality to ensure it meets the goals.                                                                                                                                                & Passes unit tests                     \\ \hline
+    Final testing (W8-W9)                             & Testing of sim-env and system for prototype demo. Fix any issues that arise.                                                                                                                                                       & Passes unit tests                     \\ \hline
+    Symposium (Mar 14)                                & Team will present the prototype that has been created. Will identify challenges that arose, what modifications needed to be made, and how goals were met or revised.                                                               & Demo, Slides, Presentation            \\ \hline
+    Project Video (Mar 25)                            & Details TBD.                                                                                                                                                                                                                       & Video of project                      \\ \hline
+    Final Submission (Apr 4/8)                        & Completion of all deliverables.                                                                                                                                                                                                    & Report, logbook, etc.                 \\ \hline
+    Outreach Presentation                             & Completed in Fall 2013.                                                                                                                                                                                                            & Presentation, summary                 \\ \hline
+\caption{Tasks and Deliverables}
+\label{table:tasks-deliverables}
+\end{longtable}
+
+\subsection{Gantt Charts - Fall and Winter}
+ Below are two Gantt charts outlining the group's efforts over both the Fall 2013 and Winter 2014 terms.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.22, angle = 90]{figures/gantt-fall.png}
+\caption{Gantt Chart for Fall 2013.}
+\label{fig:gantt-fall}
+\end{figure}
+
+\newpage
+\subsection{Gantt Chart}
+\begin{figure}[H]
+  \begin{centering}
+    \includegraphics[scale=0.5, angle=180]{figures/gantt-vertical.png}
+    \caption{Gantt Chart for Winter 2014}
+    \label{fig:gantt-winter}
+  \end{centering}
+\end{figure}
 
 \newpage
 \section{Conclusion}
