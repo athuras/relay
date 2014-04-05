@@ -15,6 +15,10 @@
 \DeclareMathOperator*{\argmax}{\arg\!\max}
 \newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
 
+\newenvironment{conditions*}
+  {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
+  {\end{tabular}\par\vspace{\belowdisplayskip}}
+
 \makeglossaries
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -58,8 +62,43 @@
 \doublespacing
 \pagenumbering{arabic}
 
-\chapter{Background Information}
+\chapter{Introduction}
 \setlength{\parindent}{1cm}
+This Design Project Implementation Plan will act as an update for interested parties on the progress made to date on Relay, the team's SYDE 461 Design Project. The problem background is discussed and a problem statement is provided. An overview of the solution is then presented: objectives, functional requirements, and design constraints are reviewed for each major solution component. An overview of the system design process is then presented, and a discussion on progress and insights to-date. Finally, an updated project plan and financial budget are presented.\\
+
+
+\section{Background}
+Motorists and pedestrians alike can relate to the frustration that comes from being stopped unnecessarily at a red light, waiting for it to turn green with no other cars in sight.
+The intelligence of a traffic light can vary from a static, fixed timer, to a relatively intelligent node which considers existing traffic conditions, the performance of adjacent nodes, and the like.
+However, even Adaptive Traffic Control (ATC) Systems today often irritate drivers as they are still unable to intelligently adapt to the wide variety of variables that affect traffic performance.\\
+
+Large metropolitan areas are acknowledging the need for advanced traffic management systems as the size and density of urban areas continues to increase.
+Over the past 29 years, the city of Los Angeles has developed a home-grown solution to handle the massive amounts of volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
+The City of Montreal recently signed to adopt Transcore's TransSuite Advanced Traffic Management System (ATMS), which will control over 2000 intersections by completion \cite{montreal-transcore}.
+There is strong need for ATCS technology in the world today, and there is a large opportunity for state-of-the-art ATC systems.\\
+
+There are many industry-accepted and adopted ATC systems, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore.
+The method by which each system achieves enhanced performance varies: systems such as the LA ATCS implementation rely solely on road-planted magnetic sensors, whereas more advanced systems such as Miovision Spectrum utilize image processing technology.
+The effectiveness of existing systems is noticeable but not impressive.
+For example, LA ATCS, the largest ATCS implementation in North America, claims to reduce drive time on major corridors by 12\% \cite{la-atcs-article}, this aggregate statistic heavily biases freeway control but is currently suboptimal for average intersections.
+Today's ATCS systems provide incremental gains on existing traffic control paradigms which have not changed for generations.\\
+
+Significant advancements in Adaptive Traffic Control systems have been seen in academia.
+Research efforts have been made towards novel architectures such as agent-based distributed systems which implement advanced machine learning and neural network concepts.
+These revolutionary concepts have demonstrated significant gains in efficiency via simulated comparisons to existing industry systems \cite{1688100, 5073360, uot-article}, and some have even run trial implementations on real transit networks \cite{uot-article}.
+However, these novel methods have yet to gain traction in industry, which continues to implement incremental advances based on old traffic control paradigms.\\
+
+Furthermore, access to the data from such systems is largely kept for internal analysis by the government organizations, suffocating further technological development by industrial and academic organizations.
+No existing systems offer consumer access to the system's data in any form.
+It takes little imagination to realize the possible benefits, if real-time traffic network information was available to consumer route-planning technology.\\
+
+In essence, there currently exists no industry-accepted Adaptive Traffic Control System, which adequately meets current and future transportation demands on urban road networks.
+Current solutions offer incremental improvements on old strategies, and provide insufficient performance increases.
+Without such a system, the inefficiency of crucial transportation methods will continue to increase, leading to greater financial, environmental, and sociological consequences.
+A fundamentally different approach to traffic control is necessary, one which fully utilizes today's technological advances and novel methods for approaching complex, network-based problems.
+The solution must meet the needs of transportation authorities, who will be responsible for overseeing the performance and maintenance of the system, and are ultimately responsible for the system.
+The solution must also meet the needs of the population which it serves, providing transparent access to it's operation and allowing consumers to take full advantage of the information and insight which the system can provide.
+The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.\\
 
 \newpage
 
@@ -708,6 +747,7 @@ However as a matter of scope, many companies (such as the Kitchener-based Miovis
 As a coping mechanism, it may be possible to leverage the Relay prediction service to develop an internal \emph{trust} model associated with each intersection's sensors.\\
 
 \subsubsection{Network Topology}
+\label{subsubsec:net-top}
 
 To a particular Agent, the Relay Framework appears as a mesh network centred around it.
 The choice of network topology was not difficult given our design constraints (for the Framework) include a high degree of fault tolerance, robustness, and physical distribution.
@@ -796,6 +836,60 @@ p_{30} & p_{31} & p_{32} & p_{33} \\
 \]
 
 \paragraph{Learning Probabilities}
+This is an extremely challenging multi-objective optimization problem and multiple approaches were taken to try to solve it. 
+As with the time delay estimation, this is essentially a least squares problem, but much more complex. Equation \eqref{eqn:bhvr-opt} outlines the optimization procedure.  \\
+
+\begin{equation*}
+\label{eqn:bhvr-opt}
+\begin{aligned}
+& \text{minimize}
+& & \sum_{j=0}^{3}\sum_{k=0}^{n} \left \| d_{kj} - \sum_{i=0}^{3}(p_{ij} \times c_{ki}) \ast \tau_j \right \| \\
+& \text{subject to}\\
+& & \sum_{i=0}^{3} P_{ij} = 1 \\
+& & p_{i=j} = 0 \\
+& & 0 \leq p_{i\neq j} \leq 1
+\end{aligned}
+\end{equation*}
+Where:
+\begin{conditions*}
+j & outlet node \\
+i & inlet node \\
+k & index in sampled signal \\
+d_{kj} & $k^{th}$ element in downstream neighbour arrival signal connected to agent node $j$ \\
+c_{ki} & $k^{th}$ element in inlet signal at agent node $i$ \\
+p_{ij} & corresponding inlet-outlet edge probability \\
+\tau_{j} & time delay distribution along edge connecting agent node $j$ to neighbor \\
+\end{conditions*}
+
+This is an underdetermined system and thus cannot be solved with normal optimization methods, as is. 
+The first alternative method attempted was reinforcement learning (RL).
+ RL attempts to punish or reward actions for their ability to reach a desired outcome. 
+In this problem, edges would be rewarded when their estimated signal closely matched a portion of the real downstream signal. 
+Conversely, they would be punished when the estimated signal, over- or under-estimated the downstream one. When investigated further it was determined that this problem does not quite fit the requirements for an RL implementation and would be difficult to transform this into something that could work with existing python RL libraries (e.g. PyBrain). \\
+
+Next, reducing the number of design parameters was investigated. 
+For a given behaviour, some edge probabilities will always be 0 – these edges are not allowed paths – and therefore these could be removed and the problem space reduced. 
+This method was determined to be infeasible due to the fact that a customized optimization procedure would need to be written for each possible behaviour – the Python implementation for optimization requires that constraints be explicitly written for the procedure to work. 
+Running the procedure without constraints was tested, but this failed as invalid edge probabilities were found (i.e. greater than 1 or less than 0), as expected. \\
+
+Thirdly, attempting to solve the problem with a linear least squares regression model ($Ax=b$) was performed. 
+The signals were taken into Fourier space to remove convolution from the equation, and parameters solved. 
+The $A$ matrix in this formulation is unknown and represents the behaviour probability matrix. 
+It was isolated and solved for with the formulation: \\
+
+\begin{align}
+	A& = DX^{T}M \\
+	M& = (X^{T}X)^{+} \\
+	X& = C \ast \tau
+\end{align}
+Where:
+\begin{conditions*}
+D & vector of neighbor departing signals \\
+C & vector of arrival signals
+\end{conditions*}
+
+This formulation was tested and found to not produce useable results. 
+Again, probabilities were found that did not fit within the required constraints.\\
 
 \paragraph{Updating BPMs}
 After the optimization procedure has arrived at a solution, the existing BPM must be updated. 
@@ -807,7 +901,7 @@ In \eqref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is t
 \begin{equation}
     BPM_{new}^{i} = \alpha^{i} \times BPM_{old}^{i} + (1 - \alpha^{i}) \times BPM_{est}^{i}
     \label{eqn:BPM-update}
-\end{equation}t
+\end{equation}
 
 \subsection{Predictions in Relay}
 Making predictions of traffic is an essential component of Relay. 
@@ -816,34 +910,73 @@ Predictions represent an estimation of local traffic $x$ seconds into the future
 Higher-order predictions, one’s that require information from the larger neighborhood, can also be generated, but with less fidelity. 
 The details on how these predictions are performed is discussed below.
 
-\subsubsection{Exploiting Neighborhood Information}
+\subsubsection{Utilizing Neighborhood Information}
+As discussed in section~\ref{subsubsec:net-top}, agents are connected to each of their neighbors, forming a grid-like mesh structure. 
+This design choice allows for each agent to ``talk” with its neighbors, gaining access to all information stored. 
+This ``sharing” of information is essential to keep agents informed on events occurring in the neighborhood.
+Information is either requested or directly sent to a specific agent, depending on the type: current queues, predictions, plans, events, etc.
+ Agents can freely communicate by simply ``asking” their neighbors for the specified data. 
+An event centre is constructed on each agent to handle incoming and outgoing requests, making communication efficient and standardized across the network (discussed further in later sections). \\
+
+	While an agent is not directly connected to other agents in its extended neighborhood, if required, it can indirectly access this information. 
+Any agent can ``inject" requests into its neighbors to obtain information from their neighbors, and so on (again, specifics discussed in later sections). 
+This isn’t used often, as fidelity decreases quickly as requests propagate outward, but, for example, it is necessary for calculating higher-order predictions. \\
+
 
 \subsubsection{Making a Prediction}
+To make a prediction, the agent must combine the learned edge probabilities with the time delay estimates for each neighboring agent. 
+This utilizes previously calculated information about the agent’s in the neighborhood, to derive a predicted incoming signal for each node at the agent of interest. 
+Equation \ref{eqn:first-order-pred} outlines the basic formulation for making this prediction, $Pr_{i}$, where $i$ represents the inlet node id. 
+If the length of signal initially calculated is longer than the requested time, excess information will be trimmed. 
+If the length requested is longer than this next-neighbor prediction, a higher-order prediction is calculated, known as $Pr_{i}^{*}$.\\
+
+This information also creates useful visualizations for traffic engineers, giving them the ability to ``see into the future”. 
+While they wouldn’t necessarily act upon this information, they would have an expectation of traffic at each intersection. 
+It also gives context for why the next behaviour was selected (i.e. the ``plan") – this is discussed further in later sections.\\
 
 \begin{equation}
 	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
 	\label{eqn:first-order-pred}
 \end{equation}
-Where
 \begin{equation}
-	d_{e_i} = \sum_{k=0}^{3} p_{kj}^{nbr} \times c_{k}^{nbr}
+	d_{e_i} = \sum_{k=0}^{3} p_{kj}^{nbr} \times c_{k,i}^{nbr}
 	\label{eqn:first-order-d}
 \end{equation}
+Where:
+\begin{conditions*}
+p_{kj}^{nbr} & edge probability for signal at $k^{th}$ neighbor node, exiting $j^{th}$ node \\
+d_{e_i} & expected departing signal from neigbhor node connected to agent node $i$ \\
+c_{k,i}^{nbr} & real incoming signal at $k^{th}$ node of neighbor agent connected to agent node $i$ \\
+\tau_{i} & time delay distribution along edge connecting agent node $i$ to neighbor \\
+k & neighbor inlet id \\
+j & neighbor outlet id
+\end{conditions*}
 
 
 \subsubsection{Higher-Order Predictions}
+As mentioned previously, if the requested prediction is longer than the neighbors can provide, a higher-order, or remote, prediction is made. 
+This is performed in the same manner as a first-order prediction, but utilizes each neighbor’s current incoming prediction signal as well, $Pr_{k,i}^{nbr}$.
+ If even larger predictions are required, predictions can be extended to more distant nodes, but these would be very low quality and carry low weight – these are multiplied by each intersections edge probability, intrinsically lowering their strength. 
+Again, the signal is trimmed at the end to match the requested length.\\
 
 \begin{equation}
-	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
+	Pr_{i} = d_{e_i} \ast \tau_{i}
 	\label{eqn:higher-order-pred}
 \end{equation}
-Where
 \begin{equation}
-	d_{e_i} = \sum_{k=0}^{3} (p_{kj}^{nbr} + Pr_{k}^{nbr}) \times c_{k}^{nbr}
+	d_{e_i} = \sum_{k=0}^{3} (p_{kj}^{nbr} + Pr_{k,i}^{nbr}) \times c_{k,i}^{nbr}
 	\label{eqn:higher-order-d}
 \end{equation}
-	k = neighbor inlet id, \\
-	j = neighbor outlet id
+Where:
+\begin{conditions*}
+Pr_{k,i}^{nbr} & prediction signal at $k^{th}$ neighbor node, connected to agent node $i$ \\
+p_{kj}^{nbr} & edge probability for signal at $k^{th}$ neighbor node, exiting $j^{th} $node \\
+d_{e_i} & expected departing signal from neigbhor node connected to agent node $i$ \\
+c_{k,i}^{nbr} & real incoming signal at $k^{th}$ node of neighbor agent connected to agent node $i$ \\
+\tau_{i} & time delay estimation along edge connecting agent node $i$ to neighbor \\
+k & neighbor inlet id \\
+j & neighbor outlet id
+\end{conditions*}
 
 \newpage
 \chapter{Design Testing and Validation}
@@ -960,6 +1093,8 @@ The deliverable column, where applicable, identifies the high-level product of e
     \label{fig:gantt-winter}
   \end{centering}
 \end{figure}
+
+\subsection{Performance Review}
 
 \newpage
 \section{Conclusion}
