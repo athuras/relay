@@ -1011,7 +1011,31 @@ This design pattern is commonly referred to as ``Ports and Adapters'' or ``Hexag
 
 \section{Front End}
 
+\subsection{User Interface}
+
+\subsection{Application Architecture}
+
+% Custom Mapping library
+
+% Security Enhancements
+
+% Permissions and Authorization
+
 \section{Back End}
+
+\subsection{Client-Server Communication Improvements}
+
+The existing implemented API was sufficient for demo purposes. However, it is limited in it's functionality, modularity, and scalability. The current API architecture is designed specifically for the information requirements defined in the solution. This means that any future solutions would require new API calls to be added to the architecture. Furthermore, the existing API architecture does not have the full range of functionality required for a production-level application.
+
+First, the API should be converted to a Representational State Transfer (RESTful) API architecture. RESTFul allows for the hierarchical representation and access of information from the server. Following this method greatly increase the modularity of the API, making it more accomodating to future changes in the application, and preparing the system for potential public use.
+
+Second, the API should provide richer functionality for specifying request details. Enhancing API requests to consider paramters such as maximum count and other filtering parameters improves performance by preventing the transfer of unnecessary data from the server to the client.
+
+Switching to a RESTful architecture and implementing richer parameter support both improve the scalability and robustness of the API, which are crucial features for such a critical application.
+
+WebSocket technology takes a fundamentally different approach to client-server communication. Instead of making multiple synchronous HTTP requests to a server over time, WebSocket technology establishes a single connection between the client and server, or which information is streamed as necessary. This greatly improves performance and scalability, as large HTTP requests can be send bit-by-bit in a constant stream. Furthermore, it allows for real-time updating for information, which is not bound to the updating schedule of the client. Unfortunately, WebSocket technology is relatively new and immature in comaprison to HTTP communication, and thus does not have the necessary reliability and support to be the sole communication technology in this situation.
+
+WebSocket technology should be implemented in the Relay Application as an enhancement to the existing HTTP channels. If available, the WebSocket could be used to improve performance by sending localized, real-time updates of traffic data to the client, while lowering the update frequency of HTTP requests. HTTP requests could then be used for initialization purposes, such as gathering static data and initial data loads.
 
 \section{Deep End}
 
