@@ -1054,7 +1054,6 @@ Intra-agent transition graph (intersection).
 Time delay kernels.
 Exponential prediction decay (weigh predictions far in the future less).
 
-
 \subsection{The Relay Agent}
 \label{sec:def:agent}
 
@@ -1093,14 +1092,14 @@ It is thus the case that the sum of all exit probabilities associated with a giv
 \end{equation}
 
 
-\subsubsection{Behaviors}
+\subsubsection{Agent Behavior}
 \label{sec:def:behaviors}
 
 If the goal of these structures is to describe the Agent's representation of the state of the intersection it controls, then $\bf{G}$ is insufficient---after all, taken at face value, $\bf{G}$ implies that if two vehicles are incident at the same time, they both instantaneously \emph{diffuse} to their expected outlets, without any sort of interaction.
 Real intersections don't do this, and real vehicles are not waves (despite how much it would help traffic control).
 The entire concept of a `Red Light' is to avoid the superposition of vehicles in space and time.
 
-In Relay, the concept of a particular set of `active' or `Green' lights (canonically termed a ``phase'') are encapsulated in the \emph{Behaviors} construct.
+In Relay, the concept of a particular set of `active' or `Green' lights (canonically termed a ``phase'') are encapsulated in the \emph{Behavior} construct.
 Behaviors in Relay control the \emph{visible} intersection transition graph of the intersection, by operating on the values of particular edges.
 In essence, setting a particular edge probability to zero, means that vehicles cannot transition through the edge; limiting the throughput of the intersection (kind of like a traffic light).
 
@@ -1111,7 +1110,7 @@ Formally, behaviors in relay are elementwise masks on $\bf{G}$, each of which is
 \end{equation}.
 
 Note that while we have defined the range of acceptable values for $B_{ij}$, we exclusively set each $B_{ij}$ to either 0, or 1 representing ``off'' and ``on'' respectively.
-Ultimately, the most important property of the Behaviors, is that in composition with $\bf{G}$ it forms what we'll hereafter refer to the ``visible'' intersection graph, or rather the physically realizable transfer graph of the intersection.
+Ultimately, the most important property of the Behavior, is that in composition with $\bf{G}$ it forms what we'll hereafter refer to the ``visible'' intersection graph, or rather the physically realizable transfer graph of the intersection.
 The visible graph $\bf{V}_k$ is thus defined in equation~\eqref{eq:def:visible_graph}.
 
 \begin{equation}\label{eq:def:visible_graph}
@@ -1165,28 +1164,28 @@ Intuitively, we would expect that the agent's visible graph would change in disc
 This is not far from the truth, and exposes the beating heart of the relay agent.
 
 
-\subsubsection{Behaviors Transition}
-\label{sec:def:btg}
+\subsubsection{Behavior Transition}
+\label{sec:btg}
 
 As alluded to above, what makes signal timing control challenging is not inherently that there is a vast continuum of misinformation and environmental variability (although that certainly doesn't help the problem), but rather that we have a finite set of ``solutions'' or ``strategies'' to employ, and pesky physical restrictions (why can't all the lights be green all the time?).
 
 In equation~\eqref{eq:def:behaviors}, we referred to a set of behaviors $\bf{B}$, and in equation~\eqref{eq:def:egress} we referred to the time-varying graph $V(t)$.
-In order to define \emph{how} the visible graph changes over time (as a result of behaviors switching) we now introduce the concept of ``Behaviors Transition'' in equation~\eqref{eq:def:btg}, whose edges are the incurred time-cost associated with a given behaviors transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
+In order to define \emph{how} the visible graph changes over time (as a result of behaviors switching) we now introduce the concept of ``Behavior Transition'' in equation~\eqref{eq:def:btg}, whose edges are the incurred time-cost associated with a given behaviors transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
 
 \begin{equation}\label{eq:def:btg_costs}
 	\Tau = \{\mbox{cost}\left(B_i \mapsto B_j \right) : \forall B_i, B_j \in \bf{B} \}
 \end{equation}
 Where it should be noted that we have freedom to define an arbitrary transition cost function.
-Within the Relay implementation we have frequently used time-values corresponding to the legally mandated ``yellow'' time associated with transitions to ``Red'' (on the order of 2-seconds), or the dead-time associated with transitioning from the ``Red'' behaviors.
+Within the Relay implementation we have frequently used time-values corresponding to the legally mandated ``yellow'' time associated with transitions to ``Red'' (on the order of 2-seconds), or the dead-time associated with transitions from the ``Red'' behaviors.
 
 \begin{equation}\label{eq:def:btg}
 	\bf{\Gamma} = G(\bf{B}, \Tau)
 \end{equation}
 
-Thus we define the Behaviors Transition Graph $\Gamma$, as a directed graph whose nodes are behaviors (members of $\bf{B}$) and whose edges are the associated costs for transitioning between adjacent behaviors.
+Thus we define the Behavior Transition Graph $\Gamma$, as a directed graph whose nodes are behaviors (members of $\bf{B}$) and whose edges are the associated costs for transitions between adjacent behaviors.
 
 
-\subsubsection{Ingress Expectation}
+\subsection{Ingress Expectation}
 \label{sec:def:expected_ingress}
 
 In Section~\ref{sec:def:egress} we expressed that the egress signal of an agent's peer is only valuable in conjunction with some expectation of how long the signal will be delayed.
@@ -1197,7 +1196,7 @@ Recall in Section~\ref{sec:def:ingress} that we generated an ingress signal base
 The Agents in Relay also generate an \emph{expected ingress} signal $E\left[a_i(t)\right]$ as defined in equation~\eqref{eq:def:expected_ingress}.
 
 \begin{equation}\label{eq:def:expected_ingress}
-	E\left[a_i(t)\right] = \sum_{j} \left(e_j^{nbr}(t) + E\left[e_j^{nbr}(t)\right] \right) * h_{ji}(t)
+	E\left[a_i\right](t) = \sum_{j} \left(e_j^{nbr}(t) + E\left[e_j^{nbr}\right](t) \right) * h_{ji}(t)
 \end{equation}
 where $e_j^{nbr}(t)$ is the egress signal (as defined in equation~\eqref{eq:def:egress}) of the neighboring agent that is upstream of the $i^{th}$ inlet of the local agent, and $E\left[ \cdot \right]$ denotes the expected value.
 Note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
@@ -1205,7 +1204,7 @@ Further note the inclusion of the expected upstream egress signal---the derivati
 Further note that the choice of delay kernel $h(\tau)$ is left entirely to the implementation.
 In the Relay prototype, these took the form of Gamma distributions, whose parameters were tuned via reinforcement learning.
 
-\subsubsection{Egress Expectation}
+\subsection{Egress Expectation}
 \label{sec:def:expected_egress}
 
 In Section~\ref{sec:def:expected_ingress} we formulated the expected ingress signal in terms of a delay kernel $h(\tau)$ and a superposition of signals from a neighboring agent---explicitly relying on inter-agent communication, and prior knowledge of the particular delay distribution between the connected agents.
@@ -1217,9 +1216,9 @@ An agent's expected egress is co-recursively defined in terms of its expected in
 
 
 \begin{align}\label{eq:def:expected_egress}
-	E\left[e_j(t)\right] &= \sum_{i=1}^n E\left[a_i(t) V_{ij}(t)\right]\\
-							&= \sum_{i=1}^n E\left[a_i(t)\right] E\left[V_{ij}(t)\right] + \mbox{Cov}(a_i(t), V_{ij}(t))\\
-							&\approx \sum_{i=1}^n  E\left[a_i(t)\right] E\left[V_{ij}(t)\right]
+	E\left[e_j\right(t)] &= \sum_{i=1}^n E\left[a_i V_{ij}\right(t)]\\
+						&= \sum_{i=1}^n E\left[a_i\right](t) E\left[V_{ij}\right](t) + \mbox{Cov}(a_i(t), V_{ij}(t))\\
+						&\approx \sum_{i=1}^n  E\left[a_i\right](t) E\left[V_{ij}\right](t)
 \end{align}
 In equation~\eqref{eq:def:expected_egress} the Covariance of the two time-signals is assumed to be near zero, however it is important to understand the cases where such approximations may introduce large error into the system.
 The first of these is predictive feedback.
@@ -1231,24 +1230,38 @@ For tightly coupled networks, care should be taken incorporating prediction valu
 However, it may be the case that in the \emph{real} world, it is unlikely that individual participants would exhibit geographically cyclic behaviors exaggerated enough to damage the validity of the expected egress prediction (i.e.\ driving in circles).
 To add even greater ambiguity, we hypothesize that the introduction of bias due to the assumption of statistical independence may actually increase performance in tightly coupled networks (i.e.\ by implicitly biasing agent's timing in favor of things with cyclic behaviors, such as public transport and logistic vehicles).
 
-\subsubsection{Transition Plan}
-\label{sec:def:plan}
+\subsection{Transition Plan}
+\label{seq:def:plan}
 
 In a sense, the final piece of the Relay Agent puzzle; the Agent internally stores a \emph{plan} that governs when, and to which behaviors the agent will transition over some future time window.
-The ``Behaviors Transition Plan'' (BTP, or simply ``plan'') is the combination of a particular \emph{path} through the behaviors transition graph (defined in equation~\eqref{eq:def:btg}) with the times associated with each step in the path.
+The ``Behavior Transition Plan'' (BTP, or simply ``plan'') is the combination of a particular \emph{path} through the behaviors transition graph (defined in equation~\eqref{eq:def:btg}) with the times associated with each step in the path.
 Given a plan, it is thus possible to generate the visible graph signal $\bf{V}(t)$, and via a behaviors lookup-table, this process is invertible.
 The plan---and its properties, are defined in equations~\eqref{eq:def:plan}.
 
 \begin{align}\label{eq:def:plan}
-	\mbox{plan} = \{(B_k, t_i) : t_{i} &\geq t_{i-1} + \Gamma_{B_{k-1},B_k},\\
-	B_k &\in \mbox{Adj}_\Gamma(B_{k-1}) \forall B_k \in \bf{B}
-		i &\in [0, d]
-\}
+	\mbox{plan} = \{(B_i, t_i) : t_{i} &\geq t_{i-1} + \Gamma_{B_{i-1},B_i},\\
+	B_i &\in \mbox{Adj}_\Gamma(B_{i-1}) \forall B_i \in \bf{B}\\
+	\forall i &\in [0, d]\}
 \end{align}
 
 Which is to say, that each successive step in the plan must take place after the current step plus the cost of taking the step (as formalized in equation~\eqref{eq:def:btg}), and that each successive behaviors, must be adjacent-reachable in $\Gamma$.
 Additionally, the length of the sequence is limited to some finite integer $d$, which corresponds to the \emph{depth} of the path (or length).
 
+In equation~\eqref{eq:def:behavior_signal} we define how the plan defines the behavior signal.
+Given this description of a path, it is trivial to connect this representation to the visible graph signal $\bf{V}(t)$ as defined in equation~\eqref{eq:def:visible_graph}.
+
+\begin{equation}\label{eq:def:behavior_signal}
+	B(t) = \sum_{k=1}^{d-1} (u(t - t_{k-1}) - u(t - t_k)) B_k, \; (B_k, t_k) \in \; \mbox{plan}
+\end{equation}
+Where $u(\tau)$ is the Heaviside/unit-step function defined in equation~\eqref{eq:def:u}
+\begin{equation}\label{eq:def:u}
+	u(\tau) = \left\{
+		\begin{array}{lr}
+			1 & : \tau \geq 0\\
+			0 & : \tau < 0
+		\end{array}
+		\right.
+	\end{equation}
 It is through manipulations of $\Gamma$ that the agent is able to consider various behaviors, as well as limit the acyclic behaviors associated with a \emph{plan} to legal states (for both real-world and abstract definitions of ``Legal'').
 
 
@@ -1540,11 +1553,119 @@ k & neighbor inlet id \\
 j & neighbor outlet id
 \end{conditions*}
 
-\subsection{Optimization in Relay}
-\label{sec:optimization}
+\subsection{Scheduling in Relay}
+\label{sec:ref:planning}
 
-PLACEHOLDER FOR ALEX's STUFF.
+In Section~\ref{sec:def:agent} we defined the various design parameters that are necessary to implement the Relay Agent, however we omitted explicit descriptions of how particular values come to exist.
+In equation~\eqref{eq:def:visible_graph} we illustrated that the Agent's transfer function (and various associated predictions/expectations) was itself a matrix-valued signal, that depended explicitly on the \emph{path} (as defined in equation~\eqref{eq:def:plan})
+We then described how the behavior signal was defined in terms of the plan in equation~\eqref{eq:def:behavior_signal}.
+Within this section we present the basic Relay ``Max Flow'' objective function, which is used to generate plans.
+We then go on to discuss how the (somewhat naive) model could be improved with the introduction of heuristics and real-world constraints.
+Ultimately, the Relay Agent should pick and execute the ``best plan'', given current predictions and biases present, taking into consideration the management of queues.
 
+\subsubsection{The Gating Equation}
+\label{sec:opt:gating}
+
+In order to decide on the so-called `optimal' path, we must first quantify some of the primitives used extensively within this section.
+The first of which is a simple linear reduction that in essence gauges the availability of a particular intersection inlet to incoming traffic flow.
+
+\begin{equation}\label{eq:def:gating_beta}
+	\beta_i(t) = \sum_{j=1}^n V_{ij}(t)
+\end{equation}
+In a sense, $\bf{\beta}(t)$ encapsulates the visibility or \emph{availability} of a particular \emph{gate} of the intersection.
+If $\beta_i = 1$ at a particular point in time, that implies that the vehicles will instantaneously traverse the intersection, without contributing to a queue.
+For convenience, we also define the complement $\phi$ in equation~\eqref{eq:def:gating_phi}, which can be interpreted as the fraction of incident traffic that is \emph{not served}, and thus will contribute to a queue.
+\begin{equation}\label{eq:def:gating_phi}
+	\phi_i(t) = 1 - \beta_i
+\end{equation}
+
+\subsubsection{Queue Modelling}
+
+Within the scheduling procedure, we use relatively simple queue models, which function essentially as asymptotic Markov Queues, wherein the probability of a client being served is treated as a \emph{rate}.
+Thus (at least within the prototype implementation), the notion of a \emph{queue} is more akin to an accumulator/integrator of the incidence events \emph{not served}.
+The accumulator is also constantly emitting flow into the intersection governed by its availability to do so (governed by the gating signal $\beta(t)$ defined  in equation~\eqref{eq:def:gating_beta}.
+In general, Relay allows accumulators that are expressed as arbitrary dynamical systems, however within the domain of queuing systems, sufficiently complex behavior can be expressed quite simply as a first-order dynamical system depending on nothing but the current state of the queue, and some input (canonically termed Markov Queues).
+
+\begin{equation}\label{eq:def:accumulator_general}
+	\frac{dq_i}{dt} = \phi_i f(t) - \beta_i g(q) u(q)
+\end{equation}
+where $f(t)$ is typically associated with the ingress signal (expected or otherwise), and $g(q)$ describes the rate at which accumulations are released.
+This model can be expanded to arbitrary complexity, however we have found that at least in demonstrating the principle of the Relay system, simple models are more tractable (especially in simulation).
+Some examples we have used succesfully are outlined in the following sub-sections.
+
+\paragraph{Constant Relief}
+With the ``Constant Relief'' model, the outflow from a particular queue is assumed to be constant, in other words $g(q) = r$, where $r$ is the rate coefficient of the queue.
+The dynamics of a particular inlet's (simplified) queue are formalized in equation~\eqref{eq:def:queue_simple}.
+\begin{equation}\label{eq:def:queue_simple}
+	\frac{dq_i}{dt}(t) = \phi_i(t) a_i(t) - r_i \beta_i u(q(t))
+\end{equation}
+Which is to say that the queue length $q$ increases when incident vehicles are not being served, and decreases (releases flow into the intersection) subject to some rate parameter $r$ and the gate $\beta$ being open.
+
+While this example serves as a good illustration (it's straightforward) it doesn't sufficiently encapsulate the dynamics of a real traffic system.
+One model that does (albeit to a limited extent) is outlined below.
+
+\subsubsection{Decaying Relief}
+When there are large queues, it is likely that the relief mode is congested, leading to inefficient operation (i.e.\ artificially reducing the gate).
+This is encapsulated in this nonlinear queue mode depicted in equation~\eqref{eq:def:queue_exp}.
+\begin{equation}\label{eq:def:queue_exp}
+	\frac{dq_i}{dt}(t) = \phi_i(t) a_i(t) - r_i u(q(t)) e^{-\eta_i q(t)}
+\end{equation}
+Where $\eta_i$ is the associated congestion \emph{rate}, and $r_i$ as before is the uncongested rate.
+
+\paragraph{Predictive Queue Modelling}
+As alluded to throughout this section, Relay operates on a collection of time-domain signals that are defined both in the past (in terms of ingress/egress etc.) as well as the future in the form of predictions.
+Since our queuing model is defined in terms of the same signals we've been using throughout, it is trivial to simulate the \emph{expected} queue state for an arbitrary time in the future.
+
+As a tangential foreshadowing, the objective function (to be defined in Section~\ref{sec:opt:obj}) as implemented in the Prototype makes use of the separability of each inlet's queue, allowing the Agent to concurrently simulate several scenarios simultaneously.
+
+\subsubsection{Queue-Flow Objective Function}
+\ref{sec:opt:obj}
+In short, Relay as a traffic control system must facilitate the efficient distribution of traffic load throughout the network.
+This inevitably reduces to scheduling signal timings such that flow through the network is maximized.
+While there are always additional objectives (reducing winsorized wait times, fuel consumption etc.) Relay as proposed, ultimately does not place any restrictions on the objective functions used.
+
+Within the prototype, we chose our objective function to maximize the predicted flow through a given intersection.
+In the game-theoretic sense: we take the flow-maximizing action within some finite horizon of expectation (the depth of the path).
+
+We start by defining the sub-objective in terms of the queue differential $\frac{dq_i}{dt} = q_i^\prime$ based on the expected ingress $E[a_i](t)$, where $\Phi_i$ is the flux quantity incident on inlet $i$ over the the arbitrary forward time period $[0, t]$.
+\begin{align}\label{eq:def:sub_objective1}
+	\Phi_i &= - \int_0^t q^\prime_i(\tau) d\tau\\
+	&= \int_0^t \beta_i g_i(q_i(\tau)) u(q_i(\tau)) - \phi_i E\left[a_i\right](\tau) d\tau
+\end{align}
+
+By substituting equations~\eqref{eq:def:gating_beta},\eqref{eq:def:gating_phi}:
+\begin{equation}\label{eq:def:sub_objective2}
+	\Phi_i(\beta_i) = \int_0^t \beta_i \left(g_i(q_i(\tau)) + E[a_i](\tau)\right) - E[a_i](\tau) d\tau
+\end{equation}
+Noting that $\beta_i$ is defined in terms of the agent's visible graph as of equation~\eqref{eq:def:gating_beta}, which is in turn defined based on the behavior signal.
+Thus all other factors remaining constant, the inlet flux $\Phi_i$ is the result of an explicit function of the behavior chosen, and thus the underlying path.
+
+Ultimately, the total biased-flow through the intersection, as a function of the plan $p$ which parametrizes $B$ by~\eqref{eq:def:behavior_signal}, which in turn defines $\beta$ via equation~\eqref{eq:def:gating_beta}.
+\begin{equation}\label{eq:def:biased_flow}
+	\bf{\Phi}_p = \sum_{i=1}^n \Phi_i
+\end{equation}
+
+The objective is as follows: Choose the plan $p$ such that the aggregate inlet flux $\bf{\Phi}_p$ is maximized.
+Subject to the constraints implied in the definition of $p$ (equation~\eqref{eq:def:plan}).
+\begin{equation}\label{eq:def:combined_objective}
+	\argmax_p \bf{\Phi}_p
+\end{equation}
+Subject to:
+\begin{align}
+	d &\leq d_{max}\\
+	t_d &\leq t_{max}
+\end{align}
+recalling that $d$ is the depth of the path $p$, and that $t_d$ is the last time associated with the path.
+Further recall that all constraints placed on the validity of a particular path are encapsulated in the definition of the path $p$, (i.e. they must be temporally successive, and infinitesimally short steps are prohibited via the Behavior Transition Graph).
+
+Note this is a combination set-cover (NP-complete), and nonlinear programming problem.
+For efficiency, it is best to separate the integer aspect out (separate out the time component of the path from the graph component).
+This is described below:
+\begin{equation}\label{eq:def:minlp_objective}
+	\argmax_{p.B} \argmax_{p.t} \bf{\Phi}_{p.B}
+\end{equation}
+where $p.B$ is the sequence of behaviors (irrespective of their relative timing), and $p.t$ is the timing (given a behavior sequence $p.B$.
+Thus for each behavior, we evaluate the best possible flux given changes to the relative timing, and use the combination $p =  (p.B, p.t)$ that gives the best outcome.
 
 \newpage
 \chapter{Design Testing and Validation}
