@@ -100,6 +100,46 @@ The solution must meet the needs of transportation authorities, who will be resp
 The solution must also meet the needs of the population which it serves, providing transparent access to it's operation and allowing consumers to take full advantage of the information and insight which the system can provide.
 The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.\\
 
+\section{Proposed Solution}
+Our solution: ``Relay'' is a distributed Adaptive Traffic Control System, that models each intersection in a city as an individual node in an online network.
+Each node is capable of making real-time traffic decisions based on arbitrary data inputs.
+These inputs include knowledge of traffic at the intersection, historical trends of traffic data, and traffic performance at adjacent node. The system has been designed, such that auxiliary data inputs such as weather conditions (and their expected effect on the network) and abnormal system behaviour, can easily be integrated.\\
+
+On top of this system sits an analysis and insight application known as the Relay Interface, which will allow users to interact with the network.
+An intuitive, information-rich interface provides traffic authorities with necessary system information to monitor its performance, interact with the Relay Framework if necessary, and aid in auxiliary tasks.
+This new interface could drastically decrease the cognitive workload of traffic authorities by providing an easy to understand information display, in contrast to existing ATCS interfaces which are overwhelming and poorly composed.
+We imagine a derivative of this interface could be made publicly accessible, providing high-level performance information for the neworks of their interest.
+This would fundamentally shift the way the public thinks about traffic, enabling the population to truly understand how the system works and how traffic decisions are being made, dramatically increasing the transparency of the network controller.
+This has the opportunity to allow the public to make more intelligent route planning and transportation decisions on true traffic information, or even possibly democratizing signal control techniques.
+
+\section{Design Objectives and Requirements}
+\subsection{Front End}
+\subsection{Deep End - Framework}
+
+\section{Design Contraints}
+There are multiple design and environmental constraints that will affect the final solution created.
+The main items are: limited timeline, simulating traffic, and traffic regulations.\\
+
+Firstly, with limited time to reach a final implementation it is very difficult to create a polished product.
+Because adaptive traffic control is such a large problem, the team has only focused on specific aspects of it.
+To help us tackle traffic control itself, we assumed that we have perfect traffic data and built a system on top of this.
+While this did not change the final product, it eliminated some of the challenges with creating such a system.\\
+
+Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
+While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resourses to integrate this with out system. <SOMETHING ELSE HERE>.
+Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
+This option will not be pursued because of this difficulty and short timeline.\\
+
+Next, regional traffic regulations and laws affect how the system acts or is implemented.
+Parameters within the system can be adjusted to account for these.
+Adjustments could take the form of minimum/maximum signal time, allowable behaviours, arterial roads (not related to regulations, but would be custom to the system), and any other specific rules to a neighbourhood, city, road, or other road component.
+Additionally, the behaviours must only represent the legal states for a given intersection.
+Invalid light patterns (e.g. perpendicular green lights) need to be avoided and rules will be programmed into the system to accommodate this.
+Additionally, because Relay would sit on top of the municipalities core traffic system, instructions from Relay would have lower priority.
+This means that if an action was executed within Relay, it may not be executed on the system and could be overriden.
+An example of this is light switching from emergency vehicles - they have devices that allow them to signal lights they are approaching and switch the current light pattern.
+We have no control over this and must accept that some actions may not be executed.\\
+
 \newpage
 
 \chapter{Engineering Design}
@@ -998,6 +1038,23 @@ In a similar fashion, database connections can involve a significant amount of c
 Within this respect we follow the motto that the architecture should guide development to reduce the likelihood of system failure.
 In this string, we have endeavoured to architect the Relay system as multiple pseudo-independent modules, each with their own functional (correct) core.
 This design pattern is commonly referred to as ``Ports and Adapters'' or ``Hexagonal Architecture''.
+
+\subsection{Integration Testing Results}
+The following integration tests are all pass/fail procedures aimed to ensure each module is functioning. 
+These tests will demonstrate that disparate pieces of the system work together. 
+These tests are centered on the Flask server, and cover information and request handling from the Interface, Framework, and database. 
+The table below contains each test and results from testing on the final prototype.\\
+
+\begin{longtable}[H] {| P{3.5cm} | P{10cm} | P{1.5cm} |}
+    \hline
+    Test                             & Description                                                                                                 & Results \\ \hline
+    Handle requests from Interface   &  Interface can pass POST and GET requests to Flask server for processing.                                   & Pass    \\ \hline
+    Return data to Interface         &  Server successfully returns requested information to Interface. Data is parsable and useable by Interface. & Pass    \\ \hline
+    Make Requests to Framework       &  Server can make HTML requests to Framework through Python requests library.                                & Pass    \\ \hline
+    Handle data sent from Framework  &  Server successfully handles and parses requested.                                                          & Pass    \\ \hline
+    Make requests to SQLite database &  Server can query associated database through Python sqlite3 library.                                       & Pass    \\ \hline
+    Handle data sent from database   &  Server successfully handles and parses requested information from database.                                &  Pass   \\ \hline
+\end{longtable}
 
 \section{Deep End}
 
