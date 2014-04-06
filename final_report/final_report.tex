@@ -57,6 +57,7 @@
 \item[MV] Another software development pattern. MV is similar to MVC, however there is no controller, as controller functionality is built into the view class. This pattern is common in less complex solutions or in langauges which do not support a rigid class-based system.
 \item[Rickshaw] A static front-end visualization library build on the D3 framework.
 \item[Underscore.js] A client-side JavaScript Utility Library.
+\item[WebSocket] A protocol for communicating over a network. WebSocket protocol creates an open connection, enabling for content to be sent asynchronously between two nodes.
 \end{description}
 
 
@@ -760,11 +761,11 @@ With these elements in place, the final developmental/functional touches to the 
 As a unit, the application is held together using the modular design elements described above, which makes the application easily scalable and modifiable for individual implementations or changing metrics and requirements.
 With a unique and well-defined design language established, further extrapolations of this implementation have a library of best practices and UI elements that can be carried forward into new scenarios.
 
-\subsection{Application Architecture}
+\subsection{Application Design}
 
 Application interfaces for critical infrastructure must be highly robust and reliable. Furthermore, it is important the the systems are able to scale in order to accommodate the inevitable growth of the system. These main ideas drove the design of the front-end (web application) application architecture. 
 
-Given the breadth of choices in software technology, it was necessary to use a quantifiable selection process for determining the appropriate solutions from a group of candidates. The three main areas of the front-end application which required such a process are the Framework, Mapping Library, and Visualization Library. The selection process for these is discussed in the following sections.
+Design research and prototpying highlighted the need for various technologies. For example, the presence of a map-based interface mean that a mapping library needed to to be used. Given the functional and technical requirements of the project, it was important to select slutions which met the project's needs. Given the breadth of choices in software technology, it was necessary to use a quantifiable selection process for determining the appropriate solutions from a group of candidates. The three main areas of the front-end application which required such a process are the Framework, Mapping Library, and Visualization Library. The selection process for these is discussed in the following sections.
 
 \subsubsection{Framework Selection}
 
@@ -905,9 +906,13 @@ Rickshaw is a new, static visualization library build using D3 functionality. It
 
 Assessment of the candidate visualization libraries is done through a Weighted Decision Matrix, as seen in Table \ref{table:visualization-matrix}. As seen in Table \ref{table:visualization-matrix}, Flot is the winning visualization candidate. Flot's exceptional functionality with regards to time-series data and data updating fit well with the needs of the proposed solution. Furthermore, the Flot visualization library provided a suitable balance of complexity and customizability for the proposed solution.
 
-\subsubsection{Architecture Development}
+\subsection{Application Development}
 
-The architecture for the front-end application saw three major iterations. Each phase represents a more complex yet refined application architecture. Tables \ref{fig:iteration1}, \ref{fig:iteration2}, and \ref{fig:iteration3} document the Javascript architecture at each iteration. This section only discusses the progression of the JavaScript class architecture, and does not discuss the HTML or CSS development which happened in parallel. However, all other front-end development was done to support the JavaScript class structure, and thus discussion of their implementation is not necessary.
+The Front End application is composed of two parts: static HTML and CSS, and a JavaScript architecture. The HTML and CSS code's role is for composition and stying of the interface, whereas the JavaScript is responsible for controlling the interface. This pattern is standard for web applications, and thus provides a good reference for the development of Relay's Front End infrastructure.
+
+In the early stages of prototyping the Front End application, the application was composed primarily of HTML and CSS code. This allowed for the creation of a visually-appealing interface which could be assessed as a proof-of-concept demonstration. As the applcaiont became more complex, emphasis shifted towards the use of JavaScript for initializing and implementing the interface. The HTML and CSS structure expended to support the interface as it grew in complexity. The style of the HTML/CSS structure shifted towards template-based widgets, which could be dynamically controlled via JavaScript functionality.
+
+The architecture for the Front End application saw three major iterations. Each phase represents a more complex yet refined application architecture. Tables \ref{fig:iteration1}, \ref{fig:iteration2}, and \ref{fig:iteration3} document the Javascript architecture at each iteration.
 
 Due to the use of Backbone.js as the JavaScript framework, the application follows an MV architecture, where only models and views exists as distinct classes, and controller functionality is included in the view object. Backbone.js includes a specific model pattern called a collection, which is an object responsible for handling multiple models of the same class. The solution leverages the functionality provided by the collection pattern, and they have been appropriately categorized in the architecture diagrams. However, collections are similar to models in the sense that they have no controlling functionality, and thus are treated like models in the sense that each as an accompanying view class to handle it's controlling functionality.
 
@@ -942,8 +947,6 @@ The third and final iteration of the architecture, as seen in figure \ref{fig:it
 The overall structure of the application is similar to that in the second iteration. The App View class is responsible for the high-level initialization and management of the application instance. The App View also owns both the main model collections and page views. The Road Model, Road Collection, and associated views were added to support the display of road information within the interface. Furthermore, three new pages were added in addition to the original map page view: Intersections Page View, Roads Page View, and Network Page View. These pages utilize the exiting data, yet present fundamentally different views and functionality around the data, supporting many of the non-crucial functional requirements. The addition of non-page and non-model views, such as the Panel View and the Activity View, encourage the application of Backbone's MV framework for the sake of uniform code patterning.
 
 The value of storing one instance of the intersection and road collection objects is now clear, as the four pages now feed off of the same two data representations. This also means that all updating and synchronization of information between the client and server has been centralized, and thus the data is guaranteed to be consistent across the application.
-
-
 
 \begin{figure}[htbp!]
   \begin{centering}
@@ -1583,7 +1586,45 @@ This made accessing any of the required data simple, and easy for many users.
 As a result of this Use Case Analysis, it was found that users reacted to each task with a high level of ease and satisfaction.
 Next steps include continuing to build out the Roads functionality, such that the remaining use cases can be satisfied, as well as mending the bug found with the search/filter functionality on the Intersections page.
 
+The initial functional requirements which drove the development of the solution will be used to test the application. Each functional requirement will be assesed for whether the requirement has been completed within the interface. Requirements are divided into three sections: Network requirements N1 -- N4, Intersection Requirements, I1 -- I9, and Road requirements R1 -- R7. The functional requirements assessment is outline in table \ref{table:freqassessment}.
+
+\begin{longtable}[H]{| P{6.5cm} | P{2.5cm} | P{6cm} |}
+    \hline
+    \textbf{Requirement}                                                                            & \textbf{Status}        & \textbf{Comments}                                                                              \\ \hline
+    N1: See all of the intersections in the network on a map.                              & Completed     & ~                                                                                     \\ \hline
+    N2: See a list of all of the intersections in the network.                             & Completed     & ~                                                                                     \\ \hline
+    N3: See the performance metrics of the network.                                        & Not Completed & Functionality was developed in the application but network statistics were not shown. \\ \hline
+    N4: See the history of the performance metrics for the network.                        & Not Completed & See N3.                                                                               \\ \hline
+    I1: See the status of all of the intersections in the network.                         & Completed     & Intersection information is currently only available through the map interface.       \\ \hline
+    I2: See basic performance information about all of the intersections in the network.   & Completed     & See I1.                                                                               \\ \hline
+    I3: Search for an intersection in the network and see the details of the intersection. & Completed     & See I1.                                                                               \\ \hline
+    I4: See an intersection's position on a map.                                           & Completed     & See I1.                                                                               \\ \hline
+    I5: See basic information about the intersection.                                      & Completed     & See I1.                                                                               \\ \hline
+    I6: See the status of the intersection.                                                & Completed     & See I1.                                                                               \\ \hline
+    I7: See the signal state of the intersection.                                          & Completed     & See I1.                                                                               \\ \hline
+    I8: See current performance metrics of the intersection.                               & Completed     & See I1.                                                                               \\ \hline
+    I9: See the history of the intersection's performance.                                 & Completed     & See I1.                                                                               \\ \hline
+    R1: See the status of all of the roads in the network.                                 & Not Completed & ~                                                                                     \\ \hline
+    R2: See basic performance information about all of the roads in the network.           & Not Completed & ~                                                                                     \\ \hline
+    R3: Search for a road in the network and see the details of the road.                  & Not Completed & ~                                                                                     \\ \hline
+    R4: See the road on a map.                                                             & Not Completed & ~                                                                                     \\ \hline
+    R5: See basic information about the road.                                              & Not Completed & ~                                                                                     \\ \hline
+    R6: See the current performance of the road.                                           & Not Completed & ~                                                                                     \\ \hline
+    R7: See the history of the intersection's performance.                                 & Not Completed & ~                                                                                     \\ \hline
+\caption{Solution Assessment for Functional Requirements.}
+\label{table:freqassessment}
+\end{longtable}
+
+Only 50\% of network-level functionality was met in the final application prototype. N1 and N2 relate specifically to the display and understanding of intersection performance, which is a core aspect ot the application. N3 and N4 relate to network-level metrics. The Front End application was built to support network information, and a network-specific page was developed to display metrics, time-series graphs, and activity lists. These metrics were not available in any meaningful manner from the Back End. Although all necessary information for performing such calculations was available to the Front End, it was not appropriate to require the Front End to perform this task. Therefore, the information was not made available in the interface for the final solution.
+
+All of the intersection functional requirements --- I1 through I9 --- were met in the final solution. However, this functionality was only available through the map view in the interface. A intersection-specific list-based interface was developed, however the intersection-specific functionality requirements I1 -- I9 were not supported. Therefore, the functional requirements have been met, yet they are not ideal.
+
+None of the road functional requirements were completed. During the implementation of the solution it was realized that rich information along road edges would not be available. The final Font end solution does have interface components for supporting road information. This was done as a proof-of-concept for the value of having road information accessible. However, no real data was available.
+
+Overall, the Front End solution met a sufficient amount of functional requirements to demonstrate the value of the solution. However, important functionality is either missing or for demonstration purposes only. Therefore, significant work must be done to reach a suitable level of quality for implementation.
+
 \section{Back End}
+
 As the intermediate layer between the Relay Framework, and the Relay Interface, the back-end performs little in the way of computation (other than ETL associated with communication).
 Thus the main requirement is to respond to requests from the Relay Interface promptly.
 Noticeable lag between modules, especially as it relates to the interface can dramatically reduce the end-user experience.
