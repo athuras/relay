@@ -1637,11 +1637,15 @@ Other considerations and recommendations can be described through changes to the
 
 \subsection{Application Architecture}
 
-% Custom Mapping library
+Ideally, the Relay application would be available to both public workers responsible for the network, and the public at large. These two groups have fundamentally different needd and requirements, and thus should see different application interfaces. For example, a citizen may want to see only delay times on roads, whereas a traffic engineer may want more detailed metrics, such as mean delay time, flow volumes, and queue lengths. Furthermore, individuals accessing the application will have differing levels of responsibility and privilege. For example, a citizen might be able to view the direction bias at intersections, whereas a traffic engineer may be able to edit the direction bias to account for discrepancies in the model.
 
-% Security Enhancements
+These differing user requirements motivate the need to implement user-based authentication for access into the system. The application should be enhanced so that users are required to log in in order to access the application. The Relay application can then customize the application to the specific needs of the user. Furthermore, user-specific authentication will allow for more detailed collection of usage data. This usage data can help the transportation authority better understand the involvement of various members.
 
-% Permissions and Authorization
+As the application may have the potential to modify settings within the Relay network, modifications must be made to ensure application security. As discussed above, the introduction of login-based authentication will limit access to sensitive functionality. The use of data encryption on information transmitted between the client and the server should also be explored. Depending on the inputs to the Relay network, inputs should require validation and be cleaned.
+
+The Google Maps API provided sufficient functionality for the scope of this project. However, there were various drawbacks which would be unacceptable for a production-level implementation of the Relay System. An ideal mapping library would have no usage limits, which would prevent unexpected disruption of service to users. It would also allow for complete customization of map styling to ensure the visualizations can be presented in an optimal and professional manner. Finally, an ideal mapping library would allow for the implementation of fully-customizable features, such as markers and info boxes. This prevent unnecessary complexity and performance issues as a result of working with sub-optimal native features.
+
+Usage of the demonstration prototype highlighted the performance issues associated with large amounts of network information. Specifically, some visualizations performed noticeably slower on large quantities of information. As such performance issues are unacceptable in production-level applications, it is suggested that further work be done to improve the performance of such applications. The use of Google Maps API native functionality for presenting visualizations as likely the cause. In the future, custom visualization functionality should be built to optimize for performance with large volumes of information.
 
 \section{Back End}
 
