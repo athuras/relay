@@ -1552,7 +1552,45 @@ ALEX's STUFF
 
 \section{Front End}
 
+The initial functional requirements which drove the development of the solution will be used to test the application. Each functional requirement will be assesed for whether the requirement has been completed within the interface. Requirements are divided into three sections: Network requirements N1 -- N4, Intersection Requirements, I1 -- I9, and Road requirements R1 -- R7. The functional requirements assessment is outline in table \ref{table:freqassessment}.
+
+\begin{longtable}[H]{| P{6.5cm} | P{2.5cm} | P{6cm} |}
+    \hline
+    \textbf{Requirement}                                                                            & \textbf{Status}        & \textbf{Comments}                                                                              \\ \hline
+    N1: See all of the intersections in the network on a map.                              & Completed     & ~                                                                                     \\ \hline
+    N2: See a list of all of the intersections in the network.                             & Completed     & ~                                                                                     \\ \hline
+    N3: See the performance metrics of the network.                                        & Not Completed & Functionality was developed in the application but network statistics were not shown. \\ \hline
+    N4: See the history of the performance metrics for the network.                        & Not Completed & See N3.                                                                               \\ \hline
+    I1: See the status of all of the intersections in the network.                         & Completed     & Intersection information is currently only available through the map interface.       \\ \hline
+    I2: See basic performance information about all of the intersections in the network.   & Completed     & See I1.                                                                               \\ \hline
+    I3: Search for an intersection in the network and see the details of the intersection. & Completed     & See I1.                                                                               \\ \hline
+    I4: See an intersection's position on a map.                                           & Completed     & See I1.                                                                               \\ \hline
+    I5: See basic information about the intersection.                                      & Completed     & See I1.                                                                               \\ \hline
+    I6: See the status of the intersection.                                                & Completed     & See I1.                                                                               \\ \hline
+    I7: See the signal state of the intersection.                                          & Completed     & See I1.                                                                               \\ \hline
+    I8: See current performance metrics of the intersection.                               & Completed     & See I1.                                                                               \\ \hline
+    I9: See the history of the intersection's performance.                                 & Completed     & See I1.                                                                               \\ \hline
+    R1: See the status of all of the roads in the network.                                 & Not Completed & ~                                                                                     \\ \hline
+    R2: See basic performance information about all of the roads in the network.           & Not Completed & ~                                                                                     \\ \hline
+    R3: Search for a road in the network and see the details of the road.                  & Not Completed & ~                                                                                     \\ \hline
+    R4: See the road on a map.                                                             & Not Completed & ~                                                                                     \\ \hline
+    R5: See basic information about the road.                                              & Not Completed & ~                                                                                     \\ \hline
+    R6: See the current performance of the road.                                           & Not Completed & ~                                                                                     \\ \hline
+    R7: See the history of the intersection's performance.                                 & Not Completed & ~                                                                                     \\ \hline
+\caption{Solution Assessment for Functional Requirements.}
+\label{table:freqassessment}
+\end{longtable}
+
+Only 50\% of network-level functionality was met in the final application prototype. N1 and N2 relate specifically to the display and understanding of intersection performance, which is a core aspect ot the application. N3 and N4 relate to network-level metrics. The Front End application was built to support network information, and a network-specific page was developed to display metrics, time-series graphs, and activity lists. These metrics were not available in any meaningful manner from the Back End. Although all necessary information for performing such calculations was available to the Front End, it was not appropriate to require the Front End to perform this task. Therefore, the information was not made available in the interface for the final solution.
+
+All of the intersection functional requirements --- I1 through I9 --- were met in the final solution. However, this functionality was only available through the map view in the interface. A intersection-specific list-based interface was developed, however the intersection-specific functionality requirements I1 -- I9 were not supported. Therefore, the functional requirements have been met, yet they are not ideal.
+
+None of the road functional requirements were completed. During the implementation of the solution it was realized that rich information along road edges would not be available. The final Font end solution does have interface components for supporting road information. This was done as a proof-of-concept for the value of having road information accessible. However, no real data was available.
+
+Overall, the Front End solution met a sufficient amount of functional requirements to demonstrate the value of the solution. However, important functionality is either missing or for demonstration purposes only. Therefore, significant work must be done to reach a suitable level of quality for implementation.
+
 \section{Back End}
+
 As the intermediate layer between the Relay Framework, and the Relay Interface, the back-end performs little in the way of computation (other than ETL associated with communication).
 Thus the main requirement is to respond to requests from the Relay Interface promptly.
 Noticeable lag between modules, especially as it relates to the interface can dramatically reduce the end-user experience.
