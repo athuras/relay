@@ -126,7 +126,7 @@ Experiencing both extremes of existing software opened up an important area for 
 With this in mind, the team conducted three interviews with experts in the traffic engineering industry, to gather their insight into the matter.
 
 The first expert interview was conducted with Marc Tan from IBI Group in Toronto.
-The transcript for this interview is available in Appendix \ref{interview-marc}. 
+The transcript for this interview is available in Appendix A. 
 The goal of this interview was to understand the nuances of what a Traffic Engineer does, what their needs are in an interface, and how their role may change given an adaptive control system.
 Marc enlightened the team on the three main roles that exist for those involved in traffic network planning and execution.
 These roles are the Traffic Engineers - who draw up signal timing plans, Technical Staff - who work in control centres changing signal timing plans, usually under the direction/instruction of a traffic engineer, and Technicians - who often hard code timings or fall back plans out in the field.
@@ -146,7 +146,7 @@ The ability to make informed decisions is based on the available data, which pla
 Given appropriate data acquisition at intersections, it is evident that the display of that information is critical in an interface to be used by Traffic Engineers.
 
 The second interview was conducted with Peter Kelley of Paradigm Transportation.
-A transcript for this interview is included in Appendix \ref{interview-peter}.
+A transcript for this interview is included in Appendix A.
 This interview went into detail regarding the specific metrics of interest that a Traffic Engineer may monitor, on both system-wide and per-intersection scale.
 Mr. Kelley was helpful in identifying the need to display the overall experienced delay in the network, and the importance of knowing the signal timing plans and volume of vehicles moving through the network.
 In the case of an adaptive system, having a window into its decision-making process and predictions is critical in understanding why the network is behaving the way that it is.
@@ -1446,6 +1446,64 @@ The deliverable column, where applicable, identifies the high-level product of e
 
 \newpage
 \section{Conclusion}
+
+\newpage
+\section{Appendix A: Expert Interview Transcripts}
+\subsection{Marc Tan - IBI Group}
+\emph{Who uses these interfaces?} \\
+ 
+There are really three users to the interface.
+One is the traffic engineers who need to input calibrated timings.
+This is usually done in a central system that controls all the traffic signals.
+Second, there is technical staff to who follow directions from traffic engineers in order to change timings depending on the situation.
+Finally, for the in field controllers, there are technicians who can actually hard code timings or fall back plans. \\ \\
+ 
+\emph{What is their job, their goals?} \\
+ 
+Traffic engineers generally ``draw'' up signal timings plans.
+This is usually done using some deterministic and non-deterministic models depending on the work (this is usually my work).
+As systems become adaptive, the goal of the traffic engineer is to more so calibrate and set up the existing conditions of the network rather than drawing up particular definitive second by second timings.
+Obviously the goal is to improve the flow of traffic.
+Technical staff usually work in control centres changing signal timing plans as needed usually under the direction/instruction of a traffic engineer. \\ \\
+ 
+\emph{What are they trying to understand and what information do they need to accomplish that?} \\ 
+Traffic engineers: generally they are trying to understand traffic flows.
+Information needed to understand this is normally traffic counts typically in 1 hour samples.
+Now we don't just look at traffic, pedestrian and cyclist volumes also play a major role in determining timings.
+Other things to consider is the capability of the existing system and the communication channels available (i.e. are the traffic signals connected to a central system, can we change them from a central system, are there other factors at play (special timings for transit, cyclists, pedestrians, etc.), is there an adaptive system.
+
+Technical staff: just need directions from traffic engineers for at what point they can implement certain plans.
+Basically if traffic looks X bad put in Y plan.
+The jobs of these people get mostly eliminated if an adaptive traffic signal system is implemented. \\ 
+
+\noindent \emph{What tasks do they perform using the interface, or based off of information from that interface?} \\
+The interface usually gives information through video cameras from the field and some times road surface loop detectors that measure speed and or number of vehicles.
+With this information technicians and engineers can perform changes to the timings.
+An adaptive system would use this to adjust timings as needed.
+For a non-adaptive system, this information is collected and inputted into models in order to determine timings. \\
+
+Some things about my experiences:
+I have generally done work on developing timings through modelling efforts. I did work one work term in a traffic control centre in Ottawa and the way I described it above with technicians changing timings based on situations observed on the cameras is the norm.
+Toronto runs a SCOOT system on a number of their arterials, which requires a large calibration effort after installation but once its going, it works pretty ok.
+The big issue is that these SCOOT systems are quite expensive, with all the detection that is required to run the system.
+
+\subsection{Peter Kelley - Paradigm Transportation}
+A) System/Network \\
+You'd want to know what the overall experienced delay is.
+To get this you need to know signal timing plans, and volume of vehicles.
+To minimize overall delay, they implement coordinated signals (for instance University Ave).
+As you drive the speed limit, you should be able to hit green on the next set of lights.
+However this offer works better for 1 direction over another eastbound vs westbound (depending on which direction peak traffic is going).
+A big problem for this is emergency vehicles that can control the signal to get priority, having the signals get back on cycle can take a while and overall negatively impacts traffic flow.
+
+\noindent B) Individual Intersections \\
+Biggest problem is providing protected movements when no one is there.
+Often I'm sure you've seen an advanced left when no one is turning, so everyone sits and waits.
+This is because during peak hours, the signal timing plan assigns a minimum amount of green time, and then will extend it, if more vehicles are there.
+As well, there are maximum time lengths that will change the signal to red from green, even if there is more traffic coming through.
+The information we like to know about a single intersection is the turning movement counts, the delay of the approaches (north, south, east, west), the queue lengths of vehicles, and the volume/capacity ratio.
+These all serve as a means to determine the Level of Service of an intersection.
+I hope this helps.
 
 \newpage
 \addcontentsline{toc}{section}{References}
