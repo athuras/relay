@@ -1550,6 +1550,38 @@ PLACEHOLDER FOR ALEX's STUFF.
 ALEX's STUFF
 
 \section{Front End}
+\subsection{Use Case Analysis}
+As part of the iterative design process employed during this project, a Use Case Analysis was done by members of the team, as well as at the Design Symposium, utilizing feedback on the demo application from members of the public to help validate the success of the implementation, in the context of the previously established Use Cases.
+Users of the demo were taken through each of the implemented Use Cases, and their level of fulfillment was determined.
+It should be noted that the Roads functionality was not included in the demo, thus Use Cases 3, 5, and 8 are not included in the Use Case Analysis.
+
+\noindent \textbf{UC1: User monitors network map} \\
+This Use Case was found to be successful with all users.
+As this is the default page of the application, which is first presented on page load, all users were able to successfully monitor the map for activity and high-level network performance.
+
+\noindent \textbf{UC2: User monitors intersection list} \\
+This use case was also successfully implemented through the demo, and many users were able to accomplish this task without error.
+The clear global navigation in the header of the application, as well as the simple page design for the Intersections page made navigating to and monitoring the list of intersections for activity easy.
+
+\noindent \textbf{UC4: User searches for an intersection} \\
+Through the use of  recognizable UI elements for the search/filter design on the intersections page, this feature was easily found and used by most users.
+A small bug in this feature was recognized at this stage, wherein the filter does not update as the user makes an edit to the search query. 
+As a result, a refresh of the page was required to continue searching for intersections, which generated relatively negative responses from the users.
+
+\noindent \textbf{UC6: User inspects network details} \\
+While this action is somewhat hidden in the application, along the side of the screen, most users were able to navigate to the details dashboard without issue, as multiple paths to reach it were designed into the interaction of the application.
+Common, recognizable icons were used to open this dashboard, which provides visual affordance for users, making the access of this dashboard intuitive.
+This played a large part in reducing confusion and errors with users looking to access this screen.
+
+\noindent \textbf{UC7: User inspects intersection details} \\
+This interaction was found to be very natural for users.
+With data layers positioned on the map, it was found that most users had a natural tendency to pan, zoom, and click on data points that are located on the map, with the intention of seeing more information.
+This intention comes from most users' experience with other mapping software that behaves in a similar fashion.
+Clicking on a data point on the map activates the info box window, which contains information on signal status, phase, performance level, bias vector, and flow characteristics.
+This made accessing any of the required data simple, and easy for many users.
+
+As a result of this Use Case Analysis, it was found that users reacted to each task with a high level of ease and satisfaction.
+Next steps include continuing to build out the Roads functionality, such that the remaining use cases can be satisfied, as well as mending the bug found with the search/filter functionality on the Intersections page.
 
 \section{Back End}
 As the intermediate layer between the Relay Framework, and the Relay Interface, the back-end performs little in the way of computation (other than ETL associated with communication).
