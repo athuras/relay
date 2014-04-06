@@ -13,6 +13,8 @@
 
 \DeclareMathOperator*{\argmin}{\arg\!\min}
 \DeclareMathOperator*{\argmax}{\arg\!\max}
+\newcommand{\Tau}{\mathrm{T}}
+
 \newcolumntype{P}[1]{>{\RaggedRight\hspace{0pt}}p{#1}}
 
 \newenvironment{conditions*}
@@ -1014,6 +1016,7 @@ It is a goal of the solution to present up-to-date information about the network
 In order to maintain up-to-date information in the interface, the client was required to request new information from the API on a high-frequency schedule. Traditional HTTP requests require for the reload of a web page each time a request is made, so Ajax techniques were used in lieu of traditional HTTP requests. Ajax allows for asynchronous HTTP requests between the client and the server, which do not require the reload of the page upon completion. This successfully allowed for high frequency updates of the client without the negative performance implications of traditional HTTP calls.
 
 \section{Deep End - Relay Framework}
+\label{sec:deep_end}
 
 Real-time, distributed traffic control is an interesting problem, with many creative solutions.
 The modules and operators that handle individual intersection signal timing, data collection and backup, and statistical modelling, as well as the network topology that holds it all together is brought under the umbrella term ``Relay Framework''. \\
@@ -1022,6 +1025,231 @@ The goal of the framework is to address the intelligent traffic control problem 
 Within the framework, each intersection is endowed with its own autonomous signal timing controller or ``Agent''.
 In isolation, each Relay Agent seeks to maximize intersection throughput (as measured through various arbitrary metrics) subject to local environmental/contextual constraints. \\
 
+
+\subsection{Peer to Peer Philosophy}
+\label{sec:p2p_philosophy}
+ALEX's STUFF
+Why is p2p a good idea?
+What are some of the drawbacks?
+Message traffic as the limiting factor.
+Full Mesh not necessary.
+
+
+\subsection{Distributed Computation}
+\label{sec:distributed_computation}
+
+ALEX's STUFF
+Can we encapsulate information from outside of our immediate `neighborhood' in some form.
+
+
+\subsection{Modelling Uncertainty}
+\label{sec:modelling_uncertainty}
+
+ALEX's STUFF
+
+Intra-agent transition graph (intersection).
+Time delay kernels.
+Exponential prediction decay (weigh predictions far in the future less).
+
+
+\subsection{The Relay Agent}
+\label{sec:def:agent}
+
+At its heart, Relay is a \emph{dynamic graph automata}, whose state changes (the most visible of which is the underlying traffic light values) are based on a combination of inputs from the environment, and its immediate neighbors in the Relay network.
+Each traffic controller in Relay is an autonomous \emph{Agent}, that (as the network deepens/expands) forms transient, asynchronous communication channels to its neighbors.
+This section will formally describe and define the underlying mathematical constructs used to implement the various aspects of the controller, as well as the various inputs and outputs of the system.
+
+
+\subsubsection{Intersection Graph}
+\label{sec:def:intersection_graph}
+
+The intersection is represented as the graph $\bf{G}^{n \times n}$ defined in equation~\eqref{eq:def:base_graph}, whose $n$-nodes are the inlets/outlets of the intersection.
+The edges $\bf{G}_{ij}$ indicate the probability that an ingress event (or idealized vehicle) at node $i$ will instantaneously exit the intersection at node $j$, which is formalized in~\eqref{eq:def:internal_probabilities}.
+
+\begin{equation}\label{eq:def:internal_probabilities}
+	G_{ij} = p\left(\bf{G}_i \mapsto \bf{G}_j \right) = p_{ij}
+\end{equation}
+
+\begin{equation}\label{eq:def:base_graph}
+	\left[\bf{G}\right]_{n \times n} =
+	\left(
+		\begin{array}{ccc}
+			p_{11} & \cdots & p_{1n} \\
+			\vdots & \ddots & \vdots \\
+			p_{n1} & \cdots & p_{nn}
+		\end{array}
+	\right)
+\end{equation}
+
+$G$ has some notable properties that allow for some algebraic simplifications, the most significant of which is that there can only be one edge connecting node $i$ to node $j$, and that we can treat it as a undirected adjacency graph, making it trivial to express it efficiently as a matrix.
+The $p_{ij}$ notation is used to indicate that the underlying edges represent probabilities rather than length or weights.
+It is thus the case that the sum of all exit probabilities associated with a given inlet is always 1, this is formalized in~\eqref{eq:probability_sum}.
+
+\begin{equation}\label{eq:probability_sum}
+	\sum_{j=1}^n p_{ij} = 1 \; \forall i \in \left[1, n\right]
+\end{equation}
+
+
+\subsubsection{Behaviors}
+\label{sec:def:behaviors}
+
+If the goal of these structures is to describe the Agent's representation of the state of the intersection it controls, then $\bf{G}$ is insufficient---after all, taken at face value, $\bf{G}$ implies that if two vehicles are incident at the same time, they both instantaneously \emph{diffuse} to their expected outlets, without any sort of interaction.
+Real intersections don't do this, and real vehicles are not waves (despite how much it would help traffic control).
+The entire concept of a `Red Light' is to avoid the superposition of vehicles in space and time.
+
+In Relay, the concept of a particular set of `active' or `Green' lights (canonically termed a ``phase'') are encapsulated in the \emph{Behaviors} construct.
+Behaviors in Relay control the \emph{visible} intersection transition graph of the intersection, by operating on the values of particular edges.
+In essence, setting a particular edge probability to zero, means that vehicles cannot transition through the edge; limiting the throughput of the intersection (kind of like a traffic light).
+
+Formally, behaviors in relay are elementwise masks on $\bf{G}$, each of which is a member of the finite set $\bf{B}$ as shown in equation~\eqref{eq:def:behaviors}.
+
+\begin{equation}\label{eq:def:behaviors}
+	B_{ij} \in [0, 1] \; \forall B \in \bf{B}
+\end{equation}.
+
+Note that while we have defined the range of acceptable values for $B_{ij}$, we exclusively set each $B_{ij}$ to either 0, or 1 representing ``off'' and ``on'' respectively.
+Ultimately, the most important property of the Behaviors, is that in composition with $\bf{G}$ it forms what we'll hereafter refer to the ``visible'' intersection graph, or rather the physically realizable transfer graph of the intersection.
+The visible graph $\bf{V}_k$ is thus defined in equation~\eqref{eq:def:visible_graph}.
+
+\begin{equation}\label{eq:def:visible_graph}
+	\left[V_k\right]_{n,n} = \left[B_k\right]_{n,n} \circ \left[\bf{G}\right]_{n,n}
+\end{equation}
+where $B_k$ is the $k^{th}$-member of the set of behaviors $\bf{B}$, and ``$X \circ Y$'' is the elementwise/Hadamard product of matrices $X$ and $Y$ (which must have the same shape).
+
+
+\subsubsection{Ingress Signals}
+\label{sec:def:ingress}
+
+While not sufficiently defined, the Relay agent as a single unit is a dynamic system with many vector outputs.
+As implemented however, the system only gathers input from a single source: incidence---or ingress events.
+Physically, these can be thought of as discrete events triggered by physical sensors installed at the inlets of the intersection, such as the quintessential inductance/loop sensor frequently found near controlled intersections.
+Internally, Relay is agnostic to the type of sensor (and associated preprocessing necessary to transform raw sensor input into an ingress event) used in the network.
+
+At its core, the incidence signal is interpreted as a record that a vehicle (or arbitrary client of the intersection) has entered the intersection.
+The incidence $a_i$ at the $i^{th}$ inlet of $\bf{G}$ is a combination of two measurements: the \emph{weight} of the arrival (interpreted as how significant the ingress is, i.e.\ a bus or truck could be considered `larger' than a single vehicle or bicycle), and the time the event happened.
+These records (weight + time pairs) are combined into the ingress \emph{signal} associated with a particular node of $\bf{G}$, and concatenated together to form the vector-valued signal $\vec{a}(t)$ whose elements are defined in equation~\eqref{eq:def:ingress}.
+
+\begin{equation}\label{eq:def:ingress}
+	a_i(t) = \sum_{k \in A_i} \omega_k \delta(t - \tau_k)
+\end{equation}
+where $A_i$ (in the idealized representation) is the set of ingress events $\{(\omega, \tau)\ : \tau \in [-\infty, t]\}$, or rather, the set of all ingress events that have been observed at the $i^{th}$-node.
+
+
+\subsubsection{Egress Signals}
+\label{sec:def:egress}
+
+As previously described, the incidence signals represent the core \emph{real} measurements that are used by the agent.
+While immediate ingress information is necessary in that it is physically where the sensors for a particular intersection are often located, in their current state they are not useful signals for controlling the intersection behaviors/state transition (which is the reason for collecting the information to begin with).
+
+The motivation for performing a transformation on this data is further increased when we recall that Relay agents are designed to communicate with one another.
+
+Lets get the analogies rolling: If the operator of a train station wanted to plan for serving the people exiting the trains stopping at her station, and that the preparations for a train stopping took 15-minutes.
+The knowledge that there was currently a train stopped at her station is not valuable for planning, and as such, if that was the only knowledge she had she would be unable to plan.
+Of greater value, would be the knowledge that there was currently a train inbound from some connecting station.
+This---combined with some prior information about roughly how long it took trains to cross the distance between the two stations, would allow her to better time the preparations.
+
+This ``incoming'' signal is essentially a special case of what we term a \emph{remote egress signal}.
+Relay Agents ``upstream'' will inform their ``downstream'' peers of vehicles \emph{leaving} their intersection.
+Taken from the perspective of a single agent, this means that the ingress signal should be transformed to an associated \emph{egress} signal.
+
+Using the definitions in equations~\eqref{eq:def:visible_graph}, and~\eqref{eq:def:ingress}, we can define the egress signal as a linear transformation of the ingress signal, by the agent's visible graph $V$.
+
+\begin{equation}\label{eq:def:egress}
+	e_j(t) = \sum_{i=1}^n a_i(t) V_{ij}(t)
+\end{equation}
+Note that we have additionally indicated that the agent's visible graph is time-varying, this is helpful in simplifying the description of these signals, but ultimately doesn't reflect the physical reality of signal timing.
+Intuitively, we would expect that the agent's visible graph would change in discrete `jumps'.
+This is not far from the truth, and exposes the beating heart of the relay agent.
+
+
+\subsubsection{Behaviors Transition}
+\label{sec:def:btg}
+
+As alluded to above, what makes signal timing control challenging is not inherently that there is a vast continuum of misinformation and environmental variability (although that certainly doesn't help the problem), but rather that we have a finite set of ``solutions'' or ``strategies'' to employ, and pesky physical restrictions (why can't all the lights be green all the time?).
+
+In equation~\eqref{eq:def:behaviors}, we referred to a set of behaviors $\bf{B}$, and in equation~\eqref{eq:def:egress} we referred to the time-varying graph $V(t)$.
+In order to define \emph{how} the visible graph changes over time (as a result of behaviors switching) we now introduce the concept of ``Behaviors Transition'' in equation~\eqref{eq:def:btg}, whose edges are the incurred time-cost associated with a given behaviors transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
+
+\begin{equation}\label{eq:def:btg_costs}
+	\Tau = \{\mbox{cost}\left(B_i \mapsto B_j \right) : \forall B_i, B_j \in \bf{B} \}
+\end{equation}
+Where it should be noted that we have freedom to define an arbitrary transition cost function.
+Within the Relay implementation we have frequently used time-values corresponding to the legally mandated ``yellow'' time associated with transitions to ``Red'' (on the order of 2-seconds), or the dead-time associated with transitioning from the ``Red'' behaviors.
+
+\begin{equation}\label{eq:def:btg}
+	\bf{\Gamma} = G(\bf{B}, \Tau)
+\end{equation}
+
+Thus we define the Behaviors Transition Graph $\Gamma$, as a directed graph whose nodes are behaviors (members of $\bf{B}$) and whose edges are the associated costs for transitioning between adjacent behaviors.
+
+
+\subsubsection{Ingress Expectation}
+\label{sec:def:expected_ingress}
+
+In Section~\ref{sec:def:egress} we expressed that the egress signal of an agent's peer is only valuable in conjunction with some expectation of how long the signal will be delayed.
+For example, if we know that on average the train will take 20-minutes to travel from the neighboring train station to the local one, we can  generate an expected arrival time for the train.
+In Relay, this expectation is generalized to include arbitrary delay-\emph{kernels}.
+
+Recall in Section~\ref{sec:def:ingress} that we generated an ingress signal based purely on local measurements.
+The Agents in Relay also generate an \emph{expected ingress} signal $E\left[a_i(t)\right]$ as defined in equation~\eqref{eq:def:expected_ingress}.
+
+\begin{equation}\label{eq:def:expected_ingress}
+	E\left[a_i(t)\right] = \sum_{j} \left(e_j^{nbr}(t) + E\left[e_j^{nbr}(t)\right] \right) * h_{ji}(t)
+\end{equation}
+where $e_j^{nbr}(t)$ is the egress signal (as defined in equation~\eqref{eq:def:egress}) of the neighboring agent that is upstream of the $i^{th}$ inlet of the local agent, and $E\left[ \cdot \right]$ denotes the expected value.
+Note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
+Further note the inclusion of the expected upstream egress signal---the derivation of which can be found in equation~\eqref{eq:def:expected_egress}.
+Further note that the choice of delay kernel $h(\tau)$ is left entirely to the implementation.
+In the Relay prototype, these took the form of Gamma distributions, whose parameters were tuned via reinforcement learning.
+
+\subsubsection{Egress Expectation}
+\label{sec:def:expected_egress}
+
+In Section~\ref{sec:def:expected_ingress} we formulated the expected ingress signal in terms of a delay kernel $h(\tau)$ and a superposition of signals from a neighboring agent---explicitly relying on inter-agent communication, and prior knowledge of the particular delay distribution between the connected agents.
+
+In a similar fashion, the expectation of the local egress signal follows a similar flow, albeit with a subtle variation.
+In equation~\eqref{eq:def:expected_ingress} the expected ingress was formed (in part) from a signal derived exclusively from real measurements; namely $e^{nbr}_j(t)$---a neighbor's egress signal, which via equation~\eqref{eq:def:egress} was directly derived from real measurements (incidence signals).
+
+An agent's expected egress is co-recursively defined in terms of its expected ingress in equation~\eqref{eq:def:expected_egress} which is simply a repetition of equation~\eqref{eq:def:egress}, utilizing the linearity of the expectation operator.
+
+
+\begin{align}\label{eq:def:expected_egress}
+	E\left[e_j(t)\right] &= \sum_{i=1}^n E\left[a_i(t) V_{ij}(t)\right]\\
+							&= \sum_{i=1}^n E\left[a_i(t)\right] E\left[V_{ij}(t)\right] + \mbox{Cov}(a_i(t), V_{ij}(t))\\
+							&\approx \sum_{i=1}^n  E\left[a_i(t)\right] E\left[V_{ij}(t)\right]
+\end{align}
+In equation~\eqref{eq:def:expected_egress} the Covariance of the two time-signals is assumed to be near zero, however it is important to understand the cases where such approximations may introduce large error into the system.
+The first of these is predictive feedback.
+Due to the corecursive definition of the expected egress and ingress, the results from one calculation can propagate through a closed loop of peers, thus becoming correlated to the other.
+
+The second relies on the transition plan associated with the agent, which is remains constant over a relatively short timescale, and directly controls $V_{ij}(t)$, and thus the expected egress of an agent.
+In general, it is hypothesized that for loosely-coupled networks (characterized by having delay kernels with large average delays) this is a nonissue.
+For tightly coupled networks, care should be taken incorporating prediction values in the optimization routine chosen to generate plans.
+However, it may be the case that in the \emph{real} world, it is unlikely that individual participants would exhibit geographically cyclic behaviors exaggerated enough to damage the validity of the expected egress prediction (i.e.\ driving in circles).
+To add even greater ambiguity, we hypothesize that the introduction of bias due to the assumption of statistical independence may actually increase performance in tightly coupled networks (i.e.\ by implicitly biasing agent's timing in favor of things with cyclic behaviors, such as public transport and logistic vehicles).
+
+\subsubsection{Transition Plan}
+\label{sec:def:plan}
+
+In a sense, the final piece of the Relay Agent puzzle; the Agent internally stores a \emph{plan} that governs when, and to which behaviors the agent will transition over some future time window.
+The ``Behaviors Transition Plan'' (BTP, or simply ``plan'') is the combination of a particular \emph{path} through the behaviors transition graph (defined in equation~\eqref{eq:def:btg}) with the times associated with each step in the path.
+Given a plan, it is thus possible to generate the visible graph signal $\bf{V}(t)$, and via a behaviors lookup-table, this process is invertible.
+The plan---and its properties, are defined in equations~\eqref{eq:def:plan}.
+
+\begin{align}\label{eq:def:plan}
+	\mbox{plan} = \{(B_k, t_i) : t_{i} &\geq t_{i-1} + \Gamma_{B_{k-1},B_k},\\
+	B_k &\in \mbox{Adj}_\Gamma(B_{k-1}) \forall B_k \in \bf{B}
+		i &\in [0, d]
+\}
+\end{align}
+
+Which is to say, that each successive step in the plan must take place after the current step plus the cost of taking the step (as formalized in equation~\eqref{eq:def:btg}), and that each successive behaviors, must be adjacent-reachable in $\Gamma$.
+Additionally, the length of the sequence is limited to some finite integer $d$, which corresponds to the \emph{depth} of the path (or length).
+
+It is through manipulations of $\Gamma$ that the agent is able to consider various behaviors, as well as limit the acyclic behaviors associated with a \emph{plan} to legal states (for both real-world and abstract definitions of ``Legal'').
+
+
+%%  Redundant subsection, Candidate for removal.
 \subsection{Architecture and Design}
 \subsubsection{Relay Intersection Modelling}
 
@@ -1093,13 +1321,17 @@ This depth-wise priority is shown in Figure \ref{fig:Relay_Network}.\\
 Alternative network topologies have been used by current adaptive traffic implementations.
 For small scale (arterial) installations, it is trivial to have all agents permanently connected to all peers.
 Modern installations have also implemented so-called ``cloud-service'' based approaches, and Miovision's Spectrum is one such example.\\
+%%  End Redundant
+
 
 \subsection{Learning in Relay}
+\label{sec:learning_in_relay}
 
 Each agent within the system has multiple design parameters that will constantly update. With each cycle -- behaviour change -- predictions and estimations are made to recalculate these parameters. 
 The following sections explain how these variables are learned and updated.
 
 \subsubsection{Time Delay Estimation}
+
 The first important parameter needed to calculate predictions is the time delay estimate between two agents. 
 This can be thought of as the estimated time to travel from one intersection to a neighbouring one. 
 However, this is not a fixed time, so the delay is modelled using a gamma distribution, as discussed previously. 
@@ -1129,6 +1361,7 @@ The resulting distribution is overlaid on the downstream signal and estimated ti
 
 
 \subsubsection{Updating Intra-Agent Behaviour Graphs}
+
 The second important piece in generating signal predictions is learning the intra-agent graph probabilities. 
 These represent the likelihood of a signal to travel along this edge during the executed behaviours cycle.
 
@@ -1228,6 +1461,8 @@ In \eqref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is t
 \end{equation}
 
 \subsection{Predictions in Relay}
+\label{sec:prediction_in_relay}
+
 Making predictions of traffic is an essential component of Relay. 
 This is the foundation of intelligence in the system and assists each agent in making decisions regarding behaviour execution. 
 Predictions represent an estimation of local traffic $x$ seconds into the future, with the length being determined by the needs of the controller. 
@@ -1302,8 +1537,17 @@ k & neighbor inlet id \\
 j & neighbor outlet id
 \end{conditions*}
 
+\subsection{Optimization in Relay}
+\label{sec:optimization}
+
+PLACEHOLDER FOR ALEX's STUFF.
+
+
 \newpage
 \chapter{Design Testing and Validation}
+
+\section{Prototype Agent Implementation}
+ALEX's STUFF
 
 \section{Front End}
 
@@ -1426,7 +1670,7 @@ Incorporating more external data, such as school times, locations, and days, wou
 This would help to increase safety in these areas by working to either route cars away from these zones, or adapting to reflect slower speed limits during ``school hours''.
 These types of biases would then be tested in simulations, and performance improvements measured.
 
-\subsection{Exploiting Neighborhood Redundancy - The ``Super Node"}
+\subsection{Exploiting Neighborhood Redundancy - The ``Super Node"}  % Possibly redundant.
 Future research could be conducted to tackle the challenge of optimizing network communication within the purview of the neighbourhood mesh network topology.
 This was not a primary concern of this project, but it is mentioned here for completeness and as a possible stepping stone for further research.\\
 
