@@ -126,7 +126,9 @@ To help us tackle traffic control itself, we assumed that we have perfect traffi
 While this did not change the final product, it eliminated some of the challenges with creating such a system.\\
 
 Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
-While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with out system. <SOMETHING ELSE HERE>.
+While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with out system.
+For this project, the team decided to create simple simulations and construct the Framework such that it could be integrated with other simulation environments in the future.
+The simulations will be discussed further in the engineering design section.
 Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
 This option will not be pursued because of this difficulty and short timeline.\\
 
@@ -139,6 +141,13 @@ Additionally, because Relay would sit on top of the municipalities core traffic 
 This means that if an action was executed within Relay, it may not be executed on the system and could be overridden.
 An example of this is light switching from emergency vehicles - they have devices that allow them to signal lights they are approaching and switch the current light pattern.
 We have no control over this and must accept that some actions may not be executed.\\
+
+To reduce complexity for this project, only intersection with 4 directions are being modeled. 
+While, it can be argued that other arrangements are simply modifications of a 4-way intersection, we will not be considering these. 
+Additionally, it will be assumed that all roads have one lane in each direction. 
+Adding additional lanes, for example turning lanes, would provide more context on how cars are traversing and assist in planning, it makes the system and optimization much more complex. 
+Thus, for the purposes of this project we will simply consider one-lane streets and ensure the system is extensible for adding lanes.\\
+
 
 \newpage
 
