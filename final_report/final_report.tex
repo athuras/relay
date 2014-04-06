@@ -1586,7 +1586,8 @@ This made accessing any of the required data simple, and easy for many users.
 As a result of this Use Case Analysis, it was found that users reacted to each task with a high level of ease and satisfaction.
 Next steps include continuing to build out the Roads functionality, such that the remaining use cases can be satisfied, as well as mending the bug found with the search/filter functionality on the Intersections page.
 
-The initial functional requirements which drove the development of the solution will be used to test the application. Each functional requirement will be assesed for whether the requirement has been completed within the interface. Requirements are divided into three sections: Network requirements N1 -- N4, Intersection Requirements, I1 -- I9, and Road requirements R1 -- R7. The functional requirements assessment is outline in table \ref{table:freqassessment}.
+\subsection{Functional Requirements Analysis}
+The initial functional requirements which drove the development of the solution will be used to test the application. Each functional requirement will be assesed for whether the requirement has been completed within the interface. Requirements are divided into three sections: Network requirements N1 -- N4, Intersection Requirements, I1 -- I9, and Road requirements R1 -- R7. The functional requirements assessment is outline in table \ref{table:freqassessment}. \\
 
 \begin{longtable}[H]{| P{6.5cm} | P{2.5cm} | P{6cm} |}
     \hline
@@ -1615,7 +1616,7 @@ The initial functional requirements which drove the development of the solution 
 \label{table:freqassessment}
 \end{longtable}
 
-Only 50\% of network-level functionality was met in the final application prototype. N1 and N2 relate specifically to the display and understanding of intersection performance, which is a core aspect ot the application. N3 and N4 relate to network-level metrics. The Front End application was built to support network information, and a network-specific page was developed to display metrics, time-series graphs, and activity lists. These metrics were not available in any meaningful manner from the Back End. Although all necessary information for performing such calculations was available to the Front End, it was not appropriate to require the Front End to perform this task. Therefore, the information was not made available in the interface for the final solution.
+Only 50\% of network-level functionality was met in the final application prototype. N1 and N2 relate specifically to the display and understanding of intersection performance, which is a core aspect of the application. N3 and N4 relate to network-level metrics. The Front End application was built to support network information, and a network-specific page was developed to display metrics, time-series graphs, and activity lists. These metrics were not available in any meaningful manner from the Back End. Although all necessary information for performing such calculations was available to the Front End, it was not appropriate to require the Front End to perform this task. Therefore, the information was not made available in the interface for the final solution.
 
 All of the intersection functional requirements --- I1 through I9 --- were met in the final solution. However, this functionality was only available through the map view in the interface. A intersection-specific list-based interface was developed, however the intersection-specific functionality requirements I1 -- I9 were not supported. Therefore, the functional requirements have been met, yet they are not ideal.
 
