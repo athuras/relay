@@ -1281,8 +1281,50 @@ This design pattern is commonly referred to as ``Ports and Adapters'' or ``Hexag
 \chapter{Recommended Design Modifications}
 
 \section{Front End}
+Upon building the Relay Interface to a stage where it was usable, testable, and demo-able on Symposium day, a number of areas were identified where future design and development efforts should be placed, in order to improve the overall usability and experience of the application.
+These areas for future development include both the front-end User Interface design, as well as the Application Architecture itself to help create a more robust product both internally and externally.
 
 \subsection{User Interface}
+Given more time and design/development efforts, there are a number of areas in the User Interface of the Relay application that could be modified to better serve the needs of consumers and Traffic Engineers.
+The first area would be to improve the execution of searchable list views within the application.
+These currently reside on the Intersections and Roads screens.
+Design recommendations for list views would be to build out further interaction with the lists, to provide as much insight into the data as would be found by inspecting an intersection from the map screen.
+This could be done by creating a side panel on the Intersections and Roads pages that would be activated by clicking a row on the table.
+Given that the tables currently require no more than two thirds of the screen width to be displayed, a side panel with in-depth data would fit well on the screen, perhaps filling the remaining one-third of the page.
+Furthermore, a small bug was found with the search/filter functionality that makes using that feature a bit cumbersome.
+When a list is filtered, and the search query is removed or edited to perform and new search, the table does not currently update and the page must be refreshed.
+By implementing the list filter as a fully dynamic feature, where search edits can be made continuously, the experience of using lists to locate roads and intersections in the Relay application will be greatly improved.
+
+A second recommended design modification is to continue building out the Network page.
+While the power of the average laptop is able to power and simulate approximately 10 live Relay-controlled intersections, more power is necessary to truly understand the data from a large network, such that would be suitable to display on the Network page.
+As a result, live full-network metrics were difficult to provide, thus it is recommended that the Network page and corresponding data be tested further on a more powerful system, to truly see the effectiveness of the data being visualized.
+Metrics to explore here include charts displaying overall network delay/queue length, and network flow.
+Full-network metrics were identified as important in the User Study, and so it would be critical to continue to optimize the Network page for future implementations.
+
+Further recommended design modifications for the User Interface of the Relay application include building out the Roads page and functionality.
+Desired features involving road data were unable to be built to a usable high-fidelity state, and so focus should be placed on this area for future implementations.
+The Roads page, when built, should look and behave similarly to the Intersections page, such that the same learned skills and interactions from the Intersections page can be applied directly to the Roads page.
+They should not be so similar, however, that they become confused for one another, so it should be ensured that there are enough distinguishing factors for each, so as to reduce confusion for the users.
+This would include providing an improved list-view for all of the roads in the network, as well as corresponding metrics and attributes to help identify roads that require the attention of a traffic engineer.
+
+Expanding this road functionality should include the ability to highlight arbitrary roads on the map.
+This functionality could be embodied in a number of features, such as highlighting the roads connecting intersections that are currently communicating with one another, perhaps when a particular intersection is clicked by the user.
+This would provide even further insight, particularly to Traffic Engineers, into the way the system is behaving and the decisions it is making.
+Engineers should have as much understanding of the system as possible, and so a feature such as this would help to improve such an understanding.
+Road highlighting also has other interesting applications for consumers, particularly in the area of route planning.
+With the ability to place graphics along a roadway comes the ability to highlight any arbitrary route through the network.
+This opens up a large feature-space in the Relay application to promote consumer usage, as many people using mapping applications for their routing abilities.
+As road highlighting presents numerous positive feature implementations - for both consumers and traffic engineers - its design and development should be pursued further, given additional design and development time.
+
+Finally, recommended design modifications come in the area of data visualization layers.
+Given the vast amount of ways one can portray a given data set, it is recommended that this area of the application be continually modified and improved over time.
+Different metrics should be explored in this area, outside of the current Status, Flow, and Queue Length implementation.
+More metrics that are important to traffic engineers, in different visualization forms, will be beneficial in providing a useful application to the widest possible base of users.
+Other ways to graphically show detailed, quantitative information on the map should also be explored here, possibly in the form of overlays or modular windows atop the base map.
+Building on the idea of a ``quick look'' into an intersection, as shown in the info box implementation, would be beneficial in providing the best possible browsing experience that suits the workflow of traffic engineers.
+Continued design in development in any or all of these recommended areas is expected to improve the overall quality of the Relay User Interface, thus better satisfying the needs of target users.
+With ever-changing and often unpredictable data, diligence must be paid to the continued refining of visualization techniques and best practices in the interface.
+Other considerations and recommendations can be described through changes to the application architecture, as explained in the next section.
 
 \subsection{Application Architecture}
 
