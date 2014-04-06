@@ -1,34 +1,53 @@
-\contentsline {section}{\numberline {1.0 }Introduction}{1}
-\contentsline {subsection}{\numberline {1.1}Background}{1}
-\contentsline {subsection}{\numberline {1.2}Proposed Solution}{3}
-\contentsline {section}{\numberline {2.0 }Design Objectives and Requirements}{3}
-\contentsline {subsection}{\numberline {2.1}Relay Framework}{4}
-\contentsline {subsubsection}{\numberline {2.1.1}Objectives and Requirements}{4}
-\contentsline {subsection}{\numberline {2.2}Relay Interface}{6}
-\contentsline {subsection}{\numberline {2.3}Design Constraints}{12}
-\contentsline {subsection}{\numberline {2.4}Implications}{13}
-\contentsline {section}{\numberline {3.0 }System Design}{14}
-\contentsline {subsection}{\numberline {3.1}Front-End Design Approach}{14}
-\contentsline {subsubsection}{\numberline {3.1.1}Research and Concept Generation}{15}
-\contentsline {subsubsection}{\numberline {3.1.2}Wireframing}{15}
-\contentsline {subsubsection}{\numberline {3.1.3}Mid-Fidelity Prototype}{17}
-\contentsline {subsubsection}{\numberline {3.1.4}High-Fidelity Prototype}{21}
-\contentsline {subsection}{\numberline {3.2}Back-End Design Approach}{21}
-\contentsline {subsubsection}{\numberline {3.2.1}Databases and Persistent Storage}{23}
-\contentsline {subsubsection}{\numberline {3.2.2}Mapping Support}{25}
-\contentsline {subsubsection}{\numberline {3.2.3}Data Processing Service}{27}
-\contentsline {subsubsection}{\numberline {3.2.4}Testing Methodology}{28}
-\contentsline {subsection}{\numberline {3.3}Design Approach for the Relay Framework}{28}
-\contentsline {subsubsection}{\numberline {3.3.1}Relay Intersection Modelling}{29}
-\contentsline {subsubsection}{\numberline {3.3.2}Relay Agent}{30}
-\contentsline {subsubsection}{\numberline {3.3.3}Network Topology}{31}
-\contentsline {subsubsection}{\numberline {3.3.4}Scope of Prediction Service}{33}
-\contentsline {subsubsection}{\numberline {3.3.5}Exploiting Neighbourhood Redundancy}{34}
-\contentsline {subsection}{\numberline {3.4}Test Procedures}{34}
-\contentsline {section}{\numberline {4.0 }Financial Budget}{36}
-\contentsline {section}{\numberline {5.0 }Project Progress and Schedule}{37}
-\contentsline {subsection}{\numberline {5.1}Review of Progress}{37}
-\contentsline {subsection}{\numberline {5.2}Strategies for Improved Performance}{38}
-\contentsline {subsection}{\numberline {5.3}Tasks and Deliverables}{39}
-\contentsline {subsection}{\numberline {5.4}Gantt Chart}{42}
-\contentsline {section}{\numberline {6.0 }Conclusion}{43}
+\contentsline {chapter}{\numberline {1}Introduction}{1}
+\contentsline {section}{\numberline {1.0 }Background}{1}
+\contentsline {chapter}{\numberline {2}Engineering Design}{4}
+\contentsline {section}{\numberline {1.0 }Front End}{4}
+\contentsline {subsection}{\numberline {1.1}Design Research}{4}
+\contentsline {subsection}{\numberline {1.2}Design Process}{4}
+\contentsline {subsubsection}{\numberline {1.2.1}Wireframing}{4}
+\contentsline {subsubsection}{\numberline {1.2.2}Medium-Fidelity Prototyping}{7}
+\contentsline {subsubsection}{\numberline {1.2.3}High-Fidelity Prototyping}{11}
+\contentsline {subsection}{\numberline {1.3}Application Architecture}{19}
+\contentsline {subsubsection}{\numberline {1.3.1}Framework Selection}{20}
+\contentsline {subsubsection}{\numberline {1.3.2}Mapping Library Selection}{23}
+\contentsline {subsubsection}{\numberline {1.3.3}Visualization Library Selection}{25}
+\contentsline {subsubsection}{\numberline {1.3.4}Architecture Development}{28}
+\contentsline {section}{\numberline {2.0 }Back End}{31}
+\contentsline {subsection}{\numberline {2.1}Server - Flask and Python}{33}
+\contentsline {subsection}{\numberline {2.2}Database - SQLite3}{33}
+\contentsline {subsection}{\numberline {2.3}Client-Server Communication}{36}
+\contentsline {section}{\numberline {3.0 }Deep End - Relay Framework}{36}
+\contentsline {subsection}{\numberline {3.1}Architecture and Design}{37}
+\contentsline {subsubsection}{\numberline {3.1.1}Relay Intersection Modelling}{37}
+\contentsline {subsubsection}{\numberline {3.1.2}Relay Agent}{38}
+\contentsline {subsubsection}{\numberline {3.1.3}Network Topology}{39}
+\contentsline {subsection}{\numberline {3.2}Learning in Relay}{41}
+\contentsline {subsubsection}{\numberline {3.2.1}Design Parameter Updates}{41}
+\contentsline {subsubsection}{\numberline {3.2.2}Time Delay Estimation}{41}
+\contentsline {subsubsection}{\numberline {3.2.3}Updating Intra-Agent Behaviour Graphs}{42}
+\contentsline {paragraph}{\numberline {3.2.3.1}Behaviour Probability Matrix (BPM)}{42}
+\contentsline {paragraph}{\numberline {3.2.3.2}Learning Probabilities}{43}
+\contentsline {paragraph}{\numberline {3.2.3.3}Updating BPMs}{45}
+\contentsline {subsection}{\numberline {3.3}Predictions in Relay}{45}
+\contentsline {subsubsection}{\numberline {3.3.1}Utilizing Neighborhood Information}{46}
+\contentsline {subsubsection}{\numberline {3.3.2}Making a Prediction}{46}
+\contentsline {subsubsection}{\numberline {3.3.3}Higher-Order Predictions}{47}
+\contentsline {chapter}{\numberline {3}Design Testing and Validation}{49}
+\contentsline {section}{\numberline {1.0 }Front End}{49}
+\contentsline {section}{\numberline {2.0 }Back End}{49}
+\contentsline {section}{\numberline {3.0 }Deep End}{50}
+\contentsline {chapter}{\numberline {4}Recommended Design Modifications}{51}
+\contentsline {section}{\numberline {1.0 }Front End}{51}
+\contentsline {subsection}{\numberline {1.1}User Interface}{51}
+\contentsline {subsection}{\numberline {1.2}Application Architecture}{51}
+\contentsline {section}{\numberline {2.0 }Back End}{51}
+\contentsline {subsection}{\numberline {2.1}Client-Server Communication Improvements}{51}
+\contentsline {section}{\numberline {3.0 }Deep End}{52}
+\contentsline {chapter}{\numberline {5}Timeline and Project Management}{53}
+\contentsline {section}{\numberline {1.0 }Tasks and Deliverables}{53}
+\contentsline {subsection}{\numberline {1.1}Fall 2013}{53}
+\contentsline {subsection}{\numberline {1.2}Winter 2014}{56}
+\contentsline {subsection}{\numberline {1.3}Gantt Charts - Fall and Winter}{59}
+\contentsline {subsection}{\numberline {1.4}Gantt Chart}{60}
+\contentsline {subsection}{\numberline {1.5}Performance Review}{61}
+\contentsline {section}{\numberline {2.0 }Conclusion}{62}

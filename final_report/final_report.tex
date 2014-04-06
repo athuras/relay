@@ -147,6 +147,277 @@ We have no control over this and must accept that some actions may not be execut
 \section{Front End}
 
 \subsection{Design Research}
+The Front End design process began with a Research phase, intended to provide a clear picture of the industry and potential users.
+This was accomplished through a User Study including interviews with industry experts, the gathering of Functional Requirements and Use Cases for the Relay Interface, and a detailed look at Information Architecture methods to best display the required data.
+
+\subsubsection{User Study}
+With intentions to create a product suitable for both Traffic Engineers and consumers, the Engineering Design process for the Front End Relay application began with a User Study conducted towards both types of ideal product users.
+The study consisted of industry research, investigating existing traffic visualization solutions, and interviews conducted with experts to gather their insights on users, as well as their knowledge of the industry and how a solution such as Relay may fit into the product landscape. 
+
+Industry Research was conducted through an analysis of the State of the Art in traffic visualization products and solutions. 
+These product offerings were found to be primitive in type of data available, generally providing a boolean or three-stage metric of traffic/no-traffic, or traffic/light-traffic/no-traffic.
+Products where these interfaces were found include Apple Maps and Google Maps, where the target audience is the general public. 
+This finding was important in guiding the consumer-focused aspect of the Relay Interface, as it emphasized the need for simplicity and salience in the design.
+Other traffic-related software, on the Traffic Engineer side, includes simulation environments such as PTV VisSim.
+Findings from this software were quite the opposite from the consumer-focused applications, as the simulation environment was very heavily loaded with information, features, and required a great deal of time to learn to use.
+Even with such elaborate software suites available, the user is still limited to a model/simulation of the actual scenarios and data they may encounter in the real world.
+True, accurate, live traffic interfaces are still relatively primitive and consumer-focused, meaning that in-depth intersection data simply is not readily available in an online application.
+Experiencing both extremes of existing software opened up an important area for Relay to be focused on - creating a balanced program that will not overload beginner or light-use users, such as the average route-planning consumer, while being able to supply the necessary data, insight, and control that a Traffic Engineer would require to effectively monitor their network and empower the work that they do.
+With this in mind, the team conducted three interviews with experts in the traffic engineering industry, to gather their insight into the matter.
+
+The first expert interview was conducted with Marc Tan from IBI Group in Toronto.
+The transcript for this interview is available in Appendix A. 
+The goal of this interview was to understand the nuances of what a Traffic Engineer does, what their needs are in an interface, and how their role may change given an adaptive control system.
+Marc enlightened the team on the three main roles that exist for those involved in traffic network planning and execution.
+These roles are the Traffic Engineers - who draw up signal timing plans, Technical Staff - who work in control centres changing signal timing plans, usually under the direction/instruction of a traffic engineer, and Technicians - who often hard code timings or fall back plans out in the field.
+It was identified that Traffic Engineers are found to be drawing up signal timing plans less and less as adaptive technology progresses forward.
+\begin{quote}
+``As systems become adaptive, the goal of the traffic engineer is to more so calibrate and set up the existing conditions of the network rather than drawing up particular definitive second by second timings.''
+\end{quote}
+This quote from Mr. Tan was important in the development of functional requirements directed at Traffic Engineers, as their goals in the context of an adaptive system are shown to be different from those in non-adaptive systems.
+With a need to calibrate and set up existing conditions of the network, a strong emphasis can be placed on being able to monitor these network conditions, validating the need for a well-designed data interface.
+This interview was also important in gathering a more holistic view of the concerns of a traffic engineer.
+\begin{quote}
+``Now we don't just look at traffic; pedestrian and cyclist volumes also play a major role in determining timings.
+Other things to consider are the capabilities of the existing system, and the communication channels available (i.e. are the traffic signals connected to a central system, can we change them from a central system, are there other factors at play (special timings for transit, cyclists, pedestrians, etc.), is there an adaptive system.''
+\end{quote}
+From this, the strong need to consider everything that goes on at an intersection, not just vehicular traffic, is evident in informing the decisions that traffic engineers need to make.
+The ability to make informed decisions is based on the available data, which places emphasis on the need for accurate data acquisition technology at intersections, such as image processing techniques to gather data on pedestrians, cyclists, and other actors that may not be detected by the typical loop sensors often implanted into roads.
+Given appropriate data acquisition at intersections, it is evident that the display of that information is critical in an interface to be used by Traffic Engineers.
+
+The second interview was conducted with Peter Kelley of Paradigm Transportation.
+A transcript for this interview is included in Appendix A.
+This interview went into detail regarding the specific metrics of interest that a Traffic Engineer may monitor, on both system-wide and per-intersection scale.
+Mr. Kelley was helpful in identifying the need to display the overall experienced delay in the network, and the importance of knowing the signal timing plans and volume of vehicles moving through the network.
+In the case of an adaptive system, having a window into its decision-making process and predictions is critical in understanding why the network is behaving the way that it is.
+He was able to identify certain edge cases where existing traffic solutions often fail - such as the precedence that emergency vehicles take over the network, and the difficulty that a pre-set timing system has recovering from such an anomaly.
+\begin{quote}
+``A big problem for this is emergency vehicles that can control the signal to get priority, having the signals get back on cycle can take a while and overall negatively impacts traffic flow.''
+\end{quote}
+Being able to spot abnormal situations at an intersection gave insight into the need for a metric displaying the status of an intersection, where it may be experiencing some sort of unusually long delay, a power outage, an accident, etc.
+While an adaptive system will be able to intelligently route traffic around such an anomaly and quickly get back into a regular timing scheme, it is still important to be able to alert the engineer of situations as they arise, as well as to provide a look-back at a log or history of activity at an intersection to try and detect any patterns that could influence re-programming.
+On an individual-intersection basis, Mr. Kelley identified issues with the way current solutions assign minimum amounts of green time in certain directions at peak hours, and how this creates problems when such patterns change. 
+Being able to provide protected movements when no one is at the intersection, or at least not in individual directions, is a major bonus that adaptive systems offer for mitigating these peak hour concerns. 
+Additional information that Traffic Engineers need to monitor were identified to include turn counts, volume, an overall Level of Service metric, and more.
+\begin{quote}
+``The information we like to know about a single intersection is the turning movement counts, the delay of the approaches (north, south, east, west), the queue lengths of vehicles, and the volume/capacity ratio. These all serve as a means to determine the Level of Service of an intersection.''
+\end{quote}
+
+The final interview was conducted with David Hillis from Miovision in Kitchener.
+This interview provided a clear look into the traffic engineering landscape as a whole, detailing information on existing solutions, the needs/goals/desires of a traffic engineer, and some of the roadblocks and challenges that Miovision has faced in developing an adaptive traffic control system of their own.
+Firstly, Mr. Hillis identified some limiting factors for adaptive systems - budget being the biggest deterrent for many governments and municipalities.
+Implementing new technology, particularly expensive new technology, in infrastructure can be a major challenge, as there are many concerns such as fault tolerance, safety, and cost that must be held to an extremely high standard.
+
+Another interesting point discussed was the effect of psychological factors on drivers, identifying that predictability on a route often trumps true efficiency.
+An individual driver wants to be able to optimize and ``out-smart'' the lights on their route.
+When the timings on the route itself are changing and optimizing for the overall benefit of the network, as is the case in an adaptive system, individual drivers may believe they are not getting a great service as they get many green lights one day, and many red lights the next.
+Understanding the psychological factors at play is important in gaining a truly holistic understanding of the traffic system, and must be taken into consideration when designing an interface where consumers and traffic engineers must get a maximal benefit.
+
+Mr. Hillis also identified the truly primitive nature of the underlying traffic control technology, and the way that timing plans are often updated.
+He discussed that people will often call in to complain about a particular intersection, or to alert the city that an intersection is down or there is a power outage.
+The data gathered at intersections currently has no convenient way of being exported and processed, as many locations require a technician or engineer to plug in a monitor to view the workings of a particular intersection.
+The data that was identified as important includes the phase of the lights (i.e. which direction is green, red, is there an advanced green, etc.), and the overall delay/queue length at an intersection and across the network.
+For the interface, Mr. Hillis advised that users should be given a sense of control and purpose, with the ability to tweak things and make changes as necessary, while exposing as much data as possible.
+By providing an interface that meets these needs, both consumers and traffic engineers will be empowered to make better decisions on their driving and route-planning habits, as well as on the work that they do surrounding the behaviour of the traffic network.
+
+\subsubsection{Functional Requirements}
+With the insights gathered through researching industry solutions and state-of-the-art traffic interfaces, as well as through conversations with traffic engineering experts, a detailed set of Functional Requirements and Use Cases for the Relay Interface were compiled. 
+In the following tables, the shorthand ``TE'' will be used to denote Traffic Engineer, and ``Network'' refers to the collection of intersections and roads which the traffic control system controls.
+The specific area that a requirement is related to is numbered, while the requirements themselves follow a letter-based enumeration scheme.
+Particular requirements will be referred to by their numerical and letter positioning, e.g. Requirement 2b.
+
+\begin{enumerate}
+  \item Network
+  \begin{enumerate}
+    \item The TE should be able to see all of the intersections in the network on a map.
+    \item The TE should be able to see a list of all of the intersections in the network.
+    \item The TE should be able to see the performance metrics of the network.
+    \item The TE should be able to see the history of the performance metrics for the network.
+  \end{enumerate}
+  \item Intersections
+  \begin{enumerate}
+    \item The TE should be able to see the status of all of the intersections in the network.
+    \item The TE should be able to see basic performance information about all of the intersections in the network.
+    \item The TE should be able to search for an intersection in the network and see the details of the intersection.
+    \item The user should be able to see an intersection's position on a map.
+    \item The user should be able to see basic information about the intersection.
+    \begin{enumerate}
+    	\item Title
+	\item Type of intersection (major, minor, etc.)
+	\item Geographic co-ordinates
+    \end{enumerate}
+    \item The user should be able to see the status of the intersection.
+    \item The user should be able to see the signal state of the intersection.
+    \item The user should be able to see current performance metrics of the intersection.
+    \item The user should be able to see the history of the intersection's performance.
+  \end{enumerate}
+  \item Roads
+  \begin{enumerate}
+    \item The TE should be able to see the status of all of the roads in the network.
+    \item The TE should be able to see basic performance information about all of the roads in the network.
+    \item The TE should be able to search for a road in the network and see the details of the road.
+    \item The user should be able to see the road on a map.
+    \item The user should be able to see basic information about the road.
+    \begin{enumerate}
+    	\item Type of road
+	\item Width of road
+	\item Speed limit
+    \end{enumerate}
+    \item The user should be able to see the current performance of the road.
+    \item The user should be able to see the history of the intersection's performance.
+  \end{enumerate}
+\end{enumerate}
+
+Following the compilation of these Functional Requirements, a series of Use Cases, as outlined in Tables \ref{use-case-1} - \ref{use-case-8} were created to provide a better sense of particular tasks and situations users may often be in, to help promote a more user centred approach to the design of the Relay Interface.
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User monitors the map for activity and high-level performance. & ~          \\ \hline
+    \end{tabular}
+    \caption {Use Case 1: User monitors network map.}
+    \label{use-case-1}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User selects the ``intersections'' tab  &    Application switches to showing the list of intersections.          \\ \hline
+    The user monitors the list for activity.   &    \\ \hline
+    \end{tabular}
+    \caption {Use Case 2: User monitors intersection list.}
+    \label{use-case-2}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User selects the ``roads'' tab  &    Application switches to showing the list of roads.          \\ \hline
+    The user monitors the list for activity.   &    \\ \hline
+    \end{tabular}
+    \caption {Use Case 3: User monitors road list.}
+    \label{use-case-3}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User selects the ``intersections'' tab  &    Application switches to showing the list of roads.          \\ \hline
+    The user types the name of an intersection into the search bar.   &   The list filters real-time to show the list of intersections which match the search text.   \\ \hline
+    The user locates the correct intersection     &     The row contains basic information about the intersection. \\ \hline
+    \end{tabular}
+    \caption {Use Case 4: User searches for an intersection.}
+    \label{use-case-4}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User selects the ``roads'' tab  &    Application switches to showing the list of roads.          \\ \hline
+    The user types the name of a road into the search bar.   &   The list filters real-time to show the list of intersections which match the search text.   \\ \hline
+    The user locates the correct road     &     The row contains basic information about the road. \\ \hline
+    \end{tabular}
+    \caption {Use Case 5: User searches for a road.}
+    \label{use-case-5}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User expands the details tab  &   The details tab expands to fill the right-hand side of the map. The user can see detailed performance metrics of the network. The user can see overview statistics about the roads in the network. The user can see overview statistics about the intersections in the network. The user can see historical information about the performance of the network. The user can see predictions of the performance of the network.          \\ \hline
+    \end{tabular}
+    \caption {Use Case 6: User inspects network details.}
+    \label{use-case-6}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     The user selects an intersection from the map  &   The intersection that was selected is highlighted on the map. A popup appears with basic information about the intersection. The user can see the current status of the intersection. The user can see the signal state of the intersection. The user can see the current performance level of the intersection. The user can see the current bias vector of the intersection.          \\ \hline
+     The user selects ``show more'' in the intersection popup.     &    The popup closes and the details panel expands from the side of the screen with detailed information about the intersection. Application shows the current status of the intersection. Application shows the signal state of the intersection. Application shows the current performance level of the intersection. Application shows the current bias vector of the intersection. Application shows the flow biases for each direction in the intersection. Application shows performance and volume histories for the intersection. Application shows predictions for the intersection. \\ \hline
+    \end{tabular}
+    \caption {Use Case 7: User inspects intersection details.}
+    \label{use-case-7}
+   \end{centering}
+\end{table}
+
+\begin{table}[htbp]
+\begin{centering}
+    \begin{tabular}{| p{7cm} | p{7cm} |}
+    \hline
+    User    & Interface   \\ \hline
+    User types in the Relay URL    &     The application loads to show the loading screen    \\ \hline
+    ~      & When the loading is done, the application displays a map of the network. The map highlights controlled roads and intersections. \\ \hline
+     User selects the ``road'' tab  &   Application switches to showing the list of roads.          \\ \hline
+     The user types the name of an road into the search bar.     &    The list filters real-time to show the list of roads which match the search text.           \\ \hline
+     The user locates the correct road.    &    The row contains basic information about the intersection.    \\ \hline
+     The user selects the details icon on the row.     &     The detail panel appears from the right hand side of the page containing detailed information about the road. The user can see the road's profile. The use can see the performance level of the road. The user can see the speed and volume levels of the road. The user can see the historical volume, speed, and performance levels of the road. The user can see the performance, volume, and speed predictions for the road.     \\ \hline
+    \end{tabular}
+    \caption {Use Case 8: User inspects road details.}
+    \label{use-case-8}
+   \end{centering}
+\end{table}
+
+These requirements and use cases, resulting from the User Study outlined above and group brainstorming and ideation sessions, lay the foundations for the Relay Interface - the design of which is explained in detail in the Design Process section.
+Prior to embarking on the Design Process for the Relay Interface however, further research and planning was done towards the information architecture of the application, given that it relies so heavily on the clear presentation of data.
+The next section outlines the research process involved in gathering knowledge and ideas for the presentation and visualization of data in the Relay Interface.
+
+\subsubsection{Information Architecture}
+Research into information architecture began with a look at some existing academic literature on data visualization, particularly that involving glyph-based illustrations.
+Given the requirements, it is evident that some complex data will need to be displayed in the application, particularly in a clean and understandable manner.
+Glyph-based visualization works well in these scenarios, as patterns of multivariate data involving more than two attribute dimensions can often be more readily perceived in the context of a spatial relationship \cite{borgo2012glyph}.
+The following table in Figure \ref{fig:glyphs} outlines six commonly used glyph types, breaking down their temporal encoding, ranked data value and issues that arise with each in situations of high data density \cite{fuchs2013evaluation}.
+
+\begin{figure}[htbp!]
+  \begin{centering}
+    \includegraphics[scale=0.27]{figures/glyph_table.png}
+    \caption{Common glyph types and their description.}
+    \label{fig:glyphs}
+  \end{centering}
+\end{figure}
+
+As can be seen in Figure \ref{fig:glyphs}, each common glyph type has their relative strengths and weaknesses.
+The important considerations when bringing these visualizations into the Relay Interface is to carefully evaluate the data being presented, and to maximize the saliency of said data, while minimizing issues that may arise with the visualization at at size or density.
+
+Upon making such decisions for the visualization of data, careful planning must be done to place data in locations on the screen and within the application such that the user need not search extensively to find it.
+Certain data given by the requirements will be best served on the map, where the context of location and spatial relativity is important.
+Other data may be better suited for presentation off of the map, perhaps in a dashboard or modular window setting.
+Situations where the context of a single location is important, or in a list-based visualization environment may be areas where data is better suited to be shown away from the map.
+These considerations, and more, and discussed further in the following Design Process section.
 
 \subsection{Design Process}
 With sufficient Design Research conducted, and functional requirements compiled, the front-end application design moved into an iterative process of defining the user interface (UI), interactions, and visual design of the app through various levels of fidelity.
@@ -728,6 +999,11 @@ Tables have been created for these and could easily be integrated into the syste
   \end{centering}
 \end{figure}
 
+\subsection{Client-Server Communication}
+It is a goal of the solution to present up-to-date information about the network in the interface. This requires frequent communication between the client and the server. Client-server communication was achieved via the development of an Application Programming Interface (API) on the server, with which the client could connect to receive new information. The API was designed to specifically meet the needs of the solution, as API calls were designed specific features within the interface.
+
+In order to maintain up-to-date information in the interface, the client was required to request new information from the API on a high-frequency schedule. Traditional HTTP requests require for the reload of a web page each time a request is made, so Ajax techniques were used in lieu of traditional HTTP requests. Ajax allows for asynchronous HTTP requests between the client and the server, which do not require the reload of the page upon completion. This successfully allowed for high frequency updates of the client without the negative performance implications of traditional HTTP calls.
+
 \section{Deep End - Relay Framework}
 
 Real-time, distributed traffic control is an interesting problem, with many creative solutions.
@@ -1061,6 +1337,78 @@ The table below contains each test and results from testing on the final prototy
 \newpage
 \chapter{Recommended Design Modifications}
 
+\section{Front End}
+Upon building the Relay Interface to a stage where it was usable, testable, and demo-able on Symposium day, a number of areas were identified where future design and development efforts should be placed, in order to improve the overall usability and experience of the application.
+These areas for future development include both the front-end User Interface design, as well as the Application Architecture itself to help create a more robust product both internally and externally.
+
+\subsection{User Interface}
+Given more time and design/development efforts, there are a number of areas in the User Interface of the Relay application that could be modified to better serve the needs of consumers and Traffic Engineers.
+The first area would be to improve the execution of searchable list views within the application.
+These currently reside on the Intersections and Roads screens.
+Design recommendations for list views would be to build out further interaction with the lists, to provide as much insight into the data as would be found by inspecting an intersection from the map screen.
+This could be done by creating a side panel on the Intersections and Roads pages that would be activated by clicking a row on the table.
+Given that the tables currently require no more than two thirds of the screen width to be displayed, a side panel with in-depth data would fit well on the screen, perhaps filling the remaining one-third of the page.
+Furthermore, a small bug was found with the search/filter functionality that makes using that feature a bit cumbersome.
+When a list is filtered, and the search query is removed or edited to perform and new search, the table does not currently update and the page must be refreshed.
+By implementing the list filter as a fully dynamic feature, where search edits can be made continuously, the experience of using lists to locate roads and intersections in the Relay application will be greatly improved.
+
+A second recommended design modification is to continue building out the Network page.
+While the power of the average laptop is able to power and simulate approximately 10 live Relay-controlled intersections, more power is necessary to truly understand the data from a large network, such that would be suitable to display on the Network page.
+As a result, live full-network metrics were difficult to provide, thus it is recommended that the Network page and corresponding data be tested further on a more powerful system, to truly see the effectiveness of the data being visualized.
+Metrics to explore here include charts displaying overall network delay/queue length, and network flow.
+Full-network metrics were identified as important in the User Study, and so it would be critical to continue to optimize the Network page for future implementations.
+
+Further recommended design modifications for the User Interface of the Relay application include building out the Roads page and functionality.
+Desired features involving road data were unable to be built to a usable high-fidelity state, and so focus should be placed on this area for future implementations.
+The Roads page, when built, should look and behave similarly to the Intersections page, such that the same learned skills and interactions from the Intersections page can be applied directly to the Roads page.
+They should not be so similar, however, that they become confused for one another, so it should be ensured that there are enough distinguishing factors for each, so as to reduce confusion for the users.
+This would include providing an improved list-view for all of the roads in the network, as well as corresponding metrics and attributes to help identify roads that require the attention of a traffic engineer.
+
+Expanding this road functionality should include the ability to highlight arbitrary roads on the map.
+This functionality could be embodied in a number of features, such as highlighting the roads connecting intersections that are currently communicating with one another, perhaps when a particular intersection is clicked by the user.
+This would provide even further insight, particularly to Traffic Engineers, into the way the system is behaving and the decisions it is making.
+Engineers should have as much understanding of the system as possible, and so a feature such as this would help to improve such an understanding.
+Road highlighting also has other interesting applications for consumers, particularly in the area of route planning.
+With the ability to place graphics along a roadway comes the ability to highlight any arbitrary route through the network.
+This opens up a large feature-space in the Relay application to promote consumer usage, as many people using mapping applications for their routing abilities.
+As road highlighting presents numerous positive feature implementations - for both consumers and traffic engineers - its design and development should be pursued further, given additional design and development time.
+
+Finally, recommended design modifications come in the area of data visualization layers.
+Given the vast amount of ways one can portray a given data set, it is recommended that this area of the application be continually modified and improved over time.
+Different metrics should be explored in this area, outside of the current Status, Flow, and Queue Length implementation.
+More metrics that are important to traffic engineers, in different visualization forms, will be beneficial in providing a useful application to the widest possible base of users.
+Other ways to graphically show detailed, quantitative information on the map should also be explored here, possibly in the form of overlays or modular windows atop the base map.
+Building on the idea of a ``quick look'' into an intersection, as shown in the info box implementation, would be beneficial in providing the best possible browsing experience that suits the workflow of traffic engineers.
+Continued design in development in any or all of these recommended areas is expected to improve the overall quality of the Relay User Interface, thus better satisfying the needs of target users.
+With ever-changing and often unpredictable data, diligence must be paid to the continued refining of visualization techniques and best practices in the interface.
+Other considerations and recommendations can be described through changes to the application architecture, as explained in the next section.
+
+\subsection{Application Architecture}
+
+% Custom Mapping library
+
+% Security Enhancements
+
+% Permissions and Authorization
+
+\section{Back End}
+
+\subsection{Client-Server Communication Improvements}
+
+The existing implemented API was sufficient for demo purposes. However, it is limited in it's functionality, modularity, and scalability. The current API architecture is designed specifically for the information requirements defined in the solution. This means that any future solutions would require new API calls to be added to the architecture. Furthermore, the existing API architecture does not have the full range of functionality required for a production-level application.
+
+First, the API should be converted to a Representational State Transfer (RESTful) API architecture. RESTFul allows for the hierarchical representation and access of information from the server. Following this method greatly increase the modularity of the API, making it more accomodating to future changes in the application, and preparing the system for potential public use.
+
+Second, the API should provide richer functionality for specifying request details. Enhancing API requests to consider paramters such as maximum count and other filtering parameters improves performance by preventing the transfer of unnecessary data from the server to the client.
+
+Switching to a RESTful architecture and implementing richer parameter support both improve the scalability and robustness of the API, which are crucial features for such a critical application.
+
+WebSocket technology takes a fundamentally different approach to client-server communication. Instead of making multiple synchronous HTTP requests to a server over time, WebSocket technology establishes a single connection between the client and server, or which information is streamed as necessary. This greatly improves performance and scalability, as large HTTP requests can be send bit-by-bit in a constant stream. Furthermore, it allows for real-time updating for information, which is not bound to the updating schedule of the client. Unfortunately, WebSocket technology is relatively new and immature in comaprison to HTTP communication, and thus does not have the necessary reliability and support to be the sole communication technology in this situation.
+
+WebSocket technology should be implemented in the Relay Application as an enhancement to the existing HTTP channels. If available, the WebSocket could be used to improve performance by sending localized, real-time updates of traffic data to the client, while lowering the update frequency of HTTP requests. HTTP requests could then be used for initialization purposes, such as gathering static data and initial data loads.
+
+\section{Deep End}
+
 \newpage
 \chapter{Timeline and Project Management}
 
@@ -1155,6 +1503,64 @@ The deliverable column, where applicable, identifies the high-level product of e
 
 \newpage
 \section{Conclusion}
+
+\newpage
+\section{Appendix A: Expert Interview Transcripts}
+\subsection{Marc Tan - IBI Group}
+\emph{Who uses these interfaces?} \\
+ 
+There are really three users to the interface.
+One is the traffic engineers who need to input calibrated timings.
+This is usually done in a central system that controls all the traffic signals.
+Second, there is technical staff to who follow directions from traffic engineers in order to change timings depending on the situation.
+Finally, for the in field controllers, there are technicians who can actually hard code timings or fall back plans. \\ \\
+ 
+\emph{What is their job, their goals?} \\
+ 
+Traffic engineers generally ``draw'' up signal timings plans.
+This is usually done using some deterministic and non-deterministic models depending on the work (this is usually my work).
+As systems become adaptive, the goal of the traffic engineer is to more so calibrate and set up the existing conditions of the network rather than drawing up particular definitive second by second timings.
+Obviously the goal is to improve the flow of traffic.
+Technical staff usually work in control centres changing signal timing plans as needed usually under the direction/instruction of a traffic engineer. \\ \\
+ 
+\emph{What are they trying to understand and what information do they need to accomplish that?} \\ 
+Traffic engineers: generally they are trying to understand traffic flows.
+Information needed to understand this is normally traffic counts typically in 1 hour samples.
+Now we don't just look at traffic, pedestrian and cyclist volumes also play a major role in determining timings.
+Other things to consider is the capability of the existing system and the communication channels available (i.e. are the traffic signals connected to a central system, can we change them from a central system, are there other factors at play (special timings for transit, cyclists, pedestrians, etc.), is there an adaptive system.
+
+Technical staff: just need directions from traffic engineers for at what point they can implement certain plans.
+Basically if traffic looks X bad put in Y plan.
+The jobs of these people get mostly eliminated if an adaptive traffic signal system is implemented. \\ 
+
+\noindent \emph{What tasks do they perform using the interface, or based off of information from that interface?} \\
+The interface usually gives information through video cameras from the field and some times road surface loop detectors that measure speed and or number of vehicles.
+With this information technicians and engineers can perform changes to the timings.
+An adaptive system would use this to adjust timings as needed.
+For a non-adaptive system, this information is collected and inputted into models in order to determine timings. \\
+
+Some things about my experiences:
+I have generally done work on developing timings through modelling efforts. I did work one work term in a traffic control centre in Ottawa and the way I described it above with technicians changing timings based on situations observed on the cameras is the norm.
+Toronto runs a SCOOT system on a number of their arterials, which requires a large calibration effort after installation but once its going, it works pretty ok.
+The big issue is that these SCOOT systems are quite expensive, with all the detection that is required to run the system.
+
+\subsection{Peter Kelley - Paradigm Transportation}
+A) System/Network \\
+You'd want to know what the overall experienced delay is.
+To get this you need to know signal timing plans, and volume of vehicles.
+To minimize overall delay, they implement coordinated signals (for instance University Ave).
+As you drive the speed limit, you should be able to hit green on the next set of lights.
+However this offer works better for 1 direction over another eastbound vs westbound (depending on which direction peak traffic is going).
+A big problem for this is emergency vehicles that can control the signal to get priority, having the signals get back on cycle can take a while and overall negatively impacts traffic flow.
+
+\noindent B) Individual Intersections \\
+Biggest problem is providing protected movements when no one is there.
+Often I'm sure you've seen an advanced left when no one is turning, so everyone sits and waits.
+This is because during peak hours, the signal timing plan assigns a minimum amount of green time, and then will extend it, if more vehicles are there.
+As well, there are maximum time lengths that will change the signal to red from green, even if there is more traffic coming through.
+The information we like to know about a single intersection is the turning movement counts, the delay of the approaches (north, south, east, west), the queue lengths of vehicles, and the volume/capacity ratio.
+These all serve as a means to determine the Level of Service of an intersection.
+I hope this helps.
 
 \newpage
 \addcontentsline{toc}{section}{References}
