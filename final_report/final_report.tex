@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{float}
 \usepackage[toc]{glossaries}
+\usepackage[toc,page]{appendix}
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
 
@@ -2231,10 +2232,15 @@ This brings benefits to both parties, as the public office now has an educated a
 Furthermore, the availability of traffic infrastructure information has the potential to revolutionize navigation-based solutions, such as Google Maps route planning and GPS devices.
 In the future, every car could be given a travel route which optimizes not only its travel time, but that of the entire transportation network.
 
+\newpage
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{IEEEtran}
+\bibliography{bib}
 
 \newpage
-\section{Appendix A: Expert Interview Transcripts}
-\subsection{Marc Tan - IBI Group}
+\begin{appendices}
+\chapter{Expert Interview Transcripts}
+\section{Marc Tan - IBI Group}
 \emph{Who uses these interfaces?} \\
 �
 There are�really three users to the interface.
@@ -2272,7 +2278,7 @@ I have generally done work on developing timings through modelling efforts. I di
 Toronto runs a SCOOT system on a number of their�arterials, which requires a large calibration effort after installation but once its going, it works pretty ok.
 The big issue is that these SCOOT systems are quite expensive, with all the detection that is required to run the system.
 
-\subsection{Peter Kelley - Paradigm Transportation}
+\section{Peter Kelley - Paradigm Transportation}
 A) System/Network \\
 You'd want to know what the overall experienced delay is.
 To get this you need to know signal timing plans, and volume of vehicles.
@@ -2289,12 +2295,7 @@ As well, there are maximum time lengths that will change the signal to red from 
 The information we like to know about a single intersection is the turning movement counts, the delay of the approaches (north, south, east, west), the queue lengths of vehicles, and the volume/capacity ratio.
 These all serve as a means to determine the Level of Service of an intersection.
 I hope this helps.
+\end{appendices}
 
-\newpage
-\addcontentsline{toc}{section}{References}
-
-\bibliographystyle{IEEEtran}
-
-\bibliography{bib}
 
 \end{document}
