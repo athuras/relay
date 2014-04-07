@@ -120,17 +120,17 @@ We imagine a derivative of this interface could be made publicly accessible, pro
 This would fundamentally shift the way the public thinks about traffic, enabling the population to truly understand how the system works and how traffic decisions are being made, dramatically increasing the transparency of the network controller.
 This has the opportunity to allow the public to make more intelligent route planning and transportation decisions on true traffic information, or even possibly democratizing signal control techniques.
 
-\section{Design Objectives and Requirements}
-\subsection{Front End}
+\chapter{Design Objectives and Requirements}
+\section{Front End}
 
 
-\subsection{Deep End}
+\section{Deep End}
 \label{sec:deep:design_requirements}
 
 As a proof of concept, the Relay Agent Design had to encapsulate certain aspects of the realtime traffic environment necessary for intelligent traffic control.
 Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
 
-\subsubsection{Design Goals}
+\subsection{Design Goals}
 \paragraph{Symmetrical Graph Automata}
 Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
 Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
@@ -138,18 +138,18 @@ Only through emergent prediction and reinforcement learning should Agent's behav
 
 This is helpful from a robustness perspective, as well as provides a clear and fixed interface to the implementers.
 
-\paragraph{Predictions}
+\subsubsection{Predictions}
 Agent design should be able to characterise how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
 
 The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
 
-\paragraph{Optimization}
+\subsubsection{Optimization}
 Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment, in particular, optimization routines based exlusively on reductions of the underlying signals in conjunction with arbitrary dynamic/stochastic queue models.
 
-\paragraph{Communication}
+\subsubsection{Communication}
 In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
 
-\subsubsection{Functional Requirements of the Agent Implementation}
+\subsection{Functional Requirements for Agent Implementation}
 The implementation must be able to do X, in order to meet the design goals specified above.
 INCOMPLETE  % INCOMPLETE!!
 
