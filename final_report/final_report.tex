@@ -70,6 +70,40 @@
 \doublespacing
 \pagenumbering{arabic}
 
+\chapter*{Executive Summary}
+Relay is a research and design project focused in the domains of Adaptive Traffic Control and Data Visualization.
+In recent years, multiple cities including Montreal and LA have begun to implement adaptive systems, but adoption is not widespread, mainly due to high implementation costs.
+For example, the Los Angeles system, developed a solution to handle the massive volume placed on their transportation networks, has an estimated cost of \$400 million to date \cite{la-atcs-article}.
+There is strong need for ATCS technology in the world today, and a large opportunity for state-of-the-art ATC systems.
+
+
+The intelligence of a traffic light varies from a static, fixed timer, to an intelligent node which considers existing traffic conditions, performance of adjacent nodes, and the like.
+Multiple industry-accepted ATC systems exist, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore, but as stated above, the adoption of these is not widespread.
+Additionally, research efforts in academia are being made towards novel architectures such as agent-based distributed systems, which implement advanced machine learning and neural network concepts\cite{1688100, 5073360, uot-article}.
+There still exists a large gap between academia and industry, showing potential for the incorporation of cutting edge solutions into municipal infrastructure.
+
+
+Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
+A few of these are decreased gas consumption, reduced travel time, and reduced congestion.
+It is important to note that these are not direct goals of the implementation, but rather beneficial external consequences of effective traffic control, that naturally extend from effectively adapting signal timings.
+The proposed solution thus focuses on local intersection performance, which in turn contributes to the improvement of aforementioned social and environmental benefits.
+
+
+% this needs to be fixed
+Relay consists of two major components: Relay Interface and Relay Framework. 
+Relay Interface attempts to democratize traffic data, enabling a common understanding of traffic patterns, giving both public offices and citizens the ability to make informed decisions.
+The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces.
+By providing insightful information on intersection statistics and traffic patterns, the Relay Interface offers a window into cities that has never been seen before.
+
+In Relay Framework, each intersection is governed/controlled by its own independent, autonomous controller or \emph{Agent}.
+At its heart, each Agent in a Relay network is a dynamic graph automata---responsible for interpreting and propagating (transformed) sensor measurements to its neighbours.
+In addition to informing its peers of local environmental measurements (such as vehicles incident at their controlled intersection), Relay Agents generate and propagate \emph{predictions} or \emph{expectations} of traffic flow through their region, modulating and transforming the predictions received from peers in light of their expected signal timing schedule.
+The Agents continuously (via reinforcement learning) update their internal models to match the current environmental dynamics such that the prediction error is minimized.
+
+Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabalistic uncertainty associated with the predictions. Ultimately, as a framework, Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
+
+% we need something else here to tie it together and wrap things up
+
 \chapter{Introduction}
 \setlength{\parindent}{1cm}
 This Design Project Implementation Plan will act as an update for interested parties on the progress made to date on Relay, the team's SYDE 461 Design Project. The problem background is discussed and a problem statement is provided. An overview of the solution is then presented: objectives, functional requirements, and design constraints are reviewed for each major solution component. An overview of the system design process is then presented, and a discussion on progress and insights to-date. Finally, an updated project plan and financial budget are presented.\\
@@ -132,7 +166,7 @@ As a proof of concept, the Relay Agent Design had to encapsulate certain aspects
 Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
 
 \subsection{Design Goals}
-\paragraph{Symmetrical Graph Automata}
+\subsubsection{Symmetrical Graph Automata}
 Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
 Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
 Only through emergent prediction and reinforcement learning should individual Agents differentiate themselves from their peers.
@@ -1012,6 +1046,17 @@ The value of storing one instance of the intersection and road collection object
     \label{fig:iteration3}
   \end{centering}
 \end{figure}
+
+\subsection{Technical Challenges and Resolutions}
+
+Various technical challenges were encountered throughout the development of the Relay Application. These issues related predominantly to an incomplete understanding of core selected JavaScript frameworks and librares used in the solution.
+
+One significant advantage of the Backbone.js framework was native collection-based client-server communication functionality. A Backbone.js collection object is able to accept a url, from which it can make frequent AJAX calls to synchronize the collection data. However, for the native synchronization functionality to work, Relay's server-side API implementation was required to adhere to a specific data structure format. Adhering to this format would have required changes elsewhere in the application, and therefore was not an option. To resolve this issue, custom functionality was built into the collection classes which supported the specific nature of Relay data.
+
+The design and functional requirements had outlined the use of an info box to display preliminary information about an intersection when selected on a map. When large amounts of data are present on a map, there are significant preformance implications of creating a single info box for each data point. A common design pattern for addressing this issue is to have one info box referenced by all points. However, the specific initialization method of the custom info box meant that the object was not directly added to the Document Object Model (DOM) structure, and thus was not accessible to other data points after initialization. Routing of this reference to each data point manually would have required significant changes to the application architecture. This issue was resolved by enforcing the creation and destruction of the info box for each request and dismissal, respectively. Although this solution is not optimal, it provided the effective functionality while minimizing performance costs.
+
+The data visualizations developed as part of the Relay Application required significant computational loads to perform as expected. One visualization in particular --- flow between intersections, as seen in Figure \ref{fig:flow-2} --- required roughtly 10,000 unique data points to be represented on the map simultaneously. Severe performance issues were observed, such as map tiles failing to load, and response times over 10 seconds in duration. This issue is tied directly to the performance of the Google Maps API mapping library, and no feasible solutions were found. Future implmentations should explore the use of custom, performance-oriented mapping libraries and tile servers, as discussed in Chapter \ref{chap:improvements}, Section \ref{subsec:improvements-arch}.
+
 
 \section{Back End}
 The infrastructure powering the user-facing component of Relay is colloquially referred to as the ``back-end''.
@@ -1908,6 +1953,7 @@ As seen in the above table all integration tests have passed. All subsystems wit
 
 \newpage
 \chapter{Recommended Design Modifications}
+\label{chap:improvements}
 
 \section{Front End - Relay Interface}
 Upon building the Relay Interface to a stage where it was usable, testable, and demo-able on Symposium day, a number of areas were identified where future design and development efforts should be placed, in order to improve the overall usability and experience of the application.
@@ -1956,6 +2002,7 @@ With ever-changing and often unpredictable data, diligence must be paid to the c
 Other considerations and recommendations can be described through changes to the application architecture, as explained in the next section.
 
 \subsection{Application Architecture}
+\label{subsec:improvements-arch}
 
 Ideally, the Relay application would be available to both public workers responsible for the network and the public at large. These two groups have fundamentally different needs and requirements, and thus should see different application interfaces. For example, a citizen may want to see only delay times on roads, whereas a traffic engineer may want more detailed metrics, such as mean delay time, flow volumes, and queue lengths. Furthermore, individuals accessing the application will have differing levels of responsibility and privilege. For example, a citizen might be able to view the direction bias at intersections, whereas a traffic engineer may be able to edit the direction bias to account for discrepancies in the model.
 
@@ -2143,7 +2190,6 @@ The creation of the Relay Network  has helped further the understanding and capa
 Furthermore, the Relay Application has helped redefine the value of Adaptive Traffic Control System Interfaces. For Traffic Engineers, the Relay Application enables the shift of responsibility and value from signal timing and tweaking to network monitoring and informed planning. The Relay Application exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing the costs associated with maintaining the efficiecny of the transportation network. This information allows traffic engineers to know exactly what's going on in the network at any moment. Traffic engineers are thus able to adapt quickly to drastic changes in the network. Through the use of geospatial data visualizations, the Relay Application is able to reveal high-level traffic patterns, providing invaluble insight into the workings of a city's transportation network. Access to this kind of information has the potential to change the way public infrastructure decisions are made. This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
 
 The push for democratized traffic data is a major goal for this project, and the Relay Application serves as a first major attempt to present infrastructure-quality traffic information to the public. The Relay Application allows the public to examine and understand the workings of their public infrastructure, encouraging a more informed and engaged population. This brings benefits to both parties, as the public office now has an educated audience for making infrastructure developments, and an observant body to maintain public office accountability. Furthermore, the availability of traffic infrastructure information has the potential to revolutionize navigation-based solutions, such as Google Maps route planning and GPS devices. In the future, every car could be given a travel route which optimizes not only its travel time, but that of the entire transportation network.
-
 
 
 \newpage
