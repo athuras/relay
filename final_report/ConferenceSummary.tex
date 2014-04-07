@@ -40,7 +40,7 @@
 \pagenumbering{gobble}
 
 \centerline{  \bf \LARGE Relay: Adaptive Traffic Control Framework}
-\centerline{Alexander Huras -- 20344660, D. Scott Neil -- 20349210, Myles Tan -- 20349217, Riley Donelson -- 20342815}
+\centerline{Alexander Huras, D. Scott Neil, Myles Tan, Riley Donelson}
 \centerline{Department of Systems Design Engineering}
 
 
@@ -52,43 +52,49 @@ Relay Interface allows both traffic engineers and the general public to view det
 \section{Background Information}
 Motorists and pedestrians alike can relate to the frustration that comes from being stopped unnecessarily at a red light, waiting for it to turn green with no other cars in sight.
 The intelligence of a traffic light can vary from a static, fixed timer, to a relatively intelligent node which considers existing traffic conditions, the performance of adjacent nodes, and the like.
-However, even Adaptive Traffic Control (ATC) Systems today often irritate drivers as they are still unable to intelligently adapt to the wide variety of variables that affect traffic performance.\\
-
 Large metropolitan areas are acknowledging the need for advanced traffic management systems as the size and density of urban areas continues to increase.
 Over the past 29 years, the city of Los Angeles has developed a home-grown solution to handle the massive amounts of volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
 The City of Montreal recently signed to adopt Transcore's TransSuite Advanced Traffic Management System (ATMS), which will control over 2000 intersections by completion \cite{montreal-transcore}.
 There is strong need for ATCS technology in the world today, and there is a large opportunity for state-of-the-art ATC systems.
 
 There are many industry-accepted and adopted ATC systems, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore.
-The method by which each system achieves enhanced performance varies: systems such as the LA ATCS implementation rely solely on road-planted magnetic sensors, whereas more advanced systems such as Miovision Spectrum utilize image processing technology.
-The effectiveness of existing systems is noticeable but not impressive.
-For example, LA ATCS, the largest ATCS implementation in North America, claims to reduce drive time on major corridors by 12\% \cite{la-atcs-article}, this aggregate statistic heavily biases freeway control but is currently suboptimal for average intersections.
-Today's ATCS systems provide incremental gains on existing traffic control paradigms which have not changed for generations.
-
+%something here about how they aren't great
 Significant advancements in Adaptive Traffic Control systems have been seen in academia.
-Research efforts have been made towards novel architectures such as agent-based distributed systems which implement advanced machine learning and neural network concepts.
-These revolutionary concepts have demonstrated significant gains in efficiency via simulated comparisons to existing industry systems \cite{1688100, 5073360, uot-article}, and some have even run trial implementations on real transit networks \cite{uot-article}.
-However, these novel methods have yet to gain traction in industry, which continues to implement incremental advances based on old traffic control paradigms.
-
-Furthermore, access to the data from such systems is largely kept for internal analysis by the government organizations, suffocating further technological development by industrial and academic organizations.
-No existing systems offer consumer access to the system's data in any form.
-It takes little imagination to realize the possible benefits, if real-time traffic network information was available to consumer route-planning technology.
-
-In essence, there currently exists no industry-accepted Adaptive Traffic Control System, which adequately meets current and future transportation demands on urban road networks.
-Current solutions offer incremental improvements on old strategies, and provide insufficient performance increases.
-Without such a system, the inefficiency of crucial transportation methods will continue to increase, leading to greater financial, environmental, and sociological consequences.
-A fundamentally different approach to traffic control is necessary, one which fully utilizes today's technological advances and novel methods for approaching complex, network-based problems.
-The solution must meet the needs of transportation authorities, who will be responsible for overseeing the performance and maintenance of the system, and are ultimately responsible for the system.
-The solution must also meet the needs of the population which it serves, providing transparent access to it's operation and allowing consumers to take full advantage of the information and insight which the system can provide.
-The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.
+Research efforts have been made towards novel architectures such as agent-based distributed systems which implement advanced machine learning and neural network concepts\cite{1688100, 5073360, uot-article}.
+%there are not seeing traction in industry.
 
 \section{Problem}
+%maybe change this to just a problem statement to shorten it
 
-\section{Solution: Relay Interface \& Relay Framework}
+Access to the data from ATCS systems is largely kept for internal analysis by the government organizations, suffocating further technological development by industrial and academic organizations.
+No existing systems offer consumer access to the system's data in any form.
+The solution must meet the needs of transportation authorities, who will be responsible for overseeing the performance and maintenance of the system, and are ultimately responsible for the system.
+The solution must also meet the needs of the population which it serves, providing transparent access to its operation and allowing consumers to take full advantage of the information.
+The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.
+
+%something about the backend stuff
+In essence, there currently exists no industry-accepted Adaptive Traffic Control System, which adequately meets current and future transportation demands on urban road networks.
+
+\section{Relay Interface}
+%screenshot
+%brief overview of what is provided
+Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces. For Traffic Engineers, the application enables the shift of responsibility and value from signal timing and tweaking, to network monitoring and informed planning. Relay Interface exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing costs associated with maintaining efficiecny of the network. This information allows traffic engineers to know exactly what's going on in the network at any moment. Through the use of geospatial data visualizations, the application is able to reveal high-level traffic patterns, providing invaluble insight into the workings of a city's transportation network. Access to this kind of information has the potential to change the way public infrastructure decisions are made. This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
+
+\section{Relay Framework}
+%architecture of deepend
+%general theory behind the design and implementation
+%maybe some math to confuse them
 
 \section{Impact}
+Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
+A few of these are decreased gas consumption, quicker travels, and reduced congestion.
+It is important to note that these are not direct goals of the implementation, but rather beneficial external consequences of effective traffic control, that naturally extend from effectively adapting signal timings.
+The proposed solution thus focuses on local intersection performance, which <in turn will contibute to improving the aformentioned social and environmental impacts,drivers>.
+%fix this line
 
 \section{Conclusions}
+
+The push for democratized traffic data is a major goal for this project, and Relay Interface serves as a first major attempt to present infrastructure-quality traffic information to the public. Relay Interface allows the public to examine and understand the workings of their public infrastructure, encouraging a more informed and engaged population.
 
 \section{Referneces}
 \bibliographystyle{IEEEtran}
