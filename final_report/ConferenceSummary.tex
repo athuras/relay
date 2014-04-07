@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{report}
+\documentclass[a4paper,11pt]{article}
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage{amsmath}
 
@@ -43,7 +43,7 @@
 \centerline{Alexander Huras, D. Scott Neil, Myles Tan, Riley Donelson}
 \centerline{Department of Systems Design Engineering}
 
-\section{Abstract}
+\begin{abstract}
 Relay is a research and design project focused in the domains of Adaptive Traffic Control and Data Visualization.
 In recent years, multiple cities including Montreal and LA have begun to implement adaptive systems.
 This shows a great deal of potential in maturing this technology further.
@@ -53,6 +53,7 @@ When combined with powerful predictive algorithms, Relay is able to quickly adap
 The Relay Interface allows both traffic engineers and the general public to view detailed information about traffic conditions.
 The democratization of traffic data enables a common understanding of traffic patterns within a city, allowing both public offices and citizens to make informed decisions.
 By providing insightful information on intersection statistics and traffic patterns, the Relay Interface offers a window into cities that has never been seen before.
+\end{abstract}
 
 \begin{multicols}{2}
 \section{Background Information}
@@ -97,9 +98,16 @@ In essence, there currently exists no industry-accepted Adaptive Traffic Control
 The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces. For Traffic Engineers, the application enables the shift of responsibility and value from signal timing and tweaking, to network monitoring and informed planning. Relay Interface exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing costs associated with maintaining efficiency of the network. This information allows traffic engineers to know exactly what's going on in the network at any moment. Through the use of geospatial data visualizations, the application is able to reveal high-level traffic patterns, providing invaluable insight into the workings of a city's transportation network. Access to this kind of information has the potential to change the way public infrastructure decisions are made. This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
 
 \section{Relay Framework}
-%architecture of deepend
-%general theory behind the design and implementation
-%maybe some math to confuse them
+
+In Relay, each intersection is governed/controlled by its own independent, autonomous controller or \emph{Agent}.
+At its heart, each Agent in a Relay network is a dynamic graph automata---responsible for interpreting and propagating (transformed) sensor measurements to its neighbours.
+In addition to informing its peers of local environmental measurements (such as vehicles incident at their controlled intersection), Relay Agents generate and propagate \emph{predictions} or \emph{expectations} of traffic flow through their region, modulating and transforming the predictions received from peers in light of their expected signal timing schedule.
+The Agents continuously (via reinforcement learning) update their internal models to match the current environmental dynamics such that the prediction error is minimized.
+
+Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabalistic uncertainty associated with the predictions.
+
+Ultimately, as a Framework (the abstracted Agent parameterization), Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
+
 
 \section{Impact}
 Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
@@ -111,7 +119,7 @@ The proposed solution thus focuses on local intersection performance, which in t
 
 The push for democratized traffic data is a major goal for this project, and Relay Interface serves as a first major attempt to present infrastructure-quality traffic information to the public. Relay Interface allows the public to examine and understand the workings of their public infrastructure, encouraging a more informed and engaged population.
 
-\section{Referneces}
+\section{References}
 \bibliographystyle{IEEEtran}
 
 \bibliography{bib}
