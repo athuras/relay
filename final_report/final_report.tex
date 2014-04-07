@@ -48,14 +48,18 @@
 \begin{description}
 \item[Angular.js] A client-side JavaScript Framework.
 \item[Backbone.js] A client-side JavaScript Framework.
-\item]Chart.js] A simple, static, front-end visualization library.
+\item[Chart.js] A simple, static, front-end visualization library.
 \item[D3.js] D3, Data Driven Documents, is a rich, static, front-end data visualization framework.
 \item[DOJO] A client-side Javascvript Framework.
+\item[Erlang] A functional concurrent programming language used to build massively scalable soft real-time systems. Some of its most prevalent uses involve high-performance telephony, and instant-messaging infrstructure.
+\item[OTP] The Open Telecom Platform, a set of Erlang libriaries designed to be used to create robust distributed systems.
 \item[Flot] Flot is a JavaScript-based front-end data visualization framework which emphasizes 2D plots and time-series data.
 \item[JavaScript MVC] A client-side JavaScript Framework.
 \item[jQuery] A client-side JavaScript Utility Library.
 \item[MVC] A software development pattern which categorizes classes into three categories: model, view, and controller. Generally, models are responsible for data and business logic, views are responsible for presenting information to users and collecting it, and controllers are responsible for handling interaction between the model and the view.
 \item[MV] Another software development pattern. MV is similar to MVC, however there is no controller, as controller functionality is built into the view class. This pattern is common in less complex solutions or in langauges which do not support a rigid class-based system.
+\item[NumPy] The primary numerical library for Python, which is highly optimized (in many cases interfacing with FORTRAN and C routines) for vector operations and linear algebra.
+\item[Python] A powerful general object-oriented programming language.
 \item[Rickshaw] A static front-end visualization library build on the D3 framework.
 \item[Underscore.js] A client-side JavaScript Utility Library.
 \item[WebSocket] A protocol for communicating over a network. WebSocket protocol creates an open connection, enabling for content to be sent asynchronously between two nodes.
@@ -118,7 +122,38 @@ This has the opportunity to allow the public to make more intelligent route plan
 
 \section{Design Objectives and Requirements}
 \subsection{Front End}
-\subsection{Deep End - Framework}
+
+
+\subsection{Deep End}
+\label{sec:deep:design_requirements}
+
+As a proof of concept, the Relay Agent Design had to encapsulate certain aspects of the realtime traffic environment necessary for intelligent traffic control.
+Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
+
+\subsubsection{Design Goals}
+\paragraph{Symmetrical Graph Automata}
+Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
+Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
+Only through emergent prediction and reinforcement learning should Agent's behaviour diverge.
+
+This is helpful from a robustness perspective, as well as provides a clear and fixed interface to the implementers.
+
+\paragraph{Predictions}
+Agent design should be able to characterise how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
+
+The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
+
+\paragraph{Optimization}
+Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment, in particular, optimization routines based exlusively on reductions of the underlying signals in conjunction with arbitrary dynamic/stochastic queue models.
+
+\paragraph{Communication}
+In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
+
+\subsubsection{Functional Requirements of the Agent Implementation}
+The implementation must be able to do X, in order to meet the design goals specified above.
+INCOMPLETE  % INCOMPLETE!!
+
+
 
 \section{Design Constraints}
 There are multiple design and environmental constraints that will affect the final solution created.
@@ -1119,6 +1154,8 @@ The second of which is the delay kernel, which is ultimately a statistically lea
 This way in which this parameter is learned is further described in Section~\ref{sec:learning_in_relay}.
 
 
+
+
 %%  THE RELAY AGENT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Relay Agent}
 \label{sec:def:agent}
@@ -1663,11 +1700,31 @@ This is described below:
 where $p.B$ is the sequence of behaviors (irrespective of their relative timing), and $p.t$ is the timing (given a behavior sequence $p.B$.
 Thus for each behavior, we evaluate the best possible flux given changes to the relative timing, and use the combination $p =  (p.B, p.t)$ that gives the best outcome.
 
+\subsection{Agent Implementation}
+
+The Relay Prototype implementation was designed according to our functional requirements.
+Agents must be able to communicate their state to a third party (i.e. the Back-End), and pass messages to their immediate neighbours (as defined in a connectivity graph used to initialize the network).
+The Agents must 
+
+\subsubsection{Actor Pattern}
+Each agent was designed as a concurrent Erlang \emph{application}, consisting of several concurrent, asynchronous actors.
+Erlang was chosen for this purpose as it is a language with a history of soft-realtime computing in telephony (via the Open Telecom Platform), as well as exposing an easy and intuitive message passing interface (in that the only way for actors to communicate is via message passing).
+
+In this manner it was possible to communicate ``over the wire'' to a myriad of simulated Agents all operating concurrently in simulation within a single Erlang Virtual Machine (VM), and furthermore, this communication was relatively straightforward, and didn't involve writing HTTP/TCP adapters.
+Additionally, through the use of OTP-\emph{applications}, there is pragmatically no difference between multiple Agents being simulated on a single machine communicating with each other, and multiple agents being simulated on different, geographically separated machines, communicating with each other (albeit with the obvious increase of latency).
+
+\subsubsection{Number Crunching}
+If concurrent operation, scalabilty and fault-tolerance are Erlang's strengths, floating point work (colloquially ``Number Crunching'') is one of its most predominant weakness (in the context of implementing Relay).
+
+We used ErlPort, a Library that utilizes Erlang's Port-protocol to interface natively between operating system processes running the Erlang VM, and Python respectively.
+Thus whenever a particularly numerical computation needed to be performed (i.e. generating predictions, batch reinforcement learning, and scheduling), the associated Agent (whose existence is encapsualted within a particular Erlang application), would submit a request to the Python port, which would perform the computation, and return the result asynchronously.
+
+Python with (NumPy) was chosen to facilitate the optimization and machine learning (massive floating point work) algorithms associated with an individual agent.
+An additional advantage (from the prototype implementation/simulation perspective) was that a single Python ``workhorse'' process could be shared by more than one Relay Agent, thus preserving OS resources on the host machine running the simulation, and allowing us to simulate additional Agents concurrently.
+
+
 \newpage
 \chapter{Design Testing and Validation}
-
-\section{Prototype Agent Implementation}
-ALEX's STUFF
 
 \section{Front End}
 \subsection{Use Case Analysis}
