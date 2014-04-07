@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,10pt]{article}
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage{amsmath}
 
@@ -12,6 +12,8 @@
 \usepackage[space]{grffile}
 \usepackage{float}
 \usepackage{multicol}
+\usepackage{helvet}
+
 \restylefloat{table}
 \restylefloat{figure}
 
@@ -19,6 +21,7 @@
 \renewcommand{\labelitemi}{$\bullet$}
 \everymath=\expandafter{\the\everymath\displaystyle}
 \newcommand{\Lagr}{\mathcal{L}}
+\renewcommand{\familydefault}{\sfdefault}
 
 % define the title
 \author{  Alexander Huras -- 20344660\\
@@ -39,7 +42,7 @@
 %\setcounter{page}{1}
 \pagenumbering{gobble}
 
-\centerline{  \bf \LARGE Relay: Adaptive Traffic Control Framework}
+\centerline{  \bf \Large Relay: Adaptive Traffic Control Framework}
 \centerline{Alexander Huras, D. Scott Neil, Myles Tan, Riley Donelson}
 \centerline{Department of Systems Design Engineering}
 
@@ -56,13 +59,13 @@ By providing insightful information on intersection statistics and traffic patte
 
 \begin{multicols}{2}
 \section{Background Information}
-Motorists and pedestrians alike can relate to the frustration that comes from being stopped unnecessarily at a red light, waiting for it to turn green with no other cars in sight.
-Large metropolitan areas are acknowledging the need for advanced traffic management systems as the size and density of urban areas continues to increase.
+Motorists and pedestrians alike can relate to the frustration of being stopped unnecessarily at a red light, with no other cars in sight.
+Large metropolitan areas are acknowledging the need for advanced traffic systems as size and density of urban areas increases.
 For example, Los Angeles has developed a solution to handle the massive volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
 There is strong need for ATCS technology in the world today, and a large opportunity for state-of-the-art ATC systems.
 
-The intelligence of a traffic light can vary from a static, fixed timer, to an intelligent node which considers existing traffic conditions, performance of adjacent nodes, and the like.
-Multiple industry-accepted and adopted ATC systems exist, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore.
+The intelligence of a traffic light varies from a static, fixed timer, to an intelligent node which considers existing traffic conditions, performance of adjacent nodes, and the like.
+Multiple industry-accepted ATC systems exist, such as LA ATCS, SCOOT, Trafficware, and Spectrum by Miovision.
 However, high implementation costs are often a deterrent from implementing such systems.
 Additionally, research efforts in academia are being made towards novel architectures such as agent-based distributed systems, which implement advanced machine learning and neural network concepts\cite{1688100, 5073360, uot-article}.
 There still exists a large gap between academia and industry, showing potential for the incorporation of cutting edge solutions into municipal infrastructure.
@@ -74,29 +77,29 @@ There still exists a large gap between academia and industry, showing potential 
 \section{Problem \& Contraints}
 %maybe change this to just a problem statement to shorten it
 
-Access to the data from ATCS systems is largely kept for internal analysis by the government organizations, suffocating further technological development by industrial and academic organizations.
-No existing systems offer consumer access to the system's data in any form.
-The solution must meet the needs of transportation authorities, who will be responsible for overseeing the performance and maintenance of the system, and are ultimately responsible for the system.
-The solution must also meet the needs of the population which it serves, providing transparent access to its operation and allowing consumers to take full advantage of the information.
-The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.
+Access to data from ATCS systems is largely kept for internal analysis by government organizations, suffocating further technological development by industrial and academic organizations.
+Additionally, no existing systems offer public access to the systems data, in any form.
 
-%something about the backend stuff
-In essence, there currently exists no industry-accepted Adaptive Traffic Control System, which adequately meets current and future transportation demands on urban road networks.
+The solution must meet the needs of transportation authorities, who will be responsible for overseeing performance and maintenance, and are ultimately responsible for the system.
+The solution must also meet the needs of the public, providing transparent access to its operation and allowing consumers to take full advantage of the information.
+Additionally, the system must implement acyclic, adaptive control patterns, utilizing distributed computation and peer-to-peer modeling technologies.
+The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. 
+The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.
 
 \section{Relay Interface}
 
 % if we have space, this figure can be included
 
-%\begin{figure}[htbp!]
-%  \begin{centering}
-%    \includegraphics[scale=1]{figures/conference_shot.png}
-%    \caption{Screenshot from the Relay Interface.}
-%    \label{fig:interface}
-%  \end{centering}
-%\end{figure}
-
 %brief overview of what is provided
 The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces. For Traffic Engineers, the application enables the shift of responsibility and value from signal timing and tweaking, to network monitoring and informed planning. Relay Interface exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing costs associated with maintaining efficiency of the network. This information allows traffic engineers to know exactly what's going on in the network at any moment. Through the use of geospatial data visualizations, the application is able to reveal high-level traffic patterns, providing invaluable insight into the workings of a city's transportation network. Access to this kind of information has the potential to change the way public infrastructure decisions are made. This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
+
+\begin{figure}[H]
+  \begin{centering}
+    \includegraphics[scale=0.4]{figures/flow-2.png}
+    \caption{Screenshot from the Relay Interface.}
+    \label{fig:interface}
+  \end{centering}
+\end{figure}
 
 \section{Relay Framework}
 
