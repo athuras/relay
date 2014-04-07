@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{float}
 \usepackage[toc]{glossaries}
+\usepackage[toc,page]{appendix}
 \setcounter{secnumdepth}{5}
 \setcounter{tocdepth}{5}
 
@@ -46,16 +47,21 @@
 
 \chapter*{Glossary of Terms}
 \begin{description}
-\item[Angular.js] A client-side JavaScript Framework.
-\item[Backbone.js] A client-side JavaScript Framework.
+\item[AJAX] AJAX, or Asynchronous JavaScript and XML, is a group of web development techniques for asynchronous communication from the client to the server. This allows web applications to communicate with the server without impacting the state of the browser.
+\item[Angular.js] A client-side JavaScript framework.
+\item[API] An Application Programming Interface (API) specifies how different components of a software solution communicate with each other. Specifically, API's define how information is to be requested from a resource, and the method of transmission of said information.
+\item[Backbone.js] A client-side JavaScript framework.
 \item[Chart.js] A simple, static, front-end visualization library.
 \item[D3.js] D3, Data Driven Documents, is a rich, static, front-end data visualization framework.
-\item[DOJO] A client-side Javascvript Framework.
+\item[DOJO] A client-side Javascvript framework.
+\item[DOM] The Document Object Model (DOM) Tree is a structure used by HTML to represent the hierarchy of objects within the page.
 \item[Erlang] A functional concurrent programming language used to build massively scalable soft real-time systems. Some of its most prevalent uses involve high-performance telephony, and instant-messaging infrstructure.
+\item[Info Box (Map)] Info Box is a term used to describe a popup-style interface widget which contains information about an element on the display. In the context of a map, info boxes are used to present information about a location by displaying an overlay on the map in close proximity to the loccation of interest.
 \item[OTP] The Open Telecom Platform, a set of Erlang libriaries designed to be used to create robust distributed systems.
 \item[Flot] Flot is a JavaScript-based front-end data visualization framework which emphasizes 2D plots and time-series data.
-\item[JavaScript MVC] A client-side JavaScript Framework.
+\item[JavaScript MVC] A client-side JavaScript framework.
 \item[jQuery] A client-side JavaScript Utility Library.
+\item[Marker (Map)] A map marker is a visual object position on a map to indicate the importance of that location. Markers are typically styled to represent information about the location.
 \item[MVC] A software development pattern which categorizes classes into three categories: model, view, and controller. Generally, models are responsible for data and business logic, views are responsible for presenting information to users and collecting it, and controllers are responsible for handling interaction between the model and the view.
 \item[MV] Another software development pattern. MV is similar to MVC, however there is no controller, as controller functionality is built into the view class. This pattern is common in less complex solutions or in langauges which do not support a rigid class-based system.
 \item[NumPy] The primary numerical library for Python, which is highly optimized (in many cases interfacing with FORTRAN and C routines) for vector operations and linear algebra.
@@ -73,40 +79,50 @@
 \chapter*{Executive Summary}
 Relay is a research and design project focused in the domains of Adaptive Traffic Control and Data Visualization.
 In recent years, multiple cities including Montreal and LA have begun to implement adaptive systems, but adoption is not widespread, mainly due to high implementation costs.
-For example, the Los Angeles system, developed a solution to handle the massive volume placed on their transportation networks, has an estimated cost of \$400 million to date \cite{la-atcs-article}.
+For example, Los Angeles has developed a solution to handle the massive volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
 There is strong need for ATCS technology in the world today, and a large opportunity for state-of-the-art ATC systems.
-
 
 The intelligence of a traffic light varies from a static, fixed timer, to an intelligent node which considers existing traffic conditions, performance of adjacent nodes, and the like.
 Multiple industry-accepted ATC systems exist, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore, but as stated above, the adoption of these is not widespread.
 Additionally, research efforts in academia are being made towards novel architectures such as agent-based distributed systems, which implement advanced machine learning and neural network concepts\cite{1688100, 5073360, uot-article}.
 There still exists a large gap between academia and industry, showing potential for the incorporation of cutting edge solutions into municipal infrastructure.
 
-
 Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
 A few of these are decreased gas consumption, reduced travel time, and reduced congestion.
 It is important to note that these are not direct goals of the implementation, but rather beneficial external consequences of effective traffic control, that naturally extend from effectively adapting signal timings.
 The proposed solution thus focuses on local intersection performance, which in turn contributes to the improvement of aforementioned social and environmental benefits.
 
-
-% this needs to be fixed
 Relay consists of two major components: Relay Interface and Relay Framework. 
-Relay Interface attempts to democratize traffic data, enabling a common understanding of traffic patterns, giving both public offices and citizens the ability to make informed decisions.
+Relay Interface works to democratize the data generated from such a traffic control system, enabling a common understanding of traffic patterns among both Traffic Engineers and consumers, giving both parties the ability to make informed decisions.
 The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces.
-By providing insightful information on intersection statistics and traffic patterns, the Relay Interface offers a window into cities that has never been seen before.
+The interface is accessed as a web application in the browser, built on Flask and Backbone.js libraries to support a robust and organized development structure.
+It uses the Google Maps API to supply a fully interactive map, with various layers of data that can be shown and hidden on the map, as well as modular information windows, and a fully dynamic dashboard to supply in-depth quantitative information.
+Through the provision of detailed metrics on intersection Status, Flow, Queue Length, and more, the Relay Interface offers a window into cities that has never been seen before.
 
 In Relay Framework, each intersection is governed/controlled by its own independent, autonomous controller or \emph{Agent}.
 At its heart, each Agent in a Relay network is a dynamic graph automata---responsible for interpreting and propagating (transformed) sensor measurements to its neighbours.
 In addition to informing its peers of local environmental measurements (such as vehicles incident at their controlled intersection), Relay Agents generate and propagate \emph{predictions} or \emph{expectations} of traffic flow through their region, modulating and transforming the predictions received from peers in light of their expected signal timing schedule.
 The Agents continuously (via reinforcement learning) update their internal models to match the current environmental dynamics such that the prediction error is minimized.
 
-Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabalistic uncertainty associated with the predictions. Ultimately, as a framework, Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
+Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabilistic uncertainty associated with the predictions.
+Ultimately, as a framework, Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
 
-% we need something else here to tie it together and wrap things up
+In summary, this two-part research project has shown the potential for a large shift in public infrastructure technology in the coming years.
+As research and industry begin to meet in a way that governments and municipalities can implement, it is expected that Adaptive Traffic Control systems will become a common occurrence in daily life.
+Furthermore, the capability of these systems to produce and supply great amounts of detailed data regarding individual intersections, as well as the network as a whole, gives rise to many powerful applications.
+The democratization of data empowers Traffic Engineers to make more informed decisions, and serves to better educate the general public to aid in more efficient route planning.
+This reduces overall travel time, effectively reducing strain on the environment and infrastructure.
 
 \chapter{Introduction}
 \setlength{\parindent}{1cm}
-This Design Project Implementation Plan will act as an update for interested parties on the progress made to date on Relay, the team's SYDE 461 Design Project. The problem background is discussed and a problem statement is provided. An overview of the solution is then presented: objectives, functional requirements, and design constraints are reviewed for each major solution component. An overview of the system design process is then presented, and a discussion on progress and insights to-date. Finally, an updated project plan and financial budget are presented.\\
+This document will act as an update for interested parties on the progress made to date on Relay, the team's 2014 Capstone Design Project under the Department of Systems Design Engineering at the University of Waterloo. 
+In general, the chapters in this document are subdivided into three groups, colloquially referred to as the ``Front''-, ``Back''- and ``Deep''-Ends.
+Sections pertaining to the front-end govern the design and methodology that were put behind the user-facing aspects of this project: the Relay Interface, and various data visualization experiments.
+The back-end governs the design and functional implementation of the web-servers used to power the front-end, including data storage and layout, associated interfaces, and communication with the individual networked Agents.
+The deep-end simultanously refers to the design of the underlying traffic control agents, as well as the network of connected agents as a whole.
+
+At a high level, this document is broken up into illustrating the high-level design objectives, how a complex system was build to meet those objectives, and measuring the extent to which each objective was met (or missed).
+Finally, we conclude with some proposed improvements and modifications that arose out of the design and development experience, and next steps.
 
 
 \section{Background}
@@ -158,6 +174,7 @@ This has the opportunity to allow the public to make more intelligent route plan
 \chapter{Design Objectives and Requirements}
 \section{Front End}
 
+<<<<<<< HEAD
 
 \section{Deep End}
 \label{sec:deep:design_requirements}
@@ -248,8 +265,10 @@ Thus, for the purposes of this project we will simply consider one-lane streets 
 
 \section{Front End}
 
+=======
+>>>>>>> 2196b74755838f2358db1ceb9caa37c8dfc69dc5
 \subsection{Design Research}
-The Front End design process began with a Research phase, intended to provide a clear picture of the industry and potential users.
+The generation of Front End design objectives and requirements began with a Research phase, intended to provide a clear picture of the industry and potential users.
 This was accomplished through a User Study including interviews with industry experts, the gathering of Functional Requirements and Use Cases for the Relay Interface, and a detailed look at Information Architecture methods to best display the required data.
 
 \subsubsection{User Study}
@@ -521,7 +540,95 @@ Upon making such decisions for the visualization of data, careful planning must 
 Certain data given by the requirements will be best served on the map, where the context of location and spatial relativity is important.
 Other data may be better suited for presentation off of the map, perhaps in a dashboard or modular window setting.
 Situations where the context of a single location is important, or in a list-based visualization environment may be areas where data is better suited to be shown away from the map.
-These considerations, and more, and discussed further in the following Design Process section.
+These considerations, and more, and discussed further in the following Engineering Design section.
+
+\section{Deep End}
+\label{sec:deep:design_requirements}
+
+As a proof of concept, the Relay Agent Design had to encapsulate certain aspects of the realtime traffic environment necessary for intelligent traffic control.
+Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
+
+\subsection{Design Goals}
+\subsubsection{Symmetrical Graph Automata}
+Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
+Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
+Only through emergent prediction and reinforcement learning should individual Agents differentiate themselves from their peers.
+
+This is helpful from a robustness perspective, as well as provides a clear and fixed interface to the implementers.
+Typical differentiating factors (different rules/regulations, physical restrictions, location) are easy modelled with generic graph representations, hopefully leaving traffic engineers and architects to work on fine-tuning controller parameters, rather than writing individual controllers.
+
+\subsubsection{Predictions}
+Agent design should be able to characterise how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
+
+The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
+
+\subsubsection{Optimization}
+Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment, in particular, optimization routines based exlusively on reductions of the underlying signals in conjunction with arbitrary dynamic/stochastic queue models.
+
+\subsubsection{Communication}
+In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
+
+\subsection{Functional Requirements for Agent Implementation}
+
+The extent to which the prototype Agent implementation meets the high-level design/architectural goals is summarised in the following table, specifically, the binary pass/fail of a particular test can be considered a functional \emph{unit}, (and thus sufficient fodder for a comprehensive suite of unit tests.
+
+\begin{longtable}[H]{| P{4cm} | P{10cm} |} 
+\hline
+    Test                                & Description                                                                                               \\ \hline
+    [network] Request data from peer    & The agent of interest can request information from its peers, and then take action based on the resonse.  \\ \hline
+    [network] Respond to peer request   & The agent of interest can asynchronously respond to remote (peer) requests for state information.         \\ \hline
+    [network] Subscription management   & Can an agent subscribe and unsubscribe to a peer's ingress feed?                                          \\ \hline
+    [opt] Request new Schedule          & Can the agent request (and receive a response)  from the optimization service?                            \\ \hline
+    [predict] Request new Prediction    & Can the agent request (and receive a response) from the pred1/iction service?                               \\ \hline
+    [predict] Schedule Parameter Update & Can the agent request (and receive as response) the updated state parameters from the prediction service? \\ \hline
+    [data] Respond to remote requests for state & Can the agent provide a read-only interface to the Back-end\\ \hline
+\end{longtable}\label{tab:func_req}
+
+Table~\ref{tab:func_req} outlines some high-level unit tests.
+Each test involves a coordinated effort by multiple concurrent processes; for example, in order for an Agent to be able to manage subscriptions (and inversely, its obligations to other agents) it must manage state associated with its various data feeds, including storage and retrieval of said state.
+Additionally, the functional requirements surrounding an agent's ability to ``Request a new X'' imply that the calculation of X is readily available, it is thus left to the implementation to ensure that the schedules, density estimates, and predictions are all being maintained.
+
+At its core, the Agent should be able to act as a simple automata, periodically passing its state to neighbours congruent to its subscriptive obligations, and ensuring that its signal timing plan, and associated predictions are not invalidated by the passage of time.
+Under the surface, significant computation is being undertaken, but as an \emph{Agent} it should appear to be abstracted away, making it a good \emph{platform} rather than a collection of good \emph{algorithms}.
+
+
+\section{Design Constraints}
+There are multiple design and environmental constraints that will affect the final solution created.
+The main items are: limited timeline, simulating traffic, and traffic regulations.
+
+Firstly, with limited time to reach a final implementation it is very difficult to create a polished product.
+Because adaptive traffic control is such a large problem, the team has only focused on specific aspects of it.
+To help us tackle traffic control itself, we assumed that we have perfect traffic data and built a system on top of this.
+While this did not change the final product, it eliminated some of the challenges with creating such a system.
+
+Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
+While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with out system.
+For this project, the team decided to create simple simulations and construct the Framework such that it could be integrated with other simulation environments in the future.
+The simulations will be discussed further in the engineering design section.
+Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
+This option will not be pursued because of this difficulty and short timeline.
+
+Next, regional traffic regulations and laws affect how the system acts or is implemented.
+Parameters within the system can be adjusted to account for these.
+Adjustments could take the form of minimum/maximum signal time, allowable behaviours, arterial roads (not related to regulations, but would be custom to the system), and any other specific rules to a neighbourhood, city, road, or other road component.
+Additionally, the behaviours must only represent the legal states for a given intersection.
+Invalid light patterns (e.g. perpendicular green lights) need to be avoided and rules will be programmed into the system to accommodate this.
+Additionally, because Relay would sit on top of the municipalities core traffic system, instructions from Relay would have lower priority.
+This means that if an action was executed within Relay, it may not be executed on the system and could be overridden.
+An example of this is light switching from emergency vehicles - they have devices that allow them to signal lights they are approaching and switch the current light pattern.
+We have no control over this and must accept that some actions may not be executed.
+
+To reduce complexity for this project, only intersection with 4 directions are being modeled. 
+While, it can be argued that other arrangements are simply modifications of a 4-way intersection, we will not be considering these. 
+Additionally, it will be assumed that all roads have one lane in each direction. 
+Adding additional lanes, for example turning lanes, would provide more context on how cars are traversing and assist in planning, it makes the system and optimization much more complex. 
+Thus, for the purposes of this project we will simply consider one-lane streets and ensure the system is extensible for adding lanes.
+
+
+\newpage
+\chapter{Engineering Design}
+
+\section{Front End}
 
 \subsection{Design Process}
 With sufficient Design Research conducted, and functional requirements compiled, the front-end application design moved into an iterative process of defining the user interface (UI), interactions, and visual design of the app through various levels of fidelity.
@@ -1367,7 +1474,8 @@ The Agents in Relay also generate an \emph{expected ingress} signal $E\left[a_i(
 	E\left[a_i\right](t) = \sum_{j} \left(e_j^{nbr}(t) + E\left[e_j^{nbr}\right](t) \right) * h_{ji}(t)
 \end{equation}
 where $e_j^{nbr}(t)$ is the egress signal (as defined in equation~\eqref{eq:def:egress}) of the neighboring agent that is upstream of the $i^{th}$ inlet of the local agent, and $E\left[ \cdot \right]$ denotes the expected value.
-Note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
+It is important to note the choice of notation $E[\cdot](t)$ vs. $E[\cdot(t)]$, where the latter denotes the expected value of the signal, the former is used to denote the \emph{expectation} that the signal (over time) will take a certain \emph{form}, thus $E[\cdot](t)$ is a signal of expectations.
+Further note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
 Further note the inclusion of the expected upstream egress signal---the derivation of which can be found in equation~\eqref{eq:def:expected_egress}.
 Further note that the choice of delay kernel $h(\tau)$ is left entirely to the implementation.
 In the Relay prototype, these took the form of Gamma distributions, whose parameters were tuned via reinforcement learning.
@@ -1384,7 +1492,7 @@ An agent's expected egress is co-recursively defined in terms of its expected in
 
 
 \begin{align}\label{eq:def:expected_egress}
-	E\left[e_j\right(t)] &= \sum_{i=1}^n E\left[a_i V_{ij}\right(t)]\\
+	E\left[e_j\right](t) &= \sum_{i=1}^n E\left[a_i V_{ij}\right(t)]\\
 						&= \sum_{i=1}^n E\left[a_i\right](t) E\left[V_{ij}\right](t) + \mbox{Cov}(a_i(t), V_{ij}(t))\\
 						&\approx \sum_{i=1}^n  E\left[a_i\right](t) E\left[V_{ij}\right](t)
 \end{align}
@@ -1769,11 +1877,35 @@ Thus for each behavior, we evaluate the best possible flux given changes to the 
 
 The Relay Prototype implementation was designed according to our functional requirements.
 Agents must be able to communicate their state to a third party (i.e. the Back-End), and pass messages to their immediate neighbours (as defined in a connectivity graph used to initialize the network).
-The Agents must 
+
+The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy Webserver (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol.
+
+A high-level overview of the implementation is detailed in Figure~\ref{fig:agent_implementation}.
+\begin{figure}\label{fig:agent_implementation}
+	\includegraphics[width=\textwidth]{figures/Relay_agent_diagram.png}
+	\caption{The Relay Agent, consisting of multiple asynchronous concurrent components (actors).}
+\end{figure}
+
+As alluded to before, the system's state is managed in a central repository termed the ``State Manager'', which is a combination datastore, and interface.
+The State Manager additionally exposes an interface specifically for the Back-End (to render agent statistics).
+The network mediator is in charge of maintaining a set of subscriptions and obligations, as well as receiving and parsing local sensor information, which is then subsequently passed to the Ingress/Egress Queue manager.
+
+The Scheduling and Prediction services operate slightly differently.
+Rather than being explicitly controlled by the Controller, the controller simply periodically requests that they perform their function, and independently updating the State Manager when their compuation is complete (some operations can take a long time).
+
+The Python Port exposes the Erlang Application to one-or-many stateless Python processes, which perform the necessary floating point work via NumPy routines, everything else in the system is written entirely in Erlang. The Controller is described in Figure~\ref{fig:agent_controller}.
+
+\begin{figure}\label{fig:agent_controller}
+	\includegraphics[width=\textwidth]{figures/Relay_Agent_Controller.png}
+	\caption{The Relay Agent Controller: Which is the common link between all the components outlined in Figure~\ref{fig:agent_implementation}}
+\end{figure}
+
+The subsequent subsections will outline some of the design decisions made regarding this particular implementation of the Relay Agent as described in Section~\ref{sec:def:agent}.
 
 \subsubsection{Actor Pattern}
 Each agent was designed as a concurrent Erlang \emph{application}, consisting of several concurrent, asynchronous actors.
 Erlang was chosen for this purpose as it is a language with a history of soft-realtime computing in telephony (via the Open Telecom Platform), as well as exposing an easy and intuitive message passing interface (in that the only way for actors to communicate is via message passing).
+Furthermore, Erlang has the unique capability of ``hot code swapping'', wherein a running program can in realtime update its code, facilitating system upgrades without any interruption of service, an attractive quality for an intelligent traffic control system.
 
 In this manner it was possible to communicate ``over the wire'' to a myriad of simulated Agents all operating concurrently in simulation within a single Erlang Virtual Machine (VM), and furthermore, this communication was relatively straightforward, and didn't involve writing HTTP/TCP adapters.
 Additionally, through the use of OTP-\emph{applications}, there is pragmatically no difference between multiple Agents being simulated on a single machine communicating with each other, and multiple agents being simulated on different, geographically separated machines, communicating with each other (albeit with the obvious increase of latency).
@@ -1906,7 +2038,7 @@ As seen in the above table all integration tests have passed. All subsystems wit
 \subsection{Integration Testing}
 The following integration tests are all pass/fail procedures aimed to ensure each module within the Relay Framework is functioning. 
 These tests will demonstrate that disparate pieces of this system work together. 
-These tests are centered on the components of the Framework, and cover information and request handling from the Flask server, between Erlang processes, Python computational components, and <OTHER>. 
+These tests are centered on the components of the Framework, and cover information and request handling from the Flask server, between Erlang processes, Python computational components, as well as inter-agent communication. 
 The table below contains each test and results from testing on the final prototype.
 
 \subsubsection{Results}
@@ -1924,6 +2056,18 @@ As seen in the above table all integration tests have passed. All subsystems wit
     Handle data from parameter learning service                                                                      & After requesting new parameters, can successfully accept and interpret information.                              & Pass    \\ \hline
 \caption{Integration tests for Relay Framework}
 \end{longtable}
+
+\subsubsection{Notable Failures}
+Many approximations had to be made within the context of implementing the Agent Pattern as defined in Section~\ref{sec:def:agent}.
+Without the explicit usage of a traffic micro-simulator such as Vissim, it is impossible to gather reasonable performance data.
+Thus much of our testing was designed to demonstrate that the system was actually performing the computations as we interpreted them.
+Thus the most salient failiure of our prototypical implementation is the lack of conclusive results.
+
+The Agents could communicate, and generate signals, however the underlying optimization routine was being stimulated with \emph{fake} data, and it could be argued that the network had insufficient depth for us to truly devine whether significant optimzation was taking place.
+One of the main failures of traffic control systems as currently implemented (research or otherwise), is the lack of hard data for large, tightly-coupled systems (those that exist typically keep that data proprietary), as defined, we expect the Relay Pattern is a good fit for large distributed traffic networks, however our \emph{simulation} of 15 agents was insufficient to demonstrate this effect.
+
+Similarly, as our simulation didn't actually generate ``congested'' data, it is difficult to ascertain whether the system performed.
+A common addage within the traffic engineering community to this point is that ``Adaptive Systems are great, but in gridlock, the best system will be equalled by a stop sign''.
 
 \newpage
 \chapter{Recommended Design Modifications}
@@ -2038,6 +2182,9 @@ Such a policy entails the Agent network to elect (from their own ranks) a \emph{
 For example, in the case of a neighbourhood of Agents, the region can elect a member (perhaps based on hardware capability, stability, trust, or other metrics out of the scope of this project) to act as the external point of contact or liaison for external services wishing to access the network data.
 Similarly, these Super Nodes would be allowed to break the \emph{network depth} requirement enforced by our network topology, and communicate/subscribe to other Super Nodes.
 Network updates could be pushed externally to a single Super Node, which would be responsible for gossiping the update to its peers, and neighbourhood.
+
+Furthermore, much emphasis has been placed on the Agent Network's ability to achieve soft-consensus through emergent prediction interference.
+Another stepping stone could be the introduction of another layer of consensus, one that explicitely outlines behaviours such as dynamic route biasing, discrete platoon management etc.
 
 \subsection{Robust Simulation Environment}
 In the future, the team proposes integrating a robust simulation environment to assist in extracting in depth performance metrics and modelling complex road structures. 
@@ -2159,16 +2306,40 @@ In conclusion, the team was able to successfully meet all major milestones, howe
 
 \newpage
 \section{Conclusion}
-The creation of the Relay Network  has helped further the understanding and capabilities of adaptive traffic control... [ALEX talk some real shit]
+Intelligent traffic control is a hard problem.
+However it is made more difficult by the lack of unifying design patterns within the realm---when designing a new control system from scratch, a lot of work is required simply to implement the fundamentals, which frequently must be custom designed for the particular use case in mind.
+In internet data processing, we have ``Map-Reduce'', in high-performance computing we have ``The Grid'', what is the current vogue in traffic engineering?
 
-Furthermore, the Relay Application has helped redefine the value of Adaptive Traffic Control System Interfaces. For Traffic Engineers, the Relay Application enables the shift of responsibility and value from signal timing and tweaking to network monitoring and informed planning. The Relay Application exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing the costs associated with maintaining the efficiecny of the transportation network. This information allows traffic engineers to know exactly what's going on in the network at any moment. Traffic engineers are thus able to adapt quickly to drastic changes in the network. Through the use of geospatial data visualizations, the Relay Application is able to reveal high-level traffic patterns, providing invaluble insight into the workings of a city's transportation network. Access to this kind of information has the potential to change the way public infrastructure decisions are made. This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
+With the formalization of the Relay Agent, we have outlined a generic and flexible platform for traffic engineers and researchers to experiment with the implementation of distributed traffic control systems that operate on probabilistic expectations, sparse-distributed computation, and \emph{soft}-synchronisation.
+The Relay pattern additionally removes the necessity to have detailed information about t;wqhe implementation environment, with enough data, the system will \emph{learn} its environmental parameters, and provide full transparency to the engineer.
+With the prototype implementation we showed it was possible to implement the Relay pattern, with entirely open-source tools.
+The creation of the Relay Network  has helped further the understanding and capabilities of not only adaptive traffic control, but traffic control in general, with systems like Relay, the cognitive burden typically associated with large scale traffic engineering has been almost entirely removed---foreshadowing a paradigm shift (or possibly an identity crisis) in traffic engineering.
+With distributed systems like Relay (in which each agent requires less compute than is commonly associated with obsolete smartphones), traffic engineers can transcend trivial (but labour intensive) problems such as drawing up sub-optimal timing plans, and begin thinking about how to control vast connected networks of dynamic graph automata.
+Imagine a world in which every intersection in a city is an autonomous Relay Agent, traffic control at this point becomes less about \emph{timing plans} and more about constructing \emph{incentive schemes}.
 
-The push for democratized traffic data is a major goal for this project, and the Relay Application serves as a first major attempt to present infrastructure-quality traffic information to the public. The Relay Application allows the public to examine and understand the workings of their public infrastructure, encouraging a more informed and engaged population. This brings benefits to both parties, as the public office now has an educated audience for making infrastructure developments, and an observant body to maintain public office accountability. Furthermore, the availability of traffic infrastructure information has the potential to revolutionize navigation-based solutions, such as Google Maps route planning and GPS devices. In the future, every car could be given a travel route which optimizes not only its travel time, but that of the entire transportation network.
+Furthermore, the Relay Application has helped redefine the value of Adaptive Traffic Control System Interfaces. 
+For Traffic Engineers, the Relay Application enables the shift of responsibility and value from signal timing and tweaking to network monitoring and informed planning. 
+The Relay Application exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing the costs associated with maintaining the efficiecny of the transportation network. 
+This information allows traffic engineers to know exactly what's going on in the network at any moment. Traffic engineers are thus able to adapt quickly to drastic changes in the network. 
+Through the use of geospatial data visualizations, the Relay Application is able to reveal high-level traffic patterns, providing invaluble insight into the workings of a city's transportation network. 
+Access to this kind of information has the potential to change the way public infrastructure decisions are made. 
+This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
 
+The push for democratized traffic data is a major goal for this project, and the Relay Application serves as a first major attempt to present infrastructure-quality traffic information to the public. 
+The Relay Application allows the public to examine and understand the workings of their public infrastructure, encouraging a more informed and engaged population. 
+This brings benefits to both parties, as the public office now has an educated audience for making infrastructure developments, and an observant body to maintain public office accountability. 
+Furthermore, the availability of traffic infrastructure information has the potential to revolutionize navigation-based solutions, such as Google Maps route planning and GPS devices.
+In the future, every car could be given a travel route which optimizes not only its travel time, but that of the entire transportation network.
 
 \newpage
-\section{Appendix A: Expert Interview Transcripts}
-\subsection{Marc Tan - IBI Group}
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{IEEEtran}
+\bibliography{bib}
+
+\newpage
+\begin{appendices}
+\chapter{Expert Interview Transcripts}
+\section{Marc Tan - IBI Group}
 \emph{Who uses these interfaces?} \\
 �
 There are�really three users to the interface.
@@ -2206,7 +2377,7 @@ I have generally done work on developing timings through modelling efforts. I di
 Toronto runs a SCOOT system on a number of their�arterials, which requires a large calibration effort after installation but once its going, it works pretty ok.
 The big issue is that these SCOOT systems are quite expensive, with all the detection that is required to run the system.
 
-\subsection{Peter Kelley - Paradigm Transportation}
+\section{Peter Kelley - Paradigm Transportation}
 A) System/Network \\
 You'd want to know what the overall experienced delay is.
 To get this you need to know signal timing plans, and volume of vehicles.
@@ -2223,12 +2394,7 @@ As well, there are maximum time lengths that will change the signal to red from 
 The information we like to know about a single intersection is the turning movement counts, the delay of the approaches (north, south, east, west), the queue lengths of vehicles, and the volume/capacity ratio.
 These all serve as a means to determine the Level of Service of an intersection.
 I hope this helps.
+\end{appendices}
 
-\newpage
-\addcontentsline{toc}{section}{References}
-
-\bibliographystyle{IEEEtran}
-
-\bibliography{bib}
 
 \end{document}
