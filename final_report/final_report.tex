@@ -70,6 +70,40 @@
 \doublespacing
 \pagenumbering{arabic}
 
+\chapter*{Executive Summary}
+Relay is a research and design project focused in the domains of Adaptive Traffic Control and Data Visualization.
+In recent years, multiple cities including Montreal and LA have begun to implement adaptive systems, but adoption is not widespread, mainly due to high implementation costs.
+For example, the Los Angeles system, developed a solution to handle the massive volume placed on their transportation networks, has an estimated cost of \$400 million to date \cite{la-atcs-article}.
+There is strong need for ATCS technology in the world today, and a large opportunity for state-of-the-art ATC systems.
+
+
+The intelligence of a traffic light varies from a static, fixed timer, to an intelligent node which considers existing traffic conditions, performance of adjacent nodes, and the like.
+Multiple industry-accepted ATC systems exist, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore, but as stated above, the adoption of these is not widespread.
+Additionally, research efforts in academia are being made towards novel architectures such as agent-based distributed systems, which implement advanced machine learning and neural network concepts\cite{1688100, 5073360, uot-article}.
+There still exists a large gap between academia and industry, showing potential for the incorporation of cutting edge solutions into municipal infrastructure.
+
+
+Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
+A few of these are decreased gas consumption, reduced travel time, and reduced congestion.
+It is important to note that these are not direct goals of the implementation, but rather beneficial external consequences of effective traffic control, that naturally extend from effectively adapting signal timings.
+The proposed solution thus focuses on local intersection performance, which in turn contributes to the improvement of aforementioned social and environmental benefits.
+
+
+% this needs to be fixed
+Relay consists of two major components: Relay Interface and Relay Framework. 
+Relay Interface attempts to democratize traffic data, enabling a common understanding of traffic patterns, giving both public offices and citizens the ability to make informed decisions.
+The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces.
+By providing insightful information on intersection statistics and traffic patterns, the Relay Interface offers a window into cities that has never been seen before.
+
+In Relay Framework, each intersection is governed/controlled by its own independent, autonomous controller or \emph{Agent}.
+At its heart, each Agent in a Relay network is a dynamic graph automata---responsible for interpreting and propagating (transformed) sensor measurements to its neighbours.
+In addition to informing its peers of local environmental measurements (such as vehicles incident at their controlled intersection), Relay Agents generate and propagate \emph{predictions} or \emph{expectations} of traffic flow through their region, modulating and transforming the predictions received from peers in light of their expected signal timing schedule.
+The Agents continuously (via reinforcement learning) update their internal models to match the current environmental dynamics such that the prediction error is minimized.
+
+Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabalistic uncertainty associated with the predictions. Ultimately, as a framework, Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
+
+% we need something else here to tie it together and wrap things up
+
 \chapter{Introduction}
 \setlength{\parindent}{1cm}
 This Design Project Implementation Plan will act as an update for interested parties on the progress made to date on Relay, the team's SYDE 461 Design Project. The problem background is discussed and a problem statement is provided. An overview of the solution is then presented: objectives, functional requirements, and design constraints are reviewed for each major solution component. An overview of the system design process is then presented, and a discussion on progress and insights to-date. Finally, an updated project plan and financial budget are presented.\\
@@ -132,7 +166,7 @@ As a proof of concept, the Relay Agent Design had to encapsulate certain aspects
 Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
 
 \subsection{Design Goals}
-\paragraph{Symmetrical Graph Automata}
+\subsubsection{Symmetrical Graph Automata}
 Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
 Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
 Only through emergent prediction and reinforcement learning should individual Agents differentiate themselves from their peers.
