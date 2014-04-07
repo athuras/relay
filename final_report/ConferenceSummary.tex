@@ -45,174 +45,49 @@
 
 
 \section{Abstract}
-This report aims to provide an introduction to the one-period finite state model of financial markets and discuss its relevance to linear algebra. Pertinent background information is provided to give an understanding of the problem space.
-A case study is then performed that investigates how this model works for more complex portfolios.
-Multiple focus assets are analysed with the created set of securities and resulting portfolios compared.
-This report is concluded with a discussion of some of the limitations of this model.
-\\
+This Design Project Implementation Plan will act as an update for interested parties on the progress made to date on Relay, the team's SYDE 461 Design Project. The problem background is discussed and a problem statement is provided. An overview of the solution is then presented: objectives, functional requirements, and design constraints are reviewed for each major solution component. An overview of the system design process is then presented, and a discussion on progress and insights to-date. Finally, an updated project plan and financial budget are presented.\\
+
 \begin{multicols}{2}
 \section{Background Information}
-The one-period finite state model assumes that there are only two dates, start (e.g. today) and end (e.g. tomorrow). The market conditions tomorrow are also assumed to be unknown. We are provided with a set of tomorrows states for a security that encompass a finite number of states for that security. Therefore, this model does not have full coverage of all possible outcomes, but still allows for sufficient analysis of potential scenarios (Cern, 2003).
-\\
-\indent
-Within this framework, a security can be viewed as a vector of states, whose values represent the payoff at each state. For example, lets say stock X has initial price 1 (today's price) and will either increase to 3 or 2 tomorrow. Thus, it has two states ($x_1$, $x_2$) and associated payoffs (2, 1). In vector form,
-\begin{align*}
-	a_{stock} = \left[\begin{array}{c}2\\ 1\end{array}\right]
-\end{align*}
-\indent
-The state of the market tomorrow determines what this stock will pay; if we are in state $x_1$, this bond would pay 1. 
-It should be noted that payoffs will be negative if price goes down. This idea applies to all other security types and can incorporate additional payments such as dividends, coupon payments, etc., but for the purposes of this report it is assumed all associated payoffs are accounted for in the payoff vector. 
-Also, this idea of securities as vectors can be extended to the $n$-dimensional case, in which there would be $n$ unique states. 
-Continuing our example, in Figure \ref{origPayoffEx}, a fictional stock, bond, and option are plotted to give a visual representation in 2D payoff space (\textbf{vector space}).
+Motorists and pedestrians alike can relate to the frustration that comes from being stopped unnecessarily at a red light, waiting for it to turn green with no other cars in sight.
+The intelligence of a traffic light can vary from a static, fixed timer, to a relatively intelligent node which considers existing traffic conditions, the performance of adjacent nodes, and the like.
+However, even Adaptive Traffic Control (ATC) Systems today often irritate drivers as they are still unable to intelligently adapt to the wide variety of variables that affect traffic performance.\\
 
-%\begin{figure}[H]
-%\centering
-%\includegraphics[scale=.45]{origPayoffEx.png}
-%\caption{Example Payoff Vectors}
-%\label{origPayoffEx}
-%\end{figure}
+Large metropolitan areas are acknowledging the need for advanced traffic management systems as the size and density of urban areas continues to increase.
+Over the past 29 years, the city of Los Angeles has developed a home-grown solution to handle the massive amounts of volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
+The City of Montreal recently signed to adopt Transcore's TransSuite Advanced Traffic Management System (ATMS), which will control over 2000 intersections by completion \cite{montreal-transcore}.
+There is strong need for ATCS technology in the world today, and there is a large opportunity for state-of-the-art ATC systems.
 
-\indent
-Next, forming a set of these payoff vectors creates a payoff matrix $A$, known as \textbf{\textit{basis assets}}. 
-The size of $A$ is determined by the number of states, $n$, and number of securities, $m$. 
-The security payoff vectors form a \textbf{column space}, such that each row contains the respective security payoff for a given state. 
-Multiplying $A$ by an arbitrary $n$x1 vector, $x$, gives us the expected payoff in each state, $b$. Typically though, $b$ is another security, called the \textit{focus asset}, that we are trying to hedge and $x$ solves the system, creating our portfolio (Cern, 2003). 
-Therefore, to solve the system, we need to find a portfolio --- \textbf{linear combination of basis assets} --- that exactly matches the payoff of our focus asset, in each state. 
-This is known as a \textit{perfect hedge} --- eliminates all risk of a position in the focus asset. 
-The break-even price of the focus asset can then be determined from the portfolio based on the prices of the securities in the portfolio, but this discussion is out of scope for this report. 
-In our example, we will hedge our option (focus asset) with the stock and bond, which form our basis assets. In matrix form, we have:
+There are many industry-accepted and adopted ATC systems, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore.
+The method by which each system achieves enhanced performance varies: systems such as the LA ATCS implementation rely solely on road-planted magnetic sensors, whereas more advanced systems such as Miovision Spectrum utilize image processing technology.
+The effectiveness of existing systems is noticeable but not impressive.
+For example, LA ATCS, the largest ATCS implementation in North America, claims to reduce drive time on major corridors by 12\% \cite{la-atcs-article}, this aggregate statistic heavily biases freeway control but is currently suboptimal for average intersections.
+Today's ATCS systems provide incremental gains on existing traffic control paradigms which have not changed for generations.
 
-\begin{align*}
-	Ax = b \\
-\end{align*}
+Significant advancements in Adaptive Traffic Control systems have been seen in academia.
+Research efforts have been made towards novel architectures such as agent-based distributed systems which implement advanced machine learning and neural network concepts.
+These revolutionary concepts have demonstrated significant gains in efficiency via simulated comparisons to existing industry systems \cite{1688100, 5073360, uot-article}, and some have even run trial implementations on real transit networks \cite{uot-article}.
+However, these novel methods have yet to gain traction in industry, which continues to implement incremental advances based on old traffic control paradigms.
 
-substituting in our basis assets and focus asset
+Furthermore, access to the data from such systems is largely kept for internal analysis by the government organizations, suffocating further technological development by industrial and academic organizations.
+No existing systems offer consumer access to the system's data in any form.
+It takes little imagination to realize the possible benefits, if real-time traffic network information was available to consumer route-planning technology.
 
-\begin{align*}
-	\left[\begin{array}{cc}
-		a_{bond} & a_{stock}
-	\end{array}\right]x=b
-\end{align*}
-\begin{align*}
-	\left[\begin{array}{cc}
-		1 & 2\\ 
-		1 & 1
-	\end{array}\right]x = \left[\begin{array}{c}3\\ 4\end{array}\right]
-\end{align*}
+In essence, there currently exists no industry-accepted Adaptive Traffic Control System, which adequately meets current and future transportation demands on urban road networks.
+Current solutions offer incremental improvements on old strategies, and provide insufficient performance increases.
+Without such a system, the inefficiency of crucial transportation methods will continue to increase, leading to greater financial, environmental, and sociological consequences.
+A fundamentally different approach to traffic control is necessary, one which fully utilizes today's technological advances and novel methods for approaching complex, network-based problems.
+The solution must meet the needs of transportation authorities, who will be responsible for overseeing the performance and maintenance of the system, and are ultimately responsible for the system.
+The solution must also meet the needs of the population which it serves, providing transparent access to it's operation and allowing consumers to take full advantage of the information and insight which the system can provide.
+The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.
 
-solving the system gives our portfolio
+\section{Problem Statement}
 
-\begin{align*}
-	x = \left[\begin{array}{c}5\\ -1\end{array}\right]
-\end{align*}
-This portfolio represents the number of units of each asset required to perfectly hedge the option; we would need to buy 5 bonds and sell 1 stock to create this hedge. Figure \ref{PortfolioEx} gives the graphical representation of this hedge in the payoff space. If we only had one of the basis assets, we would not be able to reach the payoff of our focus asset, but a linear combination allows us to create a portfolio to reach the desired payoff within the \textbf{vector space}.
+\section{Solution}
 
-
-Constructing the initial basis assets may create a \textbf{linearly dependent} (LD) set. 
-This is found when any one of the security payoffs in $A$ can be modelled by a combination of other security payoffs in $A$.
-These securities do not allow us to attain new payoffs in the market, and thus are removed from the basis assets. 
-Dependent securities are eliminated by \textbf{row-reducing the security column space ($A$)} and removing any non-pivot columns. 
-The resulting \textbf{linearly independent (LI) set spans the entire payoff space}, or \textit{marketed subspace}, and the market is said to be \textit{complete} (Cern, 2003). 
-In our example, the marketed subspace is all of $R^2$.
-The \textbf{maximum number of securities that can form a basis in the subspace is equal to the dimension of the marketed subspace} (i.e. the number of states). 
-For example, a basis for a 3-state market can contain a maximum of 3 basis assets and remain linearly independent. 
-If another security were added, the payoff matrix could be simplified, and made LI again, by either removing the newly added security or finding a new LI combination of the securities, if possible, forming a new basis.
-
-\section{Case Study - Complex Portfolio}
-A case study is constructed to demonstrate higher dimension payoff vectors. 
-Mock portfolios will be constructed from basis assets that span the payoff space to perfectly hedge any focus assets in the same payoff space. 
-This case study will attempt to investigate how a one-period finite state model analysis can be used to create a hedging portfolio that will yield a complete market. 
-\\
-\indent
-To begin, suppose an index similar to the S\&P 500 consists of 8 securities ($bond_1$, $bond_2$, $bond_3$, $stock_4$, $stock_5$, $stock_6$, $option_7$, and $option_8$), each with 5 states --- each security has predetermined price movements for 5 different states of the market.
-The goal of this case study is to find a linear combination of the different securities in the payoff matrix, forming a portfolio, to perfectly hedge the focus asset and complete the market. 
-The payoff matrix consisting of all security payoff vectors can be found below:
-
-\begin{align*}
-	A=\left[\begin{array}{cccccccc}
-		1 & 1 & -2 & -0.2 & -0.6 & 2 & 0.1 & -6.9\\ 
-		1 & 1 & 1 & 0.1 & 0.7 & 2.1 & -0.1 & 7.1\\
-		4 & 4 & -6 & -0.6 & -0.7 & 2.3 & 0.4 & -7 \\
-		9 & 9 & 7 & 0.7 & 0.7 & 1.9 & 0.9 & 7 \\
-		3 & 3 & -3 & -0.3 & 0.6 & 2 & -0.3 & 6.8
-	\end{array}\right]
-\end{align*}
-
- In order to obtain the basis assets we must check the linear independence (LI) of the payoff matrix. 
-Finding the LI securities allows us to represent any security's payoff in our marketed subspace with a combination of our basis assets.
-The goal then is to remove any redundant securities from our payoff matrix --- one's that can be represented as a combination of others. 
-Putting the current payoff matrix in reduced row echelon form, a basis can be formed from the column vectors with pivots. 
-Our new payoff matrix of the basis assets:
-\begin{align*}
-	A=\left[\begin{array}{ccccc}
-		1 & -2 & -0.6 & 2 & 0.1\\ 
-		1 & 1 & 0.7 & 2.1 & -0.1\\
-		4 & -6 & -0.7 & 2.3 & 0.4\\
-		9 & 7 & 0.7 & 1.9 & 0.9\\
-		3 & -3  & 0.6 & 2 & -0.3
-	\end{array}\right]
-\end{align*}
-
-concludes that our portfolio will have 5 linearly independent securities, forming the basis assets as they exist in the column space of the payoff matrix. 
-More importantly, any new focus asset in $R^5$ can now be perfectly hedged by assets 1, 3, 5, 6, 7. 
-The conclusion can be made that the basis assets must posses full rank in order to represent a complete market. 
-\\
-\indent
-To demonstrate that the payoff matrix can represent any number of assets, the following matrix, $b$, with the column space of 4 different focus assets is analysed, and multiple portfolio's created.
-
-\begin{align*}
-	Ax=b=
-	\left[\begin{array}{ccccc}
-		4 & 4.5 & -3 & -2\\ 
-		3 & 3.5 & -4.5 & 1\\
-		-4 & 3.7 & 3.4 & -6\\
-		8 & -4 & 2.9 & 7\\
-		-6 & -3  & 2 & -3
-	\end{array}\right]
-\end{align*}
-solving this system of equations gives
-\begin{align*}
-	x=
-	\left[\begin{array}{ccccc}
-		-0.8603 & -2.3750 & 1.5841 & 0\\
-		1.7057 & -0.3261 & -0.7175 & 1\\
- 		-4.2809 &   1.7402  &  0.4830 & 0\\
-		2.5639  &  3.0218  & -2.7793  &  0\\
-		1.9005 &  13.8013 &  -1.2704  &  0
-	\end{array}\right]
-\end{align*}
-The portfolio matrix, $x$, is a linear combination of the basis assets that achieves the same payoff as the focus asset. More specifically, in the portfolio matrix, to achieve the focus asset in the first column of the asset matrix, $b$, we would have to:
-\begin{itemize}
-	\item sell 0.8603 units of $bond_1$ 
-	\item buy 1.7057 units of $bond_3$
-	\item sell short 4.289 shares of $stock_5$ 
-	\item buy 2.5639 call options of $option_6$
-	\item buy 1.9005 call options of $option_7$
-\end{itemize}
-
-Following the above purchasing plan we could perfectly hedge the asset $b_1$. 
-However, it isn't possible to trade fractions of financial instruments. 
-Rounding would cause inefficiency in our hedge and is a limitation of this model. 
-In actual markets, it is almost impossible to find a perfect hedge. 
+\section{Impact}
 
 \section{Conclusions}
-In summary, by using the one-period finite state model we can efficiently predict a portfolio that can perfectly hedge any asset in the same marketed subspace. 
-Also, a given portfolio is a linear combination of all independent basis asset payoffs. 
-The basis assets are assets which span the entire payoff space, that is, our marketed subspace. 
-This results in the ability to replicate any focus asset in this space, thus yielding a complete market.
-\\
-\indent
-They are known limitations that are evident in the presented case study. One limitation is the nature in which the payoff vectors are formed. These vectors represent payoffs at a certain state in the market. Each payoff is modelled based on some probabilistic distribution. If this assumed distribution is not indicative of the actual distribution than the model fails. Additionally, the model cannot account for every market state as the model itself is finite. Unrepresented states will result in the inability to produce a correct portfolio. 
-\\
-\indent
-As discussed earlier, in most scenarios, to perfectly hedge the focus asset requires trading fractions of securities. 
-This practice is not realistic and will result in inefficient hedging.
-Least Squared error methods could be used to find the optimal attainable portfolio by reducing the distance, error, from the resulting portfolio vectors to the focus asset.
-This would create a portfolio closest to the optimal solution.
-\\
-\indent
-Lastly, this analysis can provide meaningful strategies for portfolio managers that are seeking to optimize returns in unforeseen market conditions by employing linear algebra concepts.
-\section{References}
-Cern, A. (2003). \textit{Mathematical techniques in finance: Tools for incomplete markets.} (2nd ed.). Princeton University Press.
+
 \end{multicols}
 \end{document}
