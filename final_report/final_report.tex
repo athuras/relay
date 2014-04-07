@@ -1321,7 +1321,8 @@ The Agents in Relay also generate an \emph{expected ingress} signal $E\left[a_i(
 	E\left[a_i\right](t) = \sum_{j} \left(e_j^{nbr}(t) + E\left[e_j^{nbr}\right](t) \right) * h_{ji}(t)
 \end{equation}
 where $e_j^{nbr}(t)$ is the egress signal (as defined in equation~\eqref{eq:def:egress}) of the neighboring agent that is upstream of the $i^{th}$ inlet of the local agent, and $E\left[ \cdot \right]$ denotes the expected value.
-Note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
+It is important to note the choice of notation $E[\cdot](t)$ vs. $E[\cdot(t)]$, where the latter denotes the expected value of the signal, the former is used to denote the \emph{expectation} that the signal (over time) will take a certain \emph{form}, thus $E[\cdot](t)$ is a signal of expectations.
+Further note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
 Further note the inclusion of the expected upstream egress signal---the derivation of which can be found in equation~\eqref{eq:def:expected_egress}.
 Further note that the choice of delay kernel $h(\tau)$ is left entirely to the implementation.
 In the Relay prototype, these took the form of Gamma distributions, whose parameters were tuned via reinforcement learning.
@@ -1338,7 +1339,7 @@ An agent's expected egress is co-recursively defined in terms of its expected in
 
 
 \begin{align}\label{eq:def:expected_egress}
-	E\left[e_j\right(t)] &= \sum_{i=1}^n E\left[a_i V_{ij}\right(t)]\\
+	E\left[e_j\right](t) &= \sum_{i=1}^n E\left[a_i V_{ij}\right(t)]\\
 						&= \sum_{i=1}^n E\left[a_i\right](t) E\left[V_{ij}\right](t) + \mbox{Cov}(a_i(t), V_{ij}(t))\\
 						&\approx \sum_{i=1}^n  E\left[a_i\right](t) E\left[V_{ij}\right](t)
 \end{align}
@@ -1723,11 +1724,35 @@ Thus for each behavior, we evaluate the best possible flux given changes to the 
 
 The Relay Prototype implementation was designed according to our functional requirements.
 Agents must be able to communicate their state to a third party (i.e. the Back-End), and pass messages to their immediate neighbours (as defined in a connectivity graph used to initialize the network).
-The Agents must 
+
+The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy Webserver (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol.
+
+A high-level overview of the implementation is detailed in Figure~\ref{fig:agent_implementation}.
+\begin{figure}\label{fig:agent_implementation}
+	\includegraphics[width=\textwidth]{figures/Relay_agent_diagram.png}
+	\caption{The Relay Agent, consisting of multiple asynchronous concurrent components (actors).}
+\end{figure}
+
+As alluded to before, the system's state is managed in a central repository termed the ``State Manager'', which is a combination datastore, and interface.
+The State Manager additionally exposes an interface specifically for the Back-End (to render agent statistics).
+The network mediator is in charge of maintaining a set of subscriptions and obligations, as well as receiving and parsing local sensor information, which is then subsequently passed to the Ingress/Egress Queue manager.
+
+The Scheduling and Prediction services operate slightly differently.
+Rather than being explicitly controlled by the Controller, the controller simply periodically requests that they perform their function, and independently updating the State Manager when their compuation is complete (some operations can take a long time).
+
+The Python Port exposes the Erlang Application to one-or-many stateless Python processes, which perform the necessary floating point work via NumPy routines, everything else in the system is written entirely in Erlang. The Controller is described in Figure~\ref{fig:agent_controller}.
+
+\begin{figure}\label{fig:agent_controller}
+	\includegraphics[width=\textwidth]{figures/Relay_Agent_Controller.png}
+	\caption{The Relay Agent Controller: Which is the common link between all the components outlined in Figure~\ref{fig:agent_implementation}}
+\end{figure}
+
+The subsequent subsections will outline some of the design decisions made regarding this particular implementation of the Relay Agent as described in Section~\ref{sec:def:agent}.
 
 \subsubsection{Actor Pattern}
 Each agent was designed as a concurrent Erlang \emph{application}, consisting of several concurrent, asynchronous actors.
 Erlang was chosen for this purpose as it is a language with a history of soft-realtime computing in telephony (via the Open Telecom Platform), as well as exposing an easy and intuitive message passing interface (in that the only way for actors to communicate is via message passing).
+Furthermore, Erlang has the unique capability of ``hot code swapping'', wherein a running program can in realtime update its code, facilitating system upgrades without any interruption of service, an attractive quality for an intelligent traffic control system.
 
 In this manner it was possible to communicate ``over the wire'' to a myriad of simulated Agents all operating concurrently in simulation within a single Erlang Virtual Machine (VM), and furthermore, this communication was relatively straightforward, and didn't involve writing HTTP/TCP adapters.
 Additionally, through the use of OTP-\emph{applications}, there is pragmatically no difference between multiple Agents being simulated on a single machine communicating with each other, and multiple agents being simulated on different, geographically separated machines, communicating with each other (albeit with the obvious increase of latency).
@@ -1860,7 +1885,7 @@ As seen in the above table all integration tests have passed. All subsystems wit
 \subsection{Integration Testing}
 The following integration tests are all pass/fail procedures aimed to ensure each module within the Relay Framework is functioning. 
 These tests will demonstrate that disparate pieces of this system work together. 
-These tests are centered on the components of the Framework, and cover information and request handling from the Flask server, between Erlang processes, Python computational components, and <OTHER>. 
+These tests are centered on the components of the Framework, and cover information and request handling from the Flask server, between Erlang processes, Python computational components, as well as inter-agent communication. 
 The table below contains each test and results from testing on the final prototype.
 
 \subsubsection{Results}
@@ -1878,6 +1903,8 @@ As seen in the above table all integration tests have passed. All subsystems wit
     Handle data from parameter learning service                                                                      & After requesting new parameters, can successfully accept and interpret information.                              & Pass    \\ \hline
 \caption{Integration tests for Relay Framework}
 \end{longtable}
+
+
 
 \newpage
 \chapter{Recommended Design Modifications}
