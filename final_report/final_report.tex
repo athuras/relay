@@ -1952,7 +1952,17 @@ As seen in the above table all integration tests have passed. All subsystems wit
 \caption{Integration tests for Relay Framework}
 \end{longtable}
 
+\subsubsection{Notable Failures}
+Many approximations had to be made within the context of implementing the Agent Pattern as defined in Section~\ref{sec:def:agent}.
+Without the explicit usage of a traffic micro-simulator such as Vissim, it is impossible to gather reasonable performance data.
+Thus much of our testing was designed to demonstrate that the system was actually performing the computations as we interpreted them.
+Thus the most salient failiure of our prototypical implementation is the lack of conclusive results.
 
+The Agents could communicate, and generate signals, however the underlying optimization routine was being stimulated with \emph{fake} data, and it could be argued that the network had insufficient depth for us to truly devine whether significant optimzation was taking place.
+One of the main failures of traffic control systems as currently implemented (research or otherwise), is the lack of hard data for large, tightly-coupled systems (those that exist typically keep that data proprietary), as defined, we expect the Relay Pattern is a good fit for large distributed traffic networks, however our \emph{simulation} of 15 agents was insufficient to demonstrate this effect.
+
+Similarly, as our simulation didn't actually generate ``congested'' data, it is difficult to ascertain whether the system performed.
+A common addage within the traffic engineering community to this point is that ``Adaptive Systems are great, but in gridlock, the best system will be equalled by a stop sign''.
 
 \newpage
 \chapter{Recommended Design Modifications}
@@ -2067,6 +2077,9 @@ Such a policy entails the Agent network to elect (from their own ranks) a \emph{
 For example, in the case of a neighbourhood of Agents, the region can elect a member (perhaps based on hardware capability, stability, trust, or other metrics out of the scope of this project) to act as the external point of contact or liaison for external services wishing to access the network data.
 Similarly, these Super Nodes would be allowed to break the \emph{network depth} requirement enforced by our network topology, and communicate/subscribe to other Super Nodes.
 Network updates could be pushed externally to a single Super Node, which would be responsible for gossiping the update to its peers, and neighbourhood.
+
+Furthermore, much emphasis has been placed on the Agent Network's ability to achieve soft-consensus through emergent prediction interference.
+Another stepping stone could be the introduction of another layer of consensus, one that explicitely outlines behaviours such as dynamic route biasing, discrete platoon management etc.
 
 \subsection{Robust Simulation Environment}
 In the future, the team proposes integrating a robust simulation environment to assist in extracting in depth performance metrics and modelling complex road structures. 
@@ -2193,7 +2206,7 @@ However it is made more difficult by the lack of unifying design patterns within
 In internet data processing, we have ``Map-Reduce'', in high-performance computing we have ``The Grid'', what is the current vogue in traffic engineering?
 
 With the formalization of the Relay Agent, we have outlined a generic and flexible platform for traffic engineers and researchers to experiment with the implementation of distributed traffic control systems that operate on probabilistic expectations, sparse-distributed computation, and \emph{soft}-synchronisation.
-The Relay pattern additionally removes the necessity to have detailed information about the implementation environment, with enough data, the system will \emph{learn} its environmental parameters, and provide full transparency to the engineer.
+The Relay pattern additionally removes the necessity to have detailed information about t;wqhe implementation environment, with enough data, the system will \emph{learn} its environmental parameters, and provide full transparency to the engineer.
 With the prototype implementation we showed it was possible to implement the Relay pattern, with entirely open-source tools.
 The creation of the Relay Network  has helped further the understanding and capabilities of not only adaptive traffic control, but traffic control in general, with systems like Relay, the cognitive burden typically associated with large scale traffic engineering has been almost entirely removed---foreshadowing a paradigm shift (or possibly an identity crisis) in traffic engineering.
 With distributed systems like Relay (in which each agent requires less compute than is commonly associated with obsolete smartphones), traffic engineers can transcend trivial (but labour intensive) problems such as drawing up sub-optimal timing plans, and begin thinking about how to control vast connected networks of dynamic graph automata.
