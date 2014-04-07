@@ -167,97 +167,8 @@ This has the opportunity to allow the public to make more intelligent route plan
 \chapter{Design Objectives and Requirements}
 \section{Front End}
 
-
-\section{Deep End}
-\label{sec:deep:design_requirements}
-
-As a proof of concept, the Relay Agent Design had to encapsulate certain aspects of the realtime traffic environment necessary for intelligent traffic control.
-Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
-
-\subsection{Design Goals}
-\subsubsection{Symmetrical Graph Automata}
-Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
-Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
-Only through emergent prediction and reinforcement learning should individual Agents differentiate themselves from their peers.
-
-This is helpful from a robustness perspective, as well as provides a clear and fixed interface to the implementers.
-Typical differentiating factors (different rules/regulations, physical restrictions, location) are easy modelled with generic graph representations, hopefully leaving traffic engineers and architects to work on fine-tuning controller parameters, rather than writing individual controllers.
-
-\subsubsection{Predictions}
-Agent design should be able to characterise how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
-
-The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
-
-\subsubsection{Optimization}
-Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment, in particular, optimization routines based exlusively on reductions of the underlying signals in conjunction with arbitrary dynamic/stochastic queue models.
-
-\subsubsection{Communication}
-In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
-
-\subsection{Functional Requirements for Agent Implementation}
-
-The extent to which the prototype Agent implementation meets the high-level design/architectural goals is summarised in the following table, specifically, the binary pass/fail of a particular test can be considered a functional \emph{unit}, (and thus sufficient fodder for a comprehensive suite of unit tests.
-
-\begin{longtable}[H]{| P{4cm} | P{10cm} |} 
-\hline
-    Test                                & Description                                                                                               \\ \hline
-    [network] Request data from peer    & The agent of interest can request information from its peers, and then take action based on the resonse.  \\ \hline
-    [network] Respond to peer request   & The agent of interest can asynchronously respond to remote (peer) requests for state information.         \\ \hline
-    [network] Subscription management   & Can an agent subscribe and unsubscribe to a peer's ingress feed?                                          \\ \hline
-    [opt] Request new Schedule          & Can the agent request (and receive a response)  from the optimization service?                            \\ \hline
-    [predict] Request new Prediction    & Can the agent request (and receive a response) from the pred1/iction service?                               \\ \hline
-    [predict] Schedule Parameter Update & Can the agent request (and receive as response) the updated state parameters from the prediction service? \\ \hline
-    [data] Respond to remote requests for state & Can the agent provide a read-only interface to the Back-end\\ \hline
-\end{longtable}\label{tab:func_req}
-
-Table~\ref{tab:func_req} outlines some high-level unit tests.
-Each test involves a coordinated effort by multiple concurrent processes; for example, in order for an Agent to be able to manage subscriptions (and inversely, its obligations to other agents) it must manage state associated with its various data feeds, including storage and retrieval of said state.
-Additionally, the functional requirements surrounding an agent's ability to ``Request a new X'' imply that the calculation of X is readily available, it is thus left to the implementation to ensure that the schedules, density estimates, and predictions are all being maintained.
-
-At its core, the Agent should be able to act as a simple automata, periodically passing its state to neighbours congruent to its subscriptive obligations, and ensuring that its signal timing plan, and associated predictions are not invalidated by the passage of time.
-Under the surface, significant computation is being undertaken, but as an \emph{Agent} it should appear to be abstracted away, making it a good \emph{platform} rather than a collection of good \emph{algorithms}.
-
-
-\section{Design Constraints}
-There are multiple design and environmental constraints that will affect the final solution created.
-The main items are: limited timeline, simulating traffic, and traffic regulations.
-
-Firstly, with limited time to reach a final implementation it is very difficult to create a polished product.
-Because adaptive traffic control is such a large problem, the team has only focused on specific aspects of it.
-To help us tackle traffic control itself, we assumed that we have perfect traffic data and built a system on top of this.
-While this did not change the final product, it eliminated some of the challenges with creating such a system.
-
-Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
-While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with out system.
-For this project, the team decided to create simple simulations and construct the Framework such that it could be integrated with other simulation environments in the future.
-The simulations will be discussed further in the engineering design section.
-Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
-This option will not be pursued because of this difficulty and short timeline.
-
-Next, regional traffic regulations and laws affect how the system acts or is implemented.
-Parameters within the system can be adjusted to account for these.
-Adjustments could take the form of minimum/maximum signal time, allowable behaviours, arterial roads (not related to regulations, but would be custom to the system), and any other specific rules to a neighbourhood, city, road, or other road component.
-Additionally, the behaviours must only represent the legal states for a given intersection.
-Invalid light patterns (e.g. perpendicular green lights) need to be avoided and rules will be programmed into the system to accommodate this.
-Additionally, because Relay would sit on top of the municipalities core traffic system, instructions from Relay would have lower priority.
-This means that if an action was executed within Relay, it may not be executed on the system and could be overridden.
-An example of this is light switching from emergency vehicles - they have devices that allow them to signal lights they are approaching and switch the current light pattern.
-We have no control over this and must accept that some actions may not be executed.
-
-To reduce complexity for this project, only intersection with 4 directions are being modeled. 
-While, it can be argued that other arrangements are simply modifications of a 4-way intersection, we will not be considering these. 
-Additionally, it will be assumed that all roads have one lane in each direction. 
-Adding additional lanes, for example turning lanes, would provide more context on how cars are traversing and assist in planning, it makes the system and optimization much more complex. 
-Thus, for the purposes of this project we will simply consider one-lane streets and ensure the system is extensible for adding lanes.
-
-
-\newpage
-\chapter{Engineering Design}
-
-\section{Front End}
-
 \subsection{Design Research}
-The Front End design process began with a Research phase, intended to provide a clear picture of the industry and potential users.
+The generation of Front End design objectives and requirements began with a Research phase, intended to provide a clear picture of the industry and potential users.
 This was accomplished through a User Study including interviews with industry experts, the gathering of Functional Requirements and Use Cases for the Relay Interface, and a detailed look at Information Architecture methods to best display the required data.
 
 \subsubsection{User Study}
@@ -529,7 +440,95 @@ Upon making such decisions for the visualization of data, careful planning must 
 Certain data given by the requirements will be best served on the map, where the context of location and spatial relativity is important.
 Other data may be better suited for presentation off of the map, perhaps in a dashboard or modular window setting.
 Situations where the context of a single location is important, or in a list-based visualization environment may be areas where data is better suited to be shown away from the map.
-These considerations, and more, and discussed further in the following Design Process section.
+These considerations, and more, and discussed further in the following Engineering Design section.
+
+\section{Deep End}
+\label{sec:deep:design_requirements}
+
+As a proof of concept, the Relay Agent Design had to encapsulate certain aspects of the realtime traffic environment necessary for intelligent traffic control.
+Requirements within this section are broken down into higher-level design goals, and function requirements ascribed to the implementation of the design.
+
+\subsection{Design Goals}
+\subsubsection{Symmetrical Graph Automata}
+Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
+Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
+Only through emergent prediction and reinforcement learning should individual Agents differentiate themselves from their peers.
+
+This is helpful from a robustness perspective, as well as provides a clear and fixed interface to the implementers.
+Typical differentiating factors (different rules/regulations, physical restrictions, location) are easy modelled with generic graph representations, hopefully leaving traffic engineers and architects to work on fine-tuning controller parameters, rather than writing individual controllers.
+
+\subsubsection{Predictions}
+Agent design should be able to characterise how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
+
+The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
+
+\subsubsection{Optimization}
+Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment, in particular, optimization routines based exlusively on reductions of the underlying signals in conjunction with arbitrary dynamic/stochastic queue models.
+
+\subsubsection{Communication}
+In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
+
+\subsection{Functional Requirements for Agent Implementation}
+
+The extent to which the prototype Agent implementation meets the high-level design/architectural goals is summarised in the following table, specifically, the binary pass/fail of a particular test can be considered a functional \emph{unit}, (and thus sufficient fodder for a comprehensive suite of unit tests.
+
+\begin{longtable}[H]{| P{4cm} | P{10cm} |} 
+\hline
+    Test                                & Description                                                                                               \\ \hline
+    [network] Request data from peer    & The agent of interest can request information from its peers, and then take action based on the resonse.  \\ \hline
+    [network] Respond to peer request   & The agent of interest can asynchronously respond to remote (peer) requests for state information.         \\ \hline
+    [network] Subscription management   & Can an agent subscribe and unsubscribe to a peer's ingress feed?                                          \\ \hline
+    [opt] Request new Schedule          & Can the agent request (and receive a response)  from the optimization service?                            \\ \hline
+    [predict] Request new Prediction    & Can the agent request (and receive a response) from the pred1/iction service?                               \\ \hline
+    [predict] Schedule Parameter Update & Can the agent request (and receive as response) the updated state parameters from the prediction service? \\ \hline
+    [data] Respond to remote requests for state & Can the agent provide a read-only interface to the Back-end\\ \hline
+\end{longtable}\label{tab:func_req}
+
+Table~\ref{tab:func_req} outlines some high-level unit tests.
+Each test involves a coordinated effort by multiple concurrent processes; for example, in order for an Agent to be able to manage subscriptions (and inversely, its obligations to other agents) it must manage state associated with its various data feeds, including storage and retrieval of said state.
+Additionally, the functional requirements surrounding an agent's ability to ``Request a new X'' imply that the calculation of X is readily available, it is thus left to the implementation to ensure that the schedules, density estimates, and predictions are all being maintained.
+
+At its core, the Agent should be able to act as a simple automata, periodically passing its state to neighbours congruent to its subscriptive obligations, and ensuring that its signal timing plan, and associated predictions are not invalidated by the passage of time.
+Under the surface, significant computation is being undertaken, but as an \emph{Agent} it should appear to be abstracted away, making it a good \emph{platform} rather than a collection of good \emph{algorithms}.
+
+
+\section{Design Constraints}
+There are multiple design and environmental constraints that will affect the final solution created.
+The main items are: limited timeline, simulating traffic, and traffic regulations.
+
+Firstly, with limited time to reach a final implementation it is very difficult to create a polished product.
+Because adaptive traffic control is such a large problem, the team has only focused on specific aspects of it.
+To help us tackle traffic control itself, we assumed that we have perfect traffic data and built a system on top of this.
+While this did not change the final product, it eliminated some of the challenges with creating such a system.
+
+Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
+While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with out system.
+For this project, the team decided to create simple simulations and construct the Framework such that it could be integrated with other simulation environments in the future.
+The simulations will be discussed further in the engineering design section.
+Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
+This option will not be pursued because of this difficulty and short timeline.
+
+Next, regional traffic regulations and laws affect how the system acts or is implemented.
+Parameters within the system can be adjusted to account for these.
+Adjustments could take the form of minimum/maximum signal time, allowable behaviours, arterial roads (not related to regulations, but would be custom to the system), and any other specific rules to a neighbourhood, city, road, or other road component.
+Additionally, the behaviours must only represent the legal states for a given intersection.
+Invalid light patterns (e.g. perpendicular green lights) need to be avoided and rules will be programmed into the system to accommodate this.
+Additionally, because Relay would sit on top of the municipalities core traffic system, instructions from Relay would have lower priority.
+This means that if an action was executed within Relay, it may not be executed on the system and could be overridden.
+An example of this is light switching from emergency vehicles - they have devices that allow them to signal lights they are approaching and switch the current light pattern.
+We have no control over this and must accept that some actions may not be executed.
+
+To reduce complexity for this project, only intersection with 4 directions are being modeled. 
+While, it can be argued that other arrangements are simply modifications of a 4-way intersection, we will not be considering these. 
+Additionally, it will be assumed that all roads have one lane in each direction. 
+Adding additional lanes, for example turning lanes, would provide more context on how cars are traversing and assist in planning, it makes the system and optimization much more complex. 
+Thus, for the purposes of this project we will simply consider one-lane streets and ensure the system is extensible for adding lanes.
+
+
+\newpage
+\chapter{Engineering Design}
+
+\section{Front End}
 
 \subsection{Design Process}
 With sufficient Design Research conducted, and functional requirements compiled, the front-end application design moved into an iterative process of defining the user interface (UI), interactions, and visual design of the app through various levels of fidelity.
