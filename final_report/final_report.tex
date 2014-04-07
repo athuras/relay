@@ -1022,14 +1022,72 @@ In order to maintain up-to-date information in the interface, the client was req
 \label{sec:deep_end}
 
 Real-time, distributed traffic control is an interesting problem, with many creative solutions.
-The modules and operators that handle individual intersection signal timing, data collection and backup, and statistical modelling, as well as the network topology that holds it all together is brought under the umbrella term ``Relay Framework''. \\
+The modules and operators that handle individual intersection signal timing, data collection and backup, and statistical modelling, as well as the network topology that holds it all together is brought under the umbrella term ``Relay Framework'', in that the Relay Agent model can be used as a platform for developing more sophisticated agent-based traffic control suites.
 
-The goal of the framework is to address the intelligent traffic control problem from the \emph{bottom-up}.
-Within the framework, each intersection is endowed with its own autonomous signal timing controller or ``Agent''.
-In isolation, each Relay Agent seeks to maximize intersection throughput (as measured through various arbitrary metrics) subject to local environmental/contextual constraints. \\
+The ultimate goal of the Relay Framework (as defined mathematically in Section~\ref{sec:def:agent}) is to illustrate that complex chaotic systems (such as distributed acyclic traffic control) can become tractable within the context of a straightforward, symmetrical peer-to-peer architecture.
+At the highest level, the loosely coordinated (read: not mesh) network of Relay \emph{Agents} tackles the traffic control problem through the intelligent use of local computation, rather than a single large-scale optimization problem to be undertaken sparsely at a centralised facility.
+In isolation, each Relay Agent seeks to maximize intersection throughput (as measured through various arbitrary metrics) subject to local environmental/contextual constraints.
+In concert, the Network achieves a sort of pseudo-temporal consensus, which itself acts as a stabilising factor on the decisions made by each agent.
+In principle, the predictive consensus that is possible within the Relay Framework makes it \emph{easier} to achieve timing synchronisation between peers, despite not being a tightly coupled system.
 
+We hypothesize that the added flexibility associated with such a scheme (i.e. being robust to failures, and reacting to anomalies) outweighs the potential cost associated with not having a centralised service.
 
-\subsection{Peer to Peer Philosophy}
+This section is broken into 4 major components.
+Section~\ref{sec:deep:motivation} is a high-level discussion surrounding the architectural design principles used in formulating the foundations for Relay.
+Rationale for pursueing a sparsely connected peer-to-peer topology is presented, along with our approach for modelling uncertainty.
+Section~\ref{sec:def:agent} defines the mathematical relationships and constructs central to the Relay Agent's design, including notions of predictive and regressive signals, graph transformations etc.
+In section~\ref{sec:learning_in_relay} covers the manipulation of some of the design parameters central to the Agent's efficiency and performance, including reinforcement learning of delay kernels, and stochastic optimization procedures used to infer error in the underlying graph representation.
+Section~\ref{sec:predictions_in_relay} covers the composition of the Agent's state parameters, with the delay kernels, illustrating how predictions are made and maintained by each Agent.
+The chapter is concluded with the underlying optimization problem for scheduling the Agent's state transitions (Section~\ref{sec:opt:planning}), including predictive queue modelling.
+
+%%  Redundant subsection, Candidate for removal.
+\subsection{Architectural Motivation}
+\label{sec:deep:motivation}
+\subsubsection{Relay Intersection Modelling}
+
+In general, any intersection in Relay can be modelled as a graph (physically this is also the case).
+Intersections in Relay are modelled as directed acyclic graphs, where each inlet and outlet are distinct nodes/vertices, and the edges are legal paths that a vehicle could follow to get from one inlet to a corresponding reachable outlet.
+Each edge in the graph (aside from containing reachability/adjacency information) contains probabilistic information pertaining to that particular physical path.
+This is shown in Figure \ref{fig:Relay_Intersection_Graph}.
+At the highest level, the Relay Agent, in conjunction with its local prediction service learns a probability for each edge, which represents the likelihood that a vehicle will choose to traverse that given edge if it arrives at the originating inlet.
+For example, in the case of an intersection with a dedicated left turn lane, the associated edge would have a probability of 1, meaning we would expect that all vehicles who enter the left-turn inlet, proceed to execute a left turn.
+It also follows from this that the sum of out-going edge weights for a given inlet will always be one.
+
+\begin{figure}[H]
+	\caption{Relay Intersection Graph Model}
+	\includegraphics[width=\textwidth]{figures/Relay_Intersection_Graph.png}
+	\label{fig:Relay_Intersection_Graph}
+\end{figure}
+
+Similar to the complete intersection graph, legal signal states (i.e. Green vs. Red lights) are also described as a graph.
+These \emph{Behaviours} are subgraphs of the complete intersection graph, with similar properties.
+Thus each behaviour describes a discrete number of inlets (and associated outbound edges) to serve at a given time, in this manner Behaviours can be chosen (by the controller) to serve the inlets that best maximize short-horizon flow.
+Additional information regarding this process is discussed in the ``Relay Agent'' section below.
+
+\subsubsection{Network Topology}
+\label{subsubsec:net-top}
+
+To a particular Agent, the Relay Framework appears as a mesh network centred around it.
+The choice of network topology was not difficult given our design constraints (for the Framework) include a high degree of fault tolerance, robustness, and physical distribution.
+Peer-to-peer (p2p) Mesh network topology (aside from being relatively novel) is a natural fit for these kinds of constraints.
+Particularly as many of the technology's weaknesses (poor latency, poor scaling behaviour for complete connectivity of all Agents, etc.) are explicitly avoided by the Relay Framework Architecture.
+
+In traditional Mesh Networks, each node is tasked with repeating the messages of other nodes to its neighbours/peers.
+This results in a lot of overhead for individual nodes.
+Within the Relay Framework, Intersection Agents do not require an active connection to every other Agent in the network, they only care about their immediate (or to some finite-depth) neighbours.
+This depth-wise priority is shown in Figure \ref{fig:Relay_Network}.
+
+\begin{figure}[!htpb]
+	\caption{Relay Network Neighbourhood}
+	\includegraphics[width=\textwidth]{figures/Relay_Network.png}
+	\label{fig:Relay_Network}
+\end{figure}
+
+Alternative network topologies have been used by current adaptive traffic implementations.
+For small scale (arterial) installations, it is trivial to have all agents permanently connected to all peers.
+Modern installations have also implemented so-called ``cloud-service'' based approaches, and Miovision's Spectrum is one such example.
+
+\subsubsection{A Peer-to-Peer Solution}
 \label{sec:p2p_philosophy}
 ALEX's STUFF
 Why is p2p a good idea?
@@ -1037,15 +1095,14 @@ What are some of the drawbacks?
 Message traffic as the limiting factor.
 Full Mesh not necessary.
 
-
-\subsection{Distributed Computation}
+\subsubsection{Leveraging Distributed Computation}
 \label{sec:distributed_computation}
 
 ALEX's STUFF
 Can we encapsulate information from outside of our immediate `neighborhood' in some form.
 
 
-\subsection{Modelling Uncertainty}
+\subsubsection{Modelling Uncertainty}
 \label{sec:modelling_uncertainty}
 
 ALEX's STUFF
@@ -1054,6 +1111,7 @@ Intra-agent transition graph (intersection).
 Time delay kernels.
 Exponential prediction decay (weigh predictions far in the future less).
 
+%%  THE RELAY AGENT  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The Relay Agent}
 \label{sec:def:agent}
 
@@ -1185,7 +1243,7 @@ Within the Relay implementation we have frequently used time-values correspondin
 Thus we define the Behavior Transition Graph $\Gamma$, as a directed graph whose nodes are behaviors (members of $\bf{B}$) and whose edges are the associated costs for transitions between adjacent behaviors.
 
 
-\subsection{Ingress Expectation}
+\subsubsection{Ingress Expectation}
 \label{sec:def:expected_ingress}
 
 In Section~\ref{sec:def:egress} we expressed that the egress signal of an agent's peer is only valuable in conjunction with some expectation of how long the signal will be delayed.
@@ -1204,7 +1262,7 @@ Further note the inclusion of the expected upstream egress signal---the derivati
 Further note that the choice of delay kernel $h(\tau)$ is left entirely to the implementation.
 In the Relay prototype, these took the form of Gamma distributions, whose parameters were tuned via reinforcement learning.
 
-\subsection{Egress Expectation}
+\subsubsection{Egress Expectation}
 \label{sec:def:expected_egress}
 
 In Section~\ref{sec:def:expected_ingress} we formulated the expected ingress signal in terms of a delay kernel $h(\tau)$ and a superposition of signals from a neighboring agent---explicitly relying on inter-agent communication, and prior knowledge of the particular delay distribution between the connected agents.
@@ -1230,7 +1288,7 @@ For tightly coupled networks, care should be taken incorporating prediction valu
 However, it may be the case that in the \emph{real} world, it is unlikely that individual participants would exhibit geographically cyclic behaviors exaggerated enough to damage the validity of the expected egress prediction (i.e.\ driving in circles).
 To add even greater ambiguity, we hypothesize that the introduction of bias due to the assumption of statistical independence may actually increase performance in tightly coupled networks (i.e.\ by implicitly biasing agent's timing in favor of things with cyclic behaviors, such as public transport and logistic vehicles).
 
-\subsection{Transition Plan}
+\subsubsection{Transition Plan}
 \label{seq:def:plan}
 
 In a sense, the final piece of the Relay Agent puzzle; the Agent internally stores a \emph{plan} that governs when, and to which behaviors the agent will transition over some future time window.
@@ -1264,82 +1322,7 @@ Where $u(\tau)$ is the Heaviside/unit-step function defined in equation~\eqref{e
 	\end{equation}
 It is through manipulations of $\Gamma$ that the agent is able to consider various behaviors, as well as limit the acyclic behaviors associated with a \emph{plan} to legal states (for both real-world and abstract definitions of ``Legal'').
 
-
-%%  Redundant subsection, Candidate for removal.
-\subsection{Architecture and Design}
-\subsubsection{Relay Intersection Modelling}
-
-In general, any intersection in Relay can be modelled as a graph (physically this is also the case).
-Intersections in Relay are modelled as directed acyclic graphs, where each inlet and outlet are distinct nodes/vertices, and the edges are legal paths that a vehicle could follow to get from one inlet to a corresponding reachable outlet.
-Each edge in the graph (aside from containing reachability/adjacency information) contains probabilistic information pertaining to that particular physical path.
-This is shown in Figure \ref{fig:Relay_Intersection_Graph}.
-At the highest level, the Relay Agent, in conjunction with its local prediction service learns a probability for each edge, which represents the likelihood that a vehicle will choose to traverse that given edge if it arrives at the originating inlet.
-For example, in the case of an intersection with a dedicated left turn lane, the associated edge would have a probability of 1, meaning we would expect that all vehicles who enter the left-turn inlet, proceed to execute a left turn.
-It also follows from this that the sum of out-going edge weights for a given inlet will always be one.
-
-\begin{figure}[H]
-	\caption{Relay Intersection Graph Model}
-	\includegraphics[width=\textwidth]{figures/Relay_Intersection_Graph.png}
-	\label{fig:Relay_Intersection_Graph}
-\end{figure}
-
-Similar to the complete intersection graph, legal signal states (i.e. Green vs. Red lights) are also described as a graph.
-These \emph{Behaviours} are subgraphs of the complete intersection graph, with similar properties.
-Thus each behaviour describes a discrete number of inlets (and associated outbound edges) to serve at a given time, in this manner Behaviours can be chosen (by the controller) to serve the inlets that best maximize short-horizon flow.
-Additional information regarding this process is discussed in the ``Relay Agent'' section below.
-
-\subsubsection{Relay Agent}
-The Agent module contains all the necessary ingredients for soft-real-time acyclic reactive adaptive signal timing.
-An outline of the Agent module is contained in Figure \ref{fig:Relay_Agent_Controller}.
-The controller is set up as a maximization process which weighs the current and predicted traffic profile (as well as queue statistics if they are available) and selects the appropriate \emph{behaviour} to optimally fulfill its objective function.\\
-
-\begin{figure}[H]
-	\caption{Relay Agent Controller}
-	\includegraphics[width=\textwidth]{figures/Relay_Agent_Controller.png}
-	\label{fig:Relay_Agent_Controller}
-\end{figure}
-
-Similar to the Relay Intersection model, the behaviour transition graph (or matrix, depending on the implementation) contains information related to the cost associated with changing the current signal, as well as logistic information such as minimum behaviour durations.
-Where signal behaviours are encoded as nodes/vertices, transition costs (dead time, minimum signal duration, vehicle lag, etc.) are among the edge properties. 
-
-For example, switching the direction of traffic flow cannot be done instantaneously, furthermore in most countries there is a minimum amount of ``red'' time that must be allocated in both directions to allow lagging traffic to safely exit the intersection.
-Thus the amount of time required to switch a particular signal behaviour depends on the current state of the intersection.
-As another example, consider the concept of an \emph{advance-green} a behaviour typically following ``red''-time favouring a particular direction, granting vehicles wishing to turn left right of way for an arbitrary amount of time.
-In Relay, this advance green signal is treated no differently from any other signal behaviour.
-In this case the associated transition cost to switch behaviours from advance green to \emph{full} green is very low.
-This information is encoded in the edges of the behaviour transition graph. 
-
-Aside from dictating the signal behaviours and durations, the Agent is also responsible for updating its internal intersection probabilities, and processing/interpreting local traffic sensor data.
-It is important that in the scope of this project, we have assumed we have \emph{perfect} traffic data at the intersection level.
-We acknowledge that this is a large assumption that is not necessarily realistic most traffic systems have notoriously poor sensing capabilities \cite{Miovision:2012}.
-However as a matter of scope, many companies (such as the Kitchener-based Miovision) have commercial solutions to this problem.
-As a coping mechanism, it may be possible to leverage the Relay prediction service to develop an internal \emph{trust} model associated with each intersection's sensors.
-
-\subsubsection{Network Topology}
-\label{subsubsec:net-top}
-
-To a particular Agent, the Relay Framework appears as a mesh network centred around it.
-The choice of network topology was not difficult given our design constraints (for the Framework) include a high degree of fault tolerance, robustness, and physical distribution.
-Peer-to-peer (p2p) Mesh network topology (aside from being relatively novel) is a natural fit for these kinds of constraints.
-Particularly as many of the technology's weaknesses (poor latency, poor scaling behaviour for complete connectivity of all Agents, etc.) are explicitly avoided by the Relay Framework Architecture.
-
-In traditional Mesh Networks, each node is tasked with repeating the messages of other nodes to its neighbours/peers.
-This results in a lot of overhead for individual nodes.
-Within the Relay Framework, Intersection Agents do not require an active connection to every other Agent in the network, they only care about their immediate (or to some finite-depth) neighbours.
-This depth-wise priority is shown in Figure \ref{fig:Relay_Network}.
-
-\begin{figure}[!htpb]
-	\caption{Relay Network Neighbourhood}
-	\includegraphics[width=\textwidth]{figures/Relay_Network.png}
-	\label{fig:Relay_Network}
-\end{figure}
-
-Alternative network topologies have been used by current adaptive traffic implementations.
-For small scale (arterial) installations, it is trivial to have all agents permanently connected to all peers.
-Modern installations have also implemented so-called ``cloud-service'' based approaches, and Miovision's Spectrum is one such example.
-%%  End Redundant
-
-
+%%  LEARNING IN RELAY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Learning in Relay}
 \label{sec:learning_in_relay}
 
@@ -1559,7 +1542,7 @@ j & neighbor outlet id
 \end{conditions*}
 
 \subsection{Scheduling in Relay}
-\label{sec:ref:planning}
+\label{sec:opt:planning}
 
 In Section~\ref{sec:def:agent} we defined the various design parameters that are necessary to implement the Relay Agent, however we omitted explicit descriptions of how particular values come to exist.
 In equation~\eqref{eq:def:visible_graph} we illustrated that the Agent's transfer function (and various associated predictions/expectations) was itself a matrix-valued signal, that depended explicitly on the \emph{path} (as defined in equation~\eqref{eq:def:plan})
@@ -1568,7 +1551,7 @@ Within this section we present the basic Relay ``Max Flow'' objective function, 
 We then go on to discuss how the (somewhat naive) model could be improved with the introduction of heuristics and real-world constraints.
 Ultimately, the Relay Agent should pick and execute the ``best plan'', given current predictions and biases present, taking into consideration the management of queues.
 
-\subsubsection{The Gating Equation}
+\subsubsection{The Gate Equation}
 \label{sec:opt:gating}
 
 In order to decide on the so-called `optimal' path, we must first quantify some of the primitives used extensively within this section.
@@ -1609,7 +1592,7 @@ Which is to say that the queue length $q$ increases when incident vehicles are n
 While this example serves as a good illustration (it's straightforward) it doesn't sufficiently encapsulate the dynamics of a real traffic system.
 One model that does (albeit to a limited extent) is outlined below.
 
-\subsubsection{Decaying Relief}
+\paragraph{Decaying Relief}
 When there are large queues, it is likely that the relief mode is congested, leading to inefficient operation (i.e.\ artificially reducing the gate).
 This is encapsulated in this nonlinear queue mode depicted in equation~\eqref{eq:def:queue_exp}.
 \begin{equation}\label{eq:def:queue_exp}
