@@ -73,36 +73,39 @@
 \chapter*{Executive Summary}
 Relay is a research and design project focused in the domains of Adaptive Traffic Control and Data Visualization.
 In recent years, multiple cities including Montreal and LA have begun to implement adaptive systems, but adoption is not widespread, mainly due to high implementation costs.
-For example, the Los Angeles system, developed a solution to handle the massive volume placed on their transportation networks, has an estimated cost of \$400 million to date \cite{la-atcs-article}.
+For example, Los Angeles has developed a solution to handle the massive volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
 There is strong need for ATCS technology in the world today, and a large opportunity for state-of-the-art ATC systems.
-
 
 The intelligence of a traffic light varies from a static, fixed timer, to an intelligent node which considers existing traffic conditions, performance of adjacent nodes, and the like.
 Multiple industry-accepted ATC systems exist, such as LA ATCS, SCOOT, Trafficware, Spectrum by Miovision, InSync by Rhythm Engineering, Glide, ACS Lite by Centracs, and TransCore, but as stated above, the adoption of these is not widespread.
 Additionally, research efforts in academia are being made towards novel architectures such as agent-based distributed systems, which implement advanced machine learning and neural network concepts\cite{1688100, 5073360, uot-article}.
 There still exists a large gap between academia and industry, showing potential for the incorporation of cutting edge solutions into municipal infrastructure.
 
-
 Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
 A few of these are decreased gas consumption, reduced travel time, and reduced congestion.
 It is important to note that these are not direct goals of the implementation, but rather beneficial external consequences of effective traffic control, that naturally extend from effectively adapting signal timings.
 The proposed solution thus focuses on local intersection performance, which in turn contributes to the improvement of aforementioned social and environmental benefits.
 
-
-% this needs to be fixed
 Relay consists of two major components: Relay Interface and Relay Framework. 
-Relay Interface attempts to democratize traffic data, enabling a common understanding of traffic patterns, giving both public offices and citizens the ability to make informed decisions.
+Relay Interface works to democratize the data generated from such a traffic control system, enabling a common understanding of traffic patterns among both Traffic Engineers and consumers, giving both parties the ability to make informed decisions.
 The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces.
-By providing insightful information on intersection statistics and traffic patterns, the Relay Interface offers a window into cities that has never been seen before.
+The interface is accessed as a web application in the browser, built on Flask and Backbone.js libraries to support a robust and organized development structure.
+It uses the Google Maps API to supply a fully interactive map, with various layers of data that can be shown and hidden on the map, as well as modular information windows, and a fully dynamic dashboard to supply in-depth quantitative information.
+Through the provision of detailed metrics on intersection Status, Flow, Queue Length, and more, the Relay Interface offers a window into cities that has never been seen before.
 
 In Relay Framework, each intersection is governed/controlled by its own independent, autonomous controller or \emph{Agent}.
 At its heart, each Agent in a Relay network is a dynamic graph automata---responsible for interpreting and propagating (transformed) sensor measurements to its neighbours.
 In addition to informing its peers of local environmental measurements (such as vehicles incident at their controlled intersection), Relay Agents generate and propagate \emph{predictions} or \emph{expectations} of traffic flow through their region, modulating and transforming the predictions received from peers in light of their expected signal timing schedule.
 The Agents continuously (via reinforcement learning) update their internal models to match the current environmental dynamics such that the prediction error is minimized.
 
-Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabalistic uncertainty associated with the predictions. Ultimately, as a framework, Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
+Simultaneously each agent continually adjusts and optimizes its signal timing schedule (i.e. alternating ``Red'' and ``Green'' states for an arbitrary direction) based on the transformed predictions of its peers, congruent to a (relatively) straightforward Mixed-Integer Nonlinear Dynamic Programming routine, that takes into account dynamical queue simulations and probabilistic uncertainty associated with the predictions.
+Ultimately, as a framework, Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
 
-% we need something else here to tie it together and wrap things up
+In summary, this two-part research project has shown the potential for a large shift in public infrastructure technology in the coming years.
+As research and industry begin to meet in a way that governments and municipalities can implement, it is expected that Adaptive Traffic Control systems will become a common occurrence in daily life.
+Furthermore, the capability of these systems to produce and supply great amounts of detailed data regarding individual intersections, as well as the network as a whole, gives rise to many powerful applications.
+The democratization of data empowers Traffic Engineers to make more informed decisions, and serves to better educate the general public to aid in more efficient route planning.
+This reduces overall travel time, effectively reducing strain on the environment and infrastructure.
 
 \chapter{Introduction}
 \setlength{\parindent}{1cm}
