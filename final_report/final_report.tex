@@ -705,7 +705,7 @@ The logo is a custom glyph used in the application to denote the state of the si
 It contains four dots in a diamond pattern, with two fully-coloured dots positioned vertically, and two empty dots with a medium-weight stroke positioned horizontally.
 In the application, this glyph would represent the flow of traffic in an East-West manner, while North-South traffic is halted at a red light.
 This was selected to represent Relay as it both subtly represents what the application does, and provides important information to users in a modern and clean way.
-The final Relay branding is shown in Figure \ref{fig:relay-logo}. \\ \\
+The final Relay branding is shown in Figure \ref{fig:relay-logo}.
 
 \begin{figure}[htbp!]
   \begin{centering}
@@ -1101,9 +1101,9 @@ The various module design decisions and technologies selected are detailed below
 \subsection{Server - Flask and Python}
 The Flask application acts a server with Relay passing information through the system to desired endpoints. This application contains functionality for transforming data, making network requests, serving information to front-end, and interacting with the database.
 
-	Relay has multiple components and each works with the data in a specific format. Formatting is kept consistent throughout the system, using JSON formatted strings, but transformations are still required. The main transformation that needs to be performed is to change the time series data from the Erlang-server into information that can be better visualized on the front-endÄì.
+	Relay has multiple components and each works with the data in a specific format. Formatting is kept consistent throughout the system, using JSON formatted strings, but transformations are still required. The main transformation that needs to be performed is to change the time series data from the Erlang-server into information that can be better visualized on the front-end.
 
-	Network requests are defined by calls made to the Erlang-server, or FrameworkÄù. The network contains all information regarding intersections, such as current behaviour, plans, and predictions. The Flask application is responsible for extracting this information and sending it to the database, front-end, or both.
+	Network requests are defined by calls made to the Erlang-server, or Framework. The network contains all information regarding intersections, such as current behaviour, plans, and predictions. The Flask application is responsible for extracting this information and sending it to the database, front-end, or both.
 
 	Lastly, the main function of the server is to accept requests from the front-end, process them, and serve the required information. Initially the majority of the information served comes from the database, but once the system is running, data is sent directly from the network to the front-end. This linkage is depicted in the system diagram, Figure \ref{fig:system-diagram}.
 
@@ -1115,9 +1115,9 @@ To capitalize on this, a SQL relational database management system was chosen to
 
 SQLite3 was chosen as the database for its simplicity. 
 These databases are contained entirely within a single file, and as such can be quickly and easily moved around the development environment (as well as captured by version control). 
-The database contains information for: road metrics, intersection metrics, events, and Toronto's intersections and roads, acquired from their public data website <TORONTO>.
+The database contains information for: road metrics, intersection metrics, events, and Toronto's intersections and roads, acquired from their public data website.
 
-'Road metrics' stores the time delay parameters for each segment, along with a timestamp and associated node ids at the ends of the segment. 
+'Road metrics' stores the time delay kernel parameters for each segment, along with a timestamp and associated node ids at the ends of the segment. 
 'Intersection status' contains the current status of each intersection. 
 In the case of 'failure' states at any intersection, explanations and further information would be found in 'Intersection events'. 
 Intersection behaviours and plans are not contained within the database as of this iteration. 
@@ -1142,7 +1142,7 @@ In order to maintain up-to-date information in the interface, the client was req
 
 Real-time, distributed traffic control is an interesting problem, with many creative solutions.
 The modules and operators that handle individual intersection signal timing, data collection and backup, and statistical modelling, as well as the network topology that holds it all together is brought under the umbrella term ``Relay Framework'', in that the Relay Agent model can be used as a platform for developing more sophisticated agent-based traffic control suites.
-The network of Relay Agents implementing the Framework are colloquially referred to as ``The Deep End'' (as opposed to the typical application terminology of ``Front End'' and ``Back End'').
+The network of Relay Agents implementing the Framework are colloquially referred to as ``The Deep End'' (in constrast to the typical application terminology of ``Front End'' and ``Back End'').
 
 The ultimate goal of the Relay Framework (as defined mathematically in Section~\ref{sec:def:agent}) is to illustrate that complex chaotic systems (such as distributed acyclic traffic control) can become tractable within the context of a straightforward, symmetrical peer-to-peer architecture.
 At the highest level, the loosely coordinated (read: not mesh) network of Relay \emph{Agents} tackles the traffic control problem through the intelligent use of local computation, rather than a single large-scale optimization problem to be undertaken sparsely at a centralized facility.
@@ -1267,7 +1267,7 @@ The edges $\bf{G}_{ij}$ indicate the probability that an ingress event (or ideal
 	\right)
 \end{equation}
 
-$G$ has some notable properties that allow for some algebraic simplifications, the most significant of which is that there can only be one edge connecting node $i$ to node $j$, and that we can treat it as a undirected adjacency graph, making it trivial to express it efficiently as a matrix.
+$G$ has some notable properties that allow for some algebraic simplifications, the most significant of which is that there can only be one edge connecting node $i$ to node $j$, and that we can treat it as a directed adjacency graph, making it trivial to express it efficiently as a matrix.
 The $p_{ij}$ notation is used to indicate that the underlying edges represent probabilities rather than length or weights.
 It is thus the case that the sum of all exit probabilities associated with a given inlet is always 1, this is formalized in~\eqref{eq:probability_sum}.
 
@@ -1318,7 +1318,7 @@ These records (weight + time pairs) are combined into the ingress \emph{signal} 
 \begin{equation}\label{eq:def:ingress}
 	a_i(t) = \sum_{k \in A_i} \omega_k \delta(t - \tau_k)
 \end{equation}
-where $A_i$ (in the idealized representation) is the set of ingress events $\{(\omega, \tau)\ : \tau \in [-\infty, t]\}$, or rather, the set of all ingress events that have been observed at the $i^{th}$-node.
+where $A_i$ (in the idealized representation) is the set of ingress events $\{(\omega, \tau)\ : \tau \in [-\infty, t]\}$, or rather, the set of all ingress events that have been observed at the $i^{th}$-node, and $\delta(\cdot)$ is the Dirac Delta function.
 
 
 \subsubsection{Egress Signals}
@@ -1354,7 +1354,7 @@ This is not far from the truth, and exposes the beating heart of the relay agent
 As alluded to above, what makes signal timing control challenging is not inherently that there is a vast continuum of misinformation and environmental variability (although that certainly doesn't help the problem), but rather that we have a finite set of ``solutions'' or ``strategies'' to employ, and pesky physical restrictions (why can't all the lights be green all the time?).
 
 In equation~\eqref{eq:def:behaviours}, we referred to a set of behaviours $\bf{B}$, and in equation~\eqref{eq:def:egress} we referred to the time-varying graph $V(t)$.
-In order to define \emph{how} the visible graph changes over time (as a result of behaviours switching) we now introduce the concept of ``Behaviour Transition'' in equation~\eqref{eq:def:btg}, whose edges are the incurred time-cost associated with a given behaviours transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
+In order to define \emph{how} the visible graph changes over time (as a result of behaviours switching) we now introduce the concept of the  ``Behaviour Transition Graph'' as defined in equation~\eqref{eq:def:btg}, whose nodes are members of $\bf{B}$ and whose edges are the incurred time-cost associated with a given inter-behaviour transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
 
 \begin{equation}\label{eq:def:btg_costs}
 	\Tau = \{\mbox{cost}\left(B_i \mapsto B_j \right) : \forall B_i, B_j \in \bf{B} \}
@@ -1401,8 +1401,8 @@ An agent's expected egress is co-recursively defined in terms of its expected in
 
 
 \begin{align}\label{eq:def:expected_egress}
-	E\left[e_j\right](t) &= \sum_{i=1}^n E\left[a_i V_{ij}\right(t)]\\
-						&= \sum_{i=1}^n E\left[a_i\right](t) E\left[V_{ij}\right](t) + \mbox{Cov}(a_i(t), V_{ij}(t))\\
+	E\left[e_j\right](t) &= \sum_{i=1}^n E\left[a_i(t) V_{ij}\right(t)]\\
+						&= \sum_{i=1}^n E\left[a_i\right](t) E\left[V_{ij}\right](t) + \mbox{Cov}(a_i, V_{ij})(t)\\
 						&\approx \sum_{i=1}^n  E\left[a_i\right](t) E\left[V_{ij}\right](t)
 \end{align}
 In equation~\eqref{eq:def:expected_egress} the Covariance of the two time-signals is assumed to be near zero, however it is important to understand the cases where such approximations may introduce large error into the system.
@@ -1453,14 +1453,16 @@ It is through manipulations of $\Gamma$ that the agent is able to consider vario
 \subsection{Learning in Relay}
 \label{sec:learning_in_relay}
 
-Each agent within the system has multiple design parameters that will constantly update. With each cycle -- behaviour change -- predictions and estimations are made to recalculate these parameters. 
+Each agent within the system has multiple design parameters that will constantly update. With each cycle---or with each behaviour transition,  predictions and estimations are made to recalculate these parameters. 
 The following sections explain how these variables are learned and updated.
 
 \subsubsection{Time Delay Estimation}
 
 The first important parameter needed to calculate predictions is the time delay estimate between two agents. 
 This can be thought of as the estimated time to travel from one intersection to a neighbouring one. 
-However, this is not a fixed time, so the delay is modelled using a gamma distribution, as discussed previously. 
+However, this is not a fixed time, so the delay is modelled using a gamma distribution.
+The choice of gamma, represents a first-pass approximation, but offers some useful properties.
+For example: the distribution can be parametrized to have a hard lower-bound, meaning we don't have to worry about vehicles travelling \emph{faster} than some arbitrary speed limit. 
 
 The first step in performing this estimation, is determining which portion of the downstream signal is relevant ‚Äì meaning what part of the signal should be considered for the estimation. 
 This is required because it must match the departing signal from the upstream intersection. 
@@ -1602,10 +1604,10 @@ The details on how these predictions are performed is discussed below.
 
 \subsubsection{Utilizing Neighborhood Information}
 As discussed in section~\ref{subsubsec:net-top}, agents are connected to each of their neighbors, forming a grid-like mesh structure. 
-This design choice allows for each agent to ``talk” with its neighbors, gaining access to all information stored. 
-This ``sharing” of information is essential to keep agents informed on events occurring in the neighborhood.
+This design choice allows for each agent to ``talkÔøΩ with its neighbors, gaining access to all information stored. 
+This ``sharingÔøΩ of information is essential to keep agents informed on events occurring in the neighborhood.
 Information is either requested or directly sent to a specific agent, depending on the type: current queues, predictions, plans, events, etc.
- Agents can freely communicate by simply ``asking” their neighbors for the specified data. 
+ Agents can freely communicate by simply ``askingÔøΩ their neighbors for the specified data. 
 An event centre is constructed on each agent to handle incoming and outgoing requests, making communication efficient and standardized across the network (discussed further in later sections).
 
 	While an agent is not directly connected to other agents in its extended neighbourhood, if required, it can indirectly access this information. 
@@ -1620,9 +1622,9 @@ Equation \ref{eqn:first-order-pred} outlines the basic formulation for making th
 If the length of signal initially calculated is longer than the requested time, excess information will be trimmed. 
 If the length requested is longer than this next-neighbour prediction, a higher-order prediction is calculated, known as $Pr_{i}^{*}$.
 
-This information also creates useful visualizations for traffic engineers, giving them the ability to ``see into the future”. 
-While they wouldn’t necessarily act upon this information, they would have an expectation of traffic at each intersection. 
-It also gives context for why the next behaviour was selected (i.e. the ``plan") – this is discussed further in later sections.
+This information also creates useful visualizations for traffic engineers, giving them the ability to ``see into the futureÔøΩ. 
+While they wouldnÔøΩt necessarily act upon this information, they would have an expectation of traffic at each intersection. 
+It also gives context for why the next behaviour was selected (i.e. the ``plan") ÔøΩ this is discussed further in later sections.
 
 \begin{equation}
 	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
@@ -1645,7 +1647,7 @@ j & neighbour outlet id
 
 \subsubsection{Higher-Order Predictions}
 As mentioned previously, if the requested prediction is longer than the neighbours can provide, a higher-order, or remote, prediction is made. 
-This is performed in the same manner as a first-order prediction, but utilizes each neighbour'Äôs current incoming prediction signal as well, $Pr_{k,i}^{nbr}$.
+This is performed in the same manner as a first-order prediction, but utilizes each neighbour'ÔøΩÔøΩs current incoming prediction signal as well, $Pr_{k,i}^{nbr}$.
  If even larger predictions are required, predictions can be extended to more distant nodes, but these would be very low quality and carry low weight ‚Äì these are multiplied by each intersections edge probability, intrinsically lowering their strength. 
 Again, the signal is trimmed at the end to match the requested length.
 
@@ -1722,6 +1724,7 @@ One model that does (albeit to a limited extent) is outlined below.
 \paragraph{Decaying Relief}
 When there are large queues, it is likely that the relief mode is congested, leading to inefficient operation (i.e.\ artificially reducing the gate).
 This is encapsulated in this nonlinear queue mode depicted in equation~\eqref{eq:def:queue_exp}.
+
 \begin{equation}\label{eq:def:queue_exp}
 	\frac{dq_i}{dt}(t) = \phi_i(t) a_i(t) - r_i u(q(t)) e^{-\eta_i q(t)}
 \end{equation}
@@ -1734,7 +1737,7 @@ Since our queuing model is defined in terms of the same signals we've been using
 As a tangential foreshadowing, the objective function (to be defined in Section~\ref{sec:opt:obj}) as implemented in the Prototype makes use of the separability of each inlet's queue, allowing the Agent to concurrently simulate several scenarios simultaneously.
 
 \subsubsection{Queue-Flow Objective Function}
-\ref{sec:opt:obj}
+\label{sec:opt:obj}
 In short, Relay as a traffic control system must facilitate the efficient distribution of traffic load throughout the network.
 This inevitably reduces to scheduling signal timings such that flow through the network is maximized.
 While there are always additional objectives (reducing winsorized wait times, fuel consumption etc.) Relay as proposed, ultimately does not place any restrictions on the objective functions used.
@@ -1742,7 +1745,8 @@ While there are always additional objectives (reducing winsorized wait times, fu
 Within the prototype, we chose our objective function to maximize the predicted flow through a given intersection.
 In the game-theoretic sense: we take the flow-maximizing action within some finite horizon of expectation (the depth of the path).
 
-We start by defining the sub-objective in terms of the queue differential $\frac{dq_i}{dt} = q_i^\prime$ based on the expected ingress $E[a_i](t)$, where $\Phi_i$ is the flux quantity incident on inlet $i$ over the the arbitrary forward time period $[0, t]$.
+We start by defining the sub-objective in terms of the queue differential $\frac{dq_i}{dt} = q_i^\prime$ based on the expected ingress $E[a_i](t)$, where $\Phi_i$ is the flux quantity incident on inlet $i$ over the the arbitrary forward time period~$[0, t]$.
+
 \begin{align}\label{eq:def:sub_objective1}
 	\Phi_i &= - \int_0^t q^\prime_i(\tau) d\tau\\
 	&= \int_0^t \beta_i g_i(q_i(\tau)) u(q_i(\tau)) - \phi_i E\left[a_i\right](\tau) d\tau
@@ -1767,15 +1771,14 @@ Subject to the constraints implied in the definition of $p$ (equation~\eqref{eq:
 \end{equation}
 Subject to:
 \begin{align}
-	d &\leq d_{max}\\
-	t_d &\leq t_{max}
+	d &\leq d_{max} \in \mathbb{Z}\\
+	t_d &\leq t_{max} \in \mathbb{R}
 \end{align}
 recalling that $d$ is the depth of the path $p$, and that $t_d$ is the last time associated with the path.
 Further recall that all constraints placed on the validity of a particular path are encapsulated in the definition of the path $p$, (i.e. they must be temporally successive, and infinitesimally short steps are prohibited via the Behaviour Transition Graph).
 
 Note this is a combination set-cover (NP-complete), and nonlinear programming problem.
-For efficiency, it is best to separate the integer aspect out (separate out the time component of the path from the graph component).
-This is described below:
+For efficiency, it is best to separate the integer aspect out (separate out the time component of the path from the graph component), this separation is a classic dynamic programming technique, and is described below:
 \begin{equation}\label{eq:def:minlp_objective}
 	\argmax_{p.B} \argmax_{p.t} \bf{\Phi}_{p.B}
 \end{equation}
@@ -1787,7 +1790,7 @@ Thus for each behaviour, we evaluate the best possible flux given changes to the
 The Relay Prototype implementation was designed according to our functional requirements.
 Agents must be able to communicate their state to a third party (i.e. the Back-End), and pass messages to their immediate neighbours (as defined in a connectivity graph used to initialize the network).
 
-The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy WebServer (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol.
+The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy WebServer (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol, that enables (relatively) easy interoperability between disparate Python and Erlang processes.
 
 A high-level overview of the implementation is detailed in Figure~\ref{fig:agent_implementation}.
 \begin{figure}\label{fig:agent_implementation}
@@ -2069,7 +2072,7 @@ This would help to increase safety in these areas by working to either route car
 These types of biases would then be tested in simulations, and performance improvements measured.
 
 \subsection{Utilize Historical Data}
-This is related to the previous point of ``Integrating Auxiliary Information''Äù, but would come from within the system. The system was not run long enough to collect ``historical''Äù data, but it is recommended that future development work incorporate this information in the optimization procedures. 
+This is related to the previous point of ``Integrating Auxiliary Information''ÔøΩÔøΩ, but would come from within the system. The system was not run long enough to collect ``historical''ÔøΩÔøΩ data, but it is recommended that future development work incorporate this information in the optimization procedures. 
 By utilizing historical trends, the system can better predict expected traffic flows and ultimately perform better. 
 Additional request handlers could be attached to optimization processes to accept this information and incorporate it into the calculations. 
 For example, if it is notified of an upcoming sporting event, it could look back at previous events and their impact on traffic flows. 
@@ -2102,7 +2105,7 @@ As identified in earlier reports, it is difficult to programmatically interface 
 The team would either attempt to build an environment using VisSim, research other solutions, or continue building out our own custom simulation tools.
 
 \subsection{Updating Behaviour Edge Probabilities}
-As discussed in the engineering approach for ``Learning in Relay''Äù a sophisticated solution for behaviour edge probability learning was not found.
+As discussed in the engineering approach for ``Learning in Relay''ÔøΩÔøΩ a sophisticated solution for behaviour edge probability learning was not found.
  Further research and development would need to be conducted to derive a solution to his problem ‚Äì the system is underdetermined, and either requires a reduction of design parameters or other reformulation to become solvable. 
 A method that we propose is to use a cost function to constrain some aspect this problem. 
 An example could be penalizing probabilities that change too drastically and limiting them within some threshold. 
