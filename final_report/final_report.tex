@@ -128,7 +128,7 @@ Finally, we conclude with some proposed improvements and modifications that aros
 \section{Background}
 Motorists and pedestrians alike can relate to the frustration that comes from being stopped unnecessarily at a red light, waiting for it to turn green with no other cars in sight.
 The intelligence of a traffic light can vary from a static, fixed timer, to a relatively intelligent node which considers existing traffic conditions, the performance of adjacent nodes, and the like.
-However, even Adaptive Traffic Control (ATC) Systems today often irritate drivers as they are still unable to intelligently adapt to the wide variety of variables that affect traffic performance.\\
+However, even Adaptive Traffic Control (ATC) Systems today often irritate drivers as they are still unable to intelligently adapt to the wide variety of variables that affect traffic performance.
 
 Large metropolitan areas are acknowledging the need for advanced traffic management systems as the size and density of urban areas continues to increase.
 Over the past 29 years, the city of Los Angeles has developed a home-grown solution to handle the massive amounts of volume placed on their transportation networks, at an estimated cost of \$400 million to date \cite{la-atcs-article}.
@@ -469,10 +469,12 @@ Agent design should be able to characterise how traffic would be expected to flo
 The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
 
 \subsubsection{Optimization}
-Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment, in particular, optimization routines based exlusively on reductions of the underlying signals in conjunction with arbitrary dynamic/stochastic queue models.
+Agent design should facilitate a ``plug-and-play'' optimization routine based on the underlying mathematical representations of the local environment.
+In particular, the scope of the optimization routines should be limited to the underlying state (and predicted state) of the agent.
+This encapsulation of \emph{state} should provide sufficient transparency to model arbitrarily complex queue/accumulator-based models.
 
 \subsubsection{Communication}
-In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
+In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design should expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
 
 \subsection{Functional Requirements for Agent Implementation}
 
@@ -505,11 +507,11 @@ The main items are: limited timeline, simulating traffic, and traffic regulation
 
 Firstly, with limited time to reach a final implementation it is very difficult to create a polished product.
 Because adaptive traffic control is such a large problem, the team has only focused on specific aspects of it.
-To help us tackle traffic control itself, we assumed that we have perfect traffic data and built a system on top of this.
+To help us tackle traffic control itself, we assumed that we have perfect (albeit significantly limited in scope) traffic data and built a system on top of this.
 While this did not change the final product, it eliminated some of the challenges with creating such a system.
 
 Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
-While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with out system.
+While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with our system.
 For this project, the team decided to create simple simulations and construct the Framework such that it could be integrated with other simulation environments in the future.
 The simulations will be discussed further in the engineering design section.
 Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
