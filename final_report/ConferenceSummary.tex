@@ -38,9 +38,8 @@
 
 \begin{abstract}
 Relay is a research and design project focused in the domains of Adaptive Traffic Control and Data Visualization.
-In recent years, multiple cities including Montreal and LA have begun to implement adaptive systems, but adoption is not widespread.
-This shows a great deal of potential in maturing this technology further.
-The Relay Framework is a distributed traffic controller, leveraging peer-to-peer, and agent-based modelling technologies.
+In recent years, multiple cities including Montreal and LA have begun to implement large-scale adaptive systems, but adoption is not widespread, illustrating the great potential in maturing this technology further.
+The Relay Framework is a pattern for a distributed traffic controller, leveraging peer-to-peer, and agent-based modelling technologies.
 Intersections communicate with one another, constantly gathering and sharing information, and propagating local insight through the network.
 When combined with powerful predictive algorithms, Relay is able to quickly adapt to changing traffic conditions.
 The Relay Interface democratizes traffic data, enabling a common understanding of traffic patterns, giving both public offices and citizens the ability to make informed decisions.
@@ -72,7 +71,7 @@ The solution must meet the needs of transportation authorities, who will be resp
 The solution must also meet the needs of the public, providing transparent access to its operation and allowing consumers to take full advantage of the information.
 Additionally, the system must implement acyclic, adaptive control patterns, utilizing distributed computation and peer-to-peer modeling technologies.
 The advantages of the system should be apparent and noticeable by both stakeholders, and finally, the system must be reliable and robust, due to the severe safety and efficiency consequences of failure and poor performance. 
-The Relay system will be a proof of concept for \emph{democratic}, distributed intelligent traffic control systems.
+The Relay system will be a proof of concept for \emph{open},  intelligent traffic control systems.
 
 \section{\textsc{Relay Interface}}
 
@@ -88,8 +87,6 @@ The Relay system will be a proof of concept for \emph{democratic}, distributed i
 %brief overview of what is provided
 The Relay Interface has helped redefine the value of Adaptive Traffic Control System Interfaces. For Traffic Engineers, the application enables the shift of responsibility and value from signal timing and tweaking, to network monitoring and informed planning. Relay Interface exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing costs associated with maintaining efficiency of the network. This information allows traffic engineers to know exactly what's going on in the network at any moment. Through the use of geospatial data visualizations, the application is able to reveal high-level traffic patterns, providing invaluable insight into the workings of a city's transportation network. Access to this kind of information has the potential to change the way public infrastructure decisions are made. This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
 
-
-
 \section{\textsc{Relay Framework}}
 
 In Relay, each intersection is governed/controlled by its own independent, autonomous controller or \emph{Agent}.
@@ -101,20 +98,19 @@ Simultaneously each agent continually adjusts and optimizes its signal timing sc
 
 Ultimately, as a Framework (the abstracted Agent parameterization), Relay offers a platform for implementing abstract traffic controllers that leverage state-of-the art optimization, and machine learning algorithms.
 
-
 \section{\textsc{Impacts}}
 Adaptive Traffic Control Systems have many positive social and environmental implications as a byproduct of improving traffic flow through a city.
-A few of these are decreased gas consumption, reduced travel time, and reduced congestion.
+A few of these are decreased gas consumption and associated pollution, reduced travel time, and reduced congestion.
 It is important to note that these are not direct goals of the implementation, but rather beneficial external consequences of effective traffic control, that naturally extend from effectively adapting signal timings.
 The proposed solution thus focuses on local intersection performance, which in turn contributes to the improvement of aforementioned social and environmental benefits.
 
 \section{\textsc{Conclusions}}
-The push for democratized traffic data is a major goal for this project, and Relay Interface serves as a first major attempt to present infrastructure-quality traffic information to the public. 
-Relay Interface allows the public to examine and understand the workings of their public infrastructure, encouraging a more informed and engaged population.
+The push for democratized/open traffic data is a major goal for this project, and Relay Interface serves as a stepping stone to present infrastructure-quality traffic information to the public. 
+The Relay Interface allows the public to examine and better understand the workings of their public infrastructure, encouraging a more informed and engaged population.
 
 Additionally, with the formalization of the Relay Agent, we have outlined a generic and flexible platform for traffic engineers and researchers to experiment with the implementation of distributed traffic control systems that operate on probabilistic expectations, sparse-distributed computation, and \emph{soft}-synchronisation.
 The Relay pattern additionally removes the necessity to have detailed information about the implementation environment, with enough data, the system will \emph{learn} its environmental parameters, and provide full transparency to the engineer.
-With the prototype implementation we showed it was possible to implement the Relay pattern, with entirely open-source tools.
+With the prototype implementation we demonstrated it was possible to implement the Relay pattern with entirely open-source tools.
 The creation of the Relay Network has helped further the understanding and capabilities of not only adaptive traffic control, but traffic control in general, with systems like Relay, the cognitive burden typically associated with large scale traffic engineering has been almost entirely removed---foreshadowing a paradigm shift (or possibly an identity crisis) in traffic engineering.
 
 \bibliographystyle{IEEEtran}
