@@ -23,6 +23,10 @@
   {\par\vspace{\abovedisplayskip}\noindent\begin{tabular}{>{$}l<{$} @{${}={}$} l}}
   {\end{tabular}\par\vspace{\belowdisplayskip}}
 
+\clubpenalty = 10000
+\widowpenalty = 10000
+\displaywidowpenalty = 10000
+
 \makeglossaries
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1603,7 +1607,7 @@ Higher-order predictions, ones that require information from the larger neighbou
 The details on how these predictions are performed is discussed below.
 
 \subsubsection{Utilizing Neighborhood Information}
-As discussed in section~\ref{subsubsec:net-top}, agents are connected to each of their neighbors, forming a grid-like mesh structure. 
+As discussed in Section~\ref{sec:p2p_philosophy}, agents are connected to each of their neighbors, forming a grid-like mesh structure. 
 This design choice allows for each agent to ``talk� with its neighbors, gaining access to all information stored. 
 This ``sharing� of information is essential to keep agents informed on events occurring in the neighborhood.
 Information is either requested or directly sent to a specific agent, depending on the type: current queues, predictions, plans, events, etc.
@@ -1793,7 +1797,7 @@ Agents must be able to communicate their state to a third party (i.e. the Back-E
 The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy WebServer (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol, that enables (relatively) easy interoperability between disparate Python and Erlang processes.
 
 A high-level overview of the implementation is detailed in Figure~\ref{fig:agent_implementation}.
-\begin{figure}\label{fig:agent_implementation}
+\begin{figure}[H]\label{fig:agent_implementation}
 	\includegraphics[width=\textwidth]{figures/Relay_agent_diagram.png}
 	\caption{The Relay Agent, consisting of multiple asynchronous concurrent components (actors).}
 \end{figure}
@@ -1805,11 +1809,11 @@ The network mediator is in charge of maintaining a set of subscriptions and obli
 The Scheduling and Prediction services operate slightly differently.
 Rather than being explicitly controlled by the Controller, the controller simply periodically requests that they perform their function, and independently updating the State Manager when their computation is complete (some operations can take a long time).
 
-The Python Port exposes the Erlang Application to one-or-many stateless Python processes, which perform the necessary floating point work via NumPy routines, everything else in the system is written entirely in Erlang. The Controller is described in Figure~\ref{fig:agent_controller}.
+The Python Port exposes the Erlang Application to one-or-many stateless Python processes, which perform the necessary floating point work via NumPy routines, everything else in the system is written entirely in Erlang. The Controller is described in the figure below.
 
-\begin{figure}\label{fig:agent_controller}
+\begin{figure}[H]\label{fig:agent_controller}
 	\includegraphics[width=\textwidth]{figures/Relay_Agent_Controller.png}
-	\caption{The Relay Agent Controller: Which is the common link between all the components outlined in Figure~\ref{fig:agent_implementation}}
+	\caption{The Relay Agent Controller}
 \end{figure}
 
 The subsequent subsections will outline some of the design decisions made regarding this particular implementation of the Relay Agent as described in Section~\ref{sec:def:agent}.
@@ -1902,7 +1906,7 @@ The initial functional requirements which drove the development of the solution 
 
 Only 50\% of network-level functionality was met in the final application prototype. N1 and N2 relate specifically to the display and understanding of intersection performance, which is a core aspect of the application. N3 and N4 relate to network-level metrics. The Front End application was built to support network information, and a network-specific page was developed to display metrics, time-series graphs, and activity lists. These metrics were not available in any meaningful manner from the Back End. Although all necessary information for performing such calculations was available to the Front End, it was not appropriate to require the Front End to perform this task. Therefore, the information was not made available in the interface for the final solution.
 
-All of the intersection functional requirements --- I1 through I9 --- were met in the final solution. However, this functionality was only available through the map view in the interface. An intersection-specific, list-based interface was developed, however the intersection-specific functionality requirements I1 -- I9 were not supported. Therefore, the functional requirements have been technically met, yet they are not ideal.
+All of the intersection functional requirements --- I1 through I9 --- were met in the final solution. However, this functionality was only available through the map view in the interface. An intersection-specific, list-based interface was developed, however the intersection-specific functionality requirements I1 -- I9 were not supported. Therefore, the functional requirements have been technically met, yet they are non~ideal.
 
 None of the Road-based functional requirements were completed. During the implementation of the solution, it was realized that rich information along road edges would not be available. The final Front End solution does have interface components for supporting road information. This was done as a proof-of-concept for the value of having road information accessible. However, no real data was available.
 
