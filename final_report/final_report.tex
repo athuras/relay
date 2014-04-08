@@ -53,17 +53,17 @@
 \item[Backbone.js] A client-side JavaScript framework.
 \item[Chart.js] A simple, static, front-end visualization library.
 \item[D3.js] D3, Data Driven Documents, is a rich, static, front-end data visualization framework.
-\item[DOJO] A client-side Javascvript framework.
+\item[DOJO] A client-side JavaScript framework.
 \item[DOM] The Document Object Model (DOM) Tree is a structure used by HTML to represent the hierarchy of objects within the page.
-\item[Erlang] A functional concurrent programming language used to build massively scalable soft real-time systems. Some of its most prevalent uses involve high-performance telephony, and instant-messaging infrstructure.
-\item[Info Box (Map)] Info Box is a term used to describe a popup-style interface widget which contains information about an element on the display. In the context of a map, info boxes are used to present information about a location by displaying an overlay on the map in close proximity to the loccation of interest.
-\item[OTP] The Open Telecom Platform, a set of Erlang libriaries designed to be used to create robust distributed systems.
+\item[Erlang] A functional concurrent programming language used to build massively scalable soft real-time systems. Some of its most prevalent uses involve high-performance telephony, and instant-messaging infrastructure.
+\item[Info Box (Map)] Info Box is a term used to describe a popup-style interface widget which contains information about an element on the display. In the context of a map, info boxes are used to present information about a location by displaying an overlay on the map in close proximity to the location of interest.
+\item[OTP] The Open Telecom Platform, a set of Erlang libraries designed to be used to create robust distributed systems.
 \item[Flot] Flot is a JavaScript-based front-end data visualization framework which emphasizes 2D plots and time-series data.
 \item[JavaScript MVC] A client-side JavaScript framework.
 \item[jQuery] A client-side JavaScript Utility Library.
 \item[Marker (Map)] A map marker is a visual object position on a map to indicate the importance of that location. Markers are typically styled to represent information about the location.
 \item[MVC] A software development pattern which categorizes classes into three categories: model, view, and controller. Generally, models are responsible for data and business logic, views are responsible for presenting information to users and collecting it, and controllers are responsible for handling interaction between the model and the view.
-\item[MV] Another software development pattern. MV is similar to MVC, however there is no controller, as controller functionality is built into the view class. This pattern is common in less complex solutions or in langauges which do not support a rigid class-based system.
+\item[MV] Another software development pattern. MV is similar to MVC, however there is no controller, as controller functionality is built into the view class. This pattern is common in less complex solutions or in languages which do not support a rigid class-based system.
 \item[NumPy] The primary numerical library for Python, which is highly optimized (in many cases interfacing with FORTRAN and C routines) for vector operations and linear algebra.
 \item[Python] A powerful general object-oriented programming language.
 \item[Rickshaw] A static front-end visualization library build on the D3 framework.
@@ -119,7 +119,7 @@ This document will act as an update for interested parties on the progress made 
 In general, the chapters in this document are subdivided into three groups, colloquially referred to as the ``Front''-, ``Back''- and ``Deep''-Ends.
 Sections pertaining to the front-end govern the design and methodology that were put behind the user-facing aspects of this project: the Relay Interface, and various data visualization experiments.
 The back-end governs the design and functional implementation of the web-servers used to power the front-end, including data storage and layout, associated interfaces, and communication with the individual networked Agents.
-The deep-end simultanously refers to the design of the underlying traffic control agents, as well as the network of connected agents as a whole.
+The deep-end simultaneously refers to the design of the underlying traffic control agents, as well as the network of connected agents as a whole.
 
 At a high level, this document is broken up into illustrating the high-level design objectives, how a complex system was build to meet those objectives, and measuring the extent to which each objective was met (or missed).
 Finally, we conclude with some proposed improvements and modifications that arose out of the design and development experience, and next steps.
@@ -456,7 +456,7 @@ Requirements within this section are broken down into higher-level design goals,
 
 \subsection{Design Goals}
 \subsubsection{Symmetrical Graph Automata}
-Fundamentally, there should be no functional or implementational distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
+Fundamentally, there should be no functional or developmental distinction between a single Agent operating in isolation, and a large network of sparsely connected agents.
 Each agent must thus implement the same \emph{pattern}, which defines generic algorithms that are thus shared amongst the Agents.
 Only through emergent prediction and reinforcement learning should individual Agents differentiate themselves from their peers.
 
@@ -464,7 +464,7 @@ This is helpful from a robustness perspective, as well as provides a clear and f
 Typical differentiating factors (different rules/regulations, physical restrictions, location) are easy modelled with generic graph representations, hopefully leaving traffic engineers and architects to work on fine-tuning controller parameters, rather than writing individual controllers.
 
 \subsubsection{Predictions}
-Agent design should be able to characterise how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
+Agent design should be able to characterize how traffic would be expected to flow through the intersection it controls, including any probabilistic variance associated with that expectation.
 
 The Agent should furthermore be able to parametrically describe the delay associated with inter-agent traffic flow, either through kernel density estimation or some other parametric technique.
 
@@ -474,20 +474,20 @@ In particular, the scope of the optimization routines should be limited to the u
 This encapsulation of \emph{state} should provide sufficient transparency to model arbitrarily complex queue/accumulator-based models.
 
 \subsubsection{Communication}
-In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design should expressly prohibit arbitrary network communication between agentss, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
+In order to reduce the network traffic, and provide impetus for the communication of informationally \emph{dense} messages between agents; the Agent design to expressly prohibit arbitrary network communication between agents, providing instead the concept of a ``neighbourhood'' which can be parametrized to optimize communication under bandwidth limitations.
 
 \subsection{Functional Requirements for Agent Implementation}
 
-The extent to which the prototype Agent implementation meets the high-level design/architectural goals is summarised in the following table, specifically, the binary pass/fail of a particular test can be considered a functional \emph{unit}, (and thus sufficient fodder for a comprehensive suite of unit tests.
+The extent to which the prototype Agent implementation meets the high-level design/architectural goals is summarized in the following table, specifically, the binary pass/fail of a particular test can be considered a functional \emph{unit}, (and thus sufficient fodder for a comprehensive suite of unit tests.
 
 \begin{longtable}[H]{| P{4cm} | P{10cm} |} 
 \hline
     Test                                & Description                                                                                               \\ \hline
-    [network] Request data from peer    & The agent of interest can request information from its peers, and then take action based on the resonse.  \\ \hline
+    [network] Request data from peer    & The agent of interest can request information from its peers, and then take action based on the response.  \\ \hline
     [network] Respond to peer request   & The agent of interest can asynchronously respond to remote (peer) requests for state information.         \\ \hline
     [network] Subscription management   & Can an agent subscribe and unsubscribe to a peer's ingress feed?                                          \\ \hline
     [opt] Request new Schedule          & Can the agent request (and receive a response)  from the optimization service?                            \\ \hline
-    [predict] Request new Prediction    & Can the agent request (and receive a response) from the pred1/iction service?                               \\ \hline
+    [predict] Request new Prediction    & Can the agent request (and receive a response) from the prediction service?                               \\ \hline
     [predict] Schedule Parameter Update & Can the agent request (and receive as response) the updated state parameters from the prediction service? \\ \hline
     [data] Respond to remote requests for state & Can the agent provide a read-only interface to the Back-end\\ \hline
 \caption{Functional Requirements of Relay Framework.}
@@ -511,7 +511,7 @@ To help us tackle traffic control itself, we assumed that we have perfect (albei
 While this did not change the final product, it eliminated some of the challenges with creating such a system.
 
 Secondly, simulating a traffic system is difficult, and obtaining real traffic data is extremely difficult.
-While there are tools available for this, such as Vissim (provided by supervisor), we did not have the resources to integrate this with our system.
+While there are tools available for this, such as VisSim (provided by supervisor), we did not have the resources to integrate this with out system.
 For this project, the team decided to create simple simulations and construct the Framework such that it could be integrated with other simulation environments in the future.
 The simulations will be discussed further in the engineering design section.
 Also, real traffic data would need to be provided by a municipality and it is very unlikely that they would be willing to provide this within such a constrained time period.
@@ -527,7 +527,7 @@ This means that if an action was executed within Relay, it may not be executed o
 An example of this is light switching from emergency vehicles - they have devices that allow them to signal lights they are approaching and switch the current light pattern.
 We have no control over this and must accept that some actions may not be executed.
 
-To reduce complexity for this project, only intersection with 4 directions are being modeled. 
+To reduce complexity for this project, only intersection with 4 directions are being modelled. 
 While, it can be argued that other arrangements are simply modifications of a 4-way intersection, we will not be considering these. 
 Additionally, it will be assumed that all roads have one lane in each direction. 
 Adding additional lanes, for example turning lanes, would provide more context on how cars are traversing and assist in planning, it makes the system and optimization much more complex. 
@@ -873,7 +873,7 @@ With a unique and well-defined design language established, further extrapolatio
 
 Application interfaces for critical infrastructure such as a traffic control network must be highly robust and reliable. Furthermore, it is important the the systems are able to scale in order to accommodate the inevitable growth of the system. These main ideas drove the design of the Front End (web application) application architecture. 
 
-Design research and prototpying highlighted the need for various technologies to be used in the development of the Front End. For example, the presence of a map-based interface meant that a mapping library was required. Given the functional and technical requirements of the project, it was important to select solutions which met the project's needs. Given the breadth of choices in software technology, it was necessary to use a quantifiable selection process for determining the appropriate solutions from a group of candidates. The three main areas of the front-end application which required such a process are the Framework, Mapping Library, and Visualization Library. The selection process for these is discussed in the following sections.
+Design research and prototyping highlighted the need for various technologies to be used in the development of the Front End. For example, the presence of a map-based interface meant that a mapping library was required. Given the functional and technical requirements of the project, it was important to select solutions which met the project's needs. Given the breadth of choices in software technology, it was necessary to use a quantifiable selection process for determining the appropriate solutions from a group of candidates. The three main areas of the front-end application which required such a process are the Framework, Mapping Library, and Visualization Library. The selection process for these is discussed in the following sections.
 
 \subsubsection{Framework Selection}
 
@@ -889,9 +889,9 @@ The frameworks are scored across five weighted features. The scores are justifie
 
 \item \textbf{Independence} - The selected framework should be self-contained and not require many prerequisite JavaScript Libraries in order to function. The presence of many prerequisite libraries increases the size of the application and will slow down performance. Candidate frameworks are assessed based on the number of prerequisite frameworks and plug-ins required for the framework's implementation within the proposed solution. This feature has been given a weight of 0.5.
 
-\item \textbf{Functionality} - The selected JavaScript framework should provide a rich set functionality which is not available within the native JavaScript language. Important functionality includes utility functions, templating, Document Object Model (DOM) binding, client-server communication methods, and data structure classes. Candidate frameworks are assessed based on the both the quantity and quality of the functionality provided, in the context of the proposed solution. This feature has been given a weight of 0.8, as it is important that the framework provides sufficient functionality to implement the solution.
+\item \textbf{Functionality} - The selected JavaScript framework should provide a rich set functionality which is not available within the native JavaScript language. Important functionality includes utility functions, the ability to create templates, Document Object Model (DOM) binding, client-server communication methods, and data structure classes. Candidate frameworks are assessed based on the both the quantity and quality of the functionality provided, in the context of the proposed solution. This feature has been given a weight of 0.8, as it is important that the framework provides sufficient functionality to implement the solution.
 
-\item \textbf{Modularity} - It is important that the selected JavaScvript framework supports the creation of modular code, given the complexity of the proposed solution. The selected MVC framework should encourage an established code pattern, such as and MV- or MVC-style structure. Candidate frameworks are assessed based on their similarity to known software architecture patterns, such as MV or MVC. Due to the importance of scalability and modularity in the proposed solution, this feature has been given a weighting of 0.8.
+\item \textbf{Modularity} - It is important that the selected JavaScript framework supports the creation of modular code, given the complexity of the proposed solution. The selected MVC framework should encourage an established code pattern, such as and MV- or MVC-style structure. Candidate frameworks are assessed based on their similarity to known software architecture patterns, such as MV or MVC. Due to the importance of scalability and modularity in the proposed solution, this feature has been given a weighting of 0.8.
 
 \item \textbf{Implementation Overhead} - The selected JavaScript framework should not require excessive amounts of overhead code in order to successfully suit the needs of the proposed solution. The selected framework should have as little overhead as possible. Candidate frameworks are assessed by examining tutorial code implementations for each framework, to determine the proportion of development required as overhead compared to application-specific code. This feature has been given a weight of 0.5.
 
@@ -914,13 +914,13 @@ The frameworks are presented in a weighted decision matrix below. Each attribute
 \label{table:framework-matrix}
 \end{table}
 
-Angular.js is the smallest candidate framework at 36kb. Angular.js also has no prerequisite JavaScript libraries, and is thus completely independent. Although Angular.js offers rich DOM and interaction functionality, it provides few utility features for data structures and architectures. Angular.js does not follow a rigid MVC or MV structure, which was a major downfall for the framework. Anjular.js does not require much overhead code to implement, primarily because it does not follow a rigid software architecture, and thus is more functionally-oriented.
+Angular.js is the smallest candidate framework at 36kb. Angular.js also has no prerequisite JavaScript libraries, and is thus completely independent. Although Angular.js offers rich DOM and interaction functionality, it provides few utility features for data structures and architectures. Angular.js does not follow a rigid MVC or MV structure, which was a major downfall for the framework. Angular.js does not require much overhead code to implement, primarily because it does not follow a rigid software architecture, and thus is more functionally-oriented.
 
 The Backbone JavaScript framework is 64kb in size. Backbone.js relies on Underscore.js and jQuery.js two relatively large JavaScript utility libraries. However, both of these libraries will be used in the application regardless of the choice of framework, thus are not a direct detriment of this candidate. Backbone.js follows a MV framework style, where both controller and view functionality are both kept in the view. This pattern is a good compromise between no framework and an extremely heavy MVC structure. Backbone.js's two utility libraries provide rich functionality for working with the DOM model and structured objects. Furthermore, Backbone.js provides a native and collection-oriented pattern developed specifically for handling large numbers of similar objects, which fits well with the application's need to support many intersection and road models. Finally, Backbone.js has minimal development overhead considering it's MV structure, as Backbone.js provides a range of default functionality for its classes.
 
 The DOJO JavaScript framework is 155kb in size, making it the largest of the candidate frameworks. DOJO requires no prerequisite JavaScript Libraries, yet many of DOJO's features are in add-on libraries. This reduces the effectiveness of DOJO's core code, yet means a wider range of features are available as the feature set distributed and open. However, DOJO's functionality is not aimed specifically at dealing with large collections of data, and does not offer strong support for client-server synchronicity. In terms of modularity, the DOJO framework supports the creation of class objects yet does not explicitly support an MV- or MVC-style framework. DOJO requires a significant amount of implementation overhead, which makes it suitable for extremely large and diverse applications. However, this level of overhead is less suited to the complex yet relatively consistent nature of our application with respect to object and data needs.
 
-JavaScript MVC is 105kb in size. JavaScrvipt MVC relies on the jQuery.js JavaScript library, however this library is already a requirement for the proposed solution. JavaScript MVC is composed of four sub-frameworks, each of which specializes in a different set of features, and together provide sufficient functionality for the proposed solution. However, like DOJO, JavaScript MVC lacks the specific functionality for dealing with large amounts of similar objects. As suggested by the name, JavaScript MVC follows a strong MVC model in it's implementation.
+JavaScript MVC is 105kb in size. JavaScript MVC relies on the jQuery.js JavaScript library, however this library is already a requirement for the proposed solution. JavaScript MVC is composed of four sub-frameworks, each of which specializes in a different set of features, and together provide sufficient functionality for the proposed solution. However, like DOJO, JavaScript MVC lacks the specific functionality for dealing with large amounts of similar objects. As suggested by the name, JavaScript MVC follows a strong MVC model in it's implementation.
 
 As seen in table \ref{table:framework-matrix}, Backbone.js is the winning candidate. Backbone.js is not the smallest candidate, yet it's feature set and MV framework fit well with the needs of the proposed solution. Specifically, Backbone's use of already-implemented JavaScript utility libraries to provide enhanced data structure tools and algorithms, as well as it's specialized collection template for dealing with large amounts of data objects. Furthermore, Backbone.js provides functionality for client-server communication for said collection structures. Finally, the overhead associated with Backbone.js is acceptable given the strong fit of the functionality with that of the proposed solution.
 
@@ -942,18 +942,18 @@ Next, a JavaScript mapping library needed to be selected. The proposed solution 
 
 \end{enumerate}
 
-Three Mapping Libraries were considered as potential candidates: Google Maps API, Leaflet.js with CoudMade for tile serving, and Mapbox with TileMill.
+Three Mapping Libraries were considered as potential candidates: Google Maps API, Leaflet.js with CloudMade for tile serving, and MapBox with TileMill.
 
-The Google Maps API is the industry standard of mapping libraries. It is the same framework which runs Google Maps, and thus it is well-supported and reliable. The Google Maps API allows for styling customizations on-the-go through it's JavaScript API. Unfortunately, not all aspects of the map are stylable. The API provides functionality for both markers and info boxes. The Google Maps API allows for custom CSV marker icons, however the info box is not easily customizable. However, Google Maps does offer a plug-in info box, which is fully customizable. Tiles are hosted directly through Google Maps, requiring no extra work for tile hosting support. Finally, the Google Maps API is a free service with very high courtesy limits.
+The Google Maps API is the industry standard of mapping libraries. It is the same framework which runs Google Maps, and thus it is well-supported and reliable. The Google Maps API allows for styling customizations on-the-go through it's JavaScript API. Unfortunately, not all aspects of the map are styleable. The API provides functionality for both markers and info boxes. The Google Maps API allows for custom CSV marker icons, however the info box is not easily customizable. However, Google Maps does offer a plug-in info box, which is fully customizable. Tiles are hosted directly through Google Maps, requiring no extra work for tile hosting support. Finally, the Google Maps API is a free service with very high courtesy limits.
 
-Leaftlet.js is a map-oriented JavaScript library which provides a variety of map-related features on top of a tile service. Leaflet.js does not host map tiles, and thus it must be used in conjunction with a tile hosting service such as CloudMade. As such, styling the map must be done through a CloudMade's third party service, which is restrictive in styling. Leatlet.js offers rich map functionality, including markers and info boxes. Furthermore, Leaflet.js' map features are highly-customizable, as it is an open-source project. However, Leaflet.js is not geared towards handling data layers. Leaflet.js is a free library.
+Leaflet.js is a map-oriented JavaScript library which provides a variety of map-related features on top of a tile service. Leaflet.js does not host map tiles, and thus it must be used in conjunction with a tile hosting service such as CloudMade. As such, styling the map must be done through a CloudMade's third party service, which is restrictive in styling. Leaflet.js offers rich map functionality, including markers and info boxes. Furthermore, Leaflet.js' map features are highly-customizable, as it is an open-source project. However, Leaflet.js is not geared towards handling data layers. Leaflet.js is a free library.
 
-Mapbox is a new JavaScript mapping library which works in conjunction with TileMill, a tile styling styling service. TileMill is designed specifically for creating highly-customized map styles, and thus offers very rich styling capability. Due to Mapbox's immaturity as a platform, it's feature set is limited and not very customizable. The MapBbox JavaScript library is not structured towards handling data layers, rather individual data points. Furthermore, TileMill tiles must be hosted using a third-party platform, or through MapBox directly, which required a paid membership for the service.
+MapBox is a new JavaScript mapping library which works in conjunction with TileMill, a tile styling styling service. TileMill is designed specifically for creating highly-customized map styles, and thus offers very rich styling capability. Due to MapBox's immaturity as a platform, it's feature set is limited and not very customizable. The MapBox JavaScript library is not structured towards handling data layers, rather individual data points. Furthermore, TileMill tiles must be hosted using a third-party platform, or through MapBox directly, which required a paid membership for the service.
 
 \begin{table}
 \centering
     \begin{tabular}{l |r r r l}
-    ~                             & \textbf{Google Maps API} & Leaflet.js \& CloudMade & Mapbox \& TileMill \\ \hline
+    ~                             & \textbf{Google Maps API} & Leaflet.js \& CloudMade & MapBox \& TileMill \\ \hline
     Style Customizability  (0.5)  & \textbf{3 (1.5)}         & 3 (1.5)                 & 5 (2.5)            \\
     Feature Customizability (0.7) & \textbf{4 (2.8)}         & 5 (3.5)                 & 3 (2.1)            \\
     Layer Customizability (0.9)   & \textbf{5 (4.5)}         & 4 (3.6)                 & 3 (2.7)            \\
@@ -965,7 +965,7 @@ Mapbox is a new JavaScript mapping library which works in conjunction with TileM
 \label{table:mapping-matrix}
 \end{table}
 
-The candidate mapping libraries are compared in Table \ref{table:mapping-matrix}. The Google Maps API is the winning mapping library. Although the Google Maps Llibrary lacks full native customizability for both it's map styling and map features, sufficient customizability is found within the native functionality and through the use of add-on libraries. The Google Maps API provides excellent data layer functionality, which is unparalleled in feature breadth and support. Finally, the Google Maps combined tile hosting and JavaScript functionality provided within a free service make it the clear choice.
+The candidate mapping libraries are compared in Table \ref{table:mapping-matrix}. The Google Maps API is the winning mapping library. Although the Google Maps Library lacks full native customizability for both it's map styling and map features, sufficient customizability is found within the native functionality and through the use of add-on libraries. The Google Maps API provides excellent data layer functionality, which is unparalleled in feature breadth and support. Finally, the Google Maps combined tile hosting and JavaScript functionality provided within a free service make it the clear choice.
 
 \subsubsection{Visualization Library Selection}
 
@@ -993,7 +993,7 @@ Chart.js is an HTML5-based visualization library, focused on delivering implemen
 
 D3, or Data-Driven Documents, is the most well-known and feature-rich HTML visualization library today. D3 provides an extremely wide range of visualization formats which are completely customizable. D3 has no pre-requisite libraries, and is a stand-alone library. D3's main downfall is the complexity of implementation, as basic data presentations can require up to 300 lines of code. As an extension of D3's extreme customizability, it is possible to use time-series data, however the library provides little native formatting support. D3 provides the widest range of visualization options by far. Finally, D3's support of data updating depends on the visualization method used, however it is generally poor due to the static nature of the library.
 
-Flot is a JavaScipt-based visualization library built on top of the jQuery utility library. Flot is a medium-complexity visualization library which emphasizes informative and real-time visualizations. As mentioned, the Flot library requires jQuery to run, however jQuery is already a prerequisite for multiple other libraries and feature in the proposed solution. Flot charts are not designed to be extremely easy to implement; their implementation complexity is significant, yet more efficient than other candidates and understandable given the functionality available. Flot natively offers moderate time-series formatting support: Flot accepts JavaScript timestamps as time-series data, and is able to format said data in a variety of styles. With the addition of a jQuery plugin, the range of styles is greatly increased. Flot provides a moderate amount of customizability for their data presentations. However, due to the open-source nature of Flot, the inner styling variables are publicly known, which allows them to be customized far beyond what is supported through public JavaScript methods. Finally, Flot handles data updating very well, with explicit JavaScript functions for updating data objects and re-rendering visualizations.
+Flot is a JavaScript-based visualization library built on top of the jQuery utility library. Flot is a medium-complexity visualization library which emphasizes informative and real-time visualizations. As mentioned, the Flot library requires jQuery to run, however jQuery is already a prerequisite for multiple other libraries and feature in the proposed solution. Flot charts are not designed to be extremely easy to implement; their implementation complexity is significant, yet more efficient than other candidates and understandable given the functionality available. Flot natively offers moderate time-series formatting support: Flot accepts JavaScript timestamps as time-series data, and is able to format said data in a variety of styles. With the addition of a jQuery plugin, the range of styles is greatly increased. Flot provides a moderate amount of customizability for their data presentations. However, due to the open-source nature of Flot, the inner styling variables are publicly known, which allows them to be customized far beyond what is supported through public JavaScript methods. Finally, Flot handles data updating very well, with explicit JavaScript functions for updating data objects and re-rendering visualizations.
 
 Rickshaw is a new, static, visualization library build using D3 functionality. It aims to offer less complex implementations of basic data visualizations using the D3 framework. Obviously, D3 must be loaded in order for Rickshaw to run, which brings the negative performance implications of loading such a large library as D3. Rickshaw data presentations are exceptionally easy to define and require minimal code. However, the immaturity of the library means that only a few plotting styles are supported, greatly limiting the library's capability. Furthermore, Rickshaw is a private library and is thus less accessible to customizing beyond the limited exposed styling options. Rickshaw does provide time-series formatting support, however it is limited in scope and buggy as the library is not yet a mature project. Finally, due to the static nature of the underlying D3 platform, the Rickshaw library has no support for updating the data object, and thus would require the recreation of the visualization.
 
@@ -1016,7 +1016,7 @@ Assessment of the candidate visualization libraries is done through a Weighted D
 
 \subsection{Application Development}
 
-The Front End application is composed of two parts: static HTML and CSS, and a JavaScript architecture. The HTML and CSS code's role is for composition and stying of the interface, whereas the JavaScript is responsible for controlling the interface. This pattern is standard for web applications, and thus provides a good reference for the development of Relay's Front End infrastructure.
+The Front End application is composed of two parts: static HTML and CSS, and a JavaScript architecture. The HTML and CSS code's role is for composition and styling of the interface, whereas the JavaScript is responsible for controlling the interface. This pattern is standard for web applications, and thus provides a good reference for the development of Relay's Front End infrastructure.
 
 In the early stages of prototyping the Front End application, the application was composed primarily of HTML and CSS code. This allowed for the creation of a visually-appealing interface which could be assessed as a proof-of-concept demonstration. As the application became more complex, emphasis shifted towards the use of JavaScript for initializing and implementing the interface. The HTML and CSS structure expanded to support the interface as it grew in complexity. The style of the HTML/CSS structure shifted towards template-based widgets, which could be dynamically controlled via JavaScript functionality.
 
@@ -1066,13 +1066,13 @@ The value of storing one instance of the intersection and road collection object
 
 \subsection{Technical Challenges and Resolutions}
 
-Various technical challenges were encountered throughout the development of the Relay Application. These issues related predominantly to an incomplete understanding of core selected JavaScript frameworks and librares used in the solution.
+Various technical challenges were encountered throughout the development of the Relay Application. These issues related predominantly to an incomplete understanding of core selected JavaScript frameworks and libraries used in the solution.
 
 One significant advantage of the Backbone.js framework was native collection-based client-server communication functionality. A Backbone.js collection object is able to accept a url, from which it can make frequent AJAX calls to synchronize the collection data. However, for the native synchronization functionality to work, Relay's server-side API implementation was required to adhere to a specific data structure format. Adhering to this format would have required changes elsewhere in the application, and therefore was not an option. To resolve this issue, custom functionality was built into the collection classes which supported the specific nature of Relay data.
 
-The design and functional requirements had outlined the use of an info box to display preliminary information about an intersection when selected on a map. When large amounts of data are present on a map, there are significant preformance implications of creating a single info box for each data point. A common design pattern for addressing this issue is to have one info box referenced by all points. However, the specific initialization method of the custom info box meant that the object was not directly added to the Document Object Model (DOM) structure, and thus was not accessible to other data points after initialization. Routing of this reference to each data point manually would have required significant changes to the application architecture. This issue was resolved by enforcing the creation and destruction of the info box for each request and dismissal, respectively. Although this solution is not optimal, it provided the effective functionality while minimizing performance costs.
+The design and functional requirements had outlined the use of an info box to display preliminary information about an intersection when selected on a map. When large amounts of data are present on a map, there are significant performance implications of creating a single info box for each data point. A common design pattern for addressing this issue is to have one info box referenced by all points. However, the specific initialization method of the custom info box meant that the object was not directly added to the Document Object Model (DOM) structure, and thus was not accessible to other data points after initialization. Routing of this reference to each data point manually would have required significant changes to the application architecture. This issue was resolved by enforcing the creation and destruction of the info box for each request and dismissal, respectively. Although this solution is not optimal, it provided the effective functionality while minimizing performance costs.
 
-The data visualizations developed as part of the Relay Application required significant computational loads to perform as expected. One visualization in particular --- flow between intersections, as seen in Figure \ref{fig:flow-2} --- required roughtly 10,000 unique data points to be represented on the map simultaneously. Severe performance issues were observed, such as map tiles failing to load, and response times over 10 seconds in duration. This issue is tied directly to the performance of the Google Maps API mapping library, and no feasible solutions were found. Future implmentations should explore the use of custom, performance-oriented mapping libraries and tile servers, as discussed in Chapter \ref{chap:improvements}, Section \ref{subsec:improvements-arch}.
+The data visualizations developed as part of the Relay Application required significant computational loads to perform as expected. One visualization in particular --- flow between intersections, as seen in Figure \ref{fig:flow-2} --- required roughly 10,000 unique data points to be represented on the map simultaneously. Severe performance issues were observed, such as map tiles failing to load, and response times over 10 seconds in duration. This issue is tied directly to the performance of the Google Maps API mapping library, and no feasible solutions were found. Future implementations should explore the use of custom, performance-oriented mapping libraries and tile servers, as discussed in Chapter \ref{chap:improvements}, Section \ref{subsec:improvements-arch}.
 
 
 \section{Back End}
@@ -1101,9 +1101,9 @@ The various module design decisions and technologies selected are detailed below
 \subsection{Server - Flask and Python}
 The Flask application acts a server with Relay passing information through the system to desired endpoints. This application contains functionality for transforming data, making network requests, serving information to front-end, and interacting with the database.
 
-	Relay has multiple components and each works with the data in a specific format. Formatting is kept consistent throughout the system, using JSON formatted strings, but transformations are still required. The main transformation that needs to be performed is to change the time series data from the Erlang-server into information that can be better visualized on the front-end ‚Äì explained in a <SECTION>.
+	Relay has multiple components and each works with the data in a specific format. Formatting is kept consistent throughout the system, using JSON formatted strings, but transformations are still required. The main transformation that needs to be performed is to change the time series data from the Erlang-server into information that can be better visualized on the front-endÄì.
 
-	Network requests are defined by calls made to the Erlang-server, or ‚ÄúFramework‚Äù. The network contains all information regarding intersections, such as current behaviour, plans, and predictions. The Flask application is responsible for extracting this information and sending it to the database, front-end, or both.
+	Network requests are defined by calls made to the Erlang-server, or FrameworkÄù. The network contains all information regarding intersections, such as current behaviour, plans, and predictions. The Flask application is responsible for extracting this information and sending it to the database, front-end, or both.
 
 	Lastly, the main function of the server is to accept requests from the front-end, process them, and serve the required information. Initially the majority of the information served comes from the database, but once the system is running, data is sent directly from the network to the front-end. This linkage is depicted in the system diagram, Figure \ref{fig:system-diagram}.
 
@@ -1142,19 +1142,19 @@ In order to maintain up-to-date information in the interface, the client was req
 
 Real-time, distributed traffic control is an interesting problem, with many creative solutions.
 The modules and operators that handle individual intersection signal timing, data collection and backup, and statistical modelling, as well as the network topology that holds it all together is brought under the umbrella term ``Relay Framework'', in that the Relay Agent model can be used as a platform for developing more sophisticated agent-based traffic control suites.
-The network of Relay Agents implementing the Framework are colloquilally referred to as ``The Deep End'' (as opposed to the typical application terminology of ``Front End'' and ``Back End'').
+The network of Relay Agents implementing the Framework are colloquially referred to as ``The Deep End'' (as opposed to the typical application terminology of ``Front End'' and ``Back End'').
 
 The ultimate goal of the Relay Framework (as defined mathematically in Section~\ref{sec:def:agent}) is to illustrate that complex chaotic systems (such as distributed acyclic traffic control) can become tractable within the context of a straightforward, symmetrical peer-to-peer architecture.
-At the highest level, the loosely coordinated (read: not mesh) network of Relay \emph{Agents} tackles the traffic control problem through the intelligent use of local computation, rather than a single large-scale optimization problem to be undertaken sparsely at a centralised facility.
+At the highest level, the loosely coordinated (read: not mesh) network of Relay \emph{Agents} tackles the traffic control problem through the intelligent use of local computation, rather than a single large-scale optimization problem to be undertaken sparsely at a centralized facility.
 In isolation, each Relay Agent seeks to maximize intersection throughput (as measured through various arbitrary metrics) subject to local environmental/contextual constraints.
-In concert, the Network achieves a sort of pseudo-temporal consensus, which itself acts as a stabilising factor on the decisions made by each agent.
-In principle, the predictive consensus that is possible within the Relay Framework makes it \emph{easier} to achieve timing synchronisation between peers, despite not being a tightly coupled system.
+In concert, the Network achieves a sort of pseudo-temporal consensus, which itself acts as a stabilizing factor on the decisions made by each agent.
+In principle, the predictive consensus that is possible within the Relay Framework makes it \emph{easier} to achieve timing synchronization between peers, despite not being a tightly coupled system.
 
-We hypothesize that the added flexibility associated with such a scheme (i.e. being robust to failures, and reacting to anomalies) outweighs the potential cost associated with not having a centralised service.
+We hypothesize that the added flexibility associated with such a scheme (i.e. being robust to failures, and reacting to anomalies) outweighs the potential cost associated with not having a centralized service.
 
 This section is broken into 4 major components.
 Section~\ref{sec:deep:motivation} is a high-level discussion surrounding the architectural design principles used in formulating the foundations for Relay.
-Rationale for pursueing a sparsely connected peer-to-peer topology is presented, along with our approach for modelling uncertainty.
+Rationale for pursuing a sparsely connected peer-to-peer topology is presented, along with our approach for modelling uncertainty.
 Section~\ref{sec:def:agent} defines the mathematical relationships and constructs central to the Relay Agent's design, including notions of predictive and regressive signals, graph transformations etc.
 In section~\ref{sec:learning_in_relay} covers the manipulation of some of the design parameters central to the Agent's efficiency and performance, including reinforcement learning of delay kernels, and stochastic optimization procedures used to infer error in the underlying graph representation.
 Section~\ref{sec:predictions_in_relay} covers the composition of the Agent's state parameters, with the delay kernels, illustrating how predictions are made and maintained by each Agent.
@@ -1176,8 +1176,8 @@ A typical 4-inlet/outlet (symmetrical) intersection is shown in Figure~\ref{fig:
 	\includegraphics[width=\textwidth]{figures/Relay_Intersection_Graph.png}
 \end{figure}
 
-The concept of a generalized intersection within the Relay Framework is formalised in Section~\ref{sec:def:agent}.
-This view of the intersection can be interpreted as an instantaneous probabilistic transfer function: given that a vehicle enters an inlet, the emergent edges from that inlet represent the probabhility that the vehicle will \emph{emerge} at the prescribed outlet.
+The concept of a generalized intersection within the Relay Framework is formalized in Section~\ref{sec:def:agent}.
+This view of the intersection can be interpreted as an instantaneous probabilistic transfer function: given that a vehicle enters an inlet, the emergent edges from that inlet represent the probability that the vehicle will \emph{emerge} at the prescribed outlet.
 This probabilistic view of \emph{traffic as a wave} is found throughout the Framework, and forms the basis for many of the probabilistic signals used throughout.
 
 
@@ -1185,18 +1185,18 @@ This probabilistic view of \emph{traffic as a wave} is found throughout the Fram
 \label{sec:p2p_philosophy}
 
 Relay was designed to be a distributed system, both in the computer-science sense of the word, as well as the geographical sense.
-The advantages associated with a geographically distributed system are revolve around the reduction in concentration risk---for example, given a regional power-outage, or natural disaster the liklyhood that the entire network is affected is low if it is distributed across a large region.
-This of course comes at the cost of added complexity in agent design (i.e. in a typical peer-to-peer sense, each Agent becomes simultanously a client and server), as well as increasing the relative scarcity of inter-agent communication bandwidth.
+The advantages associated with a geographically distributed system are revolve around the reduction in concentration risk---for example, given a regional power-outage, or natural disaster the liklihood that the entire network is affected is low if it is distributed across a large region.
+This of course comes at the cost of added complexity in agent design (i.e. in a typical peer-to-peer sense, each Agent becomes simultaneously a client and server), as well as increasing the relative scarcity of inter-agent communication bandwidth.
 The underlying philosophy of the Relay Agent design is to mitigate these two constraints, while exaggerating the benefits associated with distribution.
 
-This design breaks with the traditional centralised (or recently, ``Cloud Based'') approach to traffic synchronisation, which is used extensively by modern installations (i.e. the ranks of which include Miovision's Spectrum).
+This design breaks with the traditional centralized (or recently, ``Cloud Based'') approach to traffic synchronization, which is used extensively by modern installations (i.e. the ranks of which include Miovision's Spectrum).
 
 \paragraph{Communication: Making Every Message Count}
 Relay Agents communicate a lot; their prediction feeds, their sensor feeds, etc.
 Thus is is infeasible for all Agents to be densely connected, as the system as a whole would be bogged down with network chatter.
 This constraint is addressed in two main components, the first of which is a explicit restriction on the connectivity of the Agents.
-As shown in Figure~\ref{fig:Relay_Network}, each Agent is only connected to its immediate peers (with suplementary connections made available on-demand---such as for system upgrades etc.).
-Thus the network that each agent \emph{sees} looks like a full mesh centered around it.
+As shown in Figure~\ref{fig:Relay_Network}, each Agent is only connected to its immediate peers (with supplementary connections made available on-demand---such as for system upgrades etc.).
+Thus the network that each agent \emph{sees} looks like a full mesh centred around it.
 This virtually eliminates poor scaling behaviour for large networks, and alleviates the associated computational burden associated with high-volume network traffic.
 
 \begin{figure}[!htpb]
@@ -1208,19 +1208,19 @@ This virtually eliminates poor scaling behaviour for large networks, and allevia
 However this puts additional constraints on the type of the information that can be communicated, and Agent can't (directly) inform its neighbour 3-intersections downstream of an incoming platoon, this information must be transformed and \emph{relayed} through the network.
 
 \paragraph{Dense Signals}
-As alluded to above, the network connectivity restrictions placed on the Relay network imply a severly reduced view of the traffic environment as a whole.
+As alluded to above, the network connectivity restrictions placed on the Relay network imply a severely reduced view of the traffic environment as a whole.
 In Relay, agent's get around this through explicit use of statistical projections/predictions of traffic flow.
 Their own internal schedules feed back into these predictions, and the predictions themselves propagate through the network, with each step in the propagation, each Agent modifies it with their own predictions.
 
 In essence, when one vehicle enters (stimulates) a connected inlet, the vehicle is no longer considered as a discrete event, but rather a probability wave. 
-In isolation, each Agent in the \emph{expected} path adjusts their behaviour schedules to allign with the expectation.
-Once the adjustment calculation is complete (which in an indeal world is instantaneously), the Agent then propagates a modified wave to its peers, and so on.
+In isolation, each Agent in the \emph{expected} path adjusts their behaviour schedules to align with the expectation.
+Once the adjustment calculation is complete (which in an ideal world is instantaneously), the Agent then propagates a modified wave to its peers, and so on.
 
 \paragraph{Leveraging Asynchronous Distributed Computation}
-In an abstract convergent sense, the network alligns itself to the most likely routes that this hypothetical vehicle would take.
-In essense, we \emph{cheat} the connectivity problem, by infusing each message with as much computation as is reasonable (after all, prediction is in general computationally expensive), this acts as a form of compression, albeit in terms of \emph{work}, the actual messages sent `over the wire' could also be compressed as well---but thats an implementation problem.
+In an abstract convergent sense, the network aligns itself to the most likely routes that this hypothetical vehicle would take.
+In essence, we \emph{cheat} the connectivity problem, by infusing each message with as much computation as is reasonable (after all, prediction is in general computationally expensive), this acts as a form of compression, albeit in terms of \emph{work}, the actual messages sent `over the wire' could also be compressed as well---but thats an implementation problem.
 
-If we take a snapshot of an Agent in time, we would expect to find a large amount of information that represents not just the local environment, but somthing that reflects the superposition of many peer's views of the network.
+If we take a snapshot of an Agent in time, we would expect to find a large amount of information that represents not just the local environment, but something that reflects the superposition of many peer's views of the network.
 In a sense, by examining the state of a given Agent, we can infer the traffic environment around it with great detail (essentially the resolution is temporal rather than spatial).
 
 \subsubsection{Modelling Uncertainty}
@@ -1228,10 +1228,10 @@ In a sense, by examining the state of a given Agent, we can infer the traffic en
 
 One of the most significant hurdles for any predictive component is the concept of uncertainty.
 As evidenced by the (relative) success of traffic control systems in general, traffic can be in many circumstances deterministically modelled (especially in the case of fixed-timing networks, wherein the traffic is whatever you decree it should be, regardless of whether that is `optimal').
-In Relay, there are two principal probabilistic models, the first is the intersection transition graph (as described in Section~\ref{subsubsec:intersection_modelling}, and formalised in Section~\ref{sec:def:intersection_graph}), which models the liklyhood that a vehicle will take a particular action at an intersection.
+In Relay, there are two principal probabilistic models, the first is the intersection transition graph (as described in Section~\ref{subsubsec:intersection_modelling}, and formalized in Section~\ref{sec:def:intersection_graph}), which models the liklihood that a vehicle will take a particular action at an intersection.
 This is used as the basis for transforming discrete \emph{real} traffic signals (derived from physical measurements) to expectation signals, as well as for the optimization associated with the signal timing.
 
-The second of which is the delay kernel, which is ultimately a statistically learned parameter which is formalised in Section~\ref{sec:def:expected_ingress}, in the context of informing predictions.
+The second of which is the delay kernel, which is ultimately a statistically learned parameter which is formalized in Section~\ref{sec:def:expected_ingress}, in the context of informing predictions.
 This way in which this parameter is learned is further described in Section~\ref{sec:learning_in_relay}.
 
 
@@ -1241,8 +1241,8 @@ This way in which this parameter is learned is further described in Section~\ref
 \subsection{The Relay Agent}
 \label{sec:def:agent}
 
-At its heart, Relay is a \emph{dynamic graph automata}, whose state changes (the most visible of which is the underlying traffic light values) are based on a combination of inputs from the environment, and its immediate neighbors in the Relay network.
-Each traffic controller in Relay is an autonomous \emph{Agent}, that (as the network deepens/expands) forms transient, asynchronous communication channels to its neighbors.
+At its heart, Relay is a \emph{dynamic graph automata}, whose state changes (the most visible of which is the underlying traffic light values) are based on a combination of inputs from the environment, and its immediate neighbours in the Relay network.
+Each traffic controller in Relay is an autonomous \emph{Agent}, that (as the network deepens/expands) forms transient, asynchronous communication channels to its neighbours.
 This section will formally describe and define the underlying mathematical constructs used to implement the various aspects of the controller, as well as the various inputs and outputs of the system.
 
 
@@ -1276,31 +1276,31 @@ It is thus the case that the sum of all exit probabilities associated with a giv
 \end{equation}
 
 
-\subsubsection{Agent Behavior}
-\label{sec:def:behaviors}
+\subsubsection{Agent Behaviour}
+\label{sec:def:behaviours}
 
 If the goal of these structures is to describe the Agent's representation of the state of the intersection it controls, then $\bf{G}$ is insufficient---after all, taken at face value, $\bf{G}$ implies that if two vehicles are incident at the same time, they both instantaneously \emph{diffuse} to their expected outlets, without any sort of interaction.
 Real intersections don't do this, and real vehicles are not waves (despite how much it would help traffic control).
 The entire concept of a `Red Light' is to avoid the superposition of vehicles in space and time.
 
 In Relay, the concept of a particular set of `active' or `Green' lights (canonically termed a ``phase'') are encapsulated in the \emph{Behavior} construct.
-Behaviors in Relay control the \emph{visible} intersection transition graph of the intersection, by operating on the values of particular edges.
+Behaviours in Relay control the \emph{visible} intersection transition graph of the intersection, by operating on the values of particular edges.
 In essence, setting a particular edge probability to zero, means that vehicles cannot transition through the edge; limiting the throughput of the intersection (kind of like a traffic light).
 
-Formally, behaviors in relay are elementwise masks on $\bf{G}$, each of which is a member of the finite set $\bf{B}$ as shown in equation~\eqref{eq:def:behaviors}.
+Formally, behaviours in relay are element-wise masks on $\bf{G}$, each of which is a member of the finite set $\bf{B}$ as shown in equation~\eqref{eq:def:behaviours}.
 
-\begin{equation}\label{eq:def:behaviors}
+\begin{equation}\label{eq:def:behaviours}
 	B_{ij} \in [0, 1] \; \forall B \in \bf{B}
-\end{equation}.
+\end{equation}
 
 Note that while we have defined the range of acceptable values for $B_{ij}$, we exclusively set each $B_{ij}$ to either 0, or 1 representing ``off'' and ``on'' respectively.
-Ultimately, the most important property of the Behavior, is that in composition with $\bf{G}$ it forms what we'll hereafter refer to the ``visible'' intersection graph, or rather the physically realizable transfer graph of the intersection.
+Ultimately, the most important property of the Behaviour, is that in composition with $\bf{G}$ it forms what we'll hereafter refer to the ``visible'' intersection graph, or rather the physically realizable transfer graph of the intersection.
 The visible graph $\bf{V}_k$ is thus defined in equation~\eqref{eq:def:visible_graph}.
 
 \begin{equation}\label{eq:def:visible_graph}
 	\left[V_k\right]_{n,n} = \left[B_k\right]_{n,n} \circ \left[\bf{G}\right]_{n,n}
 \end{equation}
-where $B_k$ is the $k^{th}$-member of the set of behaviors $\bf{B}$, and ``$X \circ Y$'' is the elementwise/Hadamard product of matrices $X$ and $Y$ (which must have the same shape).
+where $B_k$ is the $k^{th}$-member of the set of behaviours $\bf{B}$, and ``$X \circ Y$'' is the element-wise/Hadamard product of matrices $X$ and $Y$ (which must have the same shape).
 
 
 \subsubsection{Ingress Signals}
@@ -1325,7 +1325,7 @@ where $A_i$ (in the idealized representation) is the set of ingress events $\{(\
 \label{sec:def:egress}
 
 As previously described, the incidence signals represent the core \emph{real} measurements that are used by the agent.
-While immediate ingress information is necessary in that it is physically where the sensors for a particular intersection are often located, in their current state they are not useful signals for controlling the intersection behaviors/state transition (which is the reason for collecting the information to begin with).
+While immediate ingress information is necessary in that it is physically where the sensors for a particular intersection are often located, in their current state they are not useful signals for controlling the intersection behaviours/state transition (which is the reason for collecting the information to begin with).
 
 The motivation for performing a transformation on this data is further increased when we recall that Relay agents are designed to communicate with one another.
 
@@ -1348,32 +1348,32 @@ Intuitively, we would expect that the agent's visible graph would change in disc
 This is not far from the truth, and exposes the beating heart of the relay agent.
 
 
-\subsubsection{Behavior Transition}
+\subsubsection{Behaviour Transition}
 \label{sec:btg}
 
 As alluded to above, what makes signal timing control challenging is not inherently that there is a vast continuum of misinformation and environmental variability (although that certainly doesn't help the problem), but rather that we have a finite set of ``solutions'' or ``strategies'' to employ, and pesky physical restrictions (why can't all the lights be green all the time?).
 
-In equation~\eqref{eq:def:behaviors}, we referred to a set of behaviors $\bf{B}$, and in equation~\eqref{eq:def:egress} we referred to the time-varying graph $V(t)$.
-In order to define \emph{how} the visible graph changes over time (as a result of behaviors switching) we now introduce the concept of ``Behavior Transition'' in equation~\eqref{eq:def:btg}, whose edges are the incurred time-cost associated with a given behaviors transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
+In equation~\eqref{eq:def:behaviours}, we referred to a set of behaviours $\bf{B}$, and in equation~\eqref{eq:def:egress} we referred to the time-varying graph $V(t)$.
+In order to define \emph{how} the visible graph changes over time (as a result of behaviours switching) we now introduce the concept of ``Behaviour Transition'' in equation~\eqref{eq:def:btg}, whose edges are the incurred time-cost associated with a given behaviours transition (i.e. ``Yellow''-time between ``Green'' and ``Red'' states) as defined in equation~\eqref{eq:def:btg_costs}.
 
 \begin{equation}\label{eq:def:btg_costs}
 	\Tau = \{\mbox{cost}\left(B_i \mapsto B_j \right) : \forall B_i, B_j \in \bf{B} \}
 \end{equation}
 Where it should be noted that we have freedom to define an arbitrary transition cost function.
-Within the Relay implementation we have frequently used time-values corresponding to the legally mandated ``yellow'' time associated with transitions to ``Red'' (on the order of 2-seconds), or the dead-time associated with transitions from the ``Red'' behaviors.
+Within the Relay implementation we have frequently used time-values corresponding to the legally mandated ``yellow'' time associated with transitions to ``Red'' (on the order of 2-seconds), or the dead-time associated with transitions from the ``Red'' behaviours.
 
 \begin{equation}\label{eq:def:btg}
 	\bf{\Gamma} = G(\bf{B}, \Tau)
 \end{equation}
 
-Thus we define the Behavior Transition Graph $\Gamma$, as a directed graph whose nodes are behaviors (members of $\bf{B}$) and whose edges are the associated costs for transitions between adjacent behaviors.
+Thus we define the Behaviour Transition Graph $\Gamma$, as a directed graph whose nodes are behaviours (members of $\bf{B}$) and whose edges are the associated costs for transitions between adjacent behaviours.
 
 
 \subsubsection{Ingress Expectation}
 \label{sec:def:expected_ingress}
 
 In Section~\ref{sec:def:egress} we expressed that the egress signal of an agent's peer is only valuable in conjunction with some expectation of how long the signal will be delayed.
-For example, if we know that on average the train will take 20-minutes to travel from the neighboring train station to the local one, we can  generate an expected arrival time for the train.
+For example, if we know that on average the train will take 20-minutes to travel from the neighbouring train station to the local one, we can  generate an expected arrival time for the train.
 In Relay, this expectation is generalized to include arbitrary delay-\emph{kernels}.
 
 Recall in Section~\ref{sec:def:ingress} that we generated an ingress signal based purely on local measurements.
@@ -1382,7 +1382,7 @@ The Agents in Relay also generate an \emph{expected ingress} signal $E\left[a_i(
 \begin{equation}\label{eq:def:expected_ingress}
 	E\left[a_i\right](t) = \sum_{j} \left(e_j^{nbr}(t) + E\left[e_j^{nbr}\right](t) \right) * h_{ji}(t)
 \end{equation}
-where $e_j^{nbr}(t)$ is the egress signal (as defined in equation~\eqref{eq:def:egress}) of the neighboring agent that is upstream of the $i^{th}$ inlet of the local agent, and $E\left[ \cdot \right]$ denotes the expected value.
+where $e_j^{nbr}(t)$ is the egress signal (as defined in equation~\eqref{eq:def:egress}) of the neighbouring agent that is upstream of the $i^{th}$ inlet of the local agent, and $E\left[ \cdot \right]$ denotes the expected value.
 It is important to note the choice of notation $E[\cdot](t)$ vs. $E[\cdot(t)]$, where the latter denotes the expected value of the signal, the former is used to denote the \emph{expectation} that the signal (over time) will take a certain \emph{form}, thus $E[\cdot](t)$ is a signal of expectations.
 Further note that by including a summation over $j$ there can be multiple upstream signals that can be combined to generate this expectation.
 Further note the inclusion of the expected upstream egress signal---the derivation of which can be found in equation~\eqref{eq:def:expected_egress}.
@@ -1392,10 +1392,10 @@ In the Relay prototype, these took the form of Gamma distributions, whose parame
 \subsubsection{Egress Expectation}
 \label{sec:def:expected_egress}
 
-In Section~\ref{sec:def:expected_ingress} we formulated the expected ingress signal in terms of a delay kernel $h(\tau)$ and a superposition of signals from a neighboring agent---explicitly relying on inter-agent communication, and prior knowledge of the particular delay distribution between the connected agents.
+In Section~\ref{sec:def:expected_ingress} we formulated the expected ingress signal in terms of a delay kernel $h(\tau)$ and a superposition of signals from a neighbouring agent---explicitly relying on inter-agent communication, and prior knowledge of the particular delay distribution between the connected agents.
 
 In a similar fashion, the expectation of the local egress signal follows a similar flow, albeit with a subtle variation.
-In equation~\eqref{eq:def:expected_ingress} the expected ingress was formed (in part) from a signal derived exclusively from real measurements; namely $e^{nbr}_j(t)$---a neighbor's egress signal, which via equation~\eqref{eq:def:egress} was directly derived from real measurements (incidence signals).
+In equation~\eqref{eq:def:expected_ingress} the expected ingress was formed (in part) from a signal derived exclusively from real measurements; namely $e^{nbr}_j(t)$---a neighbour's egress signal, which via equation~\eqref{eq:def:egress} was directly derived from real measurements (incidence signals).
 
 An agent's expected egress is co-recursively defined in terms of its expected ingress in equation~\eqref{eq:def:expected_egress} which is simply a repetition of equation~\eqref{eq:def:egress}, utilizing the linearity of the expectation operator.
 
@@ -1407,20 +1407,20 @@ An agent's expected egress is co-recursively defined in terms of its expected in
 \end{align}
 In equation~\eqref{eq:def:expected_egress} the Covariance of the two time-signals is assumed to be near zero, however it is important to understand the cases where such approximations may introduce large error into the system.
 The first of these is predictive feedback.
-Due to the corecursive definition of the expected egress and ingress, the results from one calculation can propagate through a closed loop of peers, thus becoming correlated to the other.
+Due to the co-recursive definition of the expected egress and ingress, the results from one calculation can propagate through a closed loop of peers, thus becoming correlated to the other.
 
 The second relies on the transition plan associated with the agent, which is remains constant over a relatively short timescale, and directly controls $V_{ij}(t)$, and thus the expected egress of an agent.
 In general, it is hypothesized that for loosely-coupled networks (characterized by having delay kernels with large average delays) this is a nonissue.
 For tightly coupled networks, care should be taken incorporating prediction values in the optimization routine chosen to generate plans.
-However, it may be the case that in the \emph{real} world, it is unlikely that individual participants would exhibit geographically cyclic behaviors exaggerated enough to damage the validity of the expected egress prediction (i.e.\ driving in circles).
-To add even greater ambiguity, we hypothesize that the introduction of bias due to the assumption of statistical independence may actually increase performance in tightly coupled networks (i.e.\ by implicitly biasing agent's timing in favor of things with cyclic behaviors, such as public transport and logistic vehicles).
+However, it may be the case that in the \emph{real} world, it is unlikely that individual participants would exhibit geographically cyclic behaviours exaggerated enough to damage the validity of the expected egress prediction (i.e.\ driving in circles).
+To add even greater ambiguity, we hypothesize that the introduction of bias due to the assumption of statistical independence may actually increase performance in tightly coupled networks (i.e.\ by implicitly biasing agent's timing in favour of things with cyclic behaviours, such as public transport and logistic vehicles).
 
 \subsubsection{Acyclic Scheduling}
 \label{seq:def:plan}
 
-In a sense, the final piece of the Relay Agent puzzle; the Agent internally stores a \emph{plan} that governs when, and to which behaviors the agent will transition over some future time window.
-The ``Behavior Transition Plan'' (BTP, or simply ``plan'') is the combination of a particular \emph{path} through the behaviors transition graph (defined in equation~\eqref{eq:def:btg}) with the times associated with each step in the path.
-Given a plan, it is thus possible to generate the visible graph signal $\bf{V}(t)$, and via a behaviors lookup-table, this process is invertible.
+In a sense, the final piece of the Relay Agent puzzle; the Agent internally stores a \emph{plan} that governs when, and to which behaviours the agent will transition over some future time window.
+The ``Behaviour Transition Plan'' (BTP, or simply ``plan'') is the combination of a particular \emph{path} through the behaviours transition graph (defined in equation~\eqref{eq:def:btg}) with the times associated with each step in the path.
+Given a plan, it is thus possible to generate the visible graph signal $\bf{V}(t)$, and via a behaviours lookup-table, this process is invertible.
 The plan---and its properties, are defined in equations~\eqref{eq:def:plan}.
 
 \begin{align}\label{eq:def:plan}
@@ -1429,13 +1429,13 @@ The plan---and its properties, are defined in equations~\eqref{eq:def:plan}.
 	\forall i &\in [0, d]\}
 \end{align}
 
-Which is to say, that each successive step in the plan must take place after the current step plus the cost of taking the step (as formalized in equation~\eqref{eq:def:btg}), and that each successive behaviors, must be adjacent-reachable in $\Gamma$.
+Which is to say, that each successive step in the plan must take place after the current step plus the cost of taking the step (as formalized in equation~\eqref{eq:def:btg}), and that each successive behaviours, must be adjacent-reachable in $\Gamma$.
 Additionally, the length of the sequence is limited to some finite integer $d$, which corresponds to the \emph{depth} of the path (or length).
 
-In equation~\eqref{eq:def:behavior_signal} we define how the plan defines the behavior signal.
+In equation~\eqref{eq:def:behaviour_signal} we define how the plan defines the behaviour signal.
 Given this description of a path, it is trivial to connect this representation to the visible graph signal $\bf{V}(t)$ as defined in equation~\eqref{eq:def:visible_graph}.
 
-\begin{equation}\label{eq:def:behavior_signal}
+\begin{equation}\label{eq:def:behaviour_signal}
 	B(t) = \sum_{k=1}^{d-1} (u(t - t_{k-1}) - u(t - t_k)) B_k, \; (B_k, t_k) \in \; \mbox{plan}
 \end{equation}
 Where $u(\tau)$ is the Heaviside/unit-step function defined in equation~\eqref{eq:def:u}
@@ -1447,7 +1447,7 @@ Where $u(\tau)$ is the Heaviside/unit-step function defined in equation~\eqref{e
 		\end{array}
 		\right.
 	\end{equation}
-It is through manipulations of $\Gamma$ that the agent is able to consider various behaviors, as well as limit the acyclic behaviors associated with a \emph{plan} to legal states (for both real-world and abstract definitions of ``Legal'').
+It is through manipulations of $\Gamma$ that the agent is able to consider various behaviours, as well as limit the acyclic behaviours associated with a \emph{plan} to legal states (for both real-world and abstract definitions of ``Legal'').
 
 %%  LEARNING IN RELAY  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Learning in Relay}
@@ -1541,7 +1541,7 @@ k & index in sampled signal \\
 d_{kj} & $k^{th}$ element in downstream neighbour arrival signal connected to agent node $j$ \\
 c_{ki} & $k^{th}$ element in inlet signal at agent node $i$ \\
 p_{ij} & corresponding inlet-outlet edge probability \\
-\tau_{j} & time delay distribution along edge connecting agent node $j$ to neighbor \\
+\tau_{j} & time delay distribution along edge connecting agent node $j$ to neighbour \\
 \end{conditions*}
 
 This is an underdetermined system and thus cannot be solved with normal optimization methods, as is. 
@@ -1567,7 +1567,7 @@ It was isolated and solved for with the formulation:
 \end{align}
 Where:
 \begin{conditions*}
-D & vector of neighbor departing signals \\
+D & vector of neighbour departing signals \\
 C & vector of arrival signals
 \end{conditions*}
 
@@ -1597,32 +1597,32 @@ In \eqref{eqn:BPM-update}, $i$ represents the agents ID and $BPM_{est}^{i}$ is t
 Making predictions of traffic is an essential component of Relay. 
 This is the foundation of intelligence in the system and assists each agent in making decisions regarding behaviour execution. 
 Predictions represent an estimation of local traffic $x$ seconds into the future, with the length being determined by the needs of the controller. 
-Higher-order predictions, one‚Äôs that require information from the larger neighborhood, can also be generated, but with less fidelity. 
+Higher-order predictions, ones that require information from the larger neighbourhood, can also be generated, but with less fidelity. 
 The details on how these predictions are performed is discussed below.
 
 \subsubsection{Utilizing Neighborhood Information}
 As discussed in section~\ref{subsubsec:net-top}, agents are connected to each of their neighbors, forming a grid-like mesh structure. 
-This design choice allows for each agent to ``talk‚Äù with its neighbors, gaining access to all information stored. 
-This ``sharing‚Äù of information is essential to keep agents informed on events occurring in the neighborhood.
+This design choice allows for each agent to ``talk” with its neighbors, gaining access to all information stored. 
+This ``sharing” of information is essential to keep agents informed on events occurring in the neighborhood.
 Information is either requested or directly sent to a specific agent, depending on the type: current queues, predictions, plans, events, etc.
- Agents can freely communicate by simply ``asking‚Äù their neighbors for the specified data. 
+ Agents can freely communicate by simply ``asking” their neighbors for the specified data. 
 An event centre is constructed on each agent to handle incoming and outgoing requests, making communication efficient and standardized across the network (discussed further in later sections).
 
-	While an agent is not directly connected to other agents in its extended neighborhood, if required, it can indirectly access this information. 
-Any agent can ``inject" requests into its neighbors to obtain information from their neighbors, and so on (again, specifics discussed in later sections). 
-This isn‚Äôt used often, as fidelity decreases quickly as requests propagate outward, but, for example, it is necessary for calculating higher-order predictions.
+	While an agent is not directly connected to other agents in its extended neighbourhood, if required, it can indirectly access this information. 
+Any agent can ``inject" requests into its neighbours to obtain information from their neighbours, and so on (again, specifics discussed in later sections). 
+This is not used often, as fidelity decreases quickly as requests propagate outward, but, for example, it is necessary for calculating higher-order predictions.
 
 
 \subsubsection{Making a Prediction}
-To make a prediction, the agent must combine the learned edge probabilities with the time delay estimates for each neighboring agent. 
-This utilizes previously calculated information about the agent‚Äôs in the neighborhood, to derive a predicted incoming signal for each node at the agent of interest. 
+To make a prediction, the agent must combine the learned edge probabilities with the time delay estimates for each neighbouring agent. 
+This utilizes previously calculated information about the agents in the neighbourhood, to derive a predicted incoming signal for each node at the agent of interest. 
 Equation \ref{eqn:first-order-pred} outlines the basic formulation for making this prediction, $Pr_{i}$, where $i$ represents the inlet node id. 
 If the length of signal initially calculated is longer than the requested time, excess information will be trimmed. 
-If the length requested is longer than this next-neighbor prediction, a higher-order prediction is calculated, known as $Pr_{i}^{*}$.
+If the length requested is longer than this next-neighbour prediction, a higher-order prediction is calculated, known as $Pr_{i}^{*}$.
 
-This information also creates useful visualizations for traffic engineers, giving them the ability to ``see into the future‚Äù. 
-While they wouldn‚Äôt necessarily act upon this information, they would have an expectation of traffic at each intersection. 
-It also gives context for why the next behaviour was selected (i.e. the ``plan") ‚Äì this is discussed further in later sections.
+This information also creates useful visualizations for traffic engineers, giving them the ability to ``see into the future”. 
+While they wouldn’t necessarily act upon this information, they would have an expectation of traffic at each intersection. 
+It also gives context for why the next behaviour was selected (i.e. the ``plan") – this is discussed further in later sections.
 
 \begin{equation}
 	Pr_{i}^{\star} = d_{e_i} \ast \tau_{i}
@@ -1634,18 +1634,18 @@ It also gives context for why the next behaviour was selected (i.e. the ``plan")
 \end{equation}
 Where:
 \begin{conditions*}
-p_{kj}^{nbr} & edge probability for signal at $k^{th}$ neighbor node, exiting $j^{th}$ node \\
-d_{e_i} & expected departing signal from neigbhor node connected to agent node $i$ \\
-c_{k,i}^{nbr} & real incoming signal at $k^{th}$ node of neighbor agent connected to agent node $i$ \\
-\tau_{i} & time delay distribution along edge connecting agent node $i$ to neighbor \\
-k & neighbor inlet id \\
-j & neighbor outlet id
+p_{kj}^{nbr} & edge probability for signal at $k^{th}$ neighbour node, exiting $j^{th}$ node \\
+d_{e_i} & expected departing signal from neigbhour node connected to agent node $i$ \\
+c_{k,i}^{nbr} & real incoming signal at $k^{th}$ node of neighbour agent connected to agent node $i$ \\
+\tau_{i} & time delay distribution along edge connecting agent node $i$ to neighbour \\
+k & neighbour inlet id \\
+j & neighbour outlet id
 \end{conditions*}
 
 
 \subsubsection{Higher-Order Predictions}
-As mentioned previously, if the requested prediction is longer than the neighbors can provide, a higher-order, or remote, prediction is made. 
-This is performed in the same manner as a first-order prediction, but utilizes each neighbor‚Äôs current incoming prediction signal as well, $Pr_{k,i}^{nbr}$.
+As mentioned previously, if the requested prediction is longer than the neighbours can provide, a higher-order, or remote, prediction is made. 
+This is performed in the same manner as a first-order prediction, but utilizes each neighbour'Äôs current incoming prediction signal as well, $Pr_{k,i}^{nbr}$.
  If even larger predictions are required, predictions can be extended to more distant nodes, but these would be very low quality and carry low weight ‚Äì these are multiplied by each intersections edge probability, intrinsically lowering their strength. 
 Again, the signal is trimmed at the end to match the requested length.
 
@@ -1659,13 +1659,13 @@ Again, the signal is trimmed at the end to match the requested length.
 \end{equation}
 Where:
 \begin{conditions*}
-Pr_{k,i}^{nbr} & prediction signal at $k^{th}$ neighbor node, connected to agent node $i$ \\
-p_{kj}^{nbr} & edge probability for signal at $k^{th}$ neighbor node, exiting $j^{th} $node \\
-d_{e_i} & expected departing signal from neigbhor node connected to agent node $i$ \\
-c_{k,i}^{nbr} & real incoming signal at $k^{th}$ node of neighbor agent connected to agent node $i$ \\
-\tau_{i} & time delay estimation along edge connecting agent node $i$ to neighbor \\
-k & neighbor inlet id \\
-j & neighbor outlet id
+Pr_{k,i}^{nbr} & prediction signal at $k^{th}$ neighbour node, connected to agent node $i$ \\
+p_{kj}^{nbr} & edge probability for signal at $k^{th}$ neighbour node, exiting $j^{th} $node \\
+d_{e_i} & expected departing signal from neigbhour node connected to agent node $i$ \\
+c_{k,i}^{nbr} & real incoming signal at $k^{th}$ node of neighbour agent connected to agent node $i$ \\
+\tau_{i} & time delay estimation along edge connecting agent node $i$ to neighbour \\
+k & neighbour inlet id \\
+j & neighbour outlet id
 \end{conditions*}
 
 \subsection{Scheduling in Relay}
@@ -1673,7 +1673,7 @@ j & neighbor outlet id
 
 In Section~\ref{sec:def:agent} we defined the various design parameters that are necessary to implement the Relay Agent, however we omitted explicit descriptions of how particular values come to exist.
 In equation~\eqref{eq:def:visible_graph} we illustrated that the Agent's transfer function (and various associated predictions/expectations) was itself a matrix-valued signal, that depended explicitly on the \emph{path} (as defined in equation~\eqref{eq:def:plan})
-We then described how the behavior signal was defined in terms of the plan in equation~\eqref{eq:def:behavior_signal}.
+We then described how the behaviour signal was defined in terms of the plan in equation~\eqref{eq:def:behaviour_signal}.
 Within this section we present the basic Relay ``Max Flow'' objective function, which is used to generate plans.
 We then go on to discuss how the (somewhat naive) model could be improved with the introduction of heuristics and real-world constraints.
 Ultimately, the Relay Agent should pick and execute the ``best plan'', given current predictions and biases present, taking into consideration the management of queues.
@@ -1699,14 +1699,14 @@ For convenience, we also define the complement $\phi$ in equation~\eqref{eq:def:
 Within the scheduling procedure, we use relatively simple queue models, which function essentially as asymptotic Markov Queues, wherein the probability of a client being served is treated as a \emph{rate}.
 Thus (at least within the prototype implementation), the notion of a \emph{queue} is more akin to an accumulator/integrator of the incidence events \emph{not served}.
 The accumulator is also constantly emitting flow into the intersection governed by its availability to do so (governed by the gating signal $\beta(t)$ defined  in equation~\eqref{eq:def:gating_beta}.
-In general, Relay allows accumulators that are expressed as arbitrary dynamical systems, however within the domain of queuing systems, sufficiently complex behavior can be expressed quite simply as a first-order dynamical system depending on nothing but the current state of the queue, and some input (canonically termed Markov Queues).
+In general, Relay allows accumulators that are expressed as arbitrary dynamical systems, however within the domain of queuing systems, sufficiently complex behaviour can be expressed quite simply as a first-order dynamical system depending on nothing but the current state of the queue, and some input (canonically termed Markov Queues).
 
 \begin{equation}\label{eq:def:accumulator_general}
 	\frac{dq_i}{dt} = \phi_i f(t) - \beta_i g(q) u(q)
 \end{equation}
 where $f(t)$ is typically associated with the ingress signal (expected or otherwise), and $g(q)$ describes the rate at which accumulations are released.
 This model can be expanded to arbitrary complexity, however we have found that at least in demonstrating the principle of the Relay system, simple models are more tractable (especially in simulation).
-Some examples we have used succesfully are outlined in the following sub-sections.
+Some examples we have used successfully are outlined in the following sub-sections.
 
 \paragraph{Constant Relief}
 With the ``Constant Relief'' model, the outflow from a particular queue is assumed to be constant, in other words $g(q) = r$, where $r$ is the rate coefficient of the queue.
@@ -1725,7 +1725,7 @@ This is encapsulated in this nonlinear queue mode depicted in equation~\eqref{eq
 \begin{equation}\label{eq:def:queue_exp}
 	\frac{dq_i}{dt}(t) = \phi_i(t) a_i(t) - r_i u(q(t)) e^{-\eta_i q(t)}
 \end{equation}
-Where $\eta_i$ is the associated congestion \emph{rate}, and $r_i$ as before is the uncongested rate.
+Where $\eta_i$ is the associated congestion \emph{rate}, and $r_i$ as before is the un-congested rate.
 
 \paragraph{Predictive Queue Modelling}
 As alluded to throughout this section, Relay operates on a collection of time-domain signals that are defined both in the past (in terms of ingress/egress etc.) as well as the future in the form of predictions.
@@ -1752,10 +1752,10 @@ By substituting equations~\eqref{eq:def:gating_beta},\eqref{eq:def:gating_phi}:
 \begin{equation}\label{eq:def:sub_objective2}
 	\Phi_i(\beta_i) = \int_0^t \beta_i \left(g_i(q_i(\tau)) + E[a_i](\tau)\right) - E[a_i](\tau) d\tau
 \end{equation}
-Noting that $\beta_i$ is defined in terms of the agent's visible graph as of equation~\eqref{eq:def:gating_beta}, which is in turn defined based on the behavior signal.
-Thus all other factors remaining constant, the inlet flux $\Phi_i$ is the result of an explicit function of the behavior chosen, and thus the underlying path.
+Noting that $\beta_i$ is defined in terms of the agent's visible graph as of equation~\eqref{eq:def:gating_beta}, which is in turn defined based on the behaviour signal.
+Thus all other factors remaining constant, the inlet flux $\Phi_i$ is the result of an explicit function of the behaviour chosen, and thus the underlying path.
 
-Ultimately, the total biased-flow through the intersection, as a function of the plan $p$ which parametrizes $B$ by~\eqref{eq:def:behavior_signal}, which in turn defines $\beta$ via equation~\eqref{eq:def:gating_beta}.
+Ultimately, the total biased-flow through the intersection, as a function of the plan $p$ which parametrizes $B$ by~\eqref{eq:def:behaviour_signal}, which in turn defines $\beta$ via equation~\eqref{eq:def:gating_beta}.
 \begin{equation}\label{eq:def:biased_flow}
 	\bf{\Phi}_p = \sum_{i=1}^n \Phi_i
 \end{equation}
@@ -1771,7 +1771,7 @@ Subject to:
 	t_d &\leq t_{max}
 \end{align}
 recalling that $d$ is the depth of the path $p$, and that $t_d$ is the last time associated with the path.
-Further recall that all constraints placed on the validity of a particular path are encapsulated in the definition of the path $p$, (i.e. they must be temporally successive, and infinitesimally short steps are prohibited via the Behavior Transition Graph).
+Further recall that all constraints placed on the validity of a particular path are encapsulated in the definition of the path $p$, (i.e. they must be temporally successive, and infinitesimally short steps are prohibited via the Behaviour Transition Graph).
 
 Note this is a combination set-cover (NP-complete), and nonlinear programming problem.
 For efficiency, it is best to separate the integer aspect out (separate out the time component of the path from the graph component).
@@ -1779,15 +1779,15 @@ This is described below:
 \begin{equation}\label{eq:def:minlp_objective}
 	\argmax_{p.B} \argmax_{p.t} \bf{\Phi}_{p.B}
 \end{equation}
-where $p.B$ is the sequence of behaviors (irrespective of their relative timing), and $p.t$ is the timing (given a behavior sequence $p.B$.
-Thus for each behavior, we evaluate the best possible flux given changes to the relative timing, and use the combination $p =  (p.B, p.t)$ that gives the best outcome.
+where $p.B$ is the sequence of behaviours (irrespective of their relative timing), and $p.t$ is the timing (given a behaviour sequence $p.B$.
+Thus for each behaviour, we evaluate the best possible flux given changes to the relative timing, and use the combination $p =  (p.B, p.t)$ that gives the best outcome.
 
 \subsection{Agent Implementation}
 
 The Relay Prototype implementation was designed according to our functional requirements.
 Agents must be able to communicate their state to a third party (i.e. the Back-End), and pass messages to their immediate neighbours (as defined in a connectivity graph used to initialize the network).
 
-The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy Webserver (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol.
+The prototype implementation was constructed using a combination of the Erlang and Python programming languages, in conjunction with the Erlang Cowboy WebServer (for exposing a REST API to the back-end), and ErlPort: a python interface to the Erlang Port protocol.
 
 A high-level overview of the implementation is detailed in Figure~\ref{fig:agent_implementation}.
 \begin{figure}\label{fig:agent_implementation}
@@ -1800,7 +1800,7 @@ The State Manager additionally exposes an interface specifically for the Back-En
 The network mediator is in charge of maintaining a set of subscriptions and obligations, as well as receiving and parsing local sensor information, which is then subsequently passed to the Ingress/Egress Queue manager.
 
 The Scheduling and Prediction services operate slightly differently.
-Rather than being explicitly controlled by the Controller, the controller simply periodically requests that they perform their function, and independently updating the State Manager when their compuation is complete (some operations can take a long time).
+Rather than being explicitly controlled by the Controller, the controller simply periodically requests that they perform their function, and independently updating the State Manager when their computation is complete (some operations can take a long time).
 
 The Python Port exposes the Erlang Application to one-or-many stateless Python processes, which perform the necessary floating point work via NumPy routines, everything else in the system is written entirely in Erlang. The Controller is described in Figure~\ref{fig:agent_controller}.
 
@@ -1820,10 +1820,10 @@ In this manner it was possible to communicate ``over the wire'' to a myriad of s
 Additionally, through the use of OTP-\emph{applications}, there is pragmatically no difference between multiple Agents being simulated on a single machine communicating with each other, and multiple agents being simulated on different, geographically separated machines, communicating with each other (albeit with the obvious increase of latency).
 
 \subsubsection{Number Crunching}
-If concurrent operation, scalabilty and fault-tolerance are Erlang's strengths, floating point work (colloquially ``Number Crunching'') is one of its most predominant weakness (in the context of implementing Relay).
+If concurrent operation, scalability and fault-tolerance are Erlang's strengths, floating point work (colloquially ``Number Crunching'') is one of its most predominant weakness (in the context of implementing Relay).
 
 We used ErlPort, a Library that utilizes Erlang's Port-protocol to interface natively between operating system processes running the Erlang VM, and Python respectively.
-Thus whenever a particularly numerical computation needed to be performed (i.e. generating predictions, batch reinforcement learning, and scheduling), the associated Agent (whose existence is encapsualted within a particular Erlang application), would submit a request to the Python port, which would perform the computation, and return the result asynchronously.
+Thus whenever a particularly numerical computation needed to be performed (i.e. generating predictions, batch reinforcement learning, and scheduling), the associated Agent (whose existence is encapsulated within a particular Erlang application), would submit a request to the Python port, which would perform the computation, and return the result asynchronously.
 
 Python with (NumPy) was chosen to facilitate the optimization and machine learning (massive floating point work) algorithms associated with an individual agent.
 An additional advantage (from the prototype implementation/simulation perspective) was that a single Python ``workhorse'' process could be shared by more than one Relay Agent, thus preserving OS resources on the host machine running the simulation, and allowing us to simulate additional Agents concurrently.
@@ -1868,7 +1868,7 @@ Next steps include continuing to build out the Roads functionality, such that th
 
 \subsection{Functional Requirements Analysis}
 
-The initial functional requirements which drove the development of the solution will be used to test the application. Requirements are divided into three sections: Network Requirements N1 -- N4, Intersection Requirements, I1 -- I9, and Road Requirements R1 -- R7. The functional requirements assessment is outline in table \ref{table:freqassessment}. Each functional requirement will be assesed for whether the requirement has been implemented within the interface. In order to test this, the design team reviewed the final implementation of the Relay Front End application by deciding whether the functional requirement in question was true. For example, given requirement N1, the design team decided that it was indeed possible to see all of the intersections in the network on a map, thus the functional requirement was marked as completed.
+The initial functional requirements which drove the development of the solution will be used to test the application. Requirements are divided into three sections: Network Requirements N1 -- N4, Intersection Requirements, I1 -- I9, and Road Requirements R1 -- R7. The functional requirements assessment is outline in table \ref{table:freqassessment}. Each functional requirement will be assessed for whether the requirement has been implemented within the interface. In order to test this, the design team reviewed the final implementation of the Relay Front End application by deciding whether the functional requirement in question was true. For example, given requirement N1, the design team decided that it was indeed possible to see all of the intersections in the network on a map, thus the functional requirement was marked as completed.
 
 \begin{longtable}[H]{| P{6.5cm} | P{2.5cm} | P{6cm} |}
     \hline
@@ -1919,13 +1919,13 @@ However, due to time requirements, rigorous testing is neither wanted nor warran
 For example, the request handler is invoked every time the Interface needs new information, this module should be exceptionally robust to failure.
 In a similar fashion, database connections can involve a significant amount of complexity if handled poorly.
 Within this respect we follow the motto that the architecture should guide development to reduce the likelihood of system failure.
-In this string, we have endeavored to architect the Relay system as multiple pseudo-independent modules, each with their own functional (correct) core.
+In this string, we have endeavoured to architect the Relay system as multiple pseudo-independent modules, each with their own functional (correct) core.
 This design pattern is commonly referred to as ``Ports and Adapters'' or ``Hexagonal Architecture''.
 
 \subsection{Integration Testing}
 The following integration tests are all pass/fail procedures aimed to ensure each module is functioning. 
 These tests will demonstrate that disparate pieces of the system work together. 
-These tests are centered on the Flask server, and cover information and request handling from the Interface, Framework, and database. 
+These tests are centred on the Flask server, and cover information and request handling from the Interface, Framework, and database. 
 The table below contains each test and results from testing on the final prototype.
 
 \subsubsection{Results}
@@ -1935,7 +1935,7 @@ As seen in the above table all integration tests have passed. All subsystems wit
     \hline
     Test                             & Description                                                                                                 & Results \\ \hline
     Handle requests from Interface   &  Interface can pass POST and GET requests to Flask server for processing.                                   & Pass    \\ \hline
-    Return data to Interface         &  Server successfully returns requested information to Interface. Data is parsable and useable by Interface. & Pass    \\ \hline
+    Return data to Interface         &  Server successfully returns requested information to Interface. Data is parsible and useable by Interface. & Pass    \\ \hline
     Make Requests to Framework       &  Server can make HTML requests to Framework through Python requests library.                                & Pass    \\ \hline
     Handle data sent from Framework  &  Server successfully handles and parses requested.                                                          & Pass    \\ \hline
     Make requests to SQLite database &  Server can query associated database through Python sqlite3 library.                                       & Pass    \\ \hline
@@ -1947,7 +1947,7 @@ As seen in the above table all integration tests have passed. All subsystems wit
 \subsection{Integration Testing}
 The following integration tests are all pass/fail procedures aimed to ensure each module within the Relay Framework is functioning. 
 These tests will demonstrate that disparate pieces of this system work together. 
-These tests are centered on the components of the Framework, and cover information and request handling from the Flask server, between Erlang processes, Python computational components, as well as inter-agent communication. 
+These tests are centred on the components of the Framework, and cover information and request handling from the Flask server, between Erlang processes, Python computational components, as well as inter-agent communication. 
 The table below contains each test and results from testing on the final prototype.
 
 \subsubsection{Results}
@@ -1968,15 +1968,15 @@ As seen in the above table all integration tests have passed. All subsystems wit
 
 \subsubsection{Notable Failures}
 Many approximations had to be made within the context of implementing the Agent Pattern as defined in Section~\ref{sec:def:agent}.
-Without the explicit usage of a traffic micro-simulator such as Vissim, it is impossible to gather reasonable performance data.
+Without the explicit usage of a traffic micro-simulator such as VisSim, it is impossible to gather reasonable performance data.
 Thus much of our testing was designed to demonstrate that the system was actually performing the computations as we interpreted them.
-Thus the most salient failiure of our prototypical implementation is the lack of conclusive results.
+Thus the most salient failure of our prototypical implementation is the lack of conclusive results.
 
-The Agents could communicate, and generate signals, however the underlying optimization routine was being stimulated with \emph{fake} data, and it could be argued that the network had insufficient depth for us to truly devine whether significant optimzation was taking place.
+The Agents could communicate, and generate signals, however the underlying optimization routine was being stimulated with \emph{fake} data, and it could be argued that the network had insufficient depth for us to truly define whether significant optimization was taking place.
 One of the main failures of traffic control systems as currently implemented (research or otherwise), is the lack of hard data for large, tightly-coupled systems (those that exist typically keep that data proprietary), as defined, we expect the Relay Pattern is a good fit for large distributed traffic networks, however our \emph{simulation} of 15 agents was insufficient to demonstrate this effect.
 
 Similarly, as our simulation didn't actually generate ``congested'' data, it is difficult to ascertain whether the system performed.
-A common addage within the traffic engineering community to this point is that ``Adaptive Systems are great, but in gridlock, the best system will be equalled by a stop sign''.
+A common adage within the traffic engineering community to this point is that ``Adaptive Systems are great, but in gridlock, the best system will be equalled by a stop sign''.
 
 \newpage
 \chapter{Recommended Design Modifications}
@@ -2069,7 +2069,7 @@ This would help to increase safety in these areas by working to either route car
 These types of biases would then be tested in simulations, and performance improvements measured.
 
 \subsection{Utilize Historical Data}
-This is related to the previous point of ``Integrating Auxiliary Information‚Äù, but would come from within the system. The system was not run long enough to collect ``historical‚Äù data, but it is recommended that future development work incorporate this information in the optimization procedures. 
+This is related to the previous point of ``Integrating Auxiliary Information''Äù, but would come from within the system. The system was not run long enough to collect ``historical''Äù data, but it is recommended that future development work incorporate this information in the optimization procedures. 
 By utilizing historical trends, the system can better predict expected traffic flows and ultimately perform better. 
 Additional request handlers could be attached to optimization processes to accept this information and incorporate it into the calculations. 
 For example, if it is notified of an upcoming sporting event, it could look back at previous events and their impact on traffic flows. 
@@ -2078,7 +2078,7 @@ This information could then be used to bias signal plans to accommodate the expe
 Historical trends and data could also be exposed through the Flask server to the Interface. 
 This could provide useful insights for traffic engineers and the general public, identifying times of high traffic and assisting in route planning.
 
-\subsection{Exploiting Neighborhood Redundancy - The ``Super Node"}  % Possibly redundant.
+\subsection{Exploiting Neighbourhood Redundancy - The ``Super Node"}  % Possibly redundant.
 Future research could be conducted to tackle the challenge of optimizing network communication within the purview of the neighbourhood mesh network topology.
 This was not a primary concern of this project, but it is mentioned here for completeness and as a possible stepping stone for further research.
 
@@ -2093,16 +2093,16 @@ Similarly, these Super Nodes would be allowed to break the \emph{network depth} 
 Network updates could be pushed externally to a single Super Node, which would be responsible for gossiping the update to its peers, and neighbourhood.
 
 Furthermore, much emphasis has been placed on the Agent Network's ability to achieve soft-consensus through emergent prediction interference.
-Another stepping stone could be the introduction of another layer of consensus, one that explicitely outlines behaviours such as dynamic route biasing, discrete platoon management etc.
+Another stepping stone could be the introduction of another layer of consensus, one that explicitly outlines behaviours such as dynamic route biasing, discrete platoon management etc.
 
 \subsection{Robust Simulation Environment}
 In the future, the team proposes integrating a robust simulation environment to assist in extracting in depth performance metrics and modelling complex road structures. 
-PTV Vissim is a commercially available product, provided by the University, but the team did not have adequate resources to integrate it into the system. 
+PTV VisSim is a commercially available product, provided by the University, but the team did not have adequate resources to integrate it into the system. 
 As identified in earlier reports, it is difficult to programmatically interface with the application and significant time is potentially required to set up a complex environment. 
-The team would either attempt to build an environment using Vissim, research other solutions, or continue building out our own custom simulation tools.
+The team would either attempt to build an environment using VisSim, research other solutions, or continue building out our own custom simulation tools.
 
 \subsection{Updating Behaviour Edge Probabilities}
-As discussed in the engineering approach for ``Learning in Relay‚Äù a sophisticated solution for behaviour edge probability learning was not found.
+As discussed in the engineering approach for ``Learning in Relay''Äù a sophisticated solution for behaviour edge probability learning was not found.
  Further research and development would need to be conducted to derive a solution to his problem ‚Äì the system is underdetermined, and either requires a reduction of design parameters or other reformulation to become solvable. 
 A method that we propose is to use a cost function to constrain some aspect this problem. 
 An example could be penalizing probabilities that change too drastically and limiting them within some threshold. 
@@ -2207,9 +2207,9 @@ The deliverable column, where applicable, identifies the high-level product of e
 \subsection{Performance Review}
 The team was able to meet all deadlines with the usage of grace days throughout both terms. It was found that the initial Gantt Charts did not provide effective division of the work, and often left confusion with respect to responsibilities. The team was effectively able to delegate work at needed, however this could have been avoided with more intensive application of the Gantt Chart methodology.
 
-It was found that deadlines were often delayed between major milestones, such as reports, presentations and demostrations. This often lead to the compression of work into short periods of time leading up to the project. This was expected given the nature of the time frame for the team members, however further steps should be taken to minimize the impact of this in the future.
+It was found that deadlines were often delayed between major milestones, such as reports, presentations and demonstrations. This often lead to the compression of work into short periods of time leading up to the project. This was expected given the nature of the time frame for the team members, however further steps should be taken to minimize the impact of this in the future.
 
-Throughout both terms, the team struggled to meet on a regular basis. This had a negative impact on the team's adherance to deadlines, communication, and ability to effectively delegate work. In the future, consistent meetings should be enforced to ensure the team's adherance to the project plan.
+Throughout both terms, the team struggled to meet on a regular basis. This had a negative impact on the team's adherence to deadlines, communication, and ability to effectively delegate work. In the future, consistent meetings should be enforced to ensure the team's adherence to the project plan.
 
 In conclusion, the team was able to successfully meet all major milestones, however various steps could be taken to improve flow of the project. 
 
@@ -2218,8 +2218,8 @@ Intelligent traffic control is a hard problem.
 However it is made more difficult by the lack of unifying design patterns within the realm---when designing a new control system from scratch, a lot of work is required simply to implement the fundamentals, which frequently must be custom designed for the particular use case in mind.
 In internet data processing, we have ``Map-Reduce'', in high-performance computing we have ``The Grid'', what is the current vogue in traffic engineering?
 
-With the formalization of the Relay Agent, we have outlined a generic and flexible platform for traffic engineers and researchers to experiment with the implementation of distributed traffic control systems that operate on probabilistic expectations, sparse-distributed computation, and \emph{soft}-synchronisation.
-The Relay pattern additionally removes the necessity to have detailed information about t;wqhe implementation environment, with enough data, the system will \emph{learn} its environmental parameters, and provide full transparency to the engineer.
+With the formalization of the Relay Agent, we have outlined a generic and flexible platform for traffic engineers and researchers to experiment with the implementation of distributed traffic control systems that operate on probabilistic expectations, sparse-distributed computation, and \emph{soft}-synchronization.
+The Relay pattern additionally removes the necessity to have detailed information about the implementation environment, with enough data, the system will \emph{learn} its environmental parameters, and provide full transparency to the engineer.
 With the prototype implementation we showed it was possible to implement the Relay pattern, with entirely open-source tools.
 The creation of the Relay Network  has helped further the understanding and capabilities of not only adaptive traffic control, but traffic control in general, with systems like Relay, the cognitive burden typically associated with large scale traffic engineering has been almost entirely removed---foreshadowing a paradigm shift (or possibly an identity crisis) in traffic engineering.
 With distributed systems like Relay (in which each agent requires less compute than is commonly associated with obsolete smartphones), traffic engineers can transcend trivial (but labour intensive) problems such as drawing up sub-optimal timing plans, and begin thinking about how to control vast connected networks of dynamic graph automata.
@@ -2227,9 +2227,9 @@ Imagine a world in which every intersection in a city is an autonomous Relay Age
 
 Furthermore, the Relay Application has helped redefine the value of Adaptive Traffic Control System Interfaces. 
 For Traffic Engineers, the Relay Application enables the shift of responsibility and value from signal timing and tweaking to network monitoring and informed planning. 
-The Relay Application exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing the costs associated with maintaining the efficiecny of the transportation network. 
+The Relay Application exposes rich information which was previously either impossible or extremely expensive to collect, greatly reducing the costs associated with maintaining the efficiency of the transportation network. 
 This information allows traffic engineers to know exactly what's going on in the network at any moment. Traffic engineers are thus able to adapt quickly to drastic changes in the network. 
-Through the use of geospatial data visualizations, the Relay Application is able to reveal high-level traffic patterns, providing invaluble insight into the workings of a city's transportation network. 
+Through the use of geospatial data visualizations, the Relay Application is able to reveal high-level traffic patterns, providing invaluable insight into the workings of a city's transportation network. 
 Access to this kind of information has the potential to change the way public infrastructure decisions are made. 
 This project should serve as a guide for the development of Adaptive Traffic Control System Interfaces in the future.
 
@@ -2249,21 +2249,21 @@ In the future, every car could be given a travel route which optimizes not only 
 \chapter{Expert Interview Transcripts}
 \section{Marc Tan - IBI Group}
 \emph{Who uses these interfaces?} \\
-ÔøΩ
-There areÔøΩreally three users to the interface.
+
+There are really three users to the interface.
 One is the traffic engineers who need to input calibrated timings.
 This is usually done in a central system that controls all the traffic signals.
 Second, there is technical staff to who follow directions from traffic engineers in order to change timings depending on the situation.
 Finally, for the in field controllers, there are technicians who can actually hard code timings or fall back plans. \\ \\
-ÔøΩ
+
 \emph{What is their job, their goals?} \\
-ÔøΩ
-TrafficÔøΩengineers generally ``draw'' up signal timings plans.
+
+Traffic engineers generally ``draw'' up signal timings plans.
 This is usually done using some deterministic and non-deterministic models depending on the work (this is usually my work).
 As systems become adaptive, the goal of the traffic engineer is to more so calibrate and set up the existing conditions of the network rather than drawing up particular definitive second by second timings.
 Obviously the goal is to improve the flow of traffic.
-Technical staff usually work in control centres changing signal timing plans as needed usually under the direction/instruction of a traffic engineer.ÔøΩ\\ \\
-ÔøΩ
+Technical staff usually work in control centres changing signal timing plans as needed usually under the direction/instruction of a traffic engineer.\\ \\
+
 \emph{What are they trying to understand and what information do they need to accomplish that?} \\ 
 Traffic engineers: generally they are trying to understand traffic flows.
 Information needed to understand this is normally traffic counts typically in 1 hour samples.
@@ -2282,7 +2282,7 @@ For a non-adaptive system, this information is collected and inputted into model
 
 Some things about my experiences:
 I have generally done work on developing timings through modelling efforts. I did work one work term in a traffic control centre in Ottawa and the way I described it above with technicians changing timings based on situations observed on the cameras is the norm.
-Toronto runs a SCOOT system on a number of theirÔøΩarterials, which requires a large calibration effort after installation but once its going, it works pretty ok.
+Toronto runs a SCOOT system on a number of their arterials, which requires a large calibration effort after installation but once its going, it works pretty ok.
 The big issue is that these SCOOT systems are quite expensive, with all the detection that is required to run the system.
 
 \section{Peter Kelley - Paradigm Transportation}
